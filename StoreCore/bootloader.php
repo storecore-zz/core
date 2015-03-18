@@ -12,3 +12,8 @@
 require_once __DIR__ . 'Autoloader.php';
 $loader = new \StoreCore\Autoloader();
 $loader->register();
+
+// Load core classes
+require_once __DIR__ . 'Registry.php';
+require_once __DIR__ . 'AbstractModel.php';
+require_once __DIR__ . 'AbstractController.php';
