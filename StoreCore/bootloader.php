@@ -9,15 +9,15 @@
  */
 
 // Load, instantiate, and register the StoreCore autoloader
-require_once __DIR__ . 'Autoloader.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'Autoloader.php';
 $loader = new \StoreCore\Autoloader();
 $loader->register();
 
 // Link namespaces to directories
-$loader->addNamespace('Psr\Log', __DIR__ . 'Psr/Log');
-$loader->addNamespace('StoreCore\FileSystem', __DIR__ . 'FileSystem');
+$loader->addNamespace('Psr\Log', __DIR__ . DIRECTORY_SEPARATOR . 'Psr/Log');
+$loader->addNamespace('StoreCore\FileSystem', __DIR__ . DIRECTORY_SEPARATOR . 'FileSystem');
 
 // Load core classes
-require_once __DIR__ . 'Registry.php';
-require_once __DIR__ . 'AbstractModel.php';
-require_once __DIR__ . 'AbstractController.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'Registry.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'AbstractModel.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'AbstractController.php';
