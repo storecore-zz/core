@@ -8,10 +8,14 @@
  * @version   0.1.0
  */
 
- // Load, instantiate, and register the StoreCore autoloader
+// Load, instantiate, and register the StoreCore autoloader
 require_once __DIR__ . 'Autoloader.php';
 $loader = new \StoreCore\Autoloader();
 $loader->register();
+
+// Link namespaces to directories
+$loader->addNamespace('Psr\Log', __DIR__ . 'Psr/Log');
+$loader->addNamespace('StoreCore\FileSystem', __DIR__ . 'FileSystem');
 
 // Load core classes
 require_once __DIR__ . 'Registry.php';
