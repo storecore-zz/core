@@ -38,9 +38,13 @@ abstract class AbstractDataAccessObject
     private function connect()
     {
         $dsn = STORECORE_DATABASE_DRIVER . ':dbname=' . STORECORE_DATABASE_DEFAULT_DATABASE
-            . ';host=' . STORECORE_DATABASE_DEFAULT_HOST;
+            . ';host=' . STORECORE_DATABASE_DEFAULT_HOST . ';charset=utf8';
+
         try {
             $this->Connection = new \PDO($dsn, STORECORE_DATABASE_USERNAME, STORECORE_DATABASE_PASSWORD);
+            if (version_compare(PHP_VERSION, '5.3.6', '<') {
+                $this->Connection->exec('SET NAMES utf8');
+            }
         } catch (\PDOException $e) {
             $logger = new \StoreCore\FileSystem\Logger();
             $logger->error('Database connection failed: ' . trim($e->getMessage()));
