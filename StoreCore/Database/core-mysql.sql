@@ -7,6 +7,18 @@
 -- @version   0.0.1
 --
 
+CREATE TABLE IF NOT EXISTS `sc_users` (
+  `user_id`        TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  `username`       VARCHAR(255)         NOT NULL,
+  `password_salt`  CHAR(255)            NOT NULL,
+  `password_hash`  CHAR(128)            NOT NULL,
+  `first_name`     VARCHAR(255)         NOT NULL,
+  `last_name`      VARCHAR(255)         NOT NULL,
+  `email_address`  VARCHAR(255)         NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
 CREATE TABLE IF NOT EXISTS `sc_countries` (
   `country_id`         SMALLINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   `status`             TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 1,
