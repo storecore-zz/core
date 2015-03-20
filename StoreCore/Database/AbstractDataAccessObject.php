@@ -79,12 +79,10 @@ abstract class AbstractDataAccessObject
             $key = $this->PrimaryKey;
         }
 
-        $sql = 'SELECT * FROM ' . $this->TableName . ' WHERE ' . $key . ' = ';
-        if (is_int($value)) {
-            $sql .= $value;
-        } else {
-            $sql .= $this->Connection->quote($value);
+        if (!is_numeric($value)) {
+            $value = $this->Connection->quote($value);
         }
+        $sql = 'SELECT * FROM ' . $this->TableName . ' WHERE ' . $key . '=' . $value;
 
         $rows = array();
         $stmt = $this->Connection->query($sql);
@@ -92,5 +90,28 @@ abstract class AbstractDataAccessObject
             $rows[] = $row;
         }
         return $rows;
-    } 
+    }
+
+    /**
+     * Update a single database row.
+     *
+     * @param array $keyed_data
+     * @return int
+     */
+    public function update(array $keyed_data)
+    {
+        $sql = 'UPDATE ' . $this->TableName . ' SET ';            
+        $updates = array();
+        foreach ($keyed_data as $column => $value) {
+            if (!is_numeric($value)) {
+                $value = $this->Connection->quote($value);
+            }
+            $updates[] = $column . '=' . $value;
+        }
+        $sql .= implode(',', $updates);
+        $sql .= ' WHERE ' . $this->PrimaryKey . '=' . $keyed_data[$this->PrimaryKey];
+
+        $affected_rows = $this->Connection->exec($sql);
+        return $affected_rows;
+    }
 }
