@@ -15,6 +15,8 @@ $loader->register();
 
 // Link namespaces to directories
 $loader->addNamespace('Psr\Log', __DIR__ . DIRECTORY_SEPARATOR . 'Psr/Log');
+$loader->addNamespace('StoreCore', __DIR__);
+$loader->addNamespace('StoreCore\Database', __DIR__ . DIRECTORY_SEPARATOR . 'Database');
 $loader->addNamespace('StoreCore\FileSystem', __DIR__ . DIRECTORY_SEPARATOR . 'FileSystem');
 
 // Load core classes
