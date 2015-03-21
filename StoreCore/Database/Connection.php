@@ -42,6 +42,7 @@ class Connection extends \PDO
 
         try {
             parent::__construct($dsn, $username, $password);
+            $this->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             if (version_compare(PHP_VERSION, '5.3.6', '<')) {
                 $this->exec('SET NAMES utf8');
             }
@@ -54,7 +55,11 @@ class Connection extends \PDO
             $logger->notice('Reconnecting in ' . $seconds . ' seconds.');
             sleep($seconds);
             try {
-                $this->Connection = new \PDO($dsn, STORECORE_DATABASE_USERNAME, STORECORE_DATABASE_PASSWORD);
+                parent::__construct($dsn, $username, $password);
+                $this->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+                if (version_compare(PHP_VERSION, '5.3.6', '<')) {
+                    $this->exec('SET NAMES utf8');
+                }
             } catch (\PDOException $e) {
                 $logger->critical('Service unavailable: ' . trim($e->getMessage()));
                 if (!headers_sent()) {
