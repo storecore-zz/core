@@ -3,7 +3,7 @@ namespace StoreCore\Database;
 
 /**
  * Data Access Object (DAO)
-  *
+ *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html
@@ -15,7 +15,7 @@ abstract class AbstractDataAccessObject
     /** @type string VERSION */
     const VERSION = '0.0.1';
 
-    /** @type object PDO */
+    /** @type object StoreCore\Database\Connection */
     private $Connection;
 
     /**
@@ -28,7 +28,7 @@ abstract class AbstractDataAccessObject
     {
         $this->connect();
     }
- 
+
     /**
      * Connect to the database.
      *
@@ -37,35 +37,9 @@ abstract class AbstractDataAccessObject
      */
     private function connect()
     {
-        $dsn = STORECORE_DATABASE_DRIVER . ':dbname=' . STORECORE_DATABASE_DEFAULT_DATABASE
-            . ';host=' . STORECORE_DATABASE_DEFAULT_HOST . ';charset=utf8';
-
-        try {
-            $this->Connection = new \PDO($dsn, STORECORE_DATABASE_USERNAME, STORECORE_DATABASE_PASSWORD);
-            if (version_compare(PHP_VERSION, '5.3.6', '<') {
-                $this->Connection->exec('SET NAMES utf8');
-            }
-        } catch (\PDOException $e) {
-            $logger = new \StoreCore\FileSystem\Logger();
-            $logger->error('Database connection failed: ' . trim($e->getMessage()));
-
-            // Reconnect after a few seconds to balance heavy loads
-            $seconds = mt_rand(2, 5);
-            $logger->notice('Reconnecting in ' . $seconds . ' seconds.');
-            sleep($seconds);
-            try {
-                $this->Connection = new \PDO($dsn, STORECORE_DATABASE_USERNAME, STORECORE_DATABASE_PASSWORD);
-            } catch (\PDOException $e) {
-                $logger->critical('Service unavailable: ' . trim($e->getMessage()));
-                if (!headers_sent()) {
-                    header('HTTP/1.1 503 Service Unavailable', true, 503);
-                    header('Retry-After: 60');
-                }
-                exit;
-            }
-        }
+        $this->Connection = new \StoreCore\Database\Connection();
     }
- 
+
     /**
      * Fetch one or more rows from a single database table.
      *
@@ -100,7 +74,7 @@ abstract class AbstractDataAccessObject
      */
     public function update(array $keyed_data)
     {
-        $sql = 'UPDATE ' . $this->TableName . ' SET ';            
+        $sql = 'UPDATE ' . $this->TableName . ' SET ';
         $updates = array();
         foreach ($keyed_data as $column => $value) {
             if (!is_numeric($value)) {
