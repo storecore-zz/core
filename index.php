@@ -19,7 +19,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 // Load configuration
 require_once 'version.php';
 
@@ -41,3 +41,8 @@ if (!defined('STORECORE_FILESYSTEM_LIBRARY_ROOT')) {
 require STORECORE_FILESYSTEM_LIBRARY_ROOT . 'bootloader.php';
 
 define('STORECORE_FILESYSTEM_STOREFRONT_ROOT', __DIR__ . DIRECTORY_SEPARATOR);
+
+if (!defined('STORECORE_FILESYSTEM_LOGS')) {
+    define('STORECORE_FILESYSTEM_LOGS', STORECORE_FILESYSTEM_STOREFRONT_ROOT . 'logs' . DIRECTORY_SEPARATOR);
+}
+$logger = new \StoreCore\FileSystem\Logger();
