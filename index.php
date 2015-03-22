@@ -50,3 +50,4 @@ if (!defined('STORECORE_FILESYSTEM_LOGS')) {
 $registry = \StoreCore\Registry::getInstance();
 $registry->set('Logger', new \StoreCore\FileSystem\Logger());
 $registry->set('Request', new \StoreCore\Request());
+$registry->set('Session', new \StoreCore\Session());
