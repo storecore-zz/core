@@ -19,6 +19,16 @@ $loader->addNamespace('StoreCore', __DIR__);
 $loader->addNamespace('StoreCore\Database', __DIR__ . DIRECTORY_SEPARATOR . 'Database');
 $loader->addNamespace('StoreCore\FileSystem', __DIR__ . DIRECTORY_SEPARATOR . 'FileSystem');
 
+// Handle PHP errors as exceptions
+function exception_error_handler($errno, $errstr, $errfile, $errline) {
+    $logger = new \StoreCore\FileSystem\Logger();
+    $logger->debug($errstr . ' in ' . $errfile . ' on line ' . $errline);
+    throw new \ErrorException($errstr, $errno, 1, $errfile, $errline);
+}
+set_error_handler('exception_error_handler', E_ALL | E_STRICT);
+error_reporting(E_ALL | E_STRICT);
+ini_set('display_errors', 0);
+
 // Load core classes
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'Registry.php';
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'AbstractModel.php';
