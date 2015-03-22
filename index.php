@@ -45,4 +45,8 @@ define('STORECORE_FILESYSTEM_STOREFRONT_ROOT', __DIR__ . DIRECTORY_SEPARATOR);
 if (!defined('STORECORE_FILESYSTEM_LOGS')) {
     define('STORECORE_FILESYSTEM_LOGS', STORECORE_FILESYSTEM_STOREFRONT_ROOT . 'logs' . DIRECTORY_SEPARATOR);
 }
-$logger = new \StoreCore\FileSystem\Logger();
+
+// Load and populate the global service locator
+$registry = \StoreCore\Registry::getInstance();
+$registry->set('Logger', new \StoreCore\FileSystem\Logger());
+$registry->set('Request', new \StoreCore\Request());
