@@ -72,7 +72,7 @@ class Request
     /**
      * Set the request method.
      *
-     * The HTTP request method in the superglobal PHP variable 
+     * The HTTP request method in the superglobal PHP variable
      * $_SERVER['REQUEST_METHOD'] is controlled by the client.  It MAY be
      * considered reliable as long as the web server allows only certain
      * request methods.
@@ -106,6 +106,20 @@ class Request
         return $this->RequestMethod;
     }
 
+    /**
+     * Get the HTTP Accept-Encoding request-header field.
+     *
+     * @param void
+     * @return string
+     */
+    public function getAcceptEncoding()
+    {
+        if (array_key_exists('HTTP_ACCEPT_ENCODING', $this->Server)) {
+            return $this->Server['HTTP_ACCEPT_ENCODING'];
+        } else {
+            return (string)null;
+        }
+    }
 
     /**
      * Get a cookie by name.
