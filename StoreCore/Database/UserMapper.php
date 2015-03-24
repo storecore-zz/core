@@ -11,12 +11,13 @@ class UserMapper extends AbstractDataAccessObject
     /**
      * @param string $email_address
      * @return StoreCore\User|null
+     * @throws InvalidArgumentException
      */
     public function getUserByEmailAddress($email_address)
     {
         $email_address = filter_var($email_address, FILTER_VALIDATE_EMAIL);
         if ($email_address === false) {
-            return null;
+            throw new \InvalidArgumentException(__METHOD__ . ' expects parameter 1 to be an e-mail address');
         }
 
         $result = $this->fetch($email_address, 'email_address');
@@ -31,4 +32,4 @@ class UserMapper extends AbstractDataAccessObject
             return null;
         }
     }
-}  
+}
