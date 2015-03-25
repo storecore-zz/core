@@ -9,7 +9,7 @@
  */
 
 // Load, instantiate, and register the StoreCore autoloader
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'Autoloader.php';
+require __DIR__ . DIRECTORY_SEPARATOR . 'Autoloader.php';
 $loader = new \StoreCore\Autoloader();
 $loader->register();
 
@@ -30,6 +30,9 @@ error_reporting(E_ALL | E_STRICT);
 ini_set('display_errors', 0);
 
 // Load core classes
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'Registry.php';
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'AbstractModel.php';
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'AbstractController.php';
+require __DIR__ . DIRECTORY_SEPARATOR . 'AbstractModel.php';
+require __DIR__ . DIRECTORY_SEPARATOR . 'AbstractController.php';
+
+require __DIR__ . DIRECTORY_SEPARATOR . 'Registry.php';
+require __DIR__ . DIRECTORY_SEPARATOR . 'Request.php';
+require __DIR__ . DIRECTORY_SEPARATOR . 'Response.php';

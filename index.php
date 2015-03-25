@@ -21,25 +21,25 @@
  */
 
 // Load configuration
-require_once 'version.php';
-
-if (is_file('config.php')) {
-    require 'config.php';
-} else {
-    $configuration = parse_ini_file('config.ini', false);
-    foreach ($configuration as $name => $value) {
-        $name = str_ireplace('.', '_', $name);
-        $name = strtoupper($name);
+require 'version.php';
+require 'config.php';
+$configuration = parse_ini_file('config.ini', false);
+foreach ($configuration as $name => $value) {
+    $name = str_ireplace('.', '_', $name);
+    $name = strtoupper($name);
+    if (!defined($name)) {
         define($name, $value);
     }
-    unset($configuration, $name, $value);
 }
+unset($configuration, $name, $value);
 
+// Bootstrap
 if (!defined('STORECORE_FILESYSTEM_LIBRARY_ROOT')) {
     define('STORECORE_FILESYSTEM_LIBRARY_ROOT', __DIR__ . DIRECTORY_SEPARATOR . 'StoreCore' . DIRECTORY_SEPARATOR);
 }
 require STORECORE_FILESYSTEM_LIBRARY_ROOT . 'bootloader.php';
 
+// Working directories
 define('STORECORE_FILESYSTEM_STOREFRONT_ROOT', __DIR__ . DIRECTORY_SEPARATOR);
 
 if (!defined('STORECORE_FILESYSTEM_LOGS')) {
