@@ -58,7 +58,7 @@ $registry->set('Logger', $logger);
 $registry->set('Request', new \StoreCore\Request());
 $registry->set('Session', new \StoreCore\Session());
 
-$response = new \StoreCore\Response($registry));
+$response = new \StoreCore\Response($registry);
 if (STORECORE_KILL_SWITCH) {
     $response->setCompression(0);
     $response->addHeader('HTTP/1.1 503 Service Unavailable');
