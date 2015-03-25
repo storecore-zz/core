@@ -102,6 +102,26 @@ StoreCore data is shared through the [service locator design pattern].
 
 [service locator design pattern]: https://en.wikipedia.org/wiki/Service_locator_pattern "Service locator pattern"
 
+## 3.4. Logging
+
+By default, StoreCore logs errors, warnings, and noticeable events to `.log`
+files in the StoreCore file system.  Logging MAY be switched off by enabling
+the null logger in the global `config.ini` configuration file.
+
+```
+storecore.null_logger = On
+```
+
+However, disabling the default logging mechanism is NOT RECOMMENDED, as all
+important events will go unnoticed.  If there is sufficient disk space and the
+logging does not have noticeable performance side-effects at the file system
+level, the null logger should be disabled.  This is the default configuration
+setting:
+
+```
+storecore.null_logger = Off
+```
+
 
 # 4. Performance
 

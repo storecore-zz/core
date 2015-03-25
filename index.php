@@ -39,15 +39,21 @@ if (!defined('STORECORE_FILESYSTEM_LIBRARY_ROOT')) {
 }
 require STORECORE_FILESYSTEM_LIBRARY_ROOT . 'bootloader.php';
 
-// Working directories
+// Working directory
 define('STORECORE_FILESYSTEM_STOREFRONT_ROOT', __DIR__ . DIRECTORY_SEPARATOR);
 
+// Logging
 if (!defined('STORECORE_FILESYSTEM_LOGS')) {
     define('STORECORE_FILESYSTEM_LOGS', STORECORE_FILESYSTEM_STOREFRONT_ROOT . 'logs' . DIRECTORY_SEPARATOR);
+}
+if (STORECORE_NULL_LOGGER) {
+    $logger = new \Psr\Log\NullLogger();
+} else {
+    $logger = new \StoreCore\FileSystem\Logger();
 }
 
 // Load and populate the global service locator
 $registry = \StoreCore\Registry::getInstance();
-$registry->set('Logger', new \StoreCore\FileSystem\Logger());
+$registry->set('Logger', $logger);
 $registry->set('Request', new \StoreCore\Request());
 $registry->set('Session', new \StoreCore\Session());
