@@ -42,6 +42,29 @@ CREATE TABLE IF NOT EXISTS sc_user_agents (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
+CREATE TABLE IF NOT EXISTS sc_robots (
+  robot_id    SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  user_agent  VARCHAR(255)          NOT NULL,
+  PRIMARY KEY (robot_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_robot_disallows (
+  path_id   SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  robot_id  SMALLINT(5) UNSIGNED  NOT NULL,
+  disallow  VARCHAR(255)          NOT NULL  DEFAULT '',
+  PRIMARY KEY (path_id),
+  FOREIGN KEY (robot_id)
+    REFERENCES sc_robots (robot_id)
+    ON DELETE CASCADE  ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+INSERT INTO sc_robots (robot_id, user_agent) VALUES
+  (1, '*');
+
+INSERT INTO sc_robot_disallows (robot_id, disallow) VALUES
+  (1, '/cgi-bin/');
+
+
 CREATE TABLE IF NOT EXISTS sc_countries (
   country_id         SMALLINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   status             TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 1,
