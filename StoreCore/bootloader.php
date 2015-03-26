@@ -29,7 +29,9 @@ set_error_handler('exception_error_handler', E_ALL | E_STRICT);
 error_reporting(E_ALL | E_STRICT);
 ini_set('display_errors', 0);
 
-// Load core classes
+// Load core interfaces and classes
+require __DIR__ . DIRECTORY_SEPARATOR . 'SingletonInterface.php';
+
 require __DIR__ . DIRECTORY_SEPARATOR . 'AbstractModel.php';
 require __DIR__ . DIRECTORY_SEPARATOR . 'AbstractController.php';
 

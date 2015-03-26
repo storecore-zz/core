@@ -9,7 +9,7 @@ namespace StoreCore;
  * @license   http://www.gnu.org/licenses/gpl.html GPLv3
  * @version   0.1.0
  */
-final class Registry
+final class Registry implements SingletonInterface
 {
     /** @type array $Data */
     private $Data = array();
