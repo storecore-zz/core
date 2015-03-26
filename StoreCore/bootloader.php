@@ -38,3 +38,5 @@ require __DIR__ . DIRECTORY_SEPARATOR . 'AbstractController.php';
 require __DIR__ . DIRECTORY_SEPARATOR . 'Registry.php';
 require __DIR__ . DIRECTORY_SEPARATOR . 'Request.php';
 require __DIR__ . DIRECTORY_SEPARATOR . 'Response.php';
+require __DIR__ . DIRECTORY_SEPARATOR . 'Route.php';
+require __DIR__ . DIRECTORY_SEPARATOR . 'RouteCollection.php';
