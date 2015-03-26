@@ -33,6 +33,14 @@ CREATE TABLE IF NOT EXISTS sc_users (
     ON DELETE CASCADE  ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+CREATE TABLE IF NOT EXISTS sc_user_agents (
+  user_agent_id    CHAR(40)      NOT NULL  COMMENT 'SHA-1 hash',
+  first_sighting   TIMESTAMP     NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  last_sighting    TIMESTAMP     NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  http_user_agent  VARCHAR(255)  NOT NULL  DEFAULT '',
+  PRIMARY KEY (user_agent_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
 
 CREATE TABLE IF NOT EXISTS sc_countries (
   country_id         SMALLINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,

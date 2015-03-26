@@ -66,3 +66,11 @@ if (STORECORE_KILL_SWITCH) {
     $response->output();
     exit;
 }
+
+// Statistics and analytics
+if (STORECORE_STATISTICS) {
+    $request = $registry->get('Request');
+    $user_agent = $request->getUserAgent();
+    $user_agent_mapper = new \StoreCore\Database\UserAgent($user_agent);
+    $user_agent_mapper->update();
+}

@@ -137,7 +137,21 @@ class Request
     }
 
     /**
-     * Check if a cookie exists
+     * Get the HTTP User-Agent request-header field.
+     *
+     * @param void
+     * @return string
+     */
+    public function getUserAgent()
+    {
+        if (array_key_exists('HTTP_USER_AGENT', $this->Server)) {
+            return $this->Server['HTTP_USER_AGENT'];
+        }
+        return (string)null;
+    }
+    
+    /**
+     * Check if a cookie exists.
      *
      * @param string $cookie_name
      * @return bool
