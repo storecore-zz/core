@@ -12,3 +12,12 @@ Options -Indexes
 <FilesMatch "\.(bak|inc|ini|log|md|phps|phtml|sql|ssi|tmp|tpl)$">
   Deny from all
 </FilesMatch>
+
+# Rewrite all non-existent directories and files to index.php
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-l
+  RewriteRule . index.php [L]
+</IfModule>
