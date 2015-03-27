@@ -7,6 +7,10 @@
 -- @version   0.0.1
 --
 
+--
+-- Users and User Groups
+--
+
 CREATE TABLE IF NOT EXISTS sc_user_groups (
   user_group_id    TINYINT(3) UNSIGNED  NOT NULL,
   user_group_name  VARCHAR(255)         NOT NULL,
@@ -42,6 +46,10 @@ CREATE TABLE IF NOT EXISTS sc_user_agents (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
+--
+-- Robots Exclusion
+--
+
 CREATE TABLE IF NOT EXISTS sc_robots (
   robot_id    SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   user_agent  VARCHAR(255)          NOT NULL,
@@ -64,6 +72,10 @@ INSERT INTO sc_robots (robot_id, user_agent) VALUES
 INSERT INTO sc_robot_disallows (robot_id, disallow) VALUES
   (1, '/cgi-bin/');
 
+
+--
+-- Internationalization (I18N) and Localization (L10N)
+--
 
 CREATE TABLE IF NOT EXISTS sc_countries (
   country_id         SMALLINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
@@ -329,3 +341,28 @@ INSERT INTO sc_countries (iso_number, name, iso_alpha_two, iso_alpha_three, post
   (887, 'Yemen', 'YE', 'YEM',  0, 1),
   (894, 'Zambia', 'ZM', 'ZMB',  0, 1),
   (716, 'Zimbabwe', 'ZW', 'ZWE',  0, 1);
+
+
+--
+-- Stores
+--
+
+CREATE TABLE IF NOT EXISTS sc_stores (
+  store_id    TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  ssl_mode    TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
+  store_name  VARCHAR(64)          NOT NULL,
+  PRIMARY KEY (store_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_store_hosts (
+  host_id        SMALLINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  store_id       TINYINT(3) UNSIGNED   NOT NULL,
+  redirect_only  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
+  host_ip        INT(11) UNSIGNED      NULL  DEFAULT NULL,
+  host_name      VARCHAR(255)          NULL  DEFAULT NULL,
+  redirect_to    VARCHAR(255)          NULL  DEFAULT NULL,
+  PRIMARY KEY (host_id),
+  FOREIGN KEY (store_id)
+    REFERENCES sc_stores (store_id)
+    ON DELETE CASCADE  ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
