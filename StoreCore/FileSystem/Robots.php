@@ -50,7 +50,7 @@ class Robots extends \StoreCore\AbstractController
     {
         $response = new \StoreCore\Response($this->Registry);
         $response->addHeader('Content-Type: text/plain');
-        $response->setCompression(0);
+        $response->setCompression(-1);
         $response->setResponseBody($this->View);
         $response->output();
     }
