@@ -49,7 +49,7 @@ class Robots extends \StoreCore\AbstractController
     private function respond()
     {
         $response = new \StoreCore\Response($this->Registry);
-        $response->addHeader('Content-Type: text/plain');
+        $response->addHeader('Content-Type: text/plain;charset=UTF-8');
         $response->setCompression(-1);
         $response->setResponseBody($this->View);
         $response->output();
