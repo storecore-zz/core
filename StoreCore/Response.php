@@ -103,6 +103,7 @@ class Response extends AbstractModel
             foreach ($this->Headers as $header) {
                 header($header, true);
             }
+            header('X-Powered-By: StoreCore/' . STORECORE_VERSION, true);
         }
 
         if ($this->ResponseBody) {
@@ -140,7 +141,7 @@ class Response extends AbstractModel
     {
         $this->CompressionLevel = (int)$level;
     }
-    
+ 
     /**
      * Set the response content.
      *
