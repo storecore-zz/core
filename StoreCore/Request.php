@@ -15,6 +15,9 @@ class Request
     /** @type string VERSION */
     const VERSION = '0.0.1';
 
+    /** @type string $HostName */
+    private $HostName;
+
     /** @type string|null $RequestMethod */
     private $RequestMethod;
 
@@ -29,14 +32,18 @@ class Request
     {
         $magic_quotes_gpc = get_magic_quotes_gpc();
 
+        // Set internal character encoding to UTF-8
+        mb_internal_encoding('UTF-8');
+
         // Server variables
         $data = array();
         foreach ($_SERVER as $key => $value) {
+            $value = trim($value);
             if (!empty($value)) {
                 if ($magic_quotes_gpc !== false) {
                     $value = stripslashes($value);
                 }
-                $data[$key] = $value;
+                $data[mb_strtoupper($key)] = strip_tags($value);
             }
         }
         $this->Server = $data;
@@ -59,7 +66,7 @@ class Request
                         $name = stripslashes($name);
                         $value = stripslashes($value);
                     }
-                    $name = strtolower($name);
+                    $name = mb_strtolower($name);
                     $data[$name] = $value;
                 }
             }
@@ -137,6 +144,20 @@ class Request
     }
 
     /**
+     * Get the host name.
+     *
+     * @return string
+     *     Returns the HTTP host being requested.
+     */
+    public function getHostName()
+    {
+        if ($this->HostName == null) {
+            $this->setHostName();
+        }
+        return $this->HostName;
+    }
+
+    /**
      * Get the HTTP User-Agent request-header field.
      *
      * @param void
@@ -162,5 +183,24 @@ class Request
             return false;
         }
         return array_key_exists($cookie_name, $this->Cookies);
+    }
+
+    /**
+     * Set the requested host name.
+     *
+     * @param void
+     * @return void
+     */
+    private function setHostName()
+    {
+        if (isset($this->Server['HTTP_HOST']) && !empty($this->Server['HTTP_HOST'])) {
+            $host_name = $this->Server['HTTP_HOST'];
+        } else {
+            $host_name = gethostname();
+        }
+
+        $host_name = preg_replace('/:\d+$/', '', $host_name);
+        $host_name = mb_strtolower($str, 'UTF-8');
+        $this->HostName = $host_name;
     }
 }
