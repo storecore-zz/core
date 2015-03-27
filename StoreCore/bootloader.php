@@ -8,6 +8,9 @@
  * @version   0.1.0
  */
 
+// Coordinated Universal Time (UTC)
+date_default_timezone_set('UTC');
+
 // Load, instantiate, and register the StoreCore autoloader
 require __DIR__ . DIRECTORY_SEPARATOR . 'Autoloader.php';
 $loader = new \StoreCore\Autoloader();
