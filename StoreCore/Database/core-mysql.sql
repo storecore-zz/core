@@ -77,6 +77,47 @@ INSERT INTO sc_robot_disallows (robot_id, disallow) VALUES
 -- Internationalization (I18N) and Localization (L10N)
 --
 
+CREATE TABLE sc_languages (
+  language_id   SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT  COMMENT 'LCID',
+  parent_id     SMALLINT(5) UNSIGNED  NOT NULL  DEFAULT 2057,
+  status        TINYINT(1) UNSIGNED   NOT NULL,
+  sort_order    SMALLINT(5) UNSIGNED  NOT NULL  DEFAULT 0,
+  iso_code      CHAR(5)               NOT NULL  COMMENT 'ISO 639',
+  english_name  VARCHAR(32)           NOT NULL,
+  local_name    VARCHAR(32)           NOT NULL  DEFAULT '',
+  PRIMARY KEY (language_id),
+  KEY fk_parent_id (parent_id),
+  UNIQUE (iso_code),
+  KEY english_name (english_name),
+  CONSTRAINT FOREIGN KEY (parent_id)
+    REFERENCES sc_languages (language_id)
+    ON DELETE RESTRICT  ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+INSERT INTO sc_languages (language_id, parent_id, iso_code, english_name, local_name, status) VALUES
+  (1031, 1031, 'de-DE', 'German - Germany',         'Deutsch - Deutschland',    0),
+  (1036, 1036, 'fr-FR', 'French - France',          'Français - France',        0),
+  (1043, 1043, 'nl-NL', 'Dutch - Netherlands',      'Nederlands - Nederland',   1),
+  (2057, 2057, 'en-GB', 'English - United Kingdom', 'English - United Kingdom', 1);
+
+INSERT INTO sc_languages (language_id, parent_id, iso_code, english_name, local_name, status) VALUES
+  (2067, 1043, 'nl-BE', 'Dutch - Belgium',         'Nederlands - België',     0),
+  (1033, 2057, 'en-US', 'English - United States', 'English - United States', 0),
+  (2060, 1036, 'fr-BE', 'French - Belgium',        'Français - Belgique',     0);
+
+CREATE TABLE sc_translation_memory (
+  translation_id  VARCHAR(255)          NOT NULL,
+  language_id     SMALLINT(5) UNSIGNED  NOT NULL  DEFAULT 2057,
+  is_admin_only   TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
+  last_modified   TIMESTAMP             NOT NULL  DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP,
+  translation     TEXT                  NULL,
+  PRIMARY KEY pk_translation_id (translation_id, language_id),
+  KEY language_id (language_id),
+  CONSTRAINT FOREIGN KEY (language_id)
+    REFERENCES sc_languages (language_id)
+    ON DELETE CASCADE  ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
 CREATE TABLE IF NOT EXISTS sc_countries (
   country_id         SMALLINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   status             TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 1,
