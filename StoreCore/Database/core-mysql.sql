@@ -392,7 +392,7 @@ INSERT INTO sc_countries (iso_number, international_name, iso_alpha_two, iso_alp
   (804, 'Ukraine', 'UA', 'UKR',  0, 1),
   (784, 'United Arab Emirates', 'AE', 'ARE',  0, 1),
   (826, 'United Kingdom', 'GB', 'GBR', 1, 1),
-  (840, 'United States', 'US', 'USA', 0, 1),
+  (840, 'United States of America', 'US', 'USA', 0, 1),
   (581, 'United States Minor Outlying Islands', 'UM', 'UMI',  0, 1),
   (858, 'Uruguay', 'UY', 'URY',  0, 1),
   (860, 'Uzbekistan', 'UZ', 'UZB',  0, 1),
@@ -406,6 +406,67 @@ INSERT INTO sc_countries (iso_number, international_name, iso_alpha_two, iso_alp
   (887, 'Yemen', 'YE', 'YEM',  0, 1),
   (894, 'Zambia', 'ZM', 'ZMB',  0, 1),
   (716, 'Zimbabwe', 'ZW', 'ZWE',  0, 1);
+
+--
+-- ISO 3166-2:US
+--
+-- @see https://en.wikipedia.org/wiki/ISO_3166-2:US
+-- @see https://www.iso.org/obp/ui/#iso:code:3166:US
+--
+INSERT INTO sc_country_subdivisions VALUES
+  ('US', 'AL', 'Alabama'),
+  ('US', 'AK', 'Alaska'),
+  ('US', 'AZ', 'Arizona'),
+  ('US', 'AR', 'Arkansas'),
+  ('US', 'CA', 'California'),
+  ('US', 'CO', 'Colorado'),
+  ('US', 'CT', 'Connecticut'),
+  ('US', 'DE', 'Delaware'),
+  ('US', 'DC', 'District of Columbia'),
+  ('US', 'FL', 'Florida'),
+  ('US', 'GA', 'Georgia'),
+  ('US', 'HI', 'Hawaii'),
+  ('US', 'ID', 'Idaho'),
+  ('US', 'IL', 'Illinois'),
+  ('US', 'IN', 'Indiana'),
+  ('US', 'IA', 'Iowa'),
+  ('US', 'KS', 'Kansas'),
+  ('US', 'KY', 'Kentucky'),
+  ('US', 'LA', 'Louisiana'),
+  ('US', 'ME', 'Maine'),
+  ('US', 'MD', 'Maryland'),
+  ('US', 'MA', 'Massachusetts'),
+  ('US', 'MI', 'Michigan'),
+  ('US', 'MN', 'Minnesota'),
+  ('US', 'MS', 'Mississippi'),
+  ('US', 'MO', 'Missouri'),
+  ('US', 'MT', 'Montana'),
+  ('US', 'NE', 'Nebraska'),
+  ('US', 'NV', 'Nevada'),
+  ('US', 'NH', 'New Hampshire'),
+  ('US', 'NJ', 'New Jersey'),
+  ('US', 'NM', 'New Mexico'),
+  ('US', 'NY', 'New York'),
+  ('US', 'NC', 'North Carolina'),
+  ('US', 'ND', 'North Dakota'),
+  ('US', 'OH', 'Ohio'),
+  ('US', 'OK', 'Oklahoma'),
+  ('US', 'OR', 'Oregon'),
+  ('US', 'PA', 'Pennsylvania'),
+  ('US', 'RI', 'Rhode Island'),
+  ('US', 'SC', 'South Carolina'),
+  ('US', 'SD', 'South Dakota'),
+  ('US', 'TN', 'Tennessee'),
+  ('US', 'TX', 'Texas'),
+  ('US', 'UT', 'Utah'),
+  ('US', 'VT', 'Vermont'),
+  ('US', 'VA', 'Virginia'),
+  ('US', 'WA', 'Washington'),
+  ('US', 'WV', 'West Virginia'),
+  ('US', 'WI', 'Wisconsin'),
+  ('US', 'WY', 'Wyoming');
+
+UPDATE sc_countries SET subdivision_required = 1 WHERE iso_alpha_two = 'US';
 
 
 --
