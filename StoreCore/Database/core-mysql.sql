@@ -126,11 +126,24 @@ CREATE TABLE IF NOT EXISTS sc_countries (
   iso_alpha_two         CHAR(2)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  COMMENT 'ISO 3166-1 alpha-2 code',
   iso_alpha_three       CHAR(3)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  COMMENT 'ISO 3166-1 alpha-3 code',
   iso_number            SMALLINT(3) UNSIGNED  NOT NULL  COMMENT 'ISO 3166-1 numeric code',
-  name                  VARCHAR(128)          NOT NULL,
+  international_name    VARCHAR(128)          NOT NULL,
   PRIMARY KEY (country_id),
   UNIQUE KEY (iso_alpha_two),
   UNIQUE KEY (iso_alpha_three),
   UNIQUE KEY (iso_number)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_country_names (
+  country_id    SMALLINT(3) UNSIGNED  NOT NULL,
+  language_id   SMALLINT(5) UNSIGNED  NOT NULL,
+  country_name  VARCHAR(128)          NOT NULL,
+  PRIMARY KEY (country_id, language_id),
+  CONSTRAINT FOREIGN KEY (country_id)
+    REFERENCES sc_countries (country_id)
+    ON DELETE CASCADE  ON UPDATE CASCADE,
+  CONSTRAINT FOREIGN KEY (language_id)
+    REFERENCES sc_languages (language_id)
+    ON DELETE CASCADE  ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_country_subdivisions (
@@ -143,7 +156,7 @@ CREATE TABLE IF NOT EXISTS sc_country_subdivisions (
     ON DELETE CASCADE  ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-INSERT INTO sc_countries (iso_number, name, iso_alpha_two, iso_alpha_three, postcode_required, status) VALUES
+INSERT INTO sc_countries (iso_number, international_name, iso_alpha_two, iso_alpha_three, postcode_required, status) VALUES
   (  4, 'Afghanistan', 'AF', 'AFG',  0, 1),
   (248, 'Åland Islands', 'AX', 'ALA',  0, 1),
   (  8, 'Albania', 'AL', 'ALB',  0, 1),
