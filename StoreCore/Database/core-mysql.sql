@@ -119,18 +119,29 @@ CREATE TABLE sc_translation_memory (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_countries (
-  country_id         SMALLINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
-  status             TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 1,
-  postcode_required  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
-  iso_alpha_two      CHAR(2)               NOT NULL  COMMENT 'ISO 3166-1 alpha-2 code',
-  iso_alpha_three    CHAR(3)               NOT NULL  COMMENT 'ISO 3166-1 alpha-3 code',
-  iso_number         SMALLINT(3) UNSIGNED  NOT NULL  COMMENT 'ISO 3166-1 numeric code',
-  name               VARCHAR(128)          NOT NULL,
+  country_id            SMALLINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  status                TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 1,
+  postcode_required     TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
+  subdivision_required  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
+  iso_alpha_two         CHAR(2)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  COMMENT 'ISO 3166-1 alpha-2 code',
+  iso_alpha_three       CHAR(3)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  COMMENT 'ISO 3166-1 alpha-3 code',
+  iso_number            SMALLINT(3) UNSIGNED  NOT NULL  COMMENT 'ISO 3166-1 numeric code',
+  name                  VARCHAR(128)          NOT NULL,
   PRIMARY KEY (country_id),
   UNIQUE KEY (iso_alpha_two),
   UNIQUE KEY (iso_alpha_three),
   UNIQUE KEY (iso_number)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_country_subdivisions (
+  iso_alpha_two     CHAR(2)       CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  COMMENT 'ISO 3166-1',
+  iso_suffix        VARCHAR(3)    CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  COMMENT 'ISO 3166-2 add-on',
+  subdivision_name  VARCHAR(255)  NOT NULL,
+  PRIMARY KEY (iso_alpha_two, iso_suffix),
+  CONSTRAINT FOREIGN KEY (iso_alpha_two)
+    REFERENCES sc_countries (iso_alpha_two)
+    ON DELETE CASCADE  ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 INSERT INTO sc_countries (iso_number, name, iso_alpha_two, iso_alpha_three, postcode_required, status) VALUES
   (  4, 'Afghanistan', 'AF', 'AFG',  0, 1),
