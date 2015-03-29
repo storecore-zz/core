@@ -95,18 +95,22 @@ CREATE TABLE sc_languages (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 INSERT INTO sc_languages (language_id, parent_id, iso_code, english_name, local_name, status) VALUES
-  (1031, 1031, 'de-DE', 'German - Germany',         'Deutsch - Deutschland',    0),
-  (1036, 1036, 'fr-FR', 'French - France',          'Français - France',        0),
+  (1031, 1031, 'de-DE', 'German - Germany',         'Deutsch - Deutschland',    1),
+  (1036, 1036, 'fr-FR', 'French - France',          'Français - France',        1),
   (1043, 1043, 'nl-NL', 'Dutch - Netherlands',      'Nederlands - Nederland',   1),
   (2057, 2057, 'en-GB', 'English - United Kingdom', 'English - United Kingdom', 1);
 
 INSERT INTO sc_languages (language_id, parent_id, iso_code, english_name, local_name, status) VALUES
-  (2067, 1043, 'nl-BE', 'Dutch - Belgium',         'Nederlands - België',     0),
   (1033, 2057, 'en-US', 'English - United States', 'English - United States', 0),
-  (2060, 1036, 'fr-BE', 'French - Belgium',        'Français - Belgique',     0);
+  (2055, 1031, 'de-LI', 'German - Switzerland',    'Deutsch - Schweiz',       0),
+  (2060, 1036, 'fr-BE', 'French - Belgium',        'Français - Belgique',     0),
+  (2067, 1043, 'nl-BE', 'Dutch - Belgium',         'Nederlands - België',     0),
+  (3079, 1031, 'de-AT', 'German - Austria',        'Deutsch - Österreich',    0),
+  (4103, 1031, 'de-LU', 'German - Luxembourg',     'Deutsch - Luxemburg',     0),
+  (5127, 1031, 'de-LI', 'German - Liechtenstein',  'Deutsch - Liechtenstein', 0);
 
 CREATE TABLE sc_translation_memory (
-  translation_id  VARCHAR(255)          NOT NULL,
+  translation_id  VARCHAR(255)          CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
   language_id     SMALLINT(5) UNSIGNED  NOT NULL  DEFAULT 2057,
   is_admin_only   TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
   last_modified   TIMESTAMP             NOT NULL  DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP,
