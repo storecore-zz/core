@@ -9,7 +9,7 @@ Options -Indexes
 </Files>
 
 # Deny access to file types by extension
-<FilesMatch "\.(bak|inc|ini|log|md|phps|phtml|sql|ssi|tmp|tpl)$">
+<FilesMatch "\.(bak|gz|inc|ini|log|md|phps|phtml|sql|ssi|tar|tmp|tpl)$">
   Deny from all
 </FilesMatch>
 
