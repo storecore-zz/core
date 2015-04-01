@@ -69,11 +69,13 @@ class Document
      * @param string $rel
      * @param string $type
      * @param string $media
+     * @param string $hreflang
      * @return $this
      *
+     * @see http://www.w3.org/TR/html5/links.html
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link
      */
-    public function addLink($href, $rel = null, $type = null, $media = null)
+    public function addLink($href, $rel = null, $type = null, $media = null, $hreflang = null)
     {
         $href = str_ireplace('https://', '//', $href);
         $href = str_ireplace('http://', '//', $href);
@@ -92,6 +94,10 @@ class Document
         if ($media !== null) {
             $media = strtolower($media);
             $link['media'] = $media;
+        }
+
+        if ($hreflang !== null) {
+            $link['hreflang'] = $hreflang;
         }
 
         $this->Links[md5($href)] = $link;
