@@ -16,6 +16,8 @@ class Document
      * @type string $Language
      * @type null|array $Links
      * @type null|array $MetaProperties
+     * @type null|array $Scripts
+     * @type null|array $ScriptsDeferred
      * @type array $Sections
      * @type string $Title
      */
@@ -23,6 +25,8 @@ class Document
     protected $Language = 'en-GB';
     protected $Links;
     protected $MetaProperties;
+    protected $Scripts;
+    protected $ScriptsDeferred;
     protected $Sections = array();
     protected $Title = 'StoreCore';
 
@@ -38,7 +42,7 @@ class Document
      *     Semantic Version (SemVer)
      */
     const VERSION = '0.0.1';
-    
+
     /**
      * @param string $title
      * @return void
@@ -73,7 +77,7 @@ class Document
         $href = str_ireplace('https://', '//', $href);
         $href = str_ireplace('http://', '//', $href);
         $link = array('href' => $href);
-        
+
         if ($rel !== null) {
             $rel = strtolower($rel);
             $link['rel'] = $rel;
@@ -88,7 +92,7 @@ class Document
             $media = strtolower($media);
             $link['media'] = $media;
         }
-        
+
         $this->Links[md5($href)] = $link;
         return $this;
     }
@@ -120,6 +124,21 @@ class Document
     }
 
     /**
+     * @param string $script
+     * @param bool $defer
+     * @return $this
+     */
+    public function addScript($script, $defer = true)
+    {
+        if ($defer !== false) {
+            $this->ScriptsDeferred[] = $script;
+        } else {
+            $this->Scripts[] = $script;
+        }
+        return $this;
+    }
+
+    /**
      * @param string $content
      * @param string $container
      * @return $this
@@ -129,7 +148,7 @@ class Document
         $container = strtolower($container);
 
         $this->Sections[] = '<' . $container . '>' . $content . '</' . $container . '>';
-        
+
         return $this;
     }
 
@@ -154,6 +173,13 @@ class Document
         $html .= '<html dir="' . $this->Direction . '" lang="' . $this->Language . '">';
         $html .= $this->getHead();
         $html .= $this->getBody();
+
+        if ($this->ScriptsDeferred !== null) {
+            $html .= '<script defer>';
+            $html .= implode($this->ScriptsDeferred);
+            $html .= '</script>';
+        }
+
         $html .= '</html>';
         return $html;
     }
@@ -186,6 +212,12 @@ class Document
             foreach ($this->MetaProperties as $property => $content) {
                 $head .= '<meta property="' . $property . '" content="' . $content . '">';
             }
+        }
+
+        if ($this->Scripts !== null) {
+            $head .= '<script>';
+            $head .= implode($this->Scripts);
+            $head .= '</script>';
         }
 
         $head .= '</head>';
