@@ -21,6 +21,9 @@ class Request
     /** @type string|null $RequestMethod */
     private $RequestMethod;
 
+    /** @type string $RequestPath */
+    private $RequestPath = '/';
+
     /**
      * @type array|null $Cookies
      * @type array      $Server
@@ -57,6 +60,15 @@ class Request
             unset($this->Server['REQUEST_METHOD']);
         }
 
+        // Request path (URI without host)
+        if (isset($_SERVER['REQUEST_URI'])) {
+            if ($magic_quotes_gpc !== false) {
+                $_SERVER['REQUEST_URI'] = stripslashes($_SERVER['REQUEST_URI']);
+            }
+            $this->setRequestPath($_SERVER['REQUEST_URI']);
+            unset($this->Server['REQUEST_URI']);
+        }
+
         // Add cookie data
         if (isset($_COOKIE) && !empty($_COOKIE)) {
             $data = array();
@@ -73,58 +85,6 @@ class Request
             if (count($data) > 1) {
                 $this->Cookies = $data;
             }
-        }
-    }
-
-    /**
-     * Set the request method.
-     *
-     * The HTTP request method in the superglobal PHP variable
-     * $_SERVER['REQUEST_METHOD'] is controlled by the client.  It MAY be
-     * considered reliable as long as the web server allows only certain
-     * request methods.
-     *
-     * @param string $method
-     * @param return void
-     */
-    private function setRequestMethod($method)
-    {
-        if (!is_string($method)) {
-            return;
-        }
-
-        $method = strip_tags($method);
-        $method = trim($method);
-        $method = strtoupper($method);
-
-        if (!empty($method)) {
-            $this->RequestMethod = $method;
-        }
-    }
-
-    /**
-     * Get the current request method.
-     *
-     * @param void
-     * @return string|null
-     */
-    public function getRequestMethod()
-    {
-        return $this->RequestMethod;
-    }
-
-    /**
-     * Get the HTTP Accept-Encoding request-header field.
-     *
-     * @param void
-     * @return string
-     */
-    public function getAcceptEncoding()
-    {
-        if (array_key_exists('HTTP_ACCEPT_ENCODING', $this->Server)) {
-            return $this->Server['HTTP_ACCEPT_ENCODING'];
-        } else {
-            return (string)null;
         }
     }
 
@@ -158,6 +118,28 @@ class Request
     }
 
     /**
+     * Get the current request method.
+     *
+     * @param void
+     * @return string|null
+     */
+    public function getRequestMethod()
+    {
+        return $this->RequestMethod;
+    }
+
+    /**
+     * Get the current request path.
+     *
+     * @param void
+     * @return string
+     */
+    public function getRequestPath()
+    {
+        return $this->RequestPath;
+    }
+
+    /**
      * Get the HTTP User-Agent request-header field.
      *
      * @param void
@@ -170,7 +152,7 @@ class Request
         }
         return (string)null;
     }
-    
+
     /**
      * Check if a cookie exists.
      *
@@ -202,5 +184,45 @@ class Request
         $host_name = preg_replace('/:\d+$/', '', $host_name);
         $host_name = mb_strtolower($str, 'UTF-8');
         $this->HostName = $host_name;
+    }
+
+    /**
+     * Set the request method.
+     *
+     * The HTTP request method in the superglobal PHP variable
+     * $_SERVER['REQUEST_METHOD'] is controlled by the client.  It MAY be
+     * considered reliable as long as the web server allows only certain
+     * request methods.
+     *
+     * @param string $method
+     * @return void
+     */
+    private function setRequestMethod($method)
+    {
+        if (!is_string($method)) {
+            return;
+        }
+
+        $method = strip_tags($method);
+        $method = trim($method);
+        $method = strtoupper($method);
+
+        if (!empty($method)) {
+            $this->RequestMethod = $method;
+        }
+    }
+
+    /**
+     * Set the request path.
+     *
+     * @param string $path
+     * @return void
+     */
+    private function setRequestPath($path)
+    {
+        $path = urldecode($path);
+        $path = mb_strtolower($path, 'UTF-8');
+        $path = str_ireplace('/index.php', '/', $path);
+        $this->RequestPath = $path;
     }
 }
