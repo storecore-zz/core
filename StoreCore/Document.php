@@ -176,7 +176,7 @@ class Document
         $html .= $this->getBody();
 
         if ($this->ScriptsDeferred !== null) {
-            $html .= '<script defer>';
+            $html .= '<script>';
             $html .= implode($this->ScriptsDeferred);
             $html .= '</script>';
         }
