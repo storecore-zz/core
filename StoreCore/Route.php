@@ -3,6 +3,10 @@ namespace StoreCore;
 
 class Route
 {
+    /**
+     * @type string $Controller
+     * @type string $Path
+     */
     private $Controller;
     private $Path;
 
