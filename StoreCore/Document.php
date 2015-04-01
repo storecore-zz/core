@@ -12,6 +12,12 @@ namespace StoreCore;
 class Document
 {
     /**
+     * @type string VERSION
+     *     Semantic Version (SemVer)
+     */
+    const VERSION = '0.0.1';
+
+    /**
      * @type string $Direction
      * @type string $Language
      * @type null|array $Links
@@ -37,12 +43,6 @@ class Document
         'robots' => 'index,follow',
         'viewport' => 'width=device-width, initial-scale=1',
     );
-
-    /**
-     * @type string VERSION
-     *     Semantic Version (SemVer)
-     */
-    const VERSION = '0.0.1';
 
     /**
      * @param string $title
