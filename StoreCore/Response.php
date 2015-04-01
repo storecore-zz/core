@@ -104,6 +104,7 @@ class Response extends AbstractModel
                 header($header, true);
             }
             header('X-Powered-By: StoreCore/' . STORECORE_VERSION, true);
+            header('X-UA-Compatible: IE=edge', true);
         }
 
         if ($this->ResponseBody) {
@@ -141,7 +142,7 @@ class Response extends AbstractModel
     {
         $this->CompressionLevel = (int)$level;
     }
- 
+
     /**
      * Set the response content.
      *
