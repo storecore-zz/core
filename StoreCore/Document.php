@@ -170,6 +170,7 @@ class Document
         $body .= '</body>';
         return $body;
     }
+
     /**
      * @param void
      * @return string
@@ -229,6 +230,17 @@ class Document
 
         $head .= '</head>';
         return $head;
+    }
+
+    /**
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $description = trim($description);
+        $this->addMetaData('description', $description);
+        return $this;
     }
 
     /**
