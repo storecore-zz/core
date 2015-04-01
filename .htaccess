@@ -13,6 +13,11 @@ Options -Indexes
   Deny from all
 </FilesMatch>
 
+# Compress CSS and JavaScript
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/css application/x-javascript application/javascript
+</IfModule>
+
 # Rewrite all non-existent directories and files to index.php
 <IfModule mod_rewrite.c>
   RewriteEngine on
