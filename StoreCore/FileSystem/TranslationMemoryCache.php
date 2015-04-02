@@ -49,14 +49,17 @@ class TranslationMemoryCache
         $languages = $language_model->getEnabledLanguages();
         unset($language_model);
 
-        $tm = new \StoreCore\Database\TranslationMemory($registry);
+        $tm = new TranslationMemory($registry);
         foreach ($languages as $language_id => $iso_code) {
             $translations = $tm->getTranslations($language_id, false);
             $file = '<?php' . PHP_EOL;
             foreach ($translations as $name => $value) {
                 $file .= "define('{$name}', '{$value}');" . PHP_EOL;
             }
-            file_put_contents($cache_directory . $iso_code . '.php', $file);
+            if (file_put_contents($cache_directory . $iso_code . '.php', $file) === false) {
+                $logger->error('Language cache file for ' . $iso_code . ' could not be written.');
+                return false;
+            }
         }
         return true;
     }
