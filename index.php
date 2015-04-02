@@ -42,6 +42,11 @@ require STORECORE_FILESYSTEM_LIBRARY_ROOT . 'bootloader.php';
 // Working directory
 define('STORECORE_FILESYSTEM_STOREFRONT_ROOT', __DIR__ . DIRECTORY_SEPARATOR);
 
+// Cache directory
+if (!defined('STORECORE_FILESYSTEM_CACHE')) {
+    define('STORECORE_FILESYSTEM_CACHE', STORECORE_FILESYSTEM_STOREFRONT_ROOT . 'cache' . DIRECTORY_SEPARATOR);
+}
+
 // Logging
 if (!defined('STORECORE_FILESYSTEM_LOGS')) {
     define('STORECORE_FILESYSTEM_LOGS', STORECORE_FILESYSTEM_STOREFRONT_ROOT . 'logs' . DIRECTORY_SEPARATOR);
@@ -62,7 +67,7 @@ $response = new \StoreCore\Response($registry);
 if (STORECORE_KILL_SWITCH) {
     $response->setCompression(0);
     $response->addHeader('HTTP/1.1 503 Service Unavailable');
-    $response->addheader('Retry-After: 3600'); 
+    $response->addheader('Retry-After: 3600');
     $response->output();
     exit;
 }
