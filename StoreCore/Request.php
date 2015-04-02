@@ -196,7 +196,7 @@ class Request
         }
 
         $host_name = preg_replace('/:\d+$/', '', $host_name);
-        $host_name = mb_strtolower($str, 'UTF-8');
+        $host_name = mb_strtolower($host_name, 'UTF-8');
         $this->HostName = $host_name;
     }
 
