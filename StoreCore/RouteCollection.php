@@ -30,4 +30,20 @@ class RouteCollection implements \Countable
     {
         return count($this->Routes);
     }
+
+    /**
+     * Check if a path exists in the current route collection.
+     *
+     * @param void
+     * @return bool
+     */
+    public function pathExists($path)
+    {
+        foreach ($this->Routes as $route) {
+            if ($path == $route->getPath()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
