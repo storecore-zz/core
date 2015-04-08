@@ -38,15 +38,17 @@ class Request
         // Set internal character encoding to UTF-8
         mb_internal_encoding('UTF-8');
 
-        // Server variables
+        // Non-empty $_SERVER string variables
         $data = array();
         foreach ($_SERVER as $key => $value) {
-            $value = trim($value);
-            if (!empty($value)) {
+            if (is_string($value)) {
+                $value = trim($value);
                 if ($magic_quotes_gpc !== false) {
                     $value = stripslashes($value);
                 }
-                $data[mb_strtoupper($key)] = strip_tags($value);
+                if (!empty($value)) {
+                    $data[mb_strtoupper($key)] = strip_tags($value);
+                }
             }
         }
         $this->Server = $data;
@@ -89,7 +91,7 @@ class Request
     }
 
     /**
-     * Get the HTTP Accept-Encoding request-header field.
+     * Get the HTTP "Accept-Encoding" request-header field.
      *
      * @param void
      * @return string
