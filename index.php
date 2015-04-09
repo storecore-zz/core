@@ -60,16 +60,41 @@ if (STORECORE_NULL_LOGGER) {
 // Load and populate the global service locator
 $registry = \StoreCore\Registry::getInstance();
 $registry->set('Logger', $logger);
-$registry->set('Request', new \StoreCore\Request());
-$registry->set('Session', new \StoreCore\Session());
+$request = new \StoreCore\Request();
+$registry->set('Request', $request);
 
-$response = new \StoreCore\Response($registry);
+$session = new \StoreCore\Session();
 if (STORECORE_KILL_SWITCH) {
+    $response = new \StoreCore\Response($registry);
+    $session->destroy();
     $response->setCompression(0);
     $response->addHeader('HTTP/1.1 503 Service Unavailable');
     $response->addheader('Retry-After: 3600');
     $response->output();
     exit;
+}
+$registry->set('Session', $session);
+
+// Routing
+$route = false;
+switch ($request->getRequestPath()) {
+    case '/robots.txt':
+        $route = new \StoreCore\Route('/robots.txt', '\StoreCore\FileSystem\Robots');
+        break;
+    default:
+        $pathinfo = pathinfo($request->getRequestPath());
+        if (array_key_exists('basename', $pathinfo) && array_key_exists('extension', $pathinfo)) {
+            $asset = new \StoreCore\Asset($pathinfo['basename'], $pathinfo['extension']);
+        }
+        unset($pathinfo);
+}
+
+if ($route !== false) {
+    $route->dispatch();
+} else {
+    $logger->notice('HTTP/1.1 404 Not Found: ' . $request->getRequestPath());
+    $response = new \StoreCore\Response($registry);
+    $response->addHeader('HTTP/1.1 404 Not Found');
 }
 
 // Statistics and analytics

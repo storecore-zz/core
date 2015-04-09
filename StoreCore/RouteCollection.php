@@ -14,9 +14,9 @@ class RouteCollection implements \Countable
      * @param string $name
      * @param \StoreCore\Route $route
      */
-    public function add($name, \StoreCore\Route $route)
+    public function add(\StoreCore\Route $route)
     {
-        $this->Routes[$name] = $route;
+        $this->Routes[$route->getPath()] = $route;
     }
 
     /**
@@ -34,16 +34,11 @@ class RouteCollection implements \Countable
     /**
      * Check if a path exists in the current route collection.
      *
-     * @param void
+     * @param string $path
      * @return bool
      */
     public function pathExists($path)
     {
-        foreach ($this->Routes as $route) {
-            if ($path == $route->getPath()) {
-                return true;
-            }
-        }
-        return false;
+        return array_key_exists($path, $this->Routes);
     }
 }

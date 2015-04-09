@@ -4,10 +4,14 @@ namespace StoreCore;
 class Route
 {
     /**
-     * @type string $Controller
-     * @type string $Path
+     * @type string      $Controller
+     * @type null|string $Method
+     * @type null|array  $Parameters
+     * @type string      $Path
      */
     private $Controller;
+    private $Method;
+    private $Parameters;
     private $Path;
 
     /**
@@ -15,10 +19,17 @@ class Route
      * @param string $controller
      * @return void
      */
-    public function __construct($path, $controller)
+    public function __construct($path, $controller, $method = null, $parameters = null)
     {
         $this->setPath($path);
         $this->setController($controller);
+
+        if ($method !== null) {
+            $this->setMethod($method);
+            if ($parameters !== null) {
+                $this->setParameters($parameters);
+            }
+        }
     }
 
     /**
@@ -54,6 +65,24 @@ class Route
         $this->Controller = $controller;
     }
 
+    /**
+     * @param string $method
+     * @return void
+     */
+    private function setMethod($method)
+    {
+        $this->Method = $method;
+    }
+
+    /**
+     * @param array $method
+     * @return void
+     */
+    private function setParameters(array $parameters)
+    {
+        $this->Parameters = $parameters;
+    }
+    
     /**
      * @param string $path
      * @return void
