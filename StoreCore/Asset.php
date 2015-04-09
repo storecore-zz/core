@@ -76,7 +76,9 @@ class Asset
         if ($this->FileType == 'css' || $this->FileType == 'js') {
             ob_start('ob_gzhandler');
         }
-        header('Cache-Control: Public', true);
+        
+        // Cache for 365 days = 31536000 seconds
+        header('Cache-Control: public, max-age=31536000', true);
         header('Pragma: cache', true);
         header('Content-Type: ' . $this->Types[$this->FileType], true);
         header('X-Powered-By: StoreCore/' . STORECORE_VERSION, true);
@@ -91,8 +93,8 @@ class Asset
         $http_if_none_match = (isset($_SERVER['HTTP_IF_NONE_MATCH']) ? trim($_SERVER['HTTP_IF_NONE_MATCH']) : false);
         if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
             if (strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $last_modified || $http_if_none_match == $etag) {
-                   header('HTTP/1.1 304 Not Modified', true, 304);
-                   exit;
+                header('HTTP/1.1 304 Not Modified', true, 304);
+                exit;
             }
         }
 
