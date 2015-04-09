@@ -20,6 +20,7 @@ $loader->register();
 $loader->addNamespace('Psr\Cache', __DIR__ . DIRECTORY_SEPARATOR . 'Psr/Cache');
 $loader->addNamespace('Psr\Log', __DIR__ . DIRECTORY_SEPARATOR . 'Psr/Log');
 $loader->addNamespace('StoreCore', __DIR__);
+$loader->addNamespace('StoreCore\Admin', __DIR__ . DIRECTORY_SEPARATOR . 'Admin');
 $loader->addNamespace('StoreCore\Database', __DIR__ . DIRECTORY_SEPARATOR . 'Database');
 $loader->addNamespace('StoreCore\FileSystem', __DIR__ . DIRECTORY_SEPARATOR . 'FileSystem');
 $loader->addNamespace('StoreCore\Types', __DIR__ . DIRECTORY_SEPARATOR . 'Types');
