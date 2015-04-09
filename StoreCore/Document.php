@@ -246,6 +246,21 @@ class Document
     }
 
     /**
+     * @param string $language_code
+     * @return $this
+     */
+    public function setLanguage($language_code)
+    {
+        $language_code = str_ireplace('_', '-', $language_code);
+        $language_codes = explode('-', $language_code);
+        if (count($language_codes) === 2) {
+            $language_code = strtolower($language_codes[0]) . '-' . strtoupper($language_codes[1]);
+        }
+        $this->Language = $language_code;
+        return $this;
+    }
+
+    /**
      * @param string $title
      * @return $this
      */
