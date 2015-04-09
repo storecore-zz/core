@@ -40,6 +40,8 @@ class Document
      * @type array $MetaData
      */
     protected $MetaData = array(
+        'generator' => 'StoreCore ' . STORECORE_VERSION,
+        'rating' => 'general',
         'robots' => 'index,follow',
         'viewport' => 'width=device-width, initial-scale=1',
     );
