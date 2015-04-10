@@ -27,6 +27,7 @@ class FrontController extends AbstractController implements LoggerAwareInterface
         if ($this->Session->get('Language') === null) {
             $this->setLanguage();
         }
+        include STORECORE_FILESYSTEM_CACHE . 'data' . DIRECTORY_SEPARATOR . $this->Session->get('Language') . '.php';
     }
 
     /**
@@ -68,7 +69,6 @@ class FrontController extends AbstractController implements LoggerAwareInterface
         $content_negotiator = new \StoreCore\I18N\Language();
         $language = $content_negotiator->negotiate($supported_languages, $default_language);
         $this->Session->set('Language', $language);
-        include STORECORE_FILESYSTEM_CACHE . 'data' . DIRECTORY_SEPARATOR . $language . '.php';
     }
 
     /**
