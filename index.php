@@ -91,6 +91,9 @@ switch ($request->getRequestPath()) {
 
 if ($route !== false) {
     $route->dispatch();
+} elseif (!defined('STORECORE_INSTALLED')) {
+    $front_controller = new \StoreCore\Admin\FrontController($registry);
+    $front_controller->install();
 } else {
     $logger->notice('HTTP/1.1 404 Not Found: ' . $request->getRequestPath());
     $response = new \StoreCore\Response($registry);
