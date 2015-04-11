@@ -167,10 +167,10 @@ class Document
      */
     public function getBody()
     {
-        $body  = '<body>';
-        $body .= implode($this->Sections);
-        $body .= '</body>';
-        return $body;
+        return 
+            '<body><div id="wrapper">' .
+            implode($this->Sections) .
+            '</div></body>';
     }
 
     /**
