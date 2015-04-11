@@ -12,25 +12,33 @@ namespace StoreCore;
  */
 class Request
 {
-    /** @type string VERSION */
+    /** @var string VERSION */
     const VERSION = '0.0.1';
 
-    /** @type string $HostName */
+    /** @var string $HostName */
     private $HostName;
 
-    /** @type string|null $RequestMethod */
+    /** @var string|null $RequestMethod */
     private $RequestMethod;
 
-    /** @type string $RequestPath */
+    /** @var string $RequestPath */
     private $RequestPath = '/';
 
     /**
-     * @type array|null $Cookies
-     * @type array      $Server
+     * @var array|null $Cookies
+     * @var array|null $Get
+     * @var array|null $Post
+     * @var array      $Server
      */
     private $Cookies;
+    private $Get;
+    private $Post;
     private $Server;
 
+    /**
+     * @param void
+     * @return void
+     */
     public function __construct()
     {
         $magic_quotes_gpc = get_magic_quotes_gpc();
@@ -71,6 +79,25 @@ class Request
             unset($this->Server['REQUEST_URI']);
         }
 
+        // Posted data
+        if ($this->getRequestMethod() == 'POST') {
+            $data = array();
+            foreach ($_POST as $key => $value) {
+                if (is_string($value)) {
+                    $value = trim($value);
+                    if ($magic_quotes_gpc !== false) {
+                        $key = stripslashes($key);
+                        $value = stripslashes($value);
+                    }
+                    $value = strip_tags($value);
+                    if (!empty($value)) {
+                        $data[mb_strtolower($key)] = $value;
+                    }
+                }
+            }
+            $this->Post = $data;
+        }
+
         // Add cookie data
         if (isset($_COOKIE) && !empty($_COOKIE)) {
             $data = array();
@@ -87,6 +114,23 @@ class Request
             if (count($data) > 1) {
                 $this->Cookies = $data;
             }
+        }
+    }
+
+    /**
+     * Get a request value by name.
+     *
+     * @param string $key
+     * @return mixed|null
+     */
+    public function get($key)
+    {
+        if ($this->Post !== null && array_key_exists($key, $this->Post)) {
+            return $this->Post[$key];
+        } elseif ($this->Get !== null && array_key_exists($key, $this->Get)) {
+            return $this->Get[$key];
+        } else {
+            return null;
         }
     }
 
