@@ -35,8 +35,10 @@ class Configurator
         if (array_key_exists('user', $defined_constants)) {
             $defined_constants = $defined_constants['user'];
             foreach ($defined_constants as $name => $value) {
-                if (strpos($defined_constants, 'STORECORE_', 0) === 0) {
-                    $this->set($name, $value);
+                if (strpos($name, 'STORECORE_', 0) === 0) {
+                    if (strpos($name, 'STORECORE_I18N_', 0) !== 0) {
+                        $this->set($name, $value);
+                    }
                 }
             }
         }
