@@ -1,9 +1,16 @@
 <?php
 define('STORECORE_I18N_ADJECTIVE_BOLD', 'gras');
+define('STORECORE_I18N_ADJECTIVE_DEFAULT', 'par défaut');
 define('STORECORE_I18N_COMMAND_PRINT', 'Imprimer…');
+define('STORECORE_I18N_COMMAND_SAVE', 'Enregistrer');
 define('STORECORE_I18N_HEADING_CONFIRM_PASSWORD', 'Confirmer le mot de passe');
+define('STORECORE_I18N_HEADING_DATABASE_NAME', 'Nom de la base de données');
+define('STORECORE_I18N_HEADING_DATABASE_SETTINGS', 'Paramètres de la base de données');
+define('STORECORE_I18N_HEADING_HOST_NAME_OR_IP_ADDRESS', 'Nom d’hôte ou adresse IP');
 define('STORECORE_I18N_HEADING_PASSWORD', 'Mot de passe');
+define('STORECORE_I18N_HEADING_PDO_DRIVER', 'Pilote PDO');
 define('STORECORE_I18N_HEADING_USERNAME', 'Nom d’utilisateur');
+define('STORECORE_I18N_NOUN_DATABASE', 'base de données');
 define('STORECORE_I18N_NOUN_DUTCH', 'néerlandais');
 define('STORECORE_I18N_NOUN_ENGLISH', 'anglais');
 define('STORECORE_I18N_NOUN_FRENCH', 'français');
@@ -15,3 +22,4 @@ define('STORECORE_I18N_NOUN_USER', 'utilisateur');
 define('STORECORE_I18N_NOUN_USERS', 'utilisateurs');
 define('STORECORE_I18N_VERB_CANCEL', 'annuler');
 define('STORECORE_I18N_VERB_PRINT', 'imprimer');
+define('STORECORE_I18N_VERB_SAVE', 'enregistrer');

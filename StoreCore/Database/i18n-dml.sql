@@ -31,7 +31,13 @@ INSERT IGNORE INTO sc_translation_memory
     ('ADJECTIVE_BOLD', 1031, 'fett'),
     ('ADJECTIVE_BOLD', 1036, 'gras'),
     ('ADJECTIVE_BOLD', 1043, 'vet'),
-    ('ADJECTIVE_BOLD', 2057, 'bold');
+    ('ADJECTIVE_BOLD', 2057, 'bold'),
+
+    ('ADJECTIVE_DEFAULT', 1031, 'standard'),
+    ('ADJECTIVE_DEFAULT', 1036, 'par défaut'),
+    ('ADJECTIVE_DEFAULT', 1043, 'standaard'),
+    ('ADJECTIVE_DEFAULT', 2057, 'default');
+
 
 --
 -- Nouns that are not translated, usually proper nouns and proper names
@@ -48,6 +54,11 @@ INSERT INTO sc_translation_memory
 INSERT INTO sc_translation_memory
     (translation_id, language_id, translation)
   VALUES
+    ('NOUN_DATABASE', 1031, 'Datenbank'),
+    ('NOUN_DATABASE', 1036, 'base de données'),
+    ('NOUN_DATABASE', 1043, 'database'),
+    ('NOUN_DATABASE', 2057, 'database'),
+
     ('NOUN_DUTCH', 1031, 'Holländisch'),
     ('NOUN_DUTCH', 1036, 'néerlandais'),
     ('NOUN_DUTCH', 1043, 'Nederlands'),
@@ -98,7 +109,12 @@ INSERT IGNORE INTO sc_translation_memory
     ('VERB_PRINT', 1031, 'drucken'),
     ('VERB_PRINT', 1036, 'imprimer'),
     ('VERB_PRINT', 1043, 'printen'),
-    ('VERB_PRINT', 2057, 'print');
+    ('VERB_PRINT', 2057, 'print'),
+
+    ('VERB_SAVE', 1031, 'speichern'),
+    ('VERB_SAVE', 1036, 'enregistrer'),
+    ('VERB_SAVE', 1043, 'opslaan'),
+    ('VERB_SAVE', 2057, 'save');
 
 
 --
@@ -115,7 +131,12 @@ INSERT IGNORE INTO sc_translation_memory
     ('COMMAND_PRINT', 1031, 'Drucken…'),
     ('COMMAND_PRINT', 1036, 'Imprimer…'),
     ('COMMAND_PRINT', 1043, 'Printen…'),
-    ('COMMAND_PRINT', 2057, 'Print…');
+    ('COMMAND_PRINT', 2057, 'Print…'),
+
+    ('COMMAND_SAVE', 1031, 'Speichern'),
+    ('COMMAND_SAVE', 1036, 'Enregistrer'),
+    ('COMMAND_SAVE', 1043, 'Opslaan'),
+    ('COMMAND_SAVE', 2057, 'Save');
 
 --
 -- Headings
@@ -137,6 +158,29 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_USERNAME', 1036, 'Nom d’utilisateur'),
     ('HEADING_USERNAME', 1043, 'Gebruikersnaam'),
     ('HEADING_USERNAME', 2057, 'Username');
+
+INSERT IGNORE INTO sc_translation_memory
+    (translation_id, language_id, translation, is_admin_only)
+  VALUES
+    ('HEADING_DATABASE_NAME', 1031, 'Datenbankname', 1),
+    ('HEADING_DATABASE_NAME', 1036, 'Nom de la base de données', 1),
+    ('HEADING_DATABASE_NAME', 1043, 'Databasenaam', 1),
+    ('HEADING_DATABASE_NAME', 2057, 'Database name', 1),
+
+    ('HEADING_DATABASE_SETTINGS', 1031, 'Datenbankeinstellungen', 1),
+    ('HEADING_DATABASE_SETTINGS', 1036, 'Paramètres de la base de données', 1),
+    ('HEADING_DATABASE_SETTINGS', 1043, 'Database-instellingen', 1),
+    ('HEADING_DATABASE_SETTINGS', 2057, 'Database settings', 1),
+
+    ('HEADING_HOST_NAME_OR_IP_ADDRESS', 1031, 'Hostname oder IP-Adresse', 1),
+    ('HEADING_HOST_NAME_OR_IP_ADDRESS', 1036, 'Nom d’hôte ou adresse IP', 1),
+    ('HEADING_HOST_NAME_OR_IP_ADDRESS', 1043, 'Hostnaam of IP-adres', 1),
+    ('HEADING_HOST_NAME_OR_IP_ADDRESS', 2057, 'Host name or IP address', 1),
+
+    ('HEADING_PDO_DRIVER', 1031, 'PDO-Treiber', 1),
+    ('HEADING_PDO_DRIVER', 1036, 'Pilote PDO', 1),
+    ('HEADING_PDO_DRIVER', 1043, 'PDO-stuurprogramma', 1),
+    ('HEADING_PDO_DRIVER', 2057, 'PDO driver', 1);
 
 --
 -- Finally, optimize the TM table
