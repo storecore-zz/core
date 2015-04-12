@@ -27,12 +27,8 @@ class Installer extends \StoreCore\AbstractController
      */
     private function checkDatabaseConnection()
     {
-        $dsn = STORECORE_DATABASE_DRIVER
-            . ':dbname=' . STORECORE_DATABASE_DEFAULT_DATABASE
-            . ';host=' . STORECORE_DATABASE_DEFAULT_HOST
-            . ';charset=utf8';
         try {
-            $dbh = new \PDO($dsn, STORECORE_DATABASE_USERNAME, STORECORE_DATABASE_PASSWORD, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
+            $dbh = new \PDO($this->getDSN, STORECORE_DATABASE_USERNAME, STORECORE_DATABASE_PASSWORD, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
         } catch (\PDOException $e) {
             if ($this->Request->getRequestPath() !== '/admin/settings/database/') {
                 $response = new \StoreCore\Response($this->Registry);
@@ -130,5 +126,19 @@ class Installer extends \StoreCore\AbstractController
             }
             return false;
         }
+    }
+    
+    /**
+     * Data Source Name (DSN)
+     *
+     * @param void
+     * @return string
+     */
+    private function getDSN()
+    {
+        return STORECORE_DATABASE_DRIVER
+            . ':dbname=' . STORECORE_DATABASE_DEFAULT_DATABASE
+            . ';host=' . STORECORE_DATABASE_DEFAULT_HOST
+            . ';charset=utf8';
     }
 }
