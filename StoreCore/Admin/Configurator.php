@@ -73,9 +73,7 @@ class Configurator
      */
     public function __set($name, $value)
     {
-        if (array_key_exists($name, $this->IgnoredSettings) === false) {
-            $this->set($name, $value);
-        }
+        $this->set($name, $value);
     }
 
     /**
@@ -117,6 +115,8 @@ class Configurator
     public function set($name, $value)
     {
         $name = strtoupper($name);
-        $this->Settings[$name] = $value;
+        if (!array_key_exists($name, $this->IgnoredSettings)) {
+            $this->Settings[$name] = $value;
+        }
     }
 }
