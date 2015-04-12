@@ -122,7 +122,8 @@ class Response extends AbstractModel
      */
     public function redirect($url, $status = 302)
     {
-        $url = str_replace(array('&amp;', "\n", "\r"), array('&', '', ''), $url);
+        ob_start('ob_gzhandler');
+        $url = str_ireplace(array('&amp;', "\n", "\r"), array('&', '', ''), $url);
         header('Location: ' . $url, true, $status);
         exit;
     }
