@@ -28,7 +28,7 @@ class Installer extends \StoreCore\AbstractController
     private function checkDatabaseConnection()
     {
         try {
-            $dbh = new \PDO($this->getDSN, STORECORE_DATABASE_USERNAME, STORECORE_DATABASE_PASSWORD, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
+            $dbh = new \PDO($this->getDSN(), STORECORE_DATABASE_USERNAME, STORECORE_DATABASE_PASSWORD, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
         } catch (\PDOException $e) {
             if ($this->Request->getRequestPath() !== '/admin/settings/database/') {
                 $response = new \StoreCore\Response($this->Registry);
