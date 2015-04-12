@@ -18,7 +18,6 @@ class FrontController extends AbstractController implements LoggerAwareInterface
         parent::__construct($registry);
 
         $this->setLogger(new Logger());
-        $this->Logger->debug('Admin front controller loaded.');
 
         if ($this->Registry->has('Session') === false) {
             $this->Registry->set('Session', new \StoreCore\Session());
@@ -36,7 +35,7 @@ class FrontController extends AbstractController implements LoggerAwareInterface
      */
     public function install()
     {
-        $this->Logger->notice('Installer loaded');
+        $this->Logger->notice('Installer loaded.');
         $route = new \StoreCore\Route('/install/', '\StoreCore\Admin\Installer');
         $route->dispatch();
     }
