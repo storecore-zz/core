@@ -27,7 +27,7 @@ class Password
     {
         $this->Salt = \StoreCore\Database\Salt::getInstance();
         $hash_algos = hash_algos();
-        if (array_key_exists('sha512', $hash_algos)) {
+        if (in_array('sha512', $hash_algos)) {
             $this->Algorithm = 'sha512';
         } else {
             $this->Algorithm = 'sha1';

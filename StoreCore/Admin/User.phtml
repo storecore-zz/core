@@ -1,0 +1,34 @@
+<div class="container">
+  <h1><i class="fa fa-user" style="color:#690"></i> <?php echo STORECORE_I18N_HEADING_USER_ACCOUNT ?></h1>
+  <form action="/admin/settings/users/" autocomplete="on" method="post" onsubmit="this.style.cursor='wait';document.getElementById('submit').setAttribute('disabled', 'disabled');" target="_top">
+    <table>
+      <tr>
+        <th><label for="first_name"><?php echo STORECORE_I18N_HEADING_FIRST_NAME ?></label></th>
+        <td><input id="first_name" name="first_name" required type="text"></td>
+      </tr>
+      <tr>
+        <th><label for="last_name"><?php echo STORECORE_I18N_HEADING_LAST_NAME ?></label></th>
+        <td><input id="last_name" name="last_name" required type="text"></td>
+      </tr>
+      <tr>
+        <th><label for="email_address"><?php echo STORECORE_I18N_HEADING_EMAIL_ADDRESS ?></label></th>
+        <td><input id="email_address" name="email_address" required type="email" value="<?php echo $email_address ?>"></td>
+      </tr>
+      <tr>
+        <th><label for="username"><?php echo STORECORE_I18N_HEADING_USERNAME ?></label></th>
+        <td><input id="username" name="username" required type="text"></td>
+      </tr>
+      <tr>
+        <th><label for="password"><?php echo STORECORE_I18N_HEADING_PASSWORD ?></label></th>
+        <td><input autocomplete="off" id="password" name="password" required type="password"></td>
+      </tr>
+      <tr>
+        <th><label for="confirm_password"><?php echo STORECORE_I18N_HEADING_CONFIRM_PASSWORD ?></label></th>
+        <td><input autocomplete="off" id="confirm_password" name="confirm_password" required type="password"></td>
+      </tr>
+    </table>
+    <div style="text-align:center">
+      <input id="submit" type="submit" value="<?php echo STORECORE_I18N_COMMAND_SAVE ?>">
+    </div>
+  </form>
+</div>

@@ -6,7 +6,7 @@ class Installer extends \StoreCore\AbstractController
     /**
      * @var \StoreCore\FileSystem\Logger $Logger
      */
-    private $Logger;
+    protected $Logger;
 
     /**
      * @param \StoreCore\Registry $registry
@@ -16,13 +16,26 @@ class Installer extends \StoreCore\AbstractController
     {
         parent::__construct($registry);
 
+        // Log to the file system (and never to a null logger)
         $this->Logger = new \StoreCore\FileSystem\Logger();
+        $this->Registry->set('Logger', $this->Logger);
 
         // Run subsequent tests on success (true)
         if ($this->checkServerRequirements()) {
             if ($this->checkFileSystem()) {
                 if ($this->checkDatabaseConnection()) {
-                    $this->checkDatabaseStructure();
+                    if ($this->checkDatabaseStructure()) {
+                        if ($this->checkUsers()) {
+                            $config = new \StoreCore\Admin\Configurator();
+                            $config->set('STORECORE_INSTALLED', STORECORE_VERSION);
+                            $config->save();
+                            $this->Logger->notice('Completed installation of StoreCore version ' . STORECORE_VERSION . '.');
+
+                            $response = new \StoreCore\Response($this->Registry);
+                            $response->redirect('/admin/sign-in/');
+                            exit;
+                        }
+                    }
                 }
             }
         }
@@ -179,6 +192,131 @@ class Installer extends \StoreCore\AbstractController
                 $this->Logger->critical($error);
             }
             return false;
+        }
+    }
+
+    /**
+     * Check for user account(s).
+     *
+     * @param void
+     * @return bool
+     */
+    public function checkUsers()
+    {
+        $users = new \StoreCore\Database\Users();
+        if ($users->count() === 0) {
+            $this->Logger->warning('No active user accounts found: adding new user.');
+
+            $user_data = array(
+                'password_salt' => false,
+                'hash_algo'     => false,
+                'username'      => false,
+                'password_hash' => false,
+                'first_name'    => false,
+                'last_name'     => false,
+                'email_address' => false,
+            );
+
+            if (isset($_SERVER['SERVER_ADMIN']) && !empty($_SERVER['SERVER_ADMIN'])) {
+                $user_data['email_address'] = $_SERVER['SERVER_ADMIN'];
+            }
+
+            if ($this->Request->getRequestMethod() == 'POST') {
+                // First name and last name
+                if ($this->Request->get('first_name') !== null) {
+                    $user_data['first_name'] = $this->Request->get('first_name');
+                }
+                if ($this->Request->get('last_name') !== null) {
+                    $user_data['last_name'] = $this->Request->get('last_name');
+                }
+
+                // E-mail address
+                if (
+                    $this->Request->get('email_address') !== null
+                    && filter_var($this->Request->get('email_address'), FILTER_VALIDATE_EMAIL) !== false
+                ) {
+                    $user_data['email_address'] = $this->Request->get('email_address');
+                }
+
+                // Username
+                if (is_string($this->Request->get('username'))) {
+                    $username = trim($this->Request->get('username'));
+                    if (!empty($username)) {
+                        $user_data['username'] = $username;
+                    }
+                }
+
+                // Password
+                if (
+                    $user_data['username'] !== false
+                    && is_string($this->Request->get('password'))
+                    && is_string($this->Request->get('confirm_password'))
+                    && $this->Request->get('password') == $this->Request->get('confirm_password')
+                ) {
+                    $password = new \StoreCore\Database\Password();
+                    $password->setPassword($this->Request->get('password'));
+                    $user_data['password_salt'] = $password->getSalt();
+                    $user_data['hash_algo']     = $password->getAlgorithm();
+                    $user_data['password_hash'] = $password->getHash();
+                    unset($password);
+                }
+
+                // Insert user
+                if (in_array(false, $user_data, true) !== true) {
+                    try {
+                        $dbh = new \StoreCore\Database\Connection();
+                        $stmt = $dbh->prepare('
+                            INSERT INTO sc_users
+                                 (user_group_id, password_salt, hash_algo, username, password_hash, first_name, last_name, email_address)
+                               VALUES
+                                 (254, :password_salt, :hash_algo, :username, :password_hash, :first_name, :last_name, :email_address)
+                        ');
+                        $stmt->bindParam(':password_salt', $user_data['password_salt']);
+                        $stmt->bindParam(':hash_algo',     $user_data['hash_algo']);
+                        $stmt->bindParam(':username',      $user_data['username']);
+                        $stmt->bindParam(':password_hash', $user_data['password_hash']);
+                        $stmt->bindParam(':first_name',    $user_data['first_name']);
+                        $stmt->bindParam(':last_name',     $user_data['last_name']);
+                        $stmt->bindParam(':email_address', $user_data['email_address']);
+                        $success = $stmt->execute();
+                    } catch (\PDOException $e) {
+                        $this->Logger->critical($e->getMessage());
+                        return false;
+                    }
+
+                    if ($success == true) {
+                        $this->Logger->notice('User account created for: ' . $user_data['first_name'] . ' ' . $user_data['last_name'] . '.');
+                        return true;
+                    }
+                }
+            }
+
+            // Create a view to add an account
+            foreach ($user_data as $name => $value) {
+                if ($value === false) {
+                    $user_data[$name] = '';
+                }
+            }
+
+            $view = new \StoreCore\View();
+            $view->setTemplate(__DIR__ . DIRECTORY_SEPARATOR . 'User.phtml');
+            $view->setValues($user_data);
+
+            $form = $view->render();
+            $form = \StoreCore\Admin\Minifier::minify($form);
+
+            $document = new \StoreCore\Admin\Document();
+            $document->addSection($form);
+            $response = new \StoreCore\Response($this->Registry);
+            $response->setResponseBody($document);
+            $response->output();
+
+            $this->Logger->info('Displaying user account form.');
+            return false;
+
+        } else {
+            $this->Logger->info('User accounts are good to go.');
+            return true;
         }
     }
 
