@@ -7,6 +7,10 @@ class Password
     private $Hash;
     private $Salt;
 
+    /**
+     * @param string|null $password
+     * @return void
+     */
     public function __construct($password = null)
     {
         if ($password !== null) {
@@ -14,6 +18,11 @@ class Password
         }
     }
 
+    /**
+     * @internal
+     * @param string $password
+     * @return void
+     */
     private function encrypt($password)
     {
         $this->Salt = \StoreCore\Database\Salt::getInstance();
@@ -31,16 +40,37 @@ class Password
         }
     }
 
+    /**
+     * @param void
+     * @return string
+     */
+    public function getAlgorithm()
+    {
+        return $this->Algorithm;
+    }
+
+    /**
+     * @param void
+     * @return string
+     */
     public function getHash()
     {
         return $this->Hash;
     }
 
+    /**
+     * @param void
+     * @return string
+     */
     public function getSalt()
     {
         return $this->Salt;
     }
-    
+
+    /**
+     * @param void
+     * @return void
+     */
     public function setPassword($password)
     {
         $this->encrypt($password);

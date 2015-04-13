@@ -26,11 +26,13 @@ CREATE TABLE sc_users (
   user_id        SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   user_group_id  TINYINT(3) UNSIGNED   NOT NULL  DEFAULT 0,
   password_salt  CHAR(255)             NOT NULL,
+  hash_algo      VARCHAR(255)          NOT NULL,
   username       VARCHAR(255)          NOT NULL,
   password_hash  VARCHAR(255)          NOT NULL,
   first_name     VARCHAR(255)          NOT NULL,
   last_name      VARCHAR(255)          NOT NULL,
-  email_address  VARCHAR(255)          NULL,
+  email_address  VARCHAR(255)          NOT NULL,
+  email_token    VARCHAR(255)          NULL  DEFAULT NULL,
   PRIMARY KEY (user_id),
   FOREIGN KEY (user_group_id)
     REFERENCES sc_user_groups (user_group_id)
