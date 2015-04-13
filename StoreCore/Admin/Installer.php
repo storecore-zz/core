@@ -4,12 +4,19 @@ namespace StoreCore\Admin;
 class Installer extends \StoreCore\AbstractController
 {
     /**
+     * @var \StoreCore\FileSystem\Logger $Logger
+     */
+    private $Logger;
+
+    /**
      * @param \StoreCore\Registry $registry
      * @return void
      */
     public function __construct(\StoreCore\Registry $registry)
     {
         parent::__construct($registry);
+
+        $this->Logger = new \StoreCore\FileSystem\Logger();
 
         // Run subsequent tests on success (true)
         if ($this->checkServerRequirements()) {
@@ -30,6 +37,7 @@ class Installer extends \StoreCore\AbstractController
         try {
             $dbh = new \PDO($this->getDSN(), STORECORE_DATABASE_USERNAME, STORECORE_DATABASE_PASSWORD, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
         } catch (\PDOException $e) {
+            $this->Logger->critical($e->getMessage());
             if ($this->Request->getRequestPath() !== '/admin/settings/database/') {
                 $response = new \StoreCore\Response($this->Registry);
                 $response->redirect('/admin/settings/database/');
@@ -39,6 +47,7 @@ class Installer extends \StoreCore\AbstractController
             }
             return false;
         }
+        $this->Logger->info('Database connection is good to go.');
         return true;
     }
 
@@ -78,11 +87,11 @@ class Installer extends \StoreCore\AbstractController
         }
 
         if (count($errors) == 0) {
+            $this->Logger->info('File system is good to go.');
             return true;
         } else {
-            $logger = new \StoreCore\FileSystem\Logger();
             foreach ($errors as $error) {
-                $logger->critical($error);
+                $this->Logger->critical($error);
             }
             return false;
         }
@@ -117,17 +126,16 @@ class Installer extends \StoreCore\AbstractController
         }
 
         if (count($errors) == 0) {
+            $this->Logger->info('Server configuration is good to go.');
             return true;
         } else {
-            // Log critical conditions
-            $logger = new \StoreCore\FileSystem\Logger();
             foreach ($errors as $error) {
-                $logger->critical($error);
+                $this->Logger->critical($error);
             }
             return false;
         }
     }
-    
+
     /**
      * Data Source Name (DSN)
      *
