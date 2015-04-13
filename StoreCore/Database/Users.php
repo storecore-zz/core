@@ -17,7 +17,7 @@ class Users implements \Countable
      * @param void
      * @return void
      */
-    private function __contruct()
+    public function __construct()
     {
         $this->connect();
     }
