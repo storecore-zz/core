@@ -3,6 +3,8 @@ define('STORECORE_I18N_ADJECTIVE_BOLD', 'vet');
 define('STORECORE_I18N_ADJECTIVE_DEFAULT', 'standaard');
 define('STORECORE_I18N_COMMAND_PRINT', 'Printen…');
 define('STORECORE_I18N_COMMAND_SAVE', 'Opslaan');
+define('STORECORE_I18N_COMMAND_SIGN_IN', 'Inloggen');
+define('STORECORE_I18N_COMMAND_SIGN_OUT', 'Uitloggen');
 define('STORECORE_I18N_HEADING_CONFIRM_PASSWORD', 'Wachtwoord bevestigen');
 define('STORECORE_I18N_HEADING_DATABASE_NAME', 'Databasenaam');
 define('STORECORE_I18N_HEADING_DATABASE_SETTINGS', 'Database-instellingen');

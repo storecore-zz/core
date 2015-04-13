@@ -3,6 +3,8 @@ define('STORECORE_I18N_ADJECTIVE_BOLD', 'fett');
 define('STORECORE_I18N_ADJECTIVE_DEFAULT', 'standard');
 define('STORECORE_I18N_COMMAND_PRINT', 'Drucken…');
 define('STORECORE_I18N_COMMAND_SAVE', 'Speichern');
+define('STORECORE_I18N_COMMAND_SIGN_IN', 'Anmelden');
+define('STORECORE_I18N_COMMAND_SIGN_OUT', 'Abmelden');
 define('STORECORE_I18N_HEADING_CONFIRM_PASSWORD', 'Kennwort bestätigen');
 define('STORECORE_I18N_HEADING_DATABASE_NAME', 'Datenbankname');
 define('STORECORE_I18N_HEADING_DATABASE_SETTINGS', 'Datenbankeinstellungen');

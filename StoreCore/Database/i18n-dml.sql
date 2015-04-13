@@ -134,7 +134,17 @@ INSERT IGNORE INTO sc_translation_memory
     ('COMMAND_SAVE', 1031, 'Speichern'),
     ('COMMAND_SAVE', 1036, 'Enregistrer'),
     ('COMMAND_SAVE', 1043, 'Opslaan'),
-    ('COMMAND_SAVE', 2057, 'Save');
+    ('COMMAND_SAVE', 2057, 'Save'),
+
+    ('COMMAND_SIGN_IN', 1031, 'Anmelden'),
+    ('COMMAND_SIGN_IN', 1036, 'Se connecter'),
+    ('COMMAND_SIGN_IN', 1043, 'Inloggen'),
+    ('COMMAND_SIGN_IN', 2057, 'Sign in'),
+
+    ('COMMAND_SIGN_OUT', 1031, 'Abmelden'),
+    ('COMMAND_SIGN_OUT', 1036, 'Se déconnecter'),
+    ('COMMAND_SIGN_OUT', 1043, 'Uitloggen'),
+    ('COMMAND_SIGN_OUT', 2057, 'Sign out');
 
 --
 -- Headings

@@ -47,8 +47,8 @@ class FrontController extends AbstractController implements LoggerAwareInterface
     private function setLanguage()
     {
         $supported_languages = array(
-            'de-DE' => true,
             'en-GB' => true,
+            'de-DE' => true,
             'fr-FR' => true,
             'nl-NL' => true,
         );

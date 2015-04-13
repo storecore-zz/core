@@ -3,6 +3,8 @@ define('STORECORE_I18N_ADJECTIVE_BOLD', 'gras');
 define('STORECORE_I18N_ADJECTIVE_DEFAULT', 'par défaut');
 define('STORECORE_I18N_COMMAND_PRINT', 'Imprimer…');
 define('STORECORE_I18N_COMMAND_SAVE', 'Enregistrer');
+define('STORECORE_I18N_COMMAND_SIGN_IN', 'Se connecter');
+define('STORECORE_I18N_COMMAND_SIGN_OUT', 'Se déconnecter');
 define('STORECORE_I18N_HEADING_CONFIRM_PASSWORD', 'Confirmer le mot de passe');
 define('STORECORE_I18N_HEADING_DATABASE_NAME', 'Nom de la base de données');
 define('STORECORE_I18N_HEADING_DATABASE_SETTINGS', 'Paramètres de la base de données');
