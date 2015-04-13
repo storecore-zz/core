@@ -1,5 +1,3 @@
-DELIMITER ;
-
 --
 -- Translation Memory (TM)
 --

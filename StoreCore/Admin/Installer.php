@@ -21,7 +21,9 @@ class Installer extends \StoreCore\AbstractController
         // Run subsequent tests on success (true)
         if ($this->checkServerRequirements()) {
             if ($this->checkFileSystem()) {
-                $this->checkDatabaseConnection();
+                if ($this->checkDatabaseConnection()) {
+                    $this->checkDatabaseStructure();
+                }
             }
         }
     }
@@ -47,7 +49,49 @@ class Installer extends \StoreCore\AbstractController
             }
             return false;
         }
+        $dbh = null;
         $this->Logger->info('Database connection is good to go.');
+        return true;
+    }
+
+    /**
+     * Check the database structure.
+     *
+     * @param void
+     * @return bool
+     */
+    private function checkDatabaseStructure()
+    {
+        try {
+            $dbh = new \PDO($this->getDSN(), STORECORE_DATABASE_USERNAME, STORECORE_DATABASE_PASSWORD, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
+            $this->Logger->debug('Database connection re-opened.');
+
+            $tables = array();
+            $stmt = $dbh->prepare('SHOW TABLES');
+            if ($stmt->execute()) {
+                while ($row = $stmt->fetch(\PDO::FETCH_NUM)) {
+                    if (strpos($row[0], 'sc_', 0) === 0) {
+                        $tables[] = $row[0];
+                    }
+                }
+            }
+
+            // Install all core tables
+            if (count($tables) == 0) {
+                $this->Logger->notice('No tables found: installing database.');
+                $dbh->setAttribute(\PDO::ATTR_EMULATE_PREPARES, 0);
+                $sql = file_get_contents(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Database' . DIRECTORY_SEPARATOR . 'core-mysql.sql', false);
+                $dbh->exec($sql);
+                $sql = file_get_contents(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Database' . DIRECTORY_SEPARATOR . 'i18n-dml.sql', false);
+                $dbh->exec($sql);
+                $dbh = null;
+            }
+
+        } catch (\PDOException $e) {
+            $this->Logger->critical($e->getMessage());
+            return false;
+        }
+        $this->Logger->info('Database structure is good to go.');
         return true;
     }
 
@@ -63,6 +107,8 @@ class Installer extends \StoreCore\AbstractController
 
         $files = array(
             STORECORE_FILESYSTEM_STOREFRONT_ROOT . 'config.php' => true,
+            STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Database' . DIRECTORY_SEPARATOR . 'core-mysql.sql' => false,
+            STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Database' . DIRECTORY_SEPARATOR . 'i18n-dml.sql' => false,
         );
         foreach ($files as $filename => $must_be_writable) {
             if (!is_file($filename)) {

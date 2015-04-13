@@ -1,5 +1,3 @@
-DELIMITER ;
-
 --
 -- MySQL Data Definition
 --
