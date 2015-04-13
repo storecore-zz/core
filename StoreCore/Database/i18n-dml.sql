@@ -147,10 +147,30 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_CONFIRM_PASSWORD', 1043, 'Wachtwoord bevestigen'),
     ('HEADING_CONFIRM_PASSWORD', 2057, 'Confirm password'),
 
+    ('HEADING_EMAIL_ADDRESS', 1031, 'E-Mail-Adresse'),
+    ('HEADING_EMAIL_ADDRESS', 1036, 'Adresse de messagerie'),
+    ('HEADING_EMAIL_ADDRESS', 1043, 'E-mailadres'),
+    ('HEADING_EMAIL_ADDRESS', 2057, 'E-mail address'),
+
+    ('HEADING_FIRST_NAME', 1031, 'Vorname'),
+    ('HEADING_FIRST_NAME', 1036, 'Prénom'),
+    ('HEADING_FIRST_NAME', 1043, 'Voornaam'),
+    ('HEADING_FIRST_NAME', 2057, 'First name'),
+
+    ('HEADING_LAST_NAME', 1031, 'Nachname'),
+    ('HEADING_LAST_NAME', 1036, 'Nom'),
+    ('HEADING_LAST_NAME', 1043, 'Achternaam'),
+    ('HEADING_LAST_NAME', 2057, 'Last name'),
+
     ('HEADING_PASSWORD', 1031, 'Kennwort'),
     ('HEADING_PASSWORD', 1036, 'Mot de passe'),
     ('HEADING_PASSWORD', 1043, 'Wachtwoord'),
     ('HEADING_PASSWORD', 2057, 'Password'),
+
+    ('HEADING_USER_ACCOUNT', 1031, 'Benutzerkonto'),
+    ('HEADING_USER_ACCOUNT', 1036, 'Compte d’utilisateur'),
+    ('HEADING_USER_ACCOUNT', 1043, 'Gebruikersaccount'),
+    ('HEADING_USER_ACCOUNT', 2057, 'User account'),
 
     ('HEADING_USERNAME', 1031, 'Benutzername'),
     ('HEADING_USERNAME', 1036, 'Nom d’utilisateur'),
