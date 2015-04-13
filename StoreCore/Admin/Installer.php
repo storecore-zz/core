@@ -217,10 +217,6 @@ class Installer extends \StoreCore\AbstractController
                 'email_address' => false,
             );
 
-            if (isset($_SERVER['SERVER_ADMIN']) && !empty($_SERVER['SERVER_ADMIN'])) {
-                $user_data['email_address'] = $_SERVER['SERVER_ADMIN'];
-            }
-
             if ($this->Request->getRequestMethod() == 'POST') {
                 // First name and last name
                 if ($this->Request->get('first_name') !== null) {
@@ -245,10 +241,17 @@ class Installer extends \StoreCore\AbstractController
                         $user_data['username'] = $username;
                     }
                 }
+                
+                // Set omitted username to "someone" in "someone@example.com"
+                if ($user_data['username'] === false && $user_data['email_address'] !== false) {
+                    $email_address = explode('@', $user_data['email_address']);
+                    $user_data['username'] = $email_address[0];
+                    unset($email_address);
+                }
 
                 // Password
                 if (
-                    $user_data['username'] !== false
+                    $user_data['email_address'] !== false
                     && is_string($this->Request->get('password'))
                     && is_string($this->Request->get('confirm_password'))
                     && $this->Request->get('password') == $this->Request->get('confirm_password')
