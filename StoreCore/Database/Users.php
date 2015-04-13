@@ -49,6 +49,6 @@ class Users implements \Countable
         $sql = 'SELECT SQL_NO_CACHE COUNT(*) FROM sc_users WHERE user_group_id != 0';
         $stmt = $this->Connection->query($sql);
         $row = $stmt->fetch(\PDO::FETCH_NUM);
-        return $row[0];
+        return (int)$row[0];
     }
 }
