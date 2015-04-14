@@ -5,7 +5,12 @@ use \Psr\Log\LoggerAwareInterface as LoggerAwareInterface;
 use \Psr\Log\LoggerInterface as LoggerInterface;
 
 use \StoreCore\AbstractController as AbstractController;
+use \StoreCore\Registry as Registry;
+use \StoreCore\Route as Route;
+use \StoreCore\Session as Session;
+
 use \StoreCore\FileSystem\Logger as Logger;
+use \StoreCore\I18N\Locale as Locale;
 
 class FrontController extends AbstractController implements LoggerAwareInterface
 {
@@ -13,20 +18,19 @@ class FrontController extends AbstractController implements LoggerAwareInterface
      * @param \StoreCore\Registry $registry
      * @return void
      */
-    public function __construct(\StoreCore\Registry $registry)
+    public function __construct(Registry $registry)
     {
         parent::__construct($registry);
 
         $this->setLogger(new Logger());
 
         if ($this->Registry->has('Session') === false) {
-            $this->Registry->set('Session', new \StoreCore\Session());
+            $this->Registry->set('Session', new Session());
         }
 
         if ($this->Session->get('Language') === null) {
             $this->setLanguage();
         }
-        include STORECORE_FILESYSTEM_CACHE . 'data' . DIRECTORY_SEPARATOR . $this->Session->get('Language') . '.php';
     }
 
     /**
@@ -36,7 +40,7 @@ class FrontController extends AbstractController implements LoggerAwareInterface
     public function install()
     {
         $this->Logger->notice('Installer loaded.');
-        $route = new \StoreCore\Route('/install/', '\StoreCore\Admin\Installer');
+        $route = new Route('/install/', '\StoreCore\Admin\Installer');
         $route->dispatch();
     }
 
@@ -46,27 +50,7 @@ class FrontController extends AbstractController implements LoggerAwareInterface
      */
     private function setLanguage()
     {
-        $supported_languages = array(
-            'en-GB' => true,
-            'de-DE' => true,
-            'fr-FR' => true,
-            'nl-NL' => true,
-        );
-
-        $gtld = call_user_func('end', array_values(explode('.', $this->Request->getHostName())));
-        switch ($gtld) {
-            case 'de':
-                $default_language = 'de-DE';
-                break;
-            case 'nl':
-                $default_language = 'nl-NL';
-                break;
-            default:
-                $default_language = 'en-GB';
-        }
-
-        $content_negotiator = new \StoreCore\I18N\Language();
-        $language = $content_negotiator->negotiate($supported_languages, $default_language);
+        $language = \StoreCore\I18N\Locale::load();
         $this->Session->set('Language', $language);
     }
 
