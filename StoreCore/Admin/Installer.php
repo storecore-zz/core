@@ -256,7 +256,7 @@ class Installer extends \StoreCore\AbstractController
                     && is_string($this->Request->get('confirm_password'))
                     && $this->Request->get('password') == $this->Request->get('confirm_password')
                     && \StoreCore\Admin\PasswordCompliance::validate($this->Request->get('password')) === true
-                    && \StoreCore\Dataabase\CommonPassword::exists($this->Request->get('password')) === false
+                    && \StoreCore\Database\CommonPassword::exists($this->Request->get('password')) === false
                 ) {
                     $password = new \StoreCore\Database\Password();
                     $password->setPassword($this->Request->get('password'));
