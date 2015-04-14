@@ -31,9 +31,7 @@ class RandomPassword
      */
     public function __toString()
     {
-        $return = $this->Password;
-        $this->randomize($this->Length);
-        return $return;
+        return $this->get();
     }
 
     /**
