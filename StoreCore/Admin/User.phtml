@@ -20,11 +20,11 @@
       </tr>
       <tr>
         <th><label for="password"><?php echo STORECORE_I18N_HEADING_PASSWORD ?></label></th>
-        <td><input autocomplete="off" id="password" name="password" required type="password"></td>
+        <td><input autocomplete="off" id="password" name="password" pattern=".{7,}" required type="password"></td>
       </tr>
       <tr>
         <th><label for="confirm_password"><?php echo STORECORE_I18N_HEADING_CONFIRM_PASSWORD ?></label></th>
-        <td><input autocomplete="off" id="confirm_password" name="confirm_password" required type="password"></td>
+        <td><input autocomplete="off" id="confirm_password" name="confirm_password" pattern=".{7,}" required type="password"></td>
       </tr>
     </table>
     <div>

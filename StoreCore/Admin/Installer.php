@@ -241,7 +241,7 @@ class Installer extends \StoreCore\AbstractController
                         $user_data['username'] = $username;
                     }
                 }
-                
+
                 // Set omitted username to "someone" in "someone@example.com"
                 if ($user_data['username'] === false && $user_data['email_address'] !== false) {
                     $email_address = explode('@', $user_data['email_address']);
@@ -255,6 +255,8 @@ class Installer extends \StoreCore\AbstractController
                     && is_string($this->Request->get('password'))
                     && is_string($this->Request->get('confirm_password'))
                     && $this->Request->get('password') == $this->Request->get('confirm_password')
+                    && \StoreCore\Admin\PasswordCompliance::validate($this->Request->get('password')) === true
+                    && \StoreCore\Dataabase\CommonPassword::exists($this->Request->get('password')) === false
                 ) {
                     $password = new \StoreCore\Database\Password();
                     $password->setPassword($this->Request->get('password'));
