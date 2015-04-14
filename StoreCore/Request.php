@@ -120,6 +120,7 @@ class Request
     /**
      * Get a request value by name.
      *
+     * @api
      * @param string $key
      * @return mixed|null
      */
@@ -137,6 +138,7 @@ class Request
     /**
      * Get the HTTP "Accept-Encoding" request-header field.
      *
+     * @api
      * @param void
      * @return string
      */
@@ -180,6 +182,7 @@ class Request
     /**
      * Get the current request method.
      *
+     * @api
      * @param void
      * @return string|null
      */
@@ -202,6 +205,7 @@ class Request
     /**
      * Get the HTTP User-Agent request-header field.
      *
+     * @api
      * @param void
      * @return string
      */
@@ -216,6 +220,7 @@ class Request
     /**
      * Check if a cookie exists.
      *
+     * @api
      * @param string $cookie_name
      * @return bool
      */
@@ -230,6 +235,7 @@ class Request
     /**
      * Set the requested host name.
      *
+     * @internal
      * @param void
      * @return void
      */
@@ -254,6 +260,7 @@ class Request
      * considered reliable as long as the web server allows only certain
      * request methods.
      *
+     * @internal
      * @param string $method
      * @return void
      */
@@ -275,6 +282,7 @@ class Request
     /**
      * Set the request path.
      *
+     * @internal
      * @param string $path
      * @return void
      */
