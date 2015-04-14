@@ -27,15 +27,6 @@ class User extends \StoreCore\AbstractController
 
     /**
      * @param void
-     * @return bool
-     */
-    public function signIn()
-    {
-
-    }
-
-    /**
-     * @param void
      * @return void
      */
     public function signOut()
