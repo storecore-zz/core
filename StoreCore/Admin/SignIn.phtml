@@ -4,7 +4,7 @@
     <table>
       <tr>
         <th><label for="username"><?php echo STORECORE_I18N_HEADING_USERNAME ?></label></th>
-        <td><input id="username" name="username" type="text"></td>
+        <td><input autofocus id="username" name="username" type="text"></td>
       </tr>
       <tr>
         <th><label for="password"><?php echo STORECORE_I18N_HEADING_PASSWORD ?></label></th>
@@ -12,6 +12,7 @@
       </tr>
     </table>
     <div>
+      <input name="token" type="hidden" value="<?php echo $token ?>">
       <input id="submit" type="submit" value="<?php echo STORECORE_I18N_COMMAND_SIGN_IN ?>">
     </div>
   </form>
