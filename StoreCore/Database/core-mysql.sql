@@ -23,16 +23,17 @@ INSERT INTO sc_user_groups (user_group_id, user_group_name) VALUES
   (255, 'Root');
 
 CREATE TABLE sc_users (
-  user_id        SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
-  user_group_id  TINYINT(3) UNSIGNED   NOT NULL  DEFAULT 0,
-  password_salt  CHAR(255)             NOT NULL,
-  hash_algo      VARCHAR(255)          NOT NULL,
-  username       VARCHAR(255)          NOT NULL,
-  password_hash  VARCHAR(255)          NOT NULL,
-  first_name     VARCHAR(255)          NOT NULL,
-  last_name      VARCHAR(255)          NOT NULL,
-  email_address  VARCHAR(255)          NOT NULL,
-  email_token    VARCHAR(255)          NULL  DEFAULT NULL,
+  user_id         SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  user_group_id   TINYINT(3) UNSIGNED   NOT NULL  DEFAULT 0,
+  password_reset  TIMESTAMP             NOT NULL  DEFAULT '0000-00-00 00:00:00'  COMMENT 'UTC',
+  password_salt   CHAR(255)             NOT NULL,
+  hash_algo       VARCHAR(255)          NOT NULL,
+  username        VARCHAR(255)          NOT NULL,
+  password_hash   VARCHAR(255)          NOT NULL,
+  first_name      VARCHAR(255)          NOT NULL,
+  last_name       VARCHAR(255)          NOT NULL,
+  email_address   VARCHAR(255)          NOT NULL,
+  email_token     VARCHAR(255)          NULL  DEFAULT NULL,
   PRIMARY KEY (user_id),
   FOREIGN KEY (user_group_id)
     REFERENCES sc_user_groups (user_group_id)
@@ -47,6 +48,15 @@ CREATE TABLE sc_user_agents (
   PRIMARY KEY (user_agent_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+CREATE TABLE sc_login_attempts (
+  attempt_id      BIGINT UNSIGNED       NOT NULL  AUTO_INCREMENT,
+  successful      TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
+  attempted       TIMESTAMP             NOT NULL  DEFAULT '0000-00-00 00:00:00'  COMMENT 'UTC',
+  remote_address  VARCHAR(255)          NULL  DEFAULT NULL,
+  username        VARCHAR(255)          NULL  DEFAULT NULL,
+  PRIMARY KEY (attempt_id),
+  INDEX (attempted)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Robots Exclusion

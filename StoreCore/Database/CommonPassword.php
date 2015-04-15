@@ -10,7 +10,6 @@ namespace StoreCore\Database;
  * @package   StoreCore\Database
  * @version   0.0.1
  */
-
 class CommonPassword
 {
     /**

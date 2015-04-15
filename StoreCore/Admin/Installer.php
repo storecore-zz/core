@@ -272,9 +272,9 @@ class Installer extends \StoreCore\AbstractController
                         $dbh = new \StoreCore\Database\Connection();
                         $stmt = $dbh->prepare('
                             INSERT INTO sc_users
-                                 (user_group_id, password_salt, hash_algo, username, password_hash, first_name, last_name, email_address)
+                                 (user_group_id, password_reset, password_salt, hash_algo, username, password_hash, first_name, last_name, email_address)
                                VALUES
-                                 (254, :password_salt, :hash_algo, :username, :password_hash, :first_name, :last_name, :email_address)
+                                 (254, UTC_TIMESTAMP(), :password_salt, :hash_algo, :username, :password_hash, :first_name, :last_name, :email_address)
                         ');
                         $stmt->bindParam(':password_salt', $user_data['password_salt']);
                         $stmt->bindParam(':hash_algo',     $user_data['hash_algo']);
