@@ -27,10 +27,6 @@ class FrontController extends AbstractController implements LoggerAwareInterface
         if ($this->Registry->has('Session') === false) {
             $this->Registry->set('Session', new Session());
         }
-
-        if ($this->Session->get('Language') === null) {
-            $this->setLanguage();
-        }
     }
 
     /**
@@ -42,16 +38,6 @@ class FrontController extends AbstractController implements LoggerAwareInterface
         $this->Logger->notice('Installer loaded.');
         $route = new Route('/install/', '\StoreCore\Admin\Installer');
         $route->dispatch();
-    }
-
-    /**
-     * @param void
-     * @return void
-     */
-    private function setLanguage()
-    {
-        $language = \StoreCore\I18N\Locale::load();
-        $this->Session->set('Language', $language);
     }
 
     /**

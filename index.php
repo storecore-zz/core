@@ -73,6 +73,29 @@ if (STORECORE_KILL_SWITCH) {
     $response->output();
     exit;
 }
+
+// Load a language pack
+$language = $session->get('language');
+if ($language == null) {
+    if ($request->hasCookie('Language')) {
+        $cookie_language = $request->getCookie('Language');
+        $cookie_language = base64_decode($cookie_language);
+        $cookie_language = strip_tags($cookie_language);
+        if (strlen($cookie_language) == 5) {
+            $language = $cookie_language;
+        }
+        unset($cookie_language);
+    }
+}
+
+if ($language == null) {
+    $language = \StoreCore\I18N\Locale::load();
+} else {
+    $language = \StoreCore\I18N\Locale::load($language);
+}
+
+setcookie('Language', base64_encode($language), time() + 7776000, '/');
+$session->set('Language', $language);
 $registry->set('Session', $session);
 
 // Routing
