@@ -18,9 +18,6 @@ class SignIn extends \StoreCore\AbstractController
     {
         parent::__construct($registry);
 
-        $language = \StoreCore\I18N\Locale::load();
-        $this->Session->set('Language', $language);
-
         $logger = new \StoreCore\FileSystem\Logger();
 
         if ($this->Request->getRequestMethod() == 'GET') {
@@ -78,9 +75,9 @@ class SignIn extends \StoreCore\AbstractController
         $user_mapper = new \StoreCore\Database\UserMapper();
         $user = $user_mapper->getUserByUsername($this->Request->get('username'));
         if ($user === null) {
-            $logger->warning('Unknown user attempted to sign in: ' . $this->Request->get('username'));
-            $this->resetToken();
+            $logger->warning('Unknown user "' . $this->Request->get('username') . '" attempted to sign in.');
             $login_audit->storeAttempt($this->Request->get('username'));
+            $this->resetToken();
             $response = new Response($this->Registry);
             $response->redirect('/admin/sign-in/', 303);
             exit;
@@ -89,8 +86,8 @@ class SignIn extends \StoreCore\AbstractController
         // Check the user password.
         if ($user->authenticate($this->Request->get('password')) == false) {
             $logger->warning('Known user "' . $this->Request->get('username') . '" attempted to sign in with an illegal password.');
-            $this->resetToken();
             $login_audit->storeAttempt($this->Request->get('username'));
+            $this->resetToken();
             $response = new Response($this->Registry);
             $response->redirect('/admin/sign-in/', 303);
             exit;
@@ -98,6 +95,7 @@ class SignIn extends \StoreCore\AbstractController
 
         // Finally, store the user and open up the administration.
         $logger->notice('User "' . $this->Request->get('username') . '" signed in.');
+        $login_audit->storeAttempt($this->Request->get('username'), null, true);
         $this->Session->set('User', $user);
         $response = new Response($this->Registry);
         $response->redirect('/admin/', 303);

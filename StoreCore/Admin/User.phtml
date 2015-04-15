@@ -1,5 +1,10 @@
 <div class="container">
-  <h1><i class="fa fa-user" style="color:#690"></i> <?php echo STORECORE_I18N_HEADING_USER_ACCOUNT ?></h1>
+  <h1><i class="fa fa-user"></i> <?php echo STORECORE_I18N_HEADING_USER_ACCOUNT; ?></h1>
+  <?php
+  if (isset($error)) {
+      echo '<p class="warning">' . $error . '</p>';
+  }
+  ?>
   <form action="/admin/settings/users/" autocomplete="on" method="post" onsubmit="this.style.cursor='wait';document.getElementById('submit').setAttribute('disabled', 'disabled');" target="_top">
     <table>
       <tr>
