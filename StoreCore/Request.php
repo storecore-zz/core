@@ -153,12 +153,19 @@ class Request
     /**
      * Get a cookie by name.
      *
+     * @api
+     *
      * @param string $cookie_name
+     *     Case-insensitive name of a cookie.
+     *
      * @return mixed|null
+     *     Returns the contents of a cookie or null if the cookie does not
+     *     exist.
      */
     public function getCookie($cookie_name)
     {
-        if ($this->hasCookie[$cookie_name]) {
+        $cookie_name = mb_strtolower($cookie_name);
+        if ($this->hasCookie($cookie_name)) {
             return $this->Cookies[$cookie_name];
         } else {
             return null;
@@ -221,14 +228,19 @@ class Request
      * Check if a cookie exists.
      *
      * @api
+     *
      * @param string $cookie_name
+     *     Case-insensitive name of a cookie.
+     *
      * @return bool
+     *     Returns true if the cookie exists, otherwise false.
      */
     public function hasCookie($cookie_name)
     {
         if (!is_array($this->Cookies)) {
             return false;
         }
+        $cookie_name = mb_strtolower($cookie_name);
         return array_key_exists($cookie_name, $this->Cookies);
     }
 
