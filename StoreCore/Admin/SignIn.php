@@ -146,6 +146,6 @@ class SignIn extends \StoreCore\AbstractController
     private function resetToken()
     {
         $this->Token = \StoreCore\Types\FormToken::getInstance();
-        $this->Session->set('Token', $token);
+        $this->Session->set('Token', $this->Token);
     }
 }
