@@ -154,7 +154,10 @@ class Document
      */
     public function addSection($content, $container = 'section')
     {
+        $container = trim($container);
         $container = strtolower($container);
+        $container = ltrim($container, '<');
+        $container = rtrim($container, '>');
 
         $this->Sections[] = '<' . $container . '>' . $content . '</' . $container . '>';
 
@@ -167,7 +170,7 @@ class Document
      */
     public function getBody()
     {
-        return 
+        return
             '<body><div id="wrapper">' .
             implode($this->Sections) .
             '</div></body>';
