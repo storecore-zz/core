@@ -3,10 +3,33 @@ namespace StoreCore\Database;
 
 class UserMapper extends AbstractDataAccessObject
 {
+    /** @var string VERSION */
     const VERSION = '0.0.1';
 
     protected $TableName = 'sc_users';
     protected $PrimaryKey = 'user_id';
+
+    /**
+     * Ban a user.
+     *
+     * A user MAY be deleted from the database entirely.  For reference purposes
+     * however, for example in historic data of user activity in order
+     * processing and payment handling, it is RECOMMENDED to maintain the last
+     * known user data.  Users that are no longer granted access, like former
+     * employees, may therefore be "banned" by assigning them the special user
+     * group ID 0 (zero).
+     *
+     * @api
+     * @param \StoreCore\User $user
+     */
+    public function ban(\StoreCore\User $user)
+    {
+        $data = array(
+            $this->PrimaryKey => $user->getUserID(),
+            'user_group_id' => 0,
+        );
+        return $this->update($data);
+    }
 
     /**
      * @param string $email_address

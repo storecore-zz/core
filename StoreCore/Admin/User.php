@@ -1,29 +1,23 @@
 <?php
 namespace StoreCore\Admin;
 
-class User extends \StoreCore\AbstractController
+/**
+ * StoreCore Admin User
+ *
+ * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @copyright Copyright (c) 2015 StoreCore
+ * @license   http://www.gnu.org/licenses/gpl.html
+ * @package   StoreCore
+ * @version   0.0.1
+ *
+ * @uses \StoreCore\User
+ *     The \StoreCore\Admin\User administration user extends the more
+ *     generic \StoreCore\User framework user.
+ */
+class User extends \StoreCore\User
 {
-    private $UserGroupID = 0;
-
-    /**
-     * @param \StoreCore\Registry $registry
-     * @return void
-     */
-    public function __construct(\StoreCore\Registry $registry)
-    {
-        parent::__construct($registry);
-        $this->Logger = new \StoreCore\FileSystem\Logger();
-        $this->Registry->set('Logger', $this->Logger);
-    }
-
-    /**
-     * @param int $user_group_id
-     * @return void
-     */
-    public function setUserGroup($user_group_id = 0)
-    {
-        $this->UserGroupID = (int)$user_group_id;
-    }
+    /** @var string VERSION */
+    const VERSION = '0.0.1';
 
     /**
      * @param void
@@ -33,13 +27,12 @@ class User extends \StoreCore\AbstractController
     {
         $session = new \StoreCore\Session();
         $session->destroy();
-        $this->Registry->set('Session', null);
-        $this->Registry->set('User', null);
 
-        $this->Logger->info('User signing out.');
-        sleep(1);
+        $logger = new \StoreCore\FileSystem\Logger();
+        $logger->info('User "' . $this->$Username . '" signing out.');
+
         $response = new \StoreCore\Response($this->Registry);
-        $response->redirect('/admin/sign-in/');
+        $response->redirect('/admin/lock/');
         exit;
     }
 }

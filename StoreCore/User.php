@@ -1,6 +1,15 @@
 <?php
 namespace StoreCore;
 
+/**
+ * StoreCore User
+ *
+ * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @copyright Copyright (c) 2015 StoreCore
+ * @license   http://www.gnu.org/licenses/gpl.html
+ * @package   StoreCore
+ * @version   0.0.1
+ */
 class User
 {
     /** @var string VERSION */
@@ -72,6 +81,18 @@ class User
     public function getUserGroupID()
     {
         return $this->UserGroupID;
+    }
+
+    /**
+     * Get the user identifier.
+     *
+     * @api
+     * @param void
+     * @return int|null
+     */
+    public function getUserID()
+    {
+        return $this->UserID;
     }
 
     /**
