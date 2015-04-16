@@ -104,6 +104,11 @@ switch ($request->getRequestPath()) {
     case '/admin/sign-in/':
         $route = new \StoreCore\Route('/admin/sign-in/', '\StoreCore\Admin\SignIn');
         break;
+    case '/admin/lock/':
+    case '/lock/':
+    case '/lock':
+        $route = new \StoreCore\Route('/admin/lock/', '\StoreCore\Admin\LockScreen');
+        break;
     case '/robots.txt':
         $route = new \StoreCore\Route('/robots.txt', '\StoreCore\FileSystem\Robots');
         break;

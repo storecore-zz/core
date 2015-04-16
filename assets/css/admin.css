@@ -100,6 +100,19 @@ em {
 }
 
 
+.lock-screen {
+  background-color: #690;
+  bottom: 0;
+  color:#fff;
+  left: 0;
+  margin: 0;
+  padding:0;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
+
+
 #wrapper {
   text-align: center;
 }
@@ -125,3 +138,31 @@ em {
   padding-right: 1em;
   text-align: left;
 }
+
+
+.lock-screen h1 {
+  font-size: 72pt;
+  font-weight: 300;
+  line-height: 1.1em;
+  text-align: center;
+  text-shadow: 1px 1px #364c08;
+}
+
+.lock-screen h1 strong {
+  font-weight: 900;
+}
+
+.lock-screen h1 sup {
+  font-size: 30%;
+}
+
+.lock-screen p {
+  font-size: 14pt;
+  font-weight: 500;
+}
+
+.lock-screen a {
+  color: inherit;
+  text-decoration: none;
+}
+

@@ -96,7 +96,7 @@ class SignIn extends \StoreCore\AbstractController
         // Finally, store the user and open up the administration.
         $logger->notice('User "' . $this->Request->get('username') . '" signed in.');
         $login_audit->storeAttempt($this->Request->get('username'), null, true);
-        $this->Session->set('User', $user);
+        $this->Session->set('User', serialize($user));
         $response = new Response($this->Registry);
         $response->redirect('/admin/', 303);
         exit;
@@ -125,6 +125,12 @@ class SignIn extends \StoreCore\AbstractController
         $document = new \StoreCore\Admin\Document();
         $document->addSection($view);
         $document->setTitle(STORECORE_I18N_COMMAND_SIGN_IN);
+        
+        /* After 1 minute (60000 milliseconds) the current window times out,
+         * JavaScript then redirects the client to the lock screen.
+         */
+        $document->addScript("window.setTimeout(function() { top.location.href = '/lock/'; }, 60000);");
+        
         $document = \StoreCore\Admin\Minifier::minify($document);
 
         $response = new Response($this->Registry);
