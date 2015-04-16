@@ -77,7 +77,6 @@ class Installer extends \StoreCore\AbstractController
     {
         try {
             $dbh = new \PDO($this->getDSN(), STORECORE_DATABASE_USERNAME, STORECORE_DATABASE_PASSWORD, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
-            $this->Logger->debug('Database connection re-opened.');
 
             $tables = array();
             $stmt = $dbh->prepare('SHOW TABLES');
@@ -120,6 +119,10 @@ class Installer extends \StoreCore\AbstractController
 
         $files = array(
             STORECORE_FILESYSTEM_STOREFRONT_ROOT . 'config.php' => true,
+            STORECORE_FILESYSTEM_CACHE . 'data' . DIRECTORY_SEPARATOR . 'de-DE.php' => true,
+            STORECORE_FILESYSTEM_CACHE . 'data' . DIRECTORY_SEPARATOR . 'en-GB.php' => true,
+            STORECORE_FILESYSTEM_CACHE . 'data' . DIRECTORY_SEPARATOR . 'fr-FR.php' => true,
+            STORECORE_FILESYSTEM_CACHE . 'data' . DIRECTORY_SEPARATOR . 'nl-NL.php' => true,
             STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Database' . DIRECTORY_SEPARATOR . 'core-mysql.sql' => false,
             STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Database' . DIRECTORY_SEPARATOR . 'i18n-dml.sql' => false,
         );
