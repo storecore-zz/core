@@ -12,10 +12,10 @@ namespace StoreCore\Database;
  */
 abstract class AbstractDataAccessObject
 {
-    /** @type string VERSION */
+    /** @var string VERSION */
     const VERSION = '0.0.1';
 
-    /** @type object StoreCore\Database\Connection */
+    /** @var object StoreCore\Database\Connection */
     private $Connection;
 
     /**
@@ -38,6 +38,28 @@ abstract class AbstractDataAccessObject
     private function connect()
     {
         $this->Connection = new \StoreCore\Database\Connection();
+    }
+
+    /**
+     * Delete one or more database rows.
+     *
+     * @param string $value
+     * @param string|null $key
+     * @return int
+     */
+    public function delete($value, $key = null)
+    {
+        if ($key == null) {
+            $key = $this->PrimaryKey;
+        }
+
+        if (!is_numeric($value)) {
+            $value = $this->Connection->quote($value);
+        }
+
+        $sql = 'DELETE FROM ' . $this->TableName . ' WHERE ' . $key . '=' . $value;
+        $affected_rows = $this->Connection->exec($sql);
+        return $affected_rows;
     }
 
     /**
