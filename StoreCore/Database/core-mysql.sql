@@ -11,18 +11,18 @@
 -- Users and User Groups
 --
 
-CREATE TABLE sc_user_groups (
+CREATE TABLE IF NOT EXISTS sc_user_groups (
   user_group_id    TINYINT(3) UNSIGNED  NOT NULL,
   user_group_name  VARCHAR(255)         NOT NULL,
   PRIMARY KEY (user_group_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-INSERT INTO sc_user_groups (user_group_id, user_group_name) VALUES
+INSERT IGNORE INTO sc_user_groups (user_group_id, user_group_name) VALUES
   (  0, 'Access Denied'),
   (254, 'Administrators'),
   (255, 'Root');
 
-CREATE TABLE sc_users (
+CREATE TABLE IF NOT EXISTS sc_users (
   user_id         SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   user_group_id   TINYINT(3) UNSIGNED   NOT NULL  DEFAULT 0,
   password_reset  TIMESTAMP             NOT NULL  DEFAULT '0000-00-00 00:00:00'  COMMENT 'UTC',
@@ -30,8 +30,8 @@ CREATE TABLE sc_users (
   hash_algo       VARCHAR(255)          NOT NULL,
   username        VARCHAR(255)          NOT NULL,
   password_hash   VARCHAR(255)          NOT NULL,
-  first_name      VARCHAR(255)          NOT NULL,
-  last_name       VARCHAR(255)          NOT NULL,
+  first_name      VARCHAR(255)          NOT NULL  DEFAULT '',
+  last_name       VARCHAR(255)          NOT NULL  DEFAULT '',
   email_address   VARCHAR(255)          NOT NULL,
   email_token     VARCHAR(255)          NULL  DEFAULT NULL,
   PRIMARY KEY (user_id),
@@ -40,7 +40,7 @@ CREATE TABLE sc_users (
     ON DELETE CASCADE  ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-CREATE TABLE sc_user_agents (
+CREATE TABLE IF NOT EXISTS sc_user_agents (
   user_agent_id    CHAR(40)      NOT NULL  COMMENT 'SHA-1 hash',
   first_sighting   TIMESTAMP     NOT NULL  DEFAULT '0000-00-00 00:00:00',
   last_sighting    TIMESTAMP     NOT NULL  DEFAULT '0000-00-00 00:00:00',
@@ -48,7 +48,7 @@ CREATE TABLE sc_user_agents (
   PRIMARY KEY (user_agent_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-CREATE TABLE sc_login_attempts (
+CREATE TABLE IF NOT EXISTS sc_login_attempts (
   attempt_id      BIGINT UNSIGNED       NOT NULL  AUTO_INCREMENT,
   successful      TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
   attempted       TIMESTAMP             NOT NULL  DEFAULT '0000-00-00 00:00:00'  COMMENT 'UTC',
@@ -62,13 +62,13 @@ CREATE TABLE sc_login_attempts (
 -- Robots Exclusion
 --
 
-CREATE TABLE sc_robots (
+CREATE TABLE IF NOT EXISTS sc_robots (
   robot_id    SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   user_agent  VARCHAR(255)          NOT NULL,
   PRIMARY KEY (robot_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-CREATE TABLE sc_robot_disallows (
+CREATE TABLE IF NOT EXISTS sc_robot_disallows (
   path_id   SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   robot_id  SMALLINT(5) UNSIGNED  NOT NULL,
   disallow  VARCHAR(255)          NOT NULL  DEFAULT '',
@@ -78,10 +78,10 @@ CREATE TABLE sc_robot_disallows (
     ON DELETE CASCADE  ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-INSERT INTO sc_robots (robot_id, user_agent) VALUES
+INSERT IGNORE INTO sc_robots (robot_id, user_agent) VALUES
   (1, '*');
 
-INSERT INTO sc_robot_disallows (robot_id, disallow) VALUES
+INSERT IGNORE INTO sc_robot_disallows (robot_id, disallow) VALUES
   (1, '/cgi-bin/');
 
 
@@ -89,7 +89,7 @@ INSERT INTO sc_robot_disallows (robot_id, disallow) VALUES
 -- Internationalization (I18N) and Localization (L10N)
 --
 
-CREATE TABLE sc_languages (
+CREATE TABLE IF NOT EXISTS sc_languages (
   language_id   SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT  COMMENT 'LCID',
   parent_id     SMALLINT(5) UNSIGNED  NOT NULL  DEFAULT 2057,
   status        TINYINT(1) UNSIGNED   NOT NULL,
@@ -106,13 +106,13 @@ CREATE TABLE sc_languages (
     ON DELETE RESTRICT  ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-INSERT INTO sc_languages (language_id, parent_id, iso_code, english_name, local_name, status) VALUES
+INSERT IGNORE INTO sc_languages (language_id, parent_id, iso_code, english_name, local_name, status) VALUES
   (1031, 1031, 'de-DE', 'German - Germany',         'Deutsch - Deutschland',    1),
   (1036, 1036, 'fr-FR', 'French - France',          'Français - France',        1),
   (1043, 1043, 'nl-NL', 'Dutch - Netherlands',      'Nederlands - Nederland',   1),
   (2057, 2057, 'en-GB', 'English - United Kingdom', 'English - United Kingdom', 1);
 
-INSERT INTO sc_languages (language_id, parent_id, iso_code, english_name, local_name, status) VALUES
+INSERT IGNORE INTO sc_languages (language_id, parent_id, iso_code, english_name, local_name, status) VALUES
   (1033, 2057, 'en-US', 'English - United States', 'English - United States', 0),
   (2055, 1031, 'de-CH', 'German - Switzerland',    'Deutsch - Schweiz',       0),
   (2060, 1036, 'fr-BE', 'French - Belgium',        'Français - Belgique',     0),
@@ -121,7 +121,7 @@ INSERT INTO sc_languages (language_id, parent_id, iso_code, english_name, local_
   (4103, 1031, 'de-LU', 'German - Luxembourg',     'Deutsch - Luxemburg',     0),
   (5127, 1031, 'de-LI', 'German - Liechtenstein',  'Deutsch - Liechtenstein', 0);
 
-CREATE TABLE sc_translation_memory (
+CREATE TABLE IF NOT EXISTS sc_translation_memory (
   translation_id  VARCHAR(255)          CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
   language_id     SMALLINT(5) UNSIGNED  NOT NULL  DEFAULT 2057,
   is_admin_only   TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
@@ -134,7 +134,7 @@ CREATE TABLE sc_translation_memory (
     ON DELETE CASCADE  ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-CREATE TABLE sc_countries (
+CREATE TABLE IF NOT EXISTS sc_countries (
   country_id            SMALLINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   status                TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 1,
   postcode_required     TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
@@ -149,7 +149,7 @@ CREATE TABLE sc_countries (
   UNIQUE KEY (iso_number)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-CREATE TABLE sc_country_names (
+CREATE TABLE IF NOT EXISTS sc_country_names (
   country_id    SMALLINT(3) UNSIGNED  NOT NULL,
   language_id   SMALLINT(5) UNSIGNED  NOT NULL,
   country_name  VARCHAR(128)          NOT NULL,
@@ -162,7 +162,7 @@ CREATE TABLE sc_country_names (
     ON DELETE CASCADE  ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-CREATE TABLE sc_country_subdivisions (
+CREATE TABLE IF NOT EXISTS sc_country_subdivisions (
   iso_alpha_two     CHAR(2)       CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  COMMENT 'ISO 3166-1',
   iso_suffix        VARCHAR(3)    CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  COMMENT 'ISO 3166-2 add-on',
   subdivision_name  VARCHAR(255)  NOT NULL,
@@ -172,7 +172,7 @@ CREATE TABLE sc_country_subdivisions (
     ON DELETE CASCADE  ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-INSERT INTO sc_countries (iso_number, international_name, iso_alpha_two, iso_alpha_three, postcode_required, status) VALUES
+INSERT IGNORE INTO sc_countries (iso_number, international_name, iso_alpha_two, iso_alpha_three, postcode_required, status) VALUES
   (  4, 'Afghanistan', 'AF', 'AFG',  0, 1),
   (248, 'Åland Islands', 'AX', 'ALA',  0, 1),
   (  8, 'Albania', 'AL', 'ALB',  0, 1),
@@ -429,7 +429,7 @@ INSERT INTO sc_countries (iso_number, international_name, iso_alpha_two, iso_alp
 -- @see https://en.wikipedia.org/wiki/ISO_3166-2:US
 -- @see https://www.iso.org/obp/ui/#iso:code:3166:US
 --
-INSERT INTO sc_country_subdivisions VALUES
+INSERT IGNORE INTO sc_country_subdivisions VALUES
   ('US', 'AL', 'Alabama'),
   ('US', 'AK', 'Alaska'),
   ('US', 'AZ', 'Arizona'),
@@ -489,14 +489,14 @@ UPDATE sc_countries SET subdivision_required = 1 WHERE iso_alpha_two = 'US';
 -- Stores
 --
 
-CREATE TABLE sc_stores (
+CREATE TABLE IF NOT EXISTS sc_stores (
   store_id    TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   ssl_mode    TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
   store_name  VARCHAR(64)          NOT NULL,
   PRIMARY KEY (store_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-CREATE TABLE sc_store_hosts (
+CREATE TABLE IF NOT EXISTS sc_store_hosts (
   host_id        SMALLINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   store_id       TINYINT(3) UNSIGNED   NOT NULL,
   redirect_only  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
@@ -514,16 +514,16 @@ CREATE TABLE sc_store_hosts (
 -- Customers and Order Management
 --
 
-CREATE TABLE sc_customer_groups (
+CREATE TABLE IF NOT EXISTS sc_customer_groups (
   customer_group_id    TINYINT(3) UNSIGNED  NOT NULL,
   customer_group_name  VARCHAR(255)         NOT NULL,
   PRIMARY KEY (customer_group_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-INSERT INTO sc_customer_groups (customer_group_id, customer_group_name) VALUES
+INSERT IGNORE INTO sc_customer_groups (customer_group_id, customer_group_name) VALUES
   (0, 'Default customer group');
 
-CREATE TABLE sc_customers (
+CREATE TABLE IF NOT EXISTS sc_customers (
   customer_id        INT(11) UNSIGNED     NOT NULL  AUTO_INCREMENT,
   customer_group_id  TINYINT(3) UNSIGNED  NOT NULL  DEFAULT 0,
   store_id           TINYINT(3) UNSIGNED  NOT NULL,
@@ -548,7 +548,7 @@ CREATE TABLE sc_customers (
     ON DELETE NO ACTION  ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-CREATE TABLE sc_customer_accounts (
+CREATE TABLE IF NOT EXISTS sc_customer_accounts (
   account_id     INT(11) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   customer_id    INT(11) UNSIGNED  NOT NULL,
   created        TIMESTAMP         NOT NULL  DEFAULT '0000-00-00 00:00:00',
@@ -564,7 +564,7 @@ CREATE TABLE sc_customer_accounts (
   INDEX (email_address)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-CREATE TABLE sc_addresses (
+CREATE TABLE IF NOT EXISTS sc_addresses (
   address_id           INT(11) UNSIGNED      NOT NULL  AUTO_INCREMENT,
   customer_id          INT(11) UNSIGNED      NOT NULL,
   country_id           SMALLINT(3) UNSIGNED  NOT NULL,

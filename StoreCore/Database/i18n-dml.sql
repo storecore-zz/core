@@ -40,7 +40,7 @@ INSERT IGNORE INTO sc_translation_memory
 --
 -- Nouns that are not translated, usually proper nouns and proper names
 --
-INSERT INTO sc_translation_memory
+INSERT IGNORE INTO sc_translation_memory
     (translation_id, translation, is_admin_only)
   VALUES
     ('NOUN_MYSQL', 'MySQL', 1),
@@ -49,7 +49,7 @@ INSERT INTO sc_translation_memory
 --
 -- Nouns
 --
-INSERT INTO sc_translation_memory
+INSERT IGNORE INTO sc_translation_memory
     (translation_id, language_id, translation)
   VALUES
     ('NOUN_DATABASE', 1031, 'Datenbank'),
