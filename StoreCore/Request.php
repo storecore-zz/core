@@ -245,6 +245,20 @@ class Request
     }
 
     /**
+     * Check if HTTP/S and SSL are used.
+     *
+     * @api
+     * @param void
+     * @return bool
+     */
+    public function isSecure()
+    {
+        return
+            (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+            || $_SERVER['SERVER_PORT'] == 443;
+    }
+
+    /**
      * Set the requested host name.
      *
      * @internal
