@@ -97,6 +97,11 @@ class Installer extends \StoreCore\AbstractController
                 $sql = file_get_contents(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Database' . DIRECTORY_SEPARATOR . 'i18n-dml.sql', false);
                 $dbh->exec($sql);
                 $dbh = null;
+
+                $config = new \StoreCore\Admin\Configurator();
+                $config->set('STORECORE_DATABASE_INSTALLED', STORECORE_VERSION);
+                $config->save();
+                $this->Logger->notice('StoreCore database version ' . STORECORE_VERSION . ' was installed.');
             }
 
         } catch (\PDOException $e) {
