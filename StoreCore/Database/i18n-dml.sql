@@ -144,7 +144,33 @@ INSERT IGNORE INTO sc_translation_memory
     ('COMMAND_SIGN_OUT', 1031, 'Abmelden'),
     ('COMMAND_SIGN_OUT', 1036, 'Se déconnecter'),
     ('COMMAND_SIGN_OUT', 1043, 'Uitloggen'),
-    ('COMMAND_SIGN_OUT', 2057, 'Sign out');
+    ('COMMAND_SIGN_OUT', 2057, 'Sign out'),
+
+    ('COMMAND_UNLOCK', 1031, 'Entsperren…'),
+    ('COMMAND_UNLOCK', 1036, 'Déverrouiller…'),
+    ('COMMAND_UNLOCK', 1043, 'Ontgrendelen…'),
+    ('COMMAND_UNLOCK', 2057, 'Unlock…');
+
+--
+-- Errors
+--
+INSERT IGNORE INTO sc_translation_memory
+    (translation_id, language_id, translation)
+  VALUES
+    ('ERROR_PASSWORD_CHARACTERS', 1031, 'Das Kennwort muss sowohl Zahlen als auch Buchstaben enthalten.'),
+    ('ERROR_PASSWORD_CHARACTERS', 1036, 'Le mot de passe doit contenir des chiffres et des lettres.'),
+    ('ERROR_PASSWORD_CHARACTERS', 1043, 'Het wachtwoord moet cijfers en letters bevatten.'),
+    ('ERROR_PASSWORD_CHARACTERS', 2057, 'The password must contain both numbers and letters.'),
+
+    ('ERROR_PASSWORD_MIN_LENGTH', 1031, 'Das Kennwort muss aus mindestens 7 Zeichen bestehen.'),
+    ('ERROR_PASSWORD_MIN_LENGTH', 1036, 'Le mot de passe doit être composé d’au moins 7 caractères.'),
+    ('ERROR_PASSWORD_MIN_LENGTH', 1043, 'Het wachtwoord moet minimaal 7 tekens bevatten.'),
+    ('ERROR_PASSWORD_MIN_LENGTH', 2057, 'The password must be at least 7 characters long.'),
+
+    ('ERROR_PASSWORD_TOO_COMMON', 1031, 'Das Kennwort ist zu allgemein.'),
+    ('ERROR_PASSWORD_TOO_COMMON', 1036, 'Le mot de passe est trop commun.'),
+    ('ERROR_PASSWORD_TOO_COMMON', 1043, 'Het wachtwoord komt te vaak voor.'),
+    ('ERROR_PASSWORD_TOO_COMMON', 2057, 'The password is too common.');
 
 --
 -- Headings

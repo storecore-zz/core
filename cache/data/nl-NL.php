@@ -5,6 +5,7 @@ define('STORECORE_I18N_COMMAND_PRINT', 'Printen…');
 define('STORECORE_I18N_COMMAND_SAVE', 'Opslaan');
 define('STORECORE_I18N_COMMAND_SIGN_IN', 'Inloggen');
 define('STORECORE_I18N_COMMAND_SIGN_OUT', 'Uitloggen');
+define('STORECORE_I18N_COMMAND_UNLOCK', 'Ontgrendelen…');
 define('STORECORE_I18N_ERROR_PASSWORD_CHARACTERS', 'Het wachtwoord moet cijfers en letters bevatten.');
 define('STORECORE_I18N_ERROR_PASSWORD_MIN_LENGTH', 'Het wachtwoord moet minimaal 7 tekens bevatten.');
 define('STORECORE_I18N_ERROR_PASSWORD_TOO_COMMON', 'Het wachtwoord komt te vaak voor.');

@@ -46,13 +46,13 @@ class TranslationMemory extends \StoreCore\AbstractModel
         $storefront = (bool)$storefront;
 
         // Populate with British English (2057) as the root language
-        if ($this->Translations === null) {
+        if ($this->Translations === null || $this->LanguageID == 2057) {
             $this->Translations = array();
             $this->readTranslations(2057, $storefront);
         }
 
-        if ($this->LanguageID !== 2057) {
-            if ($this->ParentLanguageID !== 2057 && $this->ParentLanguageID !== $this->LanguageID) {
+        if ($this->LanguageID != 2057) {
+            if ($this->ParentLanguageID != 2057 && $this->ParentLanguageID != $this->LanguageID) {
                 $this->readTranslations($this->ParentLanguageID, $storefront);
             }
             $this->readTranslations($this->LanguageID, $storefront);

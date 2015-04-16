@@ -5,6 +5,7 @@ define('STORECORE_I18N_COMMAND_PRINT', 'Imprimer…');
 define('STORECORE_I18N_COMMAND_SAVE', 'Enregistrer');
 define('STORECORE_I18N_COMMAND_SIGN_IN', 'Se connecter');
 define('STORECORE_I18N_COMMAND_SIGN_OUT', 'Se déconnecter');
+define('STORECORE_I18N_COMMAND_UNLOCK', 'Déverrouiller…');
 define('STORECORE_I18N_ERROR_PASSWORD_CHARACTERS', 'Le mot de passe doit contenir des chiffres et des lettres.');
 define('STORECORE_I18N_ERROR_PASSWORD_MIN_LENGTH', 'Le mot de passe doit être composé d’au moins 7 caractères.');
 define('STORECORE_I18N_ERROR_PASSWORD_TOO_COMMON', 'Le mot de passe est trop commun.');

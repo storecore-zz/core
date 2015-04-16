@@ -5,6 +5,7 @@ define('STORECORE_I18N_COMMAND_PRINT', 'Drucken…');
 define('STORECORE_I18N_COMMAND_SAVE', 'Speichern');
 define('STORECORE_I18N_COMMAND_SIGN_IN', 'Anmelden');
 define('STORECORE_I18N_COMMAND_SIGN_OUT', 'Abmelden');
+define('STORECORE_I18N_COMMAND_UNLOCK', 'Entsperren…');
 define('STORECORE_I18N_ERROR_PASSWORD_CHARACTERS', 'Das Kennwort muss sowohl Zahlen als auch Buchstaben enthalten.');
 define('STORECORE_I18N_ERROR_PASSWORD_MIN_LENGTH', 'Das Kennwort muss aus mindestens 7 Zeichen bestehen.');
 define('STORECORE_I18N_ERROR_PASSWORD_TOO_COMMON', 'Das Kennwort ist zu allgemein.');
