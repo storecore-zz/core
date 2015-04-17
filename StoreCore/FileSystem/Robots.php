@@ -11,8 +11,13 @@ namespace StoreCore\FileSystem;
  */
 class Robots extends \StoreCore\AbstractController
 {
+    /** @var string VERSION */
     const VERSION = '0.0.1';
 
+    /**
+     * @var \StoreCore\Database\Robots $Model
+     * @var string $view
+     */
     private $Model;
     private $View = "User-agent: *\nDisallow:";
 
@@ -39,6 +44,9 @@ class Robots extends \StoreCore\AbstractController
                 $view .= 'User-agent: ' . $user_agent . "\n";
                 foreach ($paths as $path) {
                     $view .= 'Disallow: ' . $path . "\n";
+                }
+                if ($user_agent == '*') {
+                    $view .= "Crawl-delay: 5\n";
                 }
                 $view .= "\n";
             }
