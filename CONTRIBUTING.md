@@ -202,7 +202,8 @@ Correct:
 
 When there are two timestamps, the logical thing to do is setting `date_added`
 to `DEFAULT CURRENT_TIMESTAMP` for the initial `INSERT` query and
-`date_modified` to `ON UPDATE CURRENT_TIMESTAMP` for subsequent UPDATE queries:
+`date_modified` to `ON UPDATE CURRENT_TIMESTAMP` for subsequent `UPDATE`
+queries:
 
 ```
 `date_added`     TIMESTAMP  NOT NULL  DEFAULT CURRENT_TIMESTAMP
@@ -219,7 +220,6 @@ initial `INSERT` timestamp to `'0000-00-00 00:00:00'`:
 ```
 `date_added`     TIMESTAMP  NOT NULL  DEFAULT '0000-00-00 00:00:00',
 `date_modified`  TIMESTAMP  NOT NULL  DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP,
-
 ```
 
 ## 4.4. Don’t: Cast MySQL Integers to Strings
@@ -231,13 +231,31 @@ This holds especially true for primary keys and foreign keys.
 Incorrect:
 
 ```php
-$this->db->query("UPDATE " . DB_PREFIX . "customer SET address_id = '" . (int)$address_id . "' WHERE customer_id = '" . (int)$customer_id . "'");
+$sql = "
+    UPDATE sc_addresses
+    SET customer_id = '" . (int)$customer_id . "'
+    WHERE address_id = '" . (int)$address_id . "'";
+```
+
+```sql
+UPDATE sc_addresses
+   SET customer_id = '54321'
+ WHERE address_id  = '67890';
 ```
 
 Correct:
 
 ```php
-$this->db->query('UPDATE ' . DB_PREFIX . 'customer SET address_id = ' . (int)$address_id . ' WHERE customer_id = ' . (int)$customer_id);
+$sql = '
+    UPDATE sc_addresses
+    SET customer_id = ' . (int)$customer_id . '
+    WHERE address_id = ' . (int)$address_id;
+```
+
+```sql
+UPDATE sc_addresses
+   SET customer_id = 54321
+ WHERE address_id  = 67890;
 ```
 
 ## 4.5. Do Not: Close and Immediately Re-Open PHP Tags
