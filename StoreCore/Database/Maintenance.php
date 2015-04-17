@@ -5,7 +5,7 @@ class Maintenance
 {
     /**
      * @var string VERSION
-     *     Semantic version (SemVer).
+     *   Semantic version (SemVer).
      */
     const VERSION = '0.1.0-alpha';
 
@@ -37,7 +37,13 @@ class Maintenance
      */
     public function __construct()
     {
+        /*
+         * If the currently installed database version is older than this
+         * maintenance module, first save a backup, then install all updates,
+         * and finally optimize the database.
+         */
         if (version_compare(STORECORE_DATABASE_INSTALLED, self::VERSION, '<') == true) {
+            $backup = new \StoreCore\Database\Backup();
             $this->update();
             $this->optimize();
         }
@@ -74,7 +80,7 @@ class Maintenance
      * Optimize tables.
      *
      * @param string|null $tables
-     *     Optional comma-separated list of table names.
+     *   Optional comma-separated list of table names.
      *
      * @return mixed
      */
@@ -105,6 +111,8 @@ class Maintenance
     }
 
     /**
+     * Update the database.
+     *
      * @internal
      * @param void
      * @param return bool
@@ -116,6 +124,8 @@ class Maintenance
         try {
             $this->Connection = new \StoreCore\Database\Connection();
             $this->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
+
+            $this->Connection->exec('FLUSH TABLES');
 
             // Update core tables using CREATE TABLE IF NOT EXISTS and INSERT IGNORE
             if (is_file(__DIR__ . DIRECTORY_SEPARATOR . 'core-mysql.sql')) {
