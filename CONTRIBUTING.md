@@ -301,8 +301,93 @@ if (!file_exists($file)) {
 }
 ```
 
+In many cases it is RECOMMENDED to throw a more specific [Standard PHP Library
+(SPL) exception], for example a [runtime exception] if a file only exists after
+it was saved by an application.
+
+Correct:
+
+```php
+if (!file_exists($file)) {
+    throw new \RuntimeException('Could not load file: ' . $file);
+}
+```
+
+[Standard PHP Library (SPL) exception]: http://php.net/manual/en/spl.exceptions.php
+[runtime exception]: http://php.net/manual/en/class.runtimeexception.php
+
 
 # 6. Internationalization (I18N) and Localization (L13N)
+
+## 6.1. Limitations of MVC-L
+
+From the outset we decided multilingual support SHOULD be a key feature of an
+open-source e-commerce community operating from Europe.  Support of multiple
+languages would no longer be an option, but a MUST.  For companies
+operating in bilingual and multilingual European countries like Belgium,
+Finland, and Switzerland this may of course be an important core feature too.
+
+The traditional MVC-L (model-view-controller-language) application structure
+adds severe limitations to performance, maintenance, and scalability.
+For example, a single language adds over 350 files in about 40 directories to
+an OpenCart install.  If the [OpenCart MVC-L implementation] is expanded to
+four or even more languages, file management becomes a dreadful task.
+
+There are performance side-effects if a single MVC view consists of not only
+one template file, but also several language files for all supported languages.
+
+Furthermore, *consistency* within one language is difficult to maintain if
+terms are spread out over dozens of language files.  For example, if the store
+manager wants to change *shopping cart* to *shopping basket*, a developer will
+have go over several files.  A more centralized approach with and end-user
+interface for editing seems a much wiser choice.
+
+[OpenCart MVC-L implementation]: http://docs.opencart.com/display/opencart/Introduction+to+MVC-L
+
+## 6.2. Translation Memory (TM)
+
+StoreCore uses a [translation memory (TM)] to handle and maintain all language
+strings.  The translation memory database table is defined in the main SQL DDL
+(Data Definition Language) file `core-mysql.sql` for MySQL.  The translations
+are in a separate SQL DML (Data Manipulation Language) file called
+`i18n-dml.sql`.
+
+[translation memory (TM)]: https://en.wikipedia.org/wiki/Translation_memory "Translation memory (TM)"
+
+### 6.2.1. Root: Core or Master Languages
+
+*Core languages*, or *masters*, are root-level language packs.  They SHOULD NOT
+be deleted, which is prevented by a foreign key constraint `fk_language_id` on
+the self-referencing key `parent_id`.  If the `language_id` is equal to the
+`parent_id`, a language has no parent and is therefore a core language located
+at the root of the language family tree.
+
+Currently, the core supports four European master languages:
+
+- `de-DE` for German
+- `en-GB` for English
+- `fr-FR` for French
+- `nl-NL` for Dutch
+
+If no language match is found, StoreCore defaults to `en-GB` for British
+English.
+
+### 6.2.2. Tree and Branches: Secondary Languages
+
+*Secondary languages* are derived from the core/master languages.  They only
+contain differences with the master language.  For example, the “English -
+United States” (en-US) language pack only contains the differences between
+American English and British English in its “English - United Kingdom”
+(en-GB) master.  This allows for global localization while maintaining language
+consistency and a concise dictionary.
+
+## 6.3. Translation Guidelines
+
+### 6.3.1. Compound Nouns
+
+Compound nouns are handled as single nouns.  For example, *shopping cart* is
+not stored as two terms like `NOUN_SHOPPING` plus `NOUN_CART`, but as a single
+segment like `NOUN_SHOPPING_CART`.
 
 
 # 7. Documentation
