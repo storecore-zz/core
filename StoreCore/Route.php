@@ -1,13 +1,26 @@
 <?php
 namespace StoreCore;
 
+/**
+ * HMVC Route
+ *
+ * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @copyright Copyright (c) 2015 StoreCore
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @version   0.1.0
+ */
 class Route
 {
     /**
-     * @type string      $Controller
-     * @type null|string $Method
-     * @type null|array  $Parameters
-     * @type string      $Path
+     * @var string VERSION
+     */
+    const VERSION = '0.1.0';
+
+    /**
+     * @var string      $Controller
+     * @var null|string $Method
+     * @var null|array  $Parameters
+     * @var string      $Path
      */
     private $Controller;
     private $Method;
@@ -17,6 +30,8 @@ class Route
     /**
      * @param string $path
      * @param string $controller
+     * @param string|null $method
+     * @param mixed|null $parameters
      * @return void
      */
     public function __construct($path, $controller, $method = null, $parameters = null)
@@ -33,6 +48,9 @@ class Route
     }
 
     /**
+     * Instantiate a controller and optionally call a method.
+     *
+     * @api
      * @param void
      * @return void
      */
@@ -40,10 +58,18 @@ class Route
     {
         $controller = $this->Controller;
         if (is_subclass_of($controller, '\StoreCore\AbstractController')) {
-            $registry = \StoreCore\Registry::getInstance();
-            $thread = new $controller($registry);
+            $thread = new $controller(\StoreCore\Registry::getInstance());
         } else {
             $thread = new $controller();
+        }
+
+        if ($this->Method !== null) {
+            $method = $this->Method;
+            if ($this->Parameters !== null) {
+                $thread->$method($this->Parameters);
+            } else {
+                $thread->$method();
+            }
         }
     }
 
@@ -75,14 +101,14 @@ class Route
     }
 
     /**
-     * @param array $method
+     * @param mixed $parameters
      * @return void
      */
-    private function setParameters(array $parameters)
+    private function setParameters($parameters)
     {
         $this->Parameters = $parameters;
     }
-    
+
     /**
      * @param string $path
      * @return void
