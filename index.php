@@ -101,13 +101,14 @@ $registry->set('Session', $session);
 // Routing
 $route = false;
 switch ($request->getRequestPath()) {
+    case '/admin/lock/':
+        $route = new \StoreCore\Route('/admin/lock/', '\StoreCore\Admin\LockScreen');
+        break;
     case '/admin/sign-in/':
         $route = new \StoreCore\Route('/admin/sign-in/', '\StoreCore\Admin\SignIn');
         break;
-    case '/admin/lock/':
-    case '/lock/':
-    case '/lock':
-        $route = new \StoreCore\Route('/admin/lock/', '\StoreCore\Admin\LockScreen');
+    case '/admin/sign-out/':
+        $route = new \StoreCore\Route('/admin/sign-out/', '\StoreCore\Admin\User', 'signOut');
         break;
     case '/robots.txt':
         $route = new \StoreCore\Route('/robots.txt', '\StoreCore\FileSystem\Robots');
@@ -118,13 +119,16 @@ switch ($request->getRequestPath()) {
             $asset = new \StoreCore\Asset($pathinfo['basename'], $pathinfo['extension']);
         }
         unset($pathinfo);
+        
+        if (!defined('STORECORE_INSTALLED')) {
+            $route = new \StoreCore\Route('/install/', '\StoreCore\Admin\FrontController', 'install');
+        } elseif (strpos($request->getRequestPath(), '/admin/', 0) === 0) {
+            $route = new \StoreCore\Route('/admin/', '\StoreCore\Admin\FrontController');
+        }
 }
 
 if ($route !== false) {
     $route->dispatch();
-} elseif (!defined('STORECORE_INSTALLED')) {
-    $front_controller = new \StoreCore\Admin\FrontController($registry);
-    $front_controller->install();
 } else {
     $logger->notice('HTTP/1.1 404 Not Found: ' . $request->getRequestPath());
     $response = new \StoreCore\Response($registry);
