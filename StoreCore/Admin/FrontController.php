@@ -6,11 +6,9 @@ use \Psr\Log\LoggerInterface as LoggerInterface;
 
 use \StoreCore\AbstractController as AbstractController;
 use \StoreCore\Registry as Registry;
+use \StoreCore\Response as Response;
 use \StoreCore\Route as Route;
 use \StoreCore\Session as Session;
-
-use \StoreCore\FileSystem\Logger as Logger;
-use \StoreCore\I18N\Locale as Locale;
 
 class FrontController extends AbstractController implements LoggerAwareInterface
 {
@@ -22,10 +20,17 @@ class FrontController extends AbstractController implements LoggerAwareInterface
     {
         parent::__construct($registry);
 
-        $this->setLogger(new Logger());
+        if (!defined('STORECORE_INSTALLED')) {
+            $this->install();
+        }
 
-        if ($this->Registry->has('Session') === false) {
-            $this->Registry->set('Session', new Session());
+        // Check if there is a user signed in.
+        if ($this->Session->has('User')) {
+            $this->User = unserialize($this->Session->get('User'));
+        } else {
+            $response = new Response($registry);
+            $response->redirect('/admin/sign-in/');
+            exit;
         }
     }
 

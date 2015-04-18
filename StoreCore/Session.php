@@ -6,25 +6,28 @@ namespace StoreCore;
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2015 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore
- * @version   0.0.1
+ * @version   0.0.2
  */
 class Session
 {
-    /** @type string VERSION */
-    const VERSION = '0.0.1';
+    /** @var string VERSION */
+    const VERSION = '0.0.2';
 
-    /** @type int $IdleTimeout */
+    /**
+     * @var int $IdleTimeout
+     *   Time-out of an inactive session in minutes.
+     */
     private $IdleTimeout = 15;
 
 
     /**
      * @param int $idle_timeout
-     *     Optional idle timeout in minutes.  Defaults to 15 minutes.  Common
-     *     idle timeouts are 2 to 5 minutes for high-value applications and
-     *     15 to 30 minutes for low risk applications.  The default maximum
-     *     is 30 minutes.
+     *   Optional idle timeout in minutes.  Defaults to 15 minutes.  Common
+     *   idle timeouts are 2 to 5 minutes for high-value applications and
+     *   15 to 30 minutes for low risk applications.  The default maximum
+     *   is 30 minutes.
      */
     public function __construct($idle_timeout = 15)
     {
@@ -99,18 +102,28 @@ class Session
     }
 
     /**
-     * Get a session value.
+     * Get the value of a session variable.
      *
      * @param string $name
-     * @return mixed
+     * @return mixed|null
      */
     public function get($name)
     {
         if (array_key_exists($name, $_SESSION)) {
             return $_SESSION[$name];
-        } else {
-            return null;
         }
+        return null;
+    }
+
+    /**
+     * Check if a session variable exists.
+     *
+     * @param string $name
+     * @return bool
+     */
+    public function has($name)
+    {
+        return array_key_exists($name, $_SESSION);
     }
 
     /**
