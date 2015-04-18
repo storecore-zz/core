@@ -117,6 +117,12 @@ in the `File System` section of the `config.ini` configuration file:
 ;storecore_filesystem.logs = ''
 ```
 
+| Directory  | Directive                           |
+| ---------- | ----------------------------------- |
+| /cache     | `storecore_filesystem.cache`        |
+| /logs      | `storecore_filesystem.logs`         |
+| /StoreCore | `storecore_filesystem.library_root` |
+
 ## 3.4. Logging
 
 By default, StoreCore logs errors, warnings, and noticeable events to `.log`
@@ -375,8 +381,26 @@ if (!file_exists($file)) {
 StoreCore data is shared through the [service locator design pattern].
 The centralized registry is the only link between applications and controllers.
 
+At any given time there should be only one single instance of the registry.
+The StoreCore registry is therefore implemented using the [singleton design
+pattern].  Because the registry implements a `SingletonInterface`, it cannot be
+instantiated.  Instead you should call the static `getInstance()` method.
+
+Incorrect:
+
+```php
+$registry = new \StoreCore\Registry();
+```
+
+Correct:
+
+```php
+$registry = \StoreCore\Registry::getInstance();
+```
+
 [service locator design pattern]: https://en.wikipedia.org/wiki/Service_locator_pattern "Service locator pattern"
 
+[singleton design pattern]: https://en.wikipedia.org/wiki/Singleton_pattern "Singleton pattern"
 
 # 6. Internationalization (I18N) and Localization (L13N)
 
