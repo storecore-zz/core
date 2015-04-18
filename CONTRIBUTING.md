@@ -96,11 +96,26 @@ The following file extensions are inaccessible:
 * `.phtml` and `.tpl` for template files
 * `.sql` for SQL database files
 
-## 3.3. Shared Data
+## 3.3. Protected Directories
 
-StoreCore data is shared through the [service locator design pattern].
+There are three directories that MUST NOT be accessed publicly:
 
-[service locator design pattern]: https://en.wikipedia.org/wiki/Service_locator_pattern "Service locator pattern"
+* `/cache/` for cache files
+* `/logs/` for log files
+* `/StoreCore/` for the code library
+
+Access to these directories is denied in `.htaccess`, so for example logs are
+inaccessible through a URL like `http://www.example.com/logs/`.  It is however
+RECOMMENDED to move these directories out of the web root entirely.  If a
+directory is moved, the path can be set by uncommenting one of the directives
+in the `File System` section of the `config.ini` configuration file:
+
+```
+[File System]
+;storecore_filesystem.cache = ''
+;storecore_filesystem.library_root = ''
+;storecore_filesystem.logs = ''
+```
 
 ## 3.4. Logging
 
@@ -258,7 +273,7 @@ UPDATE sc_addresses
  WHERE address_id  = 67890;
 ```
 
-## 4.5. Do Not: Close and Immediately Re-Open PHP Tags
+## 4.5. Don’t: Close and Immediately Re-Open PHP Tags
 
 Incorrect:
 
@@ -273,6 +288,45 @@ Correct:
 echo $header;
 echo $column_left;
 ?>
+```
+
+## 4.6. Do: Return Early
+
+Once the outcome of a PHP method or procedure has been established, it SHOULD
+be returned.  The examples below demonstrate this may save memory and
+computations.
+
+Incorrect:
+
+```php
+public function hasDownload()
+{
+    $download = false;
+
+    foreach ($this->getProducts() as $product) {
+        if ($product['download']) {
+            $download = true;
+            break;
+        }
+    }
+
+    return $download;
+}
+```
+
+Correct:
+
+```php
+public function hasDownload()
+{
+    foreach ($this->getProducts() as $product) {
+        if ($product['download']) {
+            return true;
+        }
+    }
+
+    return false;
+}
 ```
 
 
@@ -316,6 +370,13 @@ if (!file_exists($file)) {
 [Standard PHP Library (SPL) exception]: http://php.net/manual/en/spl.exceptions.php
 [runtime exception]: http://php.net/manual/en/class.runtimeexception.php
 
+## 5.2. Shared Data
+
+StoreCore data is shared through the [service locator design pattern].
+The centralized registry is the only link between applications and controllers.
+
+[service locator design pattern]: https://en.wikipedia.org/wiki/Service_locator_pattern "Service locator pattern"
+
 
 # 6. Internationalization (I18N) and Localization (L13N)
 
@@ -339,7 +400,7 @@ one template file, but also several language files for all supported languages.
 Furthermore, *consistency* within one language is difficult to maintain if
 terms are spread out over dozens of language files.  For example, if the store
 manager wants to change *shopping cart* to *shopping basket*, a developer will
-have go over several files.  A more centralized approach with and end-user
+have go over several files.  A more centralized approach with an end-user
 interface for editing seems a much wiser choice.
 
 [OpenCart MVC-L implementation]: http://docs.opencart.com/display/opencart/Introduction+to+MVC-L
@@ -371,6 +432,25 @@ Currently, the core supports four European master languages:
 
 If no language match is found, StoreCore defaults to `en-GB` for British
 English.
+
+Master languages cannot be deleted; they can only be disabled.  If you do try
+to delete a master language from the database, the `DELETE` query fails on a
+foreign key constraint.
+
+Incorrect:
+
+```sql
+DELETE FROM sc_languages
+      WHERE iso_code = 'de-DE';
+```
+
+Correct:
+
+```sql
+UPDATE sc_languages
+   SET status = 0
+ WHERE iso_code = 'de-DE';
+```
 
 ### 6.2.2. Tree and Branches: Secondary Languages
 
