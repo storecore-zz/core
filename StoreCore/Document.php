@@ -6,26 +6,27 @@ namespace StoreCore;
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2015 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html
- * @version   0.0.1
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\Core
+ * @version   0.1.0
  */
 class Document
 {
     /**
-     * @type string VERSION
-     *     Semantic Version (SemVer)
+     * @var string VERSION
+     *   Semantic version (SemVer)
      */
-    const VERSION = '0.0.1';
+    const VERSION = '0.1.0';
 
     /**
-     * @type string $Direction
-     * @type string $Language
-     * @type null|array $Links
-     * @type null|array $MetaProperties
-     * @type null|array $Scripts
-     * @type null|array $ScriptsDeferred
-     * @type array $Sections
-     * @type string $Title
+     * @var string $Direction
+     * @var string $Language
+     * @var null|array $Links
+     * @var null|array $MetaProperties
+     * @var null|array $Scripts
+     * @var null|array $ScriptsDeferred
+     * @var array $Sections
+     * @var string $Title
      */
     protected $Direction = 'ltr';
     protected $Language = 'en-GB';
@@ -37,7 +38,7 @@ class Document
     protected $Title = 'StoreCore';
 
     /**
-     * @type array $MetaData
+     * @var array $MetaData
      */
     protected $MetaData = array(
         'generator' => 'StoreCore ' . STORECORE_VERSION,
@@ -47,6 +48,7 @@ class Document
     );
 
     /**
+     * @api
      * @param string $title
      * @return void
      */
@@ -107,6 +109,9 @@ class Document
     }
 
     /**
+     * Add meta data for a <meta name="..."  content="..."> tag.
+     *
+     * @api
      * @param string $name
      * @param string $content
      * @return $this
@@ -120,6 +125,9 @@ class Document
     }
 
     /**
+     * Add meta property data for a <meta property="..." content="..."> tag.
+     *
+     * @api
      * @param string $property
      * @param string $content
      * @return $this
@@ -133,8 +141,16 @@ class Document
     }
 
     /**
+     * Add inline JavaScript.
+     *
      * @param string $script
+     *   Inline JavaScript, without the enclosing <script>...</script> tags.
+     *
      * @param bool $defer
+     *   If set to true (default), JavaScript execution is deferred by moving
+     *   the script to the end of the HTML document.  This RECOMMENDED setting
+     *   usually speeds op client-side page rendering.
+     *
      * @return $this
      */
     public function addScript($script, $defer = true)
@@ -148,23 +164,44 @@ class Document
     }
 
     /**
+     * Add a section to the document body.
+     *
      * @param string $content
-     * @param string $container
+     *   Content for a new HTML container.  Please note that multiple sections
+     *   are parsed and displayed in the order they are added.
+     *
+     * @param string|null $container
+     *   Enclosing parent container for the new content.  Defaults to `section`
+     *   for a generic `<section>...</section>` container.  This parameter MAY
+     *   be set to null or an empty string if the parent container is to be
+     *   omitted.
+     *
      * @return $this
      */
     public function addSection($content, $container = 'section')
     {
-        $container = trim($container);
-        $container = strtolower($container);
-        $container = ltrim($container, '<');
-        $container = rtrim($container, '>');
+        if (empty($container)) {
+            $container = null;
+        } else {
+            $container = trim($container);
+            $container = strtolower($container);
+            $container = ltrim($container, '<');
+            $container = rtrim($container, '>');
+        }
 
-        $this->Sections[] = '<' . $container . '>' . $content . '</' . $container . '>';
+        if ($container === null) {
+            $this->Sections[] = $content;
+        } else {
+            $this->Sections[] = '<' . $container . '>' . $content . '</' . $container . '>';
+        }
 
         return $this;
     }
 
     /**
+     * Get the document <body>...</body> container.
+     *
+     * @api
      * @param void
      * @return string
      */
@@ -177,8 +214,12 @@ class Document
     }
 
     /**
+     * Get the full HTML document.
+     *
      * @param void
      * @return string
+     * @uses \StoreCore\Document::getBody()
+     * @uses \StoreCore\Document::getHead()
      */
     public function getDocument()
     {
@@ -198,6 +239,9 @@ class Document
     }
 
     /**
+     * Get the document <head>...</head> container.
+     *
+     * @api
      * @param void
      * @return string
      */
@@ -238,8 +282,12 @@ class Document
     }
 
     /**
+     * Add a document description.
+     *
+     * @api
      * @param string $description
      * @return $this
+     * @uses \StoreCore\Document::addMetaData()
      */
     public function setDescription($description)
     {
@@ -249,6 +297,8 @@ class Document
     }
 
     /**
+     * Set the document language.
+     *
      * @param string $language_code
      * @return $this
      */
@@ -264,6 +314,9 @@ class Document
     }
 
     /**
+     * Set the document title.
+     *
+     * @api
      * @param string $title
      * @return $this
      */
