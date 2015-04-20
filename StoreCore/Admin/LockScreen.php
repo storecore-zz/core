@@ -24,7 +24,7 @@ class LockScreen extends \StoreCore\AbstractController
             
         $lock_screen = new \StoreCore\Admin\Document();
         $lock_screen->setTitle('StoreCore™');
-        $lock_screen->addSection($html);
+        $lock_screen->addSection($html, '');
 
         $response = new \StoreCore\Response($this->Registry);
         $response->setResponseBody($lock_screen);

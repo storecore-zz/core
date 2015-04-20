@@ -35,7 +35,7 @@ class Document
     protected $Scripts;
     protected $ScriptsDeferred;
     protected $Sections = array();
-    protected $Title = 'StoreCore';
+    protected $Title;
 
     /**
      * @var array $MetaData
@@ -249,7 +249,10 @@ class Document
     {
         $head  = '<head>';
         $head .= '<meta charset="UTF-8">';
-        $head .= '<title>' . $this->Title . '</title>';
+        
+        if ($this->Title != null) {
+            $head .= '<title>' . $this->Title . '</title>';
+        }
 
         if ($this->Links !== null) {
             foreach ($this->Links as $link) {
@@ -324,6 +327,7 @@ class Document
     {
         $title = trim($title);
         $this->Title = $title;
+        $this->addMetaProperty('og:title', $title);
         return $this;
     }
 }
