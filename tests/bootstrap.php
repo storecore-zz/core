@@ -25,4 +25,4 @@ define('STORECORE_FILESYSTEM_CACHE', realpath(__DIR__ . '/../cache') . DIRECTORY
 define('STORECORE_FILESYSTEM_LOGS', realpath(__DIR__ . '/../logs') . DIRECTORY_SEPARATOR);
 
 // Load the StoreCore bootstrap and autoloader
-require 'bootloader.php';
+require realpath(__DIR__ . '/../StoreCore/bootloader.php');
