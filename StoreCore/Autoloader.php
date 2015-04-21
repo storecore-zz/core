@@ -13,16 +13,22 @@ namespace StoreCore;
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2014-2015 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @link      https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader-examples.md
  * @version   0.1.0
  */
 class Autoloader
 {
     /**
-     * @type array $Prefixes
-     *     An associative array where the key is a namespace prefix and the
-     *     value is an array of base directories for classes in that namespace.
+     * @var string VERSION
+     *   Semantic version (SemVer)
+     */
+    const VERSION = '0.1.0';
+
+    /**
+     * @var array $Prefixes
+     *   An associative array where the key is a namespace prefix and the
+     *   value is an array of base directories for classes in that namespace.
      */
     protected $Prefixes = array();
 
