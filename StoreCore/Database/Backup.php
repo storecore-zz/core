@@ -16,7 +16,7 @@ class Backup
     const VERSION = '0.0.1';
 
     /**
-     * Create a database backup file.
+     * Save a database backup to file.
      *
      * @param string|array $tables
      *   Optional comma-separated string or array with the names of database
@@ -28,9 +28,10 @@ class Backup
      *   database tables are recreated with the `CREATE TABLE IF NOT EXISTS`
      *   clause.
      *
-     * @return void
+     * @return string
+     *   Returns the filename of the SQL backup file.
      */
-    public function __construct($tables = '*', $drop_tables = false)
+    public static function save($tables = '*', $drop_tables = false)
     {
         if (STORECORE_NULL_LOGGER) {
             $logger = new \Psr\Log\NullLogger();
@@ -61,8 +62,11 @@ class Backup
         }
 
         // Cycle through all tables
-        $sql = (string)null;
+        $sql_file_contents = (string)null;
         foreach ($tables as $table) {
+            $sql = (string)null;
+            $prepend = false;
+            
             $result = $mysqli->query('SELECT * FROM ' . $table);
             $num_fields = $result->field_count;
 
@@ -76,6 +80,11 @@ class Backup
             $create_table_row = $create_table_result->fetch_row();
             $create_table = preg_replace('/CREATE TABLE/', 'CREATE TABLE IF NOT EXISTS', $create_table_row[1], 1);
             $sql .= $create_table . ";\n\n";
+            
+            // Tables without foreign keys are prepended
+            if (strpos($create_table, ' FOREIGN KEY ') === false) {
+                $prepend = true;
+            }
 
             for ($i = 0; $i < $num_fields; $i++) {
                 while ($row = $result->fetch_row()) {
@@ -94,18 +103,26 @@ class Backup
                     $sql.= ");\n";
                 }
             }
-            $sql.="\n\n";
+            $sql .= "\n\n";
+            
+            // Prepend or append
+            if ($prepend) {
+                $sql_file_contents = $sql . $sql_file_contents;
+            } else {
+                $sql_file_contents = $sql_file_contents . $sql;
+            }
         }
 
         // Close database connection
         $mysqli->close();
 
         // Save SQL file
-        $filename = __DIR__ . DIRECTORY_SEPARATOR . date('YmdH') . '-' . time() . '-' . mt_rand(10000, 99999) . '.backup.sql';
+        $filename = __DIR__ . DIRECTORY_SEPARATOR . 'backup-' . date('Y-m-d-H-m-s') . '-UTC-' . time() . '.sql';
         $handle = fopen($filename, 'w+');
-        fwrite($handle, $sql);
+        fwrite($handle, $sql_file_contents);
         fclose($handle);
 
-        $logger->notice('Saved database backup to: ' . $filename);
+        $logger->notice('Database backup saved as ' . $filename . '.');
+        return $filename;
     }
 }

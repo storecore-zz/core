@@ -1,7 +1,7 @@
 <?php
 namespace StoreCore\Database;
 
-class Maintenance
+class Maintenance extends \StoreCore\AbstractModel
 {
     /**
      * @var string VERSION
@@ -16,41 +16,72 @@ class Maintenance
 
     /**
      * @var array \ChangeLog
+     *   Array with SQL statements that cannot be executed by parsing the
+     *   default core SQL files.  Changes to database tables are ignored by the
+     *   `IF NOT EXISTS` clause in a `CREATE TABLE IF NOT EXISTS`, so changes
+     *   to tables and indexes should be moved elsewhere.
      */
     private $ChangeLog = array(
 
     );
 
     /**
-     * @var \StoreCore\Database\Connection|null $Connection
-     */
-    private $Connection;
-
-    /**
-     * @var array $InstalledTables
-     */
-    private $InstalledTables = array();
-
-    /**
-     * @param void
+     * @param \StoreCore\Registry $registry
      * @return void
      */
-    public function __construct()
+    public function __construct(\StoreCore\Registry $registry)
     {
+        parent::__construct($registry);
+
         /*
          * If the currently installed database version is older than this
-         * maintenance module, first save a backup, then install all updates,
-         * and finally optimize the database.
+         * maintenance module, an update is available.
          */
         if (version_compare(STORECORE_DATABASE_INSTALLED, self::VERSION, '<') == true) {
-            $backup = new \StoreCore\Database\Backup();
-            $this->update();
-            $this->optimize();
+            $this->UpdateAvailable = true;
         }
+        
+        // Use a fresh connection that does not emulate prepared statements.
+        $this->Connection = new \StoreCore\Database\Connection();
+        $this->Connection->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
     }
 
     /**
-     * Get all database table names.
+     * List the available SQL backup files.
+     *
+     * @api
+     * @param void
+     * @return array
+     */
+    public function getBackupFiles()
+    {
+        $files = array(); 
+
+        if ($handle = opendir(__DIR__)) {
+            while (false !== ($entry = readdir($handle))) {
+                $pathinfo = pathinfo($entry);
+                if (
+                    array_key_exists('extension', $pathinfo)
+                    && $pathinfo['extension'] == 'sql'
+                    && strpos($entry, 'backup') !== false
+                ) {
+                    $realpath = realpath(__DIR__ . DIRECTORY_SEPARATOR . $entry);
+                    $files[] = array(
+                        'filename'  => $entry,
+                        'filesize'  => filesize($realpath),
+                        'filectime' => filectime($realpath),
+                        'filemtime' => filemtime($realpath),
+                    );
+                }
+            }
+            closedir($handle);
+        }
+
+        return $files;
+    }
+    
+    /**
+     * Get all StoreCore database table names.
      *
      * @api
      * @param void
@@ -58,10 +89,6 @@ class Maintenance
      */
     public function getTables()
     {
-        if ($this->Connection == null) {
-            $this->Connection = new \StoreCore\Database\Connection();
-        }
-
         $tables = array();
         $stmt = $this->Connection->prepare('SHOW TABLES');
         if ($stmt->execute()) {
@@ -72,7 +99,6 @@ class Maintenance
             }
         }
 
-        $this->InstalledTables = $tables;
         return $tables;
     }
 
@@ -80,20 +106,62 @@ class Maintenance
      * Optimize tables.
      *
      * @param string|null $tables
-     *   Optional comma-separated list of table names.
+     *   Optional comma-separated list or array of table names.
      *
-     * @return mixed
+     * @return void
      */
     public function optimize($tables = null)
-    {
+    {   
         if ($tables == null) {
-            $tables = implode(', ', $this->InstalledTables);
+            $tables = $this->getTables();
+        }
+        
+        if (is_array($tables)) {
+            $tables = implode(', ', $tables);
         }
 
-        if ($this->Connection == null) {
-            $this->Connection = new \StoreCore\Database\Connection();
+        $this->Connection->query('OPTIMIZE TABLE ' . $tables);
+    }
+    
+    /**
+     * Restore the StoreCore database or a saved backup.
+     *
+     * @param string $filename
+     *   Optional filename of a SQL backup file.
+     *
+     * @return bool
+     *   Returns true on success or false on failures.
+     */
+    public function restore($filename = null)
+    {
+        try {
+            // Write pending changes to database files
+            $this->Connection->exec('FLUSH TABLES');
+            
+            // Update core tables using CREATE TABLE IF NOT EXISTS and INSERT IGNORE
+            if (is_file(__DIR__ . DIRECTORY_SEPARATOR . 'core-mysql.sql')) {
+                $sql = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'core-mysql.sql', false);
+                $this->Connection->exec($sql);
+            }
+
+            // Add new translations using INSERT IGNORE
+            if (is_file(__DIR__ . DIRECTORY_SEPARATOR . 'i18n-dml.sql')) {
+                $sql = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'i18n-dml.sql', false);
+                $this->Connection->exec($sql);
+            }
+            
+            // Add optional SQL to restore a backup
+            if ($filename !== null && is_file($filename)) {
+                $sql = file_get_contents($filename, false);
+                $this->Connection->exec($sql);
+            }
+
+        } catch (\PDOException $e) {
+            $logger->error($e->getMessage());
+            return false;
         }
-        return $this->Connection->query('OPTIMIZE TABLE ' . $tables);
+
+        return true;
     }
 
     /**
@@ -113,31 +181,18 @@ class Maintenance
     /**
      * Update the database.
      *
-     * @internal
+     * @api
      * @param void
-     * @param return bool
+     * @return bool
      */
-    private function update()
+    public function update()
     {
+        // Ignore a null logger
         $logger = new \StoreCore\FileSystem\Logger();
 
         try {
-            $this->Connection = new \StoreCore\Database\Connection();
-            $this->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
-
-            $this->Connection->exec('FLUSH TABLES');
-
-            // Update core tables using CREATE TABLE IF NOT EXISTS and INSERT IGNORE
-            if (is_file(__DIR__ . DIRECTORY_SEPARATOR . 'core-mysql.sql')) {
-                $sql = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'core-mysql.sql', false);
-                $this->Connection->exec($sql);
-            }
-
-            // Add new translations using INSERT IGNORE
-            if (is_file(__DIR__ . DIRECTORY_SEPARATOR . 'i18n-dml.sql')) {
-                $sql = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'i18n-dml.sql', false);
-                $this->Connection->exec($sql);
-            }
+            // First restore the StoreCore default database
+            $this->restore();
 
             // Execute other SQL statements
             foreach ($this->ChangeLog as $version => $sql) {
@@ -150,7 +205,6 @@ class Maintenance
             $logger->notice('StoreCore database version ' . self::VERSION . ' was installed.');
 
         } catch (\PDOException $e) {
-            $logger = new \StoreCore\FileSystem\Logger();
             $logger->error($e->getMessage());
             return false;
         }
