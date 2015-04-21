@@ -4,6 +4,9 @@
  */
 class ResponseTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @group distro
+     */
     public function testCoreResponseClassFileExists()
     {
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Response.php');
@@ -11,7 +14,9 @@ class ResponseTest extends PHPUnit_Framework_TestCase
 
     public function testVersionConstantIsDefined()
     {
-        $this->assertTrue(defined('\StoreCore\Response::VERSION'));
+        $class = new \ReflectionClass('\StoreCore\Response');
+        $this->assertTrue($class->hasConstant('VERSION'));
+
     }
 
     public function testVersionMatchesDevelopmentBranch()

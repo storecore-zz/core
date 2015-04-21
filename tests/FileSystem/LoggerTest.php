@@ -1,21 +1,33 @@
 <?php
 class LoggerTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @group distro
+     */
     public function testNullLoggerClassFileExists()
     {
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Psr/Log/NullLogger.php');
     }
 
+    /**
+     * @group distro
+     */
     public function testImplementedLoggerInterfaceFileExists()
     {
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Psr/Log/LoggerInterface.php');
     }
 
+    /**
+     * @group distro
+     */
     public function testExtendedAbstractLoggerClassFileExists()
     {
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Psr/Log/AbstractLogger.php');
     }
 
+    /**
+     * @group distro
+     */
     public function testFileSystemLoggerClassFileExists()
     {
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'FileSystem/Logger.php');
@@ -23,7 +35,8 @@ class LoggerTest extends PHPUnit_Framework_TestCase
 
     public function testVersionConstantIsDefined()
     {
-        $this->assertTrue(defined('\StoreCore\FileSystem\Logger::VERSION'));
+        $class = new \ReflectionClass('\StoreCore\FileSystem\Logger');
+        $this->assertTrue($class->hasConstant('VERSION'));
     }
 
     public function testVersionMatchesDevelopmentBranch()
@@ -37,13 +50,15 @@ class LoggerTest extends PHPUnit_Framework_TestCase
     public function testRfc5424SyslogLogLevelsAreSupported()
     {
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Psr/Log/LogLevel.php');
-        $this->assertTrue(defined('\Psr\Log\LogLevel::EMERGENCY'));
-        $this->assertTrue(defined('\Psr\Log\LogLevel::ALERT'));
-        $this->assertTrue(defined('\Psr\Log\LogLevel::CRITICAL'));
-        $this->assertTrue(defined('\Psr\Log\LogLevel::ERROR'));
-        $this->assertTrue(defined('\Psr\Log\LogLevel::WARNING'));
-        $this->assertTrue(defined('\Psr\Log\LogLevel::NOTICE'));
-        $this->assertTrue(defined('\Psr\Log\LogLevel::INFO'));
-        $this->assertTrue(defined('\Psr\Log\LogLevel::DEBUG'));
+
+        $class = new \ReflectionClass('\Psr\Log\LogLevel');
+        $this->assertTrue($class->hasConstant('EMERGENCY'));
+        $this->assertTrue($class->hasConstant('ALERT'));
+        $this->assertTrue($class->hasConstant('CRITICAL'));
+        $this->assertTrue($class->hasConstant('ERROR'));
+        $this->assertTrue($class->hasConstant('WARNING'));
+        $this->assertTrue($class->hasConstant('NOTICE'));
+        $this->assertTrue($class->hasConstant('INFO'));
+        $this->assertTrue($class->hasConstant('DEBUG'));
     }
 }

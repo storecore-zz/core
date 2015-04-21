@@ -4,6 +4,9 @@
  */
 class RegistryTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @group distro
+     */
     public function testCoreRegistryClassFileExists()
     {
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Registry.php');
@@ -11,7 +14,8 @@ class RegistryTest extends PHPUnit_Framework_TestCase
 
     public function testVersionConstantIsDefined()
     {
-        $this->assertTrue(defined('\StoreCore\Registry::VERSION'));
+        $class = new \ReflectionClass('\StoreCore\Registry');
+        $this->assertTrue($class->hasConstant('VERSION'));
     }
 
     public function testVersionMatchesDevelopmentBranch()
@@ -32,11 +36,17 @@ class RegistryTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($reflection->isCloneable());
     }
 
+    /**
+     * @group distro
+     */
     public function testRegistryConsumingAbstractControllerClassFileExists()
     {
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'AbstractController.php');
     }
 
+    /**
+     * @group distro
+     */
     public function testRegistryConsumingAbstractModelClassFileExists()
     {
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'AbstractModel.php');

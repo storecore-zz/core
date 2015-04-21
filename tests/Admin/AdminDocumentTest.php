@@ -10,6 +10,9 @@
  */
 class AdminDocumentTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @group distro
+     */
     public function testAdminDocumentClassFileExists()
     {
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Admin/Document.php');
@@ -17,7 +20,8 @@ class AdminDocumentTest extends PHPUnit_Framework_TestCase
 
     public function testVersionConstantIsDefined()
     {
-        $this->assertTrue(defined('\StoreCore\Admin\Document::VERSION'));
+        $class = new \ReflectionClass('\StoreCore\Admin\Document');
+        $this->assertTrue($class->hasConstant('VERSION'));
     }
 
     public function testVersionMatchesDevelopmentBranch()

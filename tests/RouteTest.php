@@ -4,6 +4,9 @@
  */
 class RouteTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @group distro
+     */
     public function testCoreRouteClassFileExists()
     {
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Route.php');
@@ -11,7 +14,8 @@ class RouteTest extends PHPUnit_Framework_TestCase
 
     public function testVersionConstantIsDefined()
     {
-        $this->assertTrue(defined('\StoreCore\Route::VERSION'));
+        $class = new \ReflectionClass('\StoreCore\Route');
+        $this->assertTrue($class->hasConstant('VERSION'));
     }
 
     public function testVersionMatchesDevelopmentBranch()

@@ -4,6 +4,9 @@
  */
 class RequestTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @group distro
+     */
     public function testCoreRequestClassFileExists()
     {
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Request.php');
@@ -11,7 +14,8 @@ class RequestTest extends PHPUnit_Framework_TestCase
 
     public function testVersionConstantIsDefined()
     {
-        $this->assertTrue(defined('\StoreCore\Request::VERSION'));
+        $class = new \ReflectionClass('\StoreCore\Request');
+        $this->assertTrue($class->hasConstant('VERSION'));
     }
 
     public function testVersionMatchesDevelopmentBranch()

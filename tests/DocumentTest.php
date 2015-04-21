@@ -1,13 +1,9 @@
 <?php
 class DocumentTest extends PHPUnit_Framework_TestCase
 {
-    protected function setUp()
-    {
-        if (!defined('STORECORE_VERSION')) {
-            define('STORECORE_VERSION', '0.1.0');
-        }
-    }
-
+    /**
+     * @group distro
+     */
     public function testCoreDocumentClassFileExists()
     {
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Document.php');
@@ -15,7 +11,8 @@ class DocumentTest extends PHPUnit_Framework_TestCase
 
     public function testVersionConstantIsDefined()
     {
-        $this->assertTrue(defined('\StoreCore\Document::VERSION'));
+        $class = new \ReflectionClass('\StoreCore\Document');
+        $this->assertTrue($class->hasConstant('VERSION'));
     }
 
     public function testVersionMatchesDevelopmentBranch()

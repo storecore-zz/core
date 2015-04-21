@@ -1,6 +1,9 @@
 <?php
 class SessionTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @group distro
+     */
     public function testCoreSessionClassFileExists()
     {
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Session.php');
@@ -8,7 +11,8 @@ class SessionTest extends PHPUnit_Framework_TestCase
 
     public function testVersionConstantIsDefined()
     {
-        $this->assertTrue(defined('\StoreCore\Session::VERSION'));
+        $class = new \ReflectionClass('\StoreCore\Session');
+        $this->assertTrue($class->hasConstant('VERSION'));
     }
 
     public function testVersionMatchesDevelopmentBranch()
