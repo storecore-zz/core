@@ -124,7 +124,7 @@ class SignIn extends \StoreCore\AbstractController
 
         $document = new \StoreCore\Admin\Document();
         $document->addSection($view);
-        $document->setTitle(STORECORE_I18N_COMMAND_SIGN_IN);
+        $document->setTitle(\StoreCore\I18N\COMMAND_SIGN_IN);
         
         /*
          * After 1 minute (60000 milliseconds) the current window times out,
