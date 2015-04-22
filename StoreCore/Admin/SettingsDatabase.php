@@ -75,7 +75,7 @@ class SettingsDatabase extends \StoreCore\AbstractController
             // Only select PDO drivers that are available in PHP as well as
             // supported by the StoreCore\Database.
             $supported_drivers = array(
-                'mysql' => 'MySQL (' . STORECORE_I18N_ADJECTIVE_DEFAULT . ')',
+                'mysql' => 'MySQL (' . \STORECORE\I18N\ADJECTIVE_DEFAULT . ')',
             );
             $this->View->setValues(array('available_drivers' => \PDO::getAvailableDrivers()));
             $this->View->setValues(array('supported_drivers' => $supported_drivers));
