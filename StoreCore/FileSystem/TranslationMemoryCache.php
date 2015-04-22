@@ -10,12 +10,17 @@ use \StoreCore\FileSystem\Logger as Logger;
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2015 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html
- * @package   StoreCore\Database
- * @version   0.0.1
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\I18N
+ * @version   0.0.2
  */
 class TranslationMemoryCache
 {
+    /**
+     * @var string VERSION
+     */
+    const VERSION = '0.0.2';
+
     /**
      * Rebuild the cached language packs.
      *
@@ -26,8 +31,8 @@ class TranslationMemoryCache
     {
         $logger = new Logger();
 
-        if (!defined('\StoreCore\FileSystem\CACHE_DIR')) {
-            $logger->error('Cache directory is not defined');
+        if (!defined('\\StoreCore\\FileSystem\\CACHE_DIR')) {
+            $logger->error('Cache directory is not defined.');
             return false;
         }
 
@@ -54,7 +59,7 @@ class TranslationMemoryCache
             $translations = $tm->getTranslations($language_id, false);
             $file = '<?php' . PHP_EOL;
             foreach ($translations as $name => $value) {
-                $file .= "define('{$name}', '{$value}');" . PHP_EOL;
+                $file .= "define('StoreCore\\\\I18N\\\\{$name}', '{$value}');" . PHP_EOL;
             }
             if (file_put_contents($cache_directory . $iso_code . '.php', $file) === false) {
                 $logger->error('Language cache file for ' . $iso_code . ' could not be written.');

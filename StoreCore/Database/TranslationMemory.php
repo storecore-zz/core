@@ -6,26 +6,26 @@ namespace StoreCore\Database;
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2015 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html
- * @package   StoreCore\Database
- * @version   0.0.1
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\I18N
+ * @version   0.0.2
  */
 class TranslationMemory extends \StoreCore\AbstractModel
 {
     /**
-     * @type string VERSION
+     * @var string VERSION
      */
-    const VERSION = '0.0.1';
+    const VERSION = '0.0.2';
 
     /**
-     * @type int $LanguageID
-     * @type int $ParentLanguageID
+     * @var int $LanguageID
+     * @var int $ParentLanguageID
      */
     private $LanguageID = 2057;
     private $ParentLanguageID = 2057;
 
     /**
-     * @type null|array $Translations
+     * @var null|array $Translations
      */
     private $Translations;
 
@@ -33,7 +33,9 @@ class TranslationMemory extends \StoreCore\AbstractModel
      * Load translations as name/value pairs.
      *
      * @param int|string $language_code
-     *     Internal language identifier (integer) or ISO language code (string).
+     *   Internal language identifier (integer) or ISO language code (string).
+     *   The numeric language ID is equal to the primary key and the
+     *   self-referencing foreign key.
      *
      * @return array
      */
@@ -68,7 +70,7 @@ class TranslationMemory extends \StoreCore\AbstractModel
      */
     private function readTranslations($language_id, $storefront)
     {
-        $sql = "SELECT SQL_NO_CACHE CONCAT('STORECORE_I18N_', translation_id) AS name, translation AS value FROM sc_translation_memory WHERE language_id = " . (int)$language_id;
+        $sql = "SELECT translation_id AS name, translation AS value FROM sc_translation_memory WHERE language_id = " . (int)$language_id;
         if ($storefront) {
             $sql .= ' AND is_admin_only = 0';
         }
