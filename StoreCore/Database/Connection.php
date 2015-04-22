@@ -31,7 +31,7 @@ class Connection extends \PDO
         if ($dsn == null) {
             $dsn = \StoreCore\Database\DRIVER
                 . ':dbname=' . \StoreCore\Database\DEFAULT_DATABASE
-                . ';host=' . STORECORE_DATABASE_DEFAULT_HOST
+                . ';host=' . \StoreCore\Database\DEFAULT_HOST
                 . ';charset=utf8';
         }
   

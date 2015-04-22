@@ -27,9 +27,9 @@ class Installer extends \StoreCore\AbstractController
                     if ($this->checkDatabaseStructure()) {
                         if ($this->checkUsers()) {
                             $config = new \StoreCore\Admin\Configurator();
-                            $config->set('STORECORE_INSTALLED', STORECORE_VERSION);
+                            $config->set('StoreCore\\VERSION_INSTALLED', \StoreCore\VERSION);
                             $config->save();
-                            $this->Logger->notice('Completed installation of StoreCore version ' . STORECORE_VERSION . '.');
+                            $this->Logger->notice('Completed installation of StoreCore version ' . \StoreCore\VERSION . '.');
 
                             $response = new \StoreCore\Response($this->Registry);
                             $response->redirect('/admin/sign-in/');
@@ -50,7 +50,7 @@ class Installer extends \StoreCore\AbstractController
     private function checkDatabaseConnection()
     {
         try {
-            $dbh = new \PDO($this->getDSN(), STORECORE_DATABASE_USERNAME, STORECORE_DATABASE_PASSWORD, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
+            $dbh = new \PDO($this->getDSN(), \StoreCore\Database\DEFAULT_USERNAME, \StoreCore\Database\DEFAULT_PASSWORD, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
         } catch (\PDOException $e) {
             $this->Logger->critical($e->getMessage());
             if ($this->Request->getRequestPath() !== '/admin/settings/database/') {
@@ -76,32 +76,18 @@ class Installer extends \StoreCore\AbstractController
     private function checkDatabaseStructure()
     {
         try {
-            $dbh = new \PDO($this->getDSN(), STORECORE_DATABASE_USERNAME, STORECORE_DATABASE_PASSWORD, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
-
-            $tables = array();
-            $stmt = $dbh->prepare('SHOW TABLES');
-            if ($stmt->execute()) {
-                while ($row = $stmt->fetch(\PDO::FETCH_NUM)) {
-                    if (strpos($row[0], 'sc_', 0) === 0) {
-                        $tables[] = $row[0];
-                    }
-                }
-            }
+            $maintenance_module = new \StoreCore\Database\Maintenance($this->Registry);
+            $tables = $maintenance_module->getTables();
 
             // Install all core tables
             if (count($tables) == 0) {
                 $this->Logger->notice('No tables found: installing database.');
-                $dbh->setAttribute(\PDO::ATTR_EMULATE_PREPARES, 0);
-                $sql = file_get_contents(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Database' . DIRECTORY_SEPARATOR . 'core-mysql.sql', false);
-                $dbh->exec($sql);
-                $sql = file_get_contents(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Database' . DIRECTORY_SEPARATOR . 'i18n-dml.sql', false);
-                $dbh->exec($sql);
-                $dbh = null;
+                $maintenance_module->restore();
 
                 $config = new \StoreCore\Admin\Configurator();
-                $config->set('STORECORE_DATABASE_INSTALLED', STORECORE_VERSION);
+                $config->set('StoreCore\\Database\\VERSION_INSTALLED', StoreCore\VERSION);
                 $config->save();
-                $this->Logger->notice('StoreCore database version ' . STORECORE_VERSION . ' was installed.');
+                $this->Logger->notice('StoreCore database version ' . StoreCore\VERSION . ' was installed.');
             }
 
         } catch (\PDOException $e) {
@@ -123,13 +109,13 @@ class Installer extends \StoreCore\AbstractController
         $errors = array();
 
         $files = array(
-            STORECORE_FILESYSTEM_STOREFRONT_ROOT . 'config.php' => true,
-            STORECORE_FILESYSTEM_CACHE . 'data' . DIRECTORY_SEPARATOR . 'de-DE.php' => true,
-            STORECORE_FILESYSTEM_CACHE . 'data' . DIRECTORY_SEPARATOR . 'en-GB.php' => true,
-            STORECORE_FILESYSTEM_CACHE . 'data' . DIRECTORY_SEPARATOR . 'fr-FR.php' => true,
-            STORECORE_FILESYSTEM_CACHE . 'data' . DIRECTORY_SEPARATOR . 'nl-NL.php' => true,
-            STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Database' . DIRECTORY_SEPARATOR . 'core-mysql.sql' => false,
-            STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Database' . DIRECTORY_SEPARATOR . 'i18n-dml.sql' => false,
+            \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.php' => true,
+            \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'de-DE.php' => true,
+            \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'en-GB.php' => true,
+            \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'fr-FR.php' => true,
+            \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'nl-NL.php' => true,
+            \StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Database' . DIRECTORY_SEPARATOR . 'core-mysql.sql' => false,
+            \StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Database' . DIRECTORY_SEPARATOR . 'i18n-dml.sql' => false,
         );
         foreach ($files as $filename => $must_be_writable) {
             if (!is_file($filename)) {
@@ -140,8 +126,8 @@ class Installer extends \StoreCore\AbstractController
         }
 
         $folders = array(
-            STORECORE_FILESYSTEM_CACHE => true,
-            STORECORE_FILESYSTEM_LOGS => true,
+            \StoreCore\FileSystem\CACHE_DIR => true,
+            \StoreCore\FileSystem\LOGS_DIR => true,
         );
         foreach ($folders as $filename => $must_be_writable) {
             if (!is_dir($filename)) {
@@ -186,10 +172,10 @@ class Installer extends \StoreCore\AbstractController
             $errors[] = 'PHP extension PDO is not loaded.';
         }
 
-        if (STORECORE_DATABASE_DRIVER === 'mysql' && !extension_loaded('pdo_mysql')) {
+        if (\StoreCore\Database\DRIVER === 'mysql' && !extension_loaded('pdo_mysql')) {
             $errors[] = 'PHP extension PDO for MySQL (pdo_mysql) is not loaded.';
-        } elseif (!in_array(STORECORE_DATABASE_DRIVER, \PDO::getAvailableDrivers(), true)) {
-            $errors[] = 'PDO driver ' . STORECORE_DATABASE_DRIVER . ' is not available.';
+        } elseif (!in_array(\StoreCore\Database\DRIVER, \PDO::getAvailableDrivers(), true)) {
+            $errors[] = 'PDO driver ' . \StoreCore\Database\DRIVER . ' is not available.';
         }
 
         if (count($errors) == 0) {
@@ -341,9 +327,9 @@ class Installer extends \StoreCore\AbstractController
      */
     private function getDSN()
     {
-        return STORECORE_DATABASE_DRIVER
-            . ':dbname=' . STORECORE_DATABASE_DEFAULT_DATABASE
-            . ';host=' . STORECORE_DATABASE_DEFAULT_HOST
+        return \StoreCore\Database\DRIVER
+            . ':dbname=' . \StoreCore\Database\DEFAULT_DATABASE
+            . ';host=' . \StoreCore\Database\DEFAULT_HOST
             . ';charset=utf8';
     }
 }

@@ -37,7 +37,10 @@ class Maintenance extends \StoreCore\AbstractModel
          * If the currently installed database version is older than this
          * maintenance module, an update is available.
          */
-        if (version_compare(STORECORE_DATABASE_INSTALLED, self::VERSION, '<') == true) {
+        if (
+            !defined('StoreCore\\Database\\VERSION_INSTALLED')
+            || version_compare(\StoreCore\Database\VERSION_INSTALLED, self::VERSION, '<')
+        ) {
             $this->UpdateAvailable = true;
         }
         
@@ -201,7 +204,7 @@ class Maintenance extends \StoreCore\AbstractModel
                 }
             }
 
-            $this->saveConfigurationSetting('STORECORE_DATABASE_INSTALLED', $version);
+            $this->saveConfigurationSetting('StoreCore\\Database\\VERSION_INSTALLED', $version);
             $logger->notice('StoreCore database version ' . self::VERSION . ' was installed.');
 
         } catch (\PDOException $e) {
