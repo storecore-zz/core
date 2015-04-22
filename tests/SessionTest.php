@@ -6,7 +6,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
      */
     public function testCoreSessionClassFileExists()
     {
-        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Session.php');
+        $this->assertFileExists(\StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Session.php');
     }
 
     public function testVersionConstantIsDefined()

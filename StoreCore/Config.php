@@ -1,4 +1,6 @@
 <?php
+namespace StoreCore;
+
 /**
  * Configuration Loader and Reader
  *
@@ -79,7 +81,7 @@ class Config
             if (array_key_exists(1, $namespace)) {
                 $namespace[1] = ucfirst(strtolower($namespace[1]));
             }
-            $namespace = '\\' . implode('\\', $namespace);
+            $namespace = implode('\\', $namespace);
 
             $name = $namespace . '\\' . strtoupper($name[1]);
 

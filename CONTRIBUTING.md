@@ -61,10 +61,10 @@ from the [PSR-4 Autoloader] recommendation:
 
 ## 2.3. Global Constants
 
-Global constants mimic the StoreCore namespace and sub-namespaces with a prefix.
+Global constants match the StoreCore namespace and sub-namespaces prefixes.
 For example, the `StoreCore\Database` namespace uses constants with a
-`STORECORE_DATABASE` prefix in constant names like `STORECORE_DATABASE_USERNAME`
-and `STORECORE_DATABASE_PASSWORD`.
+`StoreCore\Database` prefix in constant names like `StoreCore\Database\DEFAULT_USERNAME`
+and `StoreCore\Database\DEFAULT_PASSWORD`.
 
 
 # 3. Security

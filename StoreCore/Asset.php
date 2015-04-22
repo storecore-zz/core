@@ -64,7 +64,7 @@ class Asset
             return false;
         }
 
-        return is_file(STORECORE_FILESYSTEM_STOREFRONT_ROOT . 'assets' . DIRECTORY_SEPARATOR . $this->FileType . DIRECTORY_SEPARATOR . $this->FileName);
+        return is_file(\StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . $this->FileType . DIRECTORY_SEPARATOR . $this->FileName);
     }
 
     /**
@@ -81,9 +81,9 @@ class Asset
         header('Cache-Control: public, max-age=31536000', true);
         header('Pragma: cache', true);
         header('Content-Type: ' . $this->Types[$this->FileType], true);
-        header('X-Powered-By: StoreCore/' . STORECORE_VERSION, true);
+        header('X-Powered-By: StoreCore/' . \StoreCore\VERSION, true);
 
-        $file = STORECORE_FILESYSTEM_STOREFRONT_ROOT . 'assets' . DIRECTORY_SEPARATOR . $this->FileType . DIRECTORY_SEPARATOR . $this->FileName;
+        $file = \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . $this->FileType . DIRECTORY_SEPARATOR . $this->FileName;
 
         $last_modified = filemtime($file);
         $etag = md5_file($file);

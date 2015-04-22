@@ -1,19 +1,19 @@
 <div class="container">
-  <h1><i class="fa fa-sign-in"></i> <?php echo STORECORE_I18N_COMMAND_SIGN_IN ?></h1>
+  <h1><i class="fa fa-sign-in"></i> <?php echo \StoreCore\I18N\COMMAND_SIGN_IN ?></h1>
   <form action="/admin/sign-in/" autocomplete="off" method="post" onsubmit="this.style.cursor='wait';document.getElementById('submit').setAttribute('disabled', 'disabled');" target="_top">
     <table>
       <tr>
-        <th><label for="username"><?php echo STORECORE_I18N_HEADING_USERNAME ?></label></th>
+        <th><label for="username"><?php echo \StoreCore\I18N\HEADING_USERNAME ?></label></th>
         <td><input autofocus id="username" name="username" required type="text"></td>
       </tr>
       <tr>
-        <th><label for="password"><?php echo STORECORE_I18N_HEADING_PASSWORD ?></label></th>
+        <th><label for="password"><?php echo \StoreCore\I18N\HEADING_PASSWORD ?></label></th>
         <td><input id="password" name="password" pattern=".{7,}" required type="password" value=""></td>
       </tr>
     </table>
     <div>
       <input name="token" type="hidden" value="<?php echo $token ?>">
-      <input id="submit" type="submit" value="<?php echo STORECORE_I18N_COMMAND_SIGN_IN ?>">
+      <input id="submit" type="submit" value="<?php echo \StoreCore\I18N\COMMAND_SIGN_IN ?>">
     </div>
   </form>
 </div>

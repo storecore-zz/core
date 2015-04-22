@@ -9,7 +9,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
      */
     public function testCoreRouteClassFileExists()
     {
-        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Route.php');
+        $this->assertFileExists(\StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Route.php');
     }
 
     public function testVersionConstantIsDefined()

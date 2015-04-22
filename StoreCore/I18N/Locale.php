@@ -49,7 +49,7 @@ class Locale
 
         $content_negotiator = new \StoreCore\I18N\Language();
         $locale = $content_negotiator->negotiate($supported_languages, $default_language);
-        include STORECORE_FILESYSTEM_CACHE . 'data' . DIRECTORY_SEPARATOR . $locale . '.php';
+        include \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . $locale . '.php';
         return $locale;
     }
 }

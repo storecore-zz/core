@@ -9,7 +9,7 @@ class ResponseTest extends PHPUnit_Framework_TestCase
      */
     public function testCoreResponseClassFileExists()
     {
-        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Response.php');
+        $this->assertFileExists(\StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Response.php');
     }
 
     public function testVersionConstantIsDefined()

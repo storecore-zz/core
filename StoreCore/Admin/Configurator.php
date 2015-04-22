@@ -5,36 +5,25 @@ class Configurator
 {
     /**
      * @var array $DefaultSettings
-     *     Default settings from the global config.ini configuration file.
+     *   Default settings from the global config.ini configuration file.
      */
-    private $DefaultSettings = array(
-        'STORECORE_KILL_SWITCH' => '',
-        'STORECORE_MAINTENANCE_MODE' => '',
-        'STORECORE_STATISTICS' => 1,
-        'STORECORE_NULL_LOGGER' => '',
-
-        'STORECORE_DATABASE_DRIVER' => 'mysql',
-        'STORECORE_DATABASE_DEFAULT_HOST' => 'localhost',
-        'STORECORE_DATABASE_DEFAULT_DATABASE' => 'test',
-        'STORECORE_DATABASE_USERNAME' => 'root',
-        'STORECORE_DATABASE_PASSWORD' => '',
-    );
+    private $DefaultSettings = array();
 
     /**
      * @var array $IgnoredSettings
-     *     Settings that MAY be set manually in the config.ini configuration
-     *     file and settings that SHOULD NOT be overwritten by config.php.
+     *   Settings that MAY be set manually in the config.ini configuration file
+     *   and settings that SHOULD NOT be overwritten by config.php.
      */
     private $IgnoredSettings = array(
-        'STORECORE_FILESYSTEM_CACHE' => true,
-        'STORECORE_FILESYSTEM_LIBRARY_ROOT' => true,
-        'STORECORE_FILESYSTEM_LOGS' => true,
-        'STORECORE_FILESYSTEM_STOREFRONT_ROOT' => true,
+        'StoreCore\\FileSystem\\CACHE_DIR' => true,
+        'StoreCore\\FileSystem\\LIBRARY_ROOT_DIR' => true,
+        'StoreCore\\FileSystem\\LOGS_DIR' => true,
+        'StoreCore\\FileSystem\\STOREFRONT_ROOT_DIR' => true,
 
-        'STORECORE_VERSION' => true,
-        'STORECORE_MAJOR_VERSION' => true,
-        'STORECORE_MINOR_VERSION' => true,
-        'STORECORE_PATCH_VERSION' => true,
+        'StoreCore\\VERSION' => true,
+        'StoreCore\\MAJOR_VERSION' => true,
+        'StoreCore\\MINOR_VERSION' => true,
+        'StoreCore\\PATCH_VERSION' => true,
     );
 
     /**
@@ -77,6 +66,8 @@ class Configurator
     }
 
     /**
+     * Save the config.php configuration file.
+     *
      * @param void
      * @return bool
      */
@@ -85,6 +76,14 @@ class Configurator
         $file = '<?php' . "\n";
         foreach ($this->Settings as $name => $value)
         {
+            /*
+             * Namespace constants like \Foo\BAR_BAZ with a trailing backslash
+             * must be defined without the trailing backslash in a PHP define:
+             * define('Foo\\BAR_BAZ', 1).
+             */
+            $name = ltrim($name, '\\');
+            $name = str_ireplace('\\', '\\\\', $name);
+            
             if (is_numeric($value)) {
                 $file .= "define('{$name}', {$value});";
             } else {
@@ -99,7 +98,7 @@ class Configurator
             $file .= "\n";
         }
 
-        $return = file_put_contents(STORECORE_FILESYSTEM_STOREFRONT_ROOT . 'config.php', $file, LOCK_EX);
+        $return = file_put_contents(\StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.php', $file, LOCK_EX);
         if ($return === false) {
             return false;
         } else {

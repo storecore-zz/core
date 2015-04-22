@@ -29,15 +29,15 @@ class Connection extends \PDO
     public function __construct($dsn = null, $username = null, $password = null)
     {
         if ($dsn == null) {
-            $dsn = STORECORE_DATABASE_DRIVER
-                . ':dbname=' . STORECORE_DATABASE_DEFAULT_DATABASE
+            $dsn = \StoreCore\Database\DRIVER
+                . ':dbname=' . \StoreCore\Database\DEFAULT_DATABASE
                 . ';host=' . STORECORE_DATABASE_DEFAULT_HOST
                 . ';charset=utf8';
         }
   
         if ($username == null) {
-            $username = STORECORE_DATABASE_USERNAME;
-            $password = STORECORE_DATABASE_PASSWORD;
+            $username = \StoreCore\Database\DEFAULT_USERNAME;
+            $password = \StoreCore\Database\DEFAULT_PASSWORD;
         }
 
         try {

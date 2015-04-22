@@ -9,7 +9,7 @@ class RegistryTest extends PHPUnit_Framework_TestCase
      */
     public function testCoreRegistryClassFileExists()
     {
-        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Registry.php');
+        $this->assertFileExists(\StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Registry.php');
     }
 
     public function testVersionConstantIsDefined()
@@ -41,7 +41,7 @@ class RegistryTest extends PHPUnit_Framework_TestCase
      */
     public function testRegistryConsumingAbstractControllerClassFileExists()
     {
-        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'AbstractController.php');
+        $this->assertFileExists(\StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'AbstractController.php');
     }
 
     /**
@@ -49,6 +49,6 @@ class RegistryTest extends PHPUnit_Framework_TestCase
      */
     public function testRegistryConsumingAbstractModelClassFileExists()
     {
-        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'AbstractModel.php');
+        $this->assertFileExists(\StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'AbstractModel.php');
     }
 }

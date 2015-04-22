@@ -30,14 +30,14 @@ class Logger extends \Psr\Log\AbstractLogger
      *     for hourly log files.
      *
      * @todo
-     *     Add a configurable definition for the STORECORE_FILESYSTEM_LOGS constant.
+     *     Add a configurable definition for the \StoreCore\FileSystem\LOGS_DIR constant.
      */
     public function __construct($filename = null)
     {
         if ($filename == null) {
             $filename = date('YmdH') . '.log';
-            if (defined('STORECORE_FILESYSTEM_LOGS')) {
-                $filename = STORECORE_FILESYSTEM_LOGS . $filename;
+            if (defined('\StoreCore\FileSystem\LOGS_DIR')) {
+                $filename = \StoreCore\FileSystem\LOGS_DIR . $filename;
             }
         }
         $this->Filename = $filename;

@@ -40,7 +40,7 @@ class Document extends \StoreCore\Document
      * @var array $MetaData
      */
     protected $MetaData = array(
-        'generator' => 'StoreCore ' . STORECORE_VERSION,
+        'generator' => 'StoreCore ' . \StoreCore\VERSION,
         'robots' => 'noindex,nofollow',
         'viewport' => 'width=device-width, initial-scale=1',
     );

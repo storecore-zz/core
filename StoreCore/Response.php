@@ -103,7 +103,7 @@ class Response extends AbstractModel
             foreach ($this->Headers as $header) {
                 header($header, true);
             }
-            header('X-Powered-By: StoreCore/' . STORECORE_VERSION, true);
+            header('X-Powered-By: StoreCore/' . \StoreCore\VERSION, true);
             header('X-UA-Compatible: IE=edge', true);
         }
 

@@ -6,7 +6,7 @@ class LoggerTest extends PHPUnit_Framework_TestCase
      */
     public function testNullLoggerClassFileExists()
     {
-        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Psr/Log/NullLogger.php');
+        $this->assertFileExists(\StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Psr/Log/NullLogger.php');
     }
 
     /**
@@ -14,7 +14,7 @@ class LoggerTest extends PHPUnit_Framework_TestCase
      */
     public function testImplementedLoggerInterfaceFileExists()
     {
-        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Psr/Log/LoggerInterface.php');
+        $this->assertFileExists(\StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Psr/Log/LoggerInterface.php');
     }
 
     /**
@@ -22,7 +22,7 @@ class LoggerTest extends PHPUnit_Framework_TestCase
      */
     public function testExtendedAbstractLoggerClassFileExists()
     {
-        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Psr/Log/AbstractLogger.php');
+        $this->assertFileExists(\StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Psr/Log/AbstractLogger.php');
     }
 
     /**
@@ -30,7 +30,7 @@ class LoggerTest extends PHPUnit_Framework_TestCase
      */
     public function testFileSystemLoggerClassFileExists()
     {
-        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'FileSystem/Logger.php');
+        $this->assertFileExists(\StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'FileSystem/Logger.php');
     }
 
     public function testVersionConstantIsDefined()
@@ -49,7 +49,7 @@ class LoggerTest extends PHPUnit_Framework_TestCase
      */
     public function testRfc5424SyslogLogLevelsAreSupported()
     {
-        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT . 'Psr/Log/LogLevel.php');
+        $this->assertFileExists(\StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Psr/Log/LogLevel.php');
 
         $class = new \ReflectionClass('\Psr\Log\LogLevel');
         $this->assertTrue($class->hasConstant('EMERGENCY'));

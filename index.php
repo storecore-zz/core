@@ -23,35 +23,29 @@
 // Load configuration
 require 'version.php';
 require 'config.php';
-$configuration = parse_ini_file('config.ini', false);
-foreach ($configuration as $name => $value) {
-    $name = str_ireplace('.', '_', $name);
-    $name = strtoupper($name);
-    if (!defined($name)) {
-        define($name, $value);
-    }
-}
-unset($configuration, $name, $value);
 
 // Bootstrap
-if (!defined('STORECORE_FILESYSTEM_LIBRARY_ROOT')) {
-    define('STORECORE_FILESYSTEM_LIBRARY_ROOT', __DIR__ . DIRECTORY_SEPARATOR . 'StoreCore' . DIRECTORY_SEPARATOR);
+if (!defined('\\StoreCore\\FileSystem\\LIBRARY_ROOT_DIR')) {
+    define('StoreCore\\FileSystem\\LIBRARY_ROOT_DIR', __DIR__ . DIRECTORY_SEPARATOR . 'StoreCore' . DIRECTORY_SEPARATOR);
 }
-require STORECORE_FILESYSTEM_LIBRARY_ROOT . 'bootloader.php';
+require \StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'bootloader.php';
+
+// Parse config.ini overrides
+\StoreCore\Config::parse('config.ini');
 
 // Working directory
-define('STORECORE_FILESYSTEM_STOREFRONT_ROOT', __DIR__ . DIRECTORY_SEPARATOR);
+define('StoreCore\\FileSystem\\STOREFRONT_ROOT_DIR', __DIR__ . DIRECTORY_SEPARATOR);
 
 // Cache directory
-if (!defined('STORECORE_FILESYSTEM_CACHE')) {
-    define('STORECORE_FILESYSTEM_CACHE', STORECORE_FILESYSTEM_STOREFRONT_ROOT . 'cache' . DIRECTORY_SEPARATOR);
+if (!defined('\\StoreCore\\FileSystem\\CACHE_DIR')) {
+    define('StoreCore\\FileSystem\\CACHE_DIR', \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'cache' . DIRECTORY_SEPARATOR);
 }
 
 // Logging
-if (!defined('STORECORE_FILESYSTEM_LOGS')) {
-    define('STORECORE_FILESYSTEM_LOGS', STORECORE_FILESYSTEM_STOREFRONT_ROOT . 'logs' . DIRECTORY_SEPARATOR);
+if (!defined('\\StoreCore\\FileSystem\\LOGS_DIR')) {
+    define('StoreCore\\FileSystem\\LOGS_DIR', \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'logs' . DIRECTORY_SEPARATOR);
 }
-if (STORECORE_NULL_LOGGER) {
+if (defined('\\StoreCore\\NULL_LOGGER') && \StoreCore\NULL_LOGGER == true) {
     $logger = new \Psr\Log\NullLogger();
 } else {
     $logger = new \StoreCore\FileSystem\Logger();
@@ -64,7 +58,7 @@ $request = new \StoreCore\Request();
 $registry->set('Request', $request);
 
 $session = new \StoreCore\Session();
-if (STORECORE_KILL_SWITCH) {
+if (defined('\\StoreCore\\KILL_SWITCH') && \StoreCore\KILL_SWITCH == true) {
     $response = new \StoreCore\Response($registry);
     $session->destroy();
     $response->setCompression(0);
@@ -120,7 +114,7 @@ switch ($request->getRequestPath()) {
         }
         unset($pathinfo);
         
-        if (!defined('STORECORE_INSTALLED')) {
+        if (!defined('StoreCore\\VERSION_INSTALLED')) {
             $route = new \StoreCore\Route('/install/', '\StoreCore\Admin\FrontController', 'install');
         } elseif (strpos($request->getRequestPath(), '/admin/', 0) === 0) {
             $route = new \StoreCore\Route('/admin/', '\StoreCore\Admin\FrontController');
@@ -136,7 +130,7 @@ if ($route !== false) {
 }
 
 // Statistics and analytics
-if (STORECORE_STATISTICS) {
+if (\StoreCore\STATISTICS == true) {
     $request = $registry->get('Request');
     $user_agent = $request->getUserAgent();
     $user_agent_mapper = new \StoreCore\Database\UserAgent($user_agent);
