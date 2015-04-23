@@ -7,20 +7,31 @@ class Configurator
      * @var array $DefaultSettings
      *   Default settings from the global config.ini configuration file.
      */
-    private $DefaultSettings = array();
+    private $DefaultSettings = array(
+        'StoreCore\\Database\\DRIVER'           => 'mysql',
+        'StoreCore\\Database\\DEFAULT_HOST'     => 'localhost',
+        'StoreCore\\Database\\DEFAULT_DATABASE' => 'test',
+        'StoreCore\\Database\\DEFAULT_USERNAME' => 'root',
+        'StoreCore\\Database\\DEFAULT_PASSWORD' => '',
+    );
 
     /**
      * @var array $IgnoredSettings
      *   Settings that MAY be set manually in the config.ini configuration file
-     *   and settings that SHOULD NOT be overwritten by config.php.
+     *   and settings that SHOULD NOT be defined by config.php.
      */
     private $IgnoredSettings = array(
-        'StoreCore\\FileSystem\\CACHE_DIR' => true,
-        'StoreCore\\FileSystem\\LIBRARY_ROOT_DIR' => true,
-        'StoreCore\\FileSystem\\LOGS_DIR' => true,
+        'StoreCore\\KILL_SWITCH'      => true,
+        'StoreCore\\MAINTENANCE_MODE' => true,
+        'StoreCore\\NULL_LOGGER'      => true,
+        'StoreCore\\STATISTICS'       => true,
+    
+        'StoreCore\\FileSystem\\CACHE_DIR'           => true,
+        'StoreCore\\FileSystem\\LIBRARY_ROOT_DIR'    => true,
+        'StoreCore\\FileSystem\\LOGS_DIR'            => true,
         'StoreCore\\FileSystem\\STOREFRONT_ROOT_DIR' => true,
 
-        'StoreCore\\VERSION' => true,
+        'StoreCore\\VERSION'       => true,
         'StoreCore\\MAJOR_VERSION' => true,
         'StoreCore\\MINOR_VERSION' => true,
         'StoreCore\\PATCH_VERSION' => true,
@@ -43,8 +54,8 @@ class Configurator
             foreach ($defined_constants as $name => $value) {
                 $name = strtoupper($name);
                 if (
-                    strpos($name, 'STORECORE_', 0) === 0
-                    && strpos($name, 'STORECORE_I18N_', 0) !== 0
+                    strpos($name, 'StoreCore\\', 0) === 0
+                    && strpos($name, 'StoreCore\\I18N\\', 0) !== 0
                 ) {
                     if (
                         array_key_exists($name, $this->DefaultSettings) === false
@@ -113,9 +124,22 @@ class Configurator
      */
     public function set($name, $value)
     {
-        $name = strtoupper($name);
         if (!array_key_exists($name, $this->IgnoredSettings)) {
             $this->Settings[$name] = $value;
         }
+    }
+
+    /**
+     * Write a single setting to the config.php configuration file.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return bool
+     */
+    public static function write($name, $value)
+    {
+        $writer = new \StoreCore\Admin\Configurator();
+        $writer->set($name, $value);
+        return $writer->save();
     }
 }
