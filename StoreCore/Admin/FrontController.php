@@ -43,6 +43,7 @@ class FrontController extends AbstractController implements LoggerAwareInterface
         $this->Logger->notice('Installer loaded.');
         $route = new Route('/install/', '\StoreCore\Admin\Installer');
         $route->dispatch();
+        exit;
     }
 
     /**
