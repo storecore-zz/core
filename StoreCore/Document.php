@@ -41,7 +41,7 @@ class Document
      * @var array $MetaData
      */
     protected $MetaData = array(
-        'generator' => 'StoreCore ' . \StoreCore\VERSION,
+        'generator' => 'StoreCore',
         'rating' => 'general',
         'robots' => 'index,follow',
         'viewport' => 'width=device-width, initial-scale=1',
