@@ -6,13 +6,18 @@ namespace StoreCore\FileSystem;
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2014-2015 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html GPLv3
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\Security
  * @version   0.1.0
  */
 class Logger extends \Psr\Log\AbstractLogger
 {
-    /** @type string VERSION */
+    /**
+     * @var string VERSION
+     *   Semantic version (SemVer)
+     */
     const VERSION = '0.1.0';
+
 
     /** @type resource $Handle */
     private $Handle;
@@ -23,19 +28,19 @@ class Logger extends \Psr\Log\AbstractLogger
     /** @type string $OutputBuffer */
     private $OutputBuffer = '';
 
+
     /**
      * @param string $filename
-     *     Optional name of the log file, with or without a trailing path.
-     *     If the filename is not set, it defaults to the YYYYMMDDHH.log format
-     *     for hourly log files.
+     *   Optional name of the log file, with or without a trailing path.  If
+     *   the filename is not set, it defaults to the YYYYMMDD.log format with
+     *   a YYYY-MM-DD date for daily log files.
      *
-     * @todo
-     *     Add a configurable definition for the \StoreCore\FileSystem\LOGS_DIR constant.
+     * @return void
      */
     public function __construct($filename = null)
     {
         if ($filename == null) {
-            $filename = date('YmdH') . '.log';
+            $filename = date('Ymd') . '.log';
             if (defined('\StoreCore\FileSystem\LOGS_DIR')) {
                 $filename = \StoreCore\FileSystem\LOGS_DIR . $filename;
             }
@@ -44,7 +49,10 @@ class Logger extends \Psr\Log\AbstractLogger
         $this->Handle = fopen($filename, 'a');
     }
 
-
+    /**
+     * @param void
+     * @return void
+     */
     public function __destruct()
     {
         $this->flush();
