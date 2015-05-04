@@ -588,3 +588,98 @@ CREATE TABLE IF NOT EXISTS sc_addresses (
     ON DELETE CASCADE  ON UPDATE CASCADE,
   INDEX (postcode)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+
+-- 
+-- Catalog
+--
+
+CREATE TABLE IF NOT EXISTS sc_brands (
+  brand_id           SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  global_brand_name  VARCHAR(255)          NOT NULL,
+  PRIMARY KEY (brand_id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_brand_names (
+  brand_id          SMALLINT(5) UNSIGNED  NOT NULL,
+  language_id       SMALLINT(5) UNSIGNED  NOT NULL,
+  local_brand_name  VARCHAR(255)          NOT NULL,
+  PRIMARY KEY (brand_id,language_id),
+  CONSTRAINT FOREIGN KEY (brand_id) REFERENCES sc_brands (brand_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT FOREIGN KEY (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+
+CREATE TABLE IF NOT EXISTS sc_categories (
+  category_id  SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  parent_id    SMALLINT(5) UNSIGNED  NULL  DEFAULT NULL,
+  PRIMARY KEY (category_id),
+  CONSTRAINT FOREIGN KEY (parent_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_category_names (
+  category_id    SMALLINT(5) UNSIGNED  NOT NULL,
+  language_id    SMALLINT(5) UNSIGNED  NOT NULL,
+  category_name  VARCHAR(255)          NOT NULL,
+  PRIMARY KEY (category_id,language_id),
+  CONSTRAINT FOREIGN KEY (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT FOREIGN KEY (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_store_categories (
+  store_id     TINYINT(3) UNSIGNED   NOT NULL,
+  category_id  SMALLINT(5) UNSIGNED  NOT NULL,
+  PRIMARY KEY (store_id,category_id),
+  CONSTRAINT FOREIGN KEY (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT FOREIGN KEY (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+
+CREATE TABLE IF NOT EXISTS sc_products (
+  product_id  MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  ean         CHAR(13)               NULL  DEFAULT NULL,
+  jan         VARCHAR(13)            NULL  DEFAULT NULL,
+  upc         CHAR(12)               NULL  DEFAULT NULL,
+  isbn        VARCHAR(13)            NULL  DEFAULT NULL,
+  mpn         VARCHAR(255)           NULL  DEFAULT NULL,
+  PRIMARY KEY (product_id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_brand_products (
+  brand_id    SMALLINT(5) UNSIGNED   NOT NULL,
+  product_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
+  PRIMARY KEY (brand_id,product_id),
+  CONSTRAINT FOREIGN KEY (brand_id) REFERENCES sc_brands (brand_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT FOREIGN KEY (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_category_products (
+  category_id  SMALLINT(5) UNSIGNED   NOT NULL,
+  product_id   MEDIUMINT(8) UNSIGNED  NOT NULL,
+  PRIMARY KEY (category_id,product_id),
+  CONSTRAINT FOREIGN KEY (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT FOREIGN KEY (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+
+CREATE TABLE IF NOT EXISTS sc_tags (
+  tag_id  SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  PRIMARY KEY (tag_id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_tag_keywords (
+  tag_id       SMALLINT(5) UNSIGNED  NOT NULL,
+  language_id  SMALLINT(5) UNSIGNED  NOT NULL,
+  keyword      VARCHAR(255)          NOT NULL,
+  PRIMARY KEY (tag_id,language_id),
+  CONSTRAINT FOREIGN KEY (tag_id) REFERENCES sc_tags (tag_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT FOREIGN KEY (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_product_tags (
+  product_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
+  tag_id      SMALLINT(5) UNSIGNED   NOT NULL,
+  PRIMARY KEY (product_id,tag_id),
+  CONSTRAINT FOREIGN KEY (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT FOREIGN KEY (tag_id) REFERENCES sc_tags (tag_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
