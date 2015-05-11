@@ -909,14 +909,33 @@ CREATE TABLE IF NOT EXISTS sc_store_categories (
   CONSTRAINT FOREIGN KEY (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+CREATE TABLE IF NOT EXISTS sc_product_availability_types (
+  availability_id    TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  item_availability  VARCHAR(255)         NOT NULL  COMMENT 'Schema.org ItemAvailability',
+  PRIMARY KEY (availability_id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+INSERT IGNORE INTO sc_product_availability_types
+    (availability_id, item_availability)
+  VALUES
+    (1, 'Discontinued'),
+    (2, 'InStock'),
+    (3, 'InStoreOnly'),
+    (4, 'LimitedAvailability'),
+    (5, 'OnlineOnly'),
+    (6, 'OutOfStock'),
+    (7, 'PreOrder'),
+    (8, 'SoldOut');
 
 CREATE TABLE IF NOT EXISTS sc_products (
   product_id                    MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  availability_id               TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 2,
   introduction_date             TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
   sales_discontinuation_date    TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
   support_discontinuation_date  TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
   global_product_name           VARCHAR(255)           NULL  DEFAULT NULL,
-  PRIMARY KEY (product_id)
+  PRIMARY KEY (product_id),
+  CONSTRAINT FOREIGN KEY (availability_id) REFERENCES sc_product_availability_types (availability_id) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_product_identification_types (
