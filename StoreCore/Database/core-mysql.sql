@@ -975,6 +975,29 @@ CREATE TABLE IF NOT EXISTS sc_product_descriptions (
   CONSTRAINT FOREIGN KEY (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+CREATE TABLE IF NOT EXISTS sc_product_price_components (
+  price_component_id  TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  description         VARCHAR(255)         NOT NULL,
+  comments            VARCHAR(255)         NOT NULL  DEFAULT '',
+  PRIMARY KEY (price_component_id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+INSERT IGNORE INTO sc_product_price_components
+    (price_component_id, description, comments)
+  VALUE
+    ( 1, 'Base price',                     'Default price if no other price components are set and price used in calculations.'),
+    ( 2, 'Manufacturer’s suggested price', 'MSRP (Manufacturer’s Suggested Retail Price) or RRP (Recommended Retail Price).'),
+    ( 3, 'Minimum advertised price',       'MAP (Minimum Advertised Price) from legal agreements.'),
+    ( 4, 'Minimum price',                  'Lowerbound for price calculations.'),
+    ( 5, 'Maximum price',                  'Upperbound for price calculations.'),
+    ( 6, 'Low price',                      'The lowest price of all offers available.'),
+    ( 7, 'Average price',                  'The average price of all offers available.'),
+    ( 8, 'High price',                     'The highest price of all offers available.'),
+    ( 9, 'Fixed surcharge',                'Absolute price component that adds to the base price of the product.'),
+    (10, 'Variable surcharge',             'Percent price component that adds to the base price of the product.'),
+    (11, 'Fixed discount',                 'Absolute price component that subtracts from the base price of the product.'),
+    (12, 'Variable discount',              'Percent price component that subtracts from the base price of the product.');
+
 CREATE TABLE IF NOT EXISTS sc_units_of_measure (
   uom_id        TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   abbreviation  VARCHAR(5)           NOT NULL,
