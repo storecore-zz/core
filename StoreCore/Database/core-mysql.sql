@@ -89,6 +89,281 @@ INSERT IGNORE INTO sc_robot_disallows (robot_id, disallow) VALUES
 -- Internationalization (I18N) and Localization (L10N)
 --
 
+CREATE TABLE IF NOT EXISTS sc_currencies (
+  currency_id      SMALLINT(3) UNSIGNED  NOT NULL  COMMENT 'ISO 4217 currency number',
+  currency_code    CHAR(3)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  COMMENT 'ISO 4217 currency code',
+  digits           SMALLINT(1) UNSIGNED  NOT NULL  DEFAULT 2,
+  currency_symbol  VARCHAR(8)            NOT NULL  DEFAULT '¤',
+  currency_name    VARCHAR(255)          NOT NULL  COMMENT 'Official ISO 4217 currency name',
+  PRIMARY KEY (currency_id),
+  UNIQUE KEY (currency_code)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+INSERT IGNORE INTO sc_currencies
+    (currency_code, currency_id, digits, currency_name)
+  VALUES
+    ('AED', 784, 2, 'United Arab Emirates dirham'),
+    ('AFN', 971, 2, 'Afghan afghani'),
+    ('ALL',   8, 2, 'Albanian lek'),
+    ('AMD',  51, 2, 'Armenian dram'),
+    ('ANG', 532, 2, 'Netherlands Antillean guilder'),
+    ('AOA', 973, 2, 'Angolan kwanza'),
+    ('ARS',  32, 2, 'Argentine peso'),
+    ('AUD',  36, 2, 'Australian dollar'),
+    ('AWG', 533, 2, 'Aruban florin'),
+    ('AZN', 944, 2, 'Azerbaijani manat'),
+    ('BAM', 977, 2, 'Bosnia and Herzegovina convertible mark'),
+    ('BBD',  52, 2, 'Barbados dollar'),
+    ('BDT',  50, 2, 'Bangladeshi taka'),
+    ('BGN', 975, 2, 'Bulgarian lev'),
+    ('BHD',  48, 3, 'Bahraini dinar'),
+    ('BIF', 108, 0, 'Burundian franc'),
+    ('BMD',  60, 2, 'Bermudian dollar'),
+    ('BND',  96, 2, 'Brunei dollar'),
+    ('BOB',  68, 2, 'Boliviano'),
+    ('BRL', 986, 2, 'Brazilian real'),
+    ('BSD',  44, 2, 'Bahamian dollar'),
+    ('BTN',  64, 2, 'Bhutanese ngultrum'),
+    ('BWP',  72, 2, 'Botswana pula'),
+    ('BYR', 974, 0, 'Belarusian ruble'),
+    ('BZD',  84, 2, 'Belize dollar'),
+    ('CAD', 124, 2, 'Canadian dollar'),
+    ('CDF', 976, 2, 'Congolese franc'),
+    ('CHF', 756, 2, 'Swiss franc'),
+    ('CLP', 152, 0, 'Chilean peso'),
+    ('CNY', 156, 2, 'Chinese yuan'),
+    ('COP', 170, 2, 'Colombian peso'),
+    ('CRC', 188, 2, 'Costa Rican colon'),
+    ('CUC', 931, 2, 'Cuban convertible peso'),
+    ('CUP', 192, 2, 'Cuban peso'),
+    ('CVE', 132, 0, 'Cape Verde escudo'),
+    ('CZK', 203, 2, 'Czech koruna'),
+    ('DJF', 262, 0, 'Djiboutian franc'),
+    ('DKK', 208, 2, 'Danish krone'),
+    ('DOP', 214, 2, 'Dominican peso'),
+    ('DZD',  12, 2, 'Algerian dinar'),
+    ('EGP', 818, 2, 'Egyptian pound'),
+    ('ERN', 232, 2, 'Eritrean nakfa'),
+    ('ETB', 230, 2, 'Ethiopian birr'),
+    ('EUR', 978, 2, 'Euro'),
+    ('FJD', 242, 2, 'Fiji dollar'),
+    ('FKP', 238, 2, 'Falkland Islands pound'),
+    ('GBP', 826, 2, 'Pound sterling'),
+    ('GEL', 981, 2, 'Georgian lari'),
+    ('GHS', 936, 2, 'Ghanaian cedi'),
+    ('GIP', 292, 2, 'Gibraltar pound'),
+    ('GMD', 270, 2, 'Gambian dalasi'),
+    ('GNF', 324, 0, 'Guinean franc'),
+    ('GTQ', 320, 2, 'Guatemalan quetzal'),
+    ('GYD', 328, 2, 'Guyanese dollar'),
+    ('HKD', 344, 2, 'Hong Kong dollar'),
+    ('HNL', 340, 2, 'Honduran lempira'),
+    ('HRK', 191, 2, 'Croatian kuna'),
+    ('HTG', 332, 2, 'Haitian gourde'),
+    ('HUF', 348, 2, 'Hungarian forint'),
+    ('IDR', 360, 2, 'Indonesian rupiah'),
+    ('ILS', 376, 2, 'Israeli new shekel'),
+    ('INR', 356, 2, 'Indian rupee'),
+    ('IQD', 368, 3, 'Iraqi dinar'),
+    ('IRR', 364, 2, 'Iranian rial'),
+    ('ISK', 352, 0, 'Icelandic króna'),
+    ('JMD', 388, 2, 'Jamaican dollar'),
+    ('JOD', 400, 3, 'Jordanian dinar'),
+    ('JPY', 392, 0, 'Japanese yen'),
+    ('KES', 404, 2, 'Kenyan shilling'),
+    ('KGS', 417, 2, 'Kyrgyzstani som'),
+    ('KHR', 116, 2, 'Cambodian riel'),
+    ('KMF', 174, 0, 'Comoro franc'),
+    ('KPW', 408, 2, 'North Korean won'),
+    ('KRW', 410, 0, 'South Korean won'),
+    ('KWD', 414, 3, 'Kuwaiti dinar'),
+    ('KYD', 136, 2, 'Cayman Islands dollar'),
+    ('KZT', 398, 2, 'Kazakhstani tenge'),
+    ('LAK', 418, 2, 'Lao kip'),
+    ('LBP', 422, 2, 'Lebanese pound'),
+    ('LKR', 144, 2, 'Sri Lankan rupee'),
+    ('LRD', 430, 2, 'Liberian dollar'),
+    ('LSL', 426, 2, 'Lesotho loti'),
+    ('LYD', 434, 3, 'Libyan dinar'),
+    ('MAD', 504, 2, 'Moroccan dirham'),
+    ('MDL', 498, 2, 'Moldovan leu'),
+    ('MGA', 969, 1, 'Malagasy ariary'),
+    ('MKD', 807, 2, 'Macedonian denar'),
+    ('MMK', 104, 2, 'Myanmar kyat'),
+    ('MNT', 496, 2, 'Mongolian tugrik'),
+    ('MOP', 446, 2, 'Macanese pataca'),
+    ('MRO', 478, 1, 'Mauritanian ouguiya'),
+    ('MUR', 480, 2, 'Mauritian rupee'),
+    ('MVR', 462, 2, 'Maldivian rufiyaa'),
+    ('MWK', 454, 2, 'Malawian kwacha'),
+    ('MXN', 484, 2, 'Mexican peso'),
+    ('MYR', 458, 2, 'Malaysian ringgit'),
+    ('MZN', 943, 2, 'Mozambican metical'),
+    ('NAD', 516, 2, 'Namibian dollar'),
+    ('NGN', 566, 2, 'Nigerian naira'),
+    ('NIO', 558, 2, 'Nicaraguan córdoba'),
+    ('NOK', 578, 2, 'Norwegian krone'),
+    ('NPR', 524, 2, 'Nepalese rupee'),
+    ('NZD', 554, 2, 'New Zealand dollar'),
+    ('OMR', 512, 3, 'Omani rial'),
+    ('PAB', 590, 2, 'Panamanian balboa'),
+    ('PEN', 604, 2, 'Peruvian nuevo sol'),
+    ('PGK', 598, 2, 'Papua New Guinean kina'),
+    ('PHP', 608, 2, 'Philippine peso'),
+    ('PKR', 586, 2, 'Pakistani rupee'),
+    ('PLN', 985, 2, 'Polish złoty'),
+    ('PYG', 600, 0, 'Paraguayan guaraní'),
+    ('QAR', 634, 2, 'Qatari riyal'),
+    ('RON', 946, 2, 'Romanian new leu'),
+    ('RSD', 941, 2, 'Serbian dinar'),
+    ('RUB', 643, 2, 'Russian ruble'),
+    ('RWF', 646, 0, 'Rwandan franc'),
+    ('SAR', 682, 2, 'Saudi riyal'),
+    ('SBD',  90, 2, 'Solomon Islands dollar'),
+    ('SCR', 690, 2, 'Seychelles rupee'),
+    ('SDG', 938, 2, 'Sudanese pound'),
+    ('SEK', 752, 2, 'Swedish krona/kronor'),
+    ('SGD', 702, 2, 'Singapore dollar'),
+    ('SHP', 654, 2, 'Saint Helena pound'),
+    ('SLL', 694, 2, 'Sierra Leonean leone'),
+    ('SOS', 706, 2, 'Somali shilling'),
+    ('SRD', 968, 2, 'Surinamese dollar'),
+    ('SSP', 728, 2, 'South Sudanese pound'),
+    ('STD', 678, 2, 'São Tomé and Príncipe dobra'),
+    ('SYP', 760, 2, 'Syrian pound'),
+    ('SZL', 748, 2, 'Swazi lilangeni'),
+    ('THB', 764, 2, 'Thai baht'),
+    ('TJS', 972, 2, 'Tajikistani somoni'),
+    ('TMT', 934, 2, 'Turkmenistani manat'),
+    ('TND', 788, 3, 'Tunisian dinar'),
+    ('TOP', 776, 2, 'Tongan paʻanga'),
+    ('TRY', 949, 2, 'Turkish lira'),
+    ('TTD', 780, 2, 'Trinidad and Tobago dollar'),
+    ('TWD', 901, 2, 'New Taiwan dollar'),
+    ('TZS', 834, 2, 'Tanzanian shilling'),
+    ('UAH', 980, 2, 'Ukrainian hryvnia'),
+    ('UGX', 800, 0, 'Ugandan shilling'),
+    ('USD', 840, 2, 'United States dollar'),
+    ('UYU', 858, 2, 'Uruguayan peso'),
+    ('UZS', 860, 2, 'Uzbekistan som'),
+    ('VEF', 937, 2, 'Venezuelan bolívar'),
+    ('VND', 704, 0, 'Vietnamese dong'),
+    ('VUV', 548, 0, 'Vanuatu vatu'),
+    ('WST', 882, 2, 'Samoan tala'),
+    ('XAF', 950, 0, 'CFA franc BEAC'),
+    ('XCD', 951, 2, 'East Caribbean dollar'),
+    ('XOF', 952, 0, 'CFA franc BCEAO'),
+    ('XPF', 953, 0, 'CFP franc (franc Pacifique)'),
+    ('XTS', 963, 2, 'Code reserved for testing purposes'),
+    ('XXX', 999, 0, 'No currency'),
+    ('YER', 886, 2, 'Yemeni rial'),
+    ('ZAR', 710, 2, 'South African rand'),
+    ('ZMW', 967, 2, 'Zambian kwacha'),
+    ('ZWL', 932, 2, 'Zimbabwean dollar');
+
+-- Dollar
+UPDATE sc_currencies SET currency_symbol = '$'
+  WHERE currency_code IN ('ARS','AUD','BSD','BBD','BMD','BND','CAD','CLP','COP','FJD','GYD','HKD','KYD','LRD','MXN','NAD','NZD','SBD','SGD','SHP','SRD','SVC','TVD','USD','XCD')
+  AND currency_symbol = '¤';
+
+-- Guilder or florin
+UPDATE sc_currencies SET currency_symbol = 'ƒ'
+  WHERE currency_code IN ('ANG','AWG')
+  AND currency_symbol = '¤';
+
+-- Krona or krone
+UPDATE sc_currencies SET currency_symbol = 'kr'
+  WHERE currency_code IN ('DKK','EEK','ISK','NOK','SEK')
+  AND currency_symbol = '¤';
+
+-- Pound
+UPDATE sc_currencies SET currency_symbol = '£'
+  WHERE currency_code IN ('EGP','FKP','GBP','GGP','GIP','IMP','JEP','LBP','SYP')
+  AND currency_symbol = '¤';
+
+-- Rial or riyal
+UPDATE sc_currencies SET currency_symbol = '﷼'
+  WHERE currency_code IN ('IRR','OMR','QAR','SAR','YER')
+  AND currency_symbol = '¤';
+
+-- Rupee
+UPDATE sc_currencies SET currency_symbol = '₨'
+  WHERE currency_code IN ('LKR','MUR','NPR','PKR','SCR')
+  AND currency_symbol = '¤';
+
+-- Other currency symbols
+UPDATE sc_currencies SET currency_symbol = 'د.إ' WHERE currency_code = 'AED' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'Lek' WHERE currency_code = 'ALL' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '؋' WHERE currency_code = 'AFN' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '֏' WHERE currency_code = 'AMD' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'Kz' WHERE currency_code = 'AOA' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'ман' WHERE currency_code = 'AZN' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'KM' WHERE currency_code = 'BAM' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '৳' WHERE currency_code = 'BDT' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'лв' WHERE currency_code = 'BGN' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '.د.ب' WHERE currency_code = 'BHD' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'FBu' WHERE currency_code = 'BIF' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '$b' WHERE currency_code = 'BOB' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'Nu.' WHERE currency_code = 'BTN' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'P' WHERE currency_code = 'BWP' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'p.' WHERE currency_code = 'BYR' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'BZ$' WHERE currency_code = 'BZD' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'R$' WHERE currency_code = 'BRL' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'FC' WHERE currency_code = 'CDF' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'CHF' WHERE currency_code = 'CHF' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '¥' WHERE currency_code = 'CNY' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '₱' WHERE currency_code = 'CUP' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '₡' WHERE currency_code = 'CRC' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'Kč' WHERE currency_code = 'CZK' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'RD$' WHERE currency_code = 'DOP' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '€' WHERE currency_code = 'EUR' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '¢' WHERE currency_code = 'GHC' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'Q' WHERE currency_code = 'GTQ' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'L' WHERE currency_code = 'HNL' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'kn' WHERE currency_code = 'HRK' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'Ft' WHERE currency_code = 'HUF' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'Rp' WHERE currency_code = 'IDR' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '₪' WHERE currency_code = 'ILS' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '₹' WHERE currency_code = 'INR' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'J$' WHERE currency_code = 'JMD' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '¥' WHERE currency_code = 'JPY' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'лв' WHERE currency_code = 'KGS' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '៛' WHERE currency_code = 'KHR' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '₩' WHERE currency_code = 'KPW' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '₩' WHERE currency_code = 'KRW' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'лв' WHERE currency_code = 'KZT' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '₭' WHERE currency_code = 'LAK' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'Ls' WHERE currency_code = 'LVL' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'Lt' WHERE currency_code = 'LTL' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'ден' WHERE currency_code = 'MKD' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '₮' WHERE currency_code = 'MNT' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'RM' WHERE currency_code = 'MYR' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'MT' WHERE currency_code = 'MZN' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'C$' WHERE currency_code = 'NIO' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '₦' WHERE currency_code = 'NGN' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'B/.' WHERE currency_code = 'PAB' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'Gs' WHERE currency_code = 'PYG' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'S/.' WHERE currency_code = 'PEN' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '₱' WHERE currency_code = 'PHP' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'zł' WHERE currency_code = 'PLN' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'lei' WHERE currency_code = 'RON' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'руб' WHERE currency_code = 'RUB' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'Дин.' WHERE currency_code = 'RSD' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'S' WHERE currency_code = 'SOS' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '฿' WHERE currency_code = 'THB' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '₤' WHERE currency_code = 'TRL' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '₺' WHERE currency_code = 'TRY' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'TT$' WHERE currency_code = 'TTD' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'NT$' WHERE currency_code = 'TWD' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '₴' WHERE currency_code = 'UAH' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '$U' WHERE currency_code = 'UYU' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'лв' WHERE currency_code = 'UZS' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'Bs' WHERE currency_code = 'VEF' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = '₫' WHERE currency_code = 'VND' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'R' WHERE currency_code = 'ZAR' AND currency_symbol = '¤';
+UPDATE sc_currencies SET currency_symbol = 'Z$' WHERE currency_code = 'ZWD' AND currency_symbol = '¤';
+
+
 CREATE TABLE IF NOT EXISTS sc_languages (
   language_id   SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT  COMMENT 'LCID',
   parent_id     SMALLINT(5) UNSIGNED  NOT NULL  DEFAULT 2057,
@@ -636,14 +911,68 @@ CREATE TABLE IF NOT EXISTS sc_store_categories (
 
 
 CREATE TABLE IF NOT EXISTS sc_products (
-  product_id  MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
-  ean         CHAR(13)               NULL  DEFAULT NULL,
-  jan         VARCHAR(13)            NULL  DEFAULT NULL,
-  upc         CHAR(12)               NULL  DEFAULT NULL,
-  isbn        VARCHAR(13)            NULL  DEFAULT NULL,
-  mpn         VARCHAR(255)           NULL  DEFAULT NULL,
+  product_id                    MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  introduction_date             TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  sales_discontinuation_date    TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  support_discontinuation_date  TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  global_product_name           VARCHAR(255)           NULL  DEFAULT NULL,
   PRIMARY KEY (product_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_product_identification_types (
+  identification_type_id  TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  abbreviation            VARCHAR(5)           NOT NULL,
+  description             VARCHAR(255)         NOT NULL,
+  PRIMARY KEY (identification_type_id),
+  UNIQUE KEY (abbreviation)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+INSERT IGNORE INTO sc_product_identification_codes
+    (abbreviation, description)
+  VALUES
+    ('EAN', 'International Article Number'),
+    ('UPC', 'Universal Product Code'),
+    ('JAN', 'Japanese Article Number'),
+    ('MPN', 'Manufacturer Part Number'),
+    ('SKU', 'Stock Keeping Unit');
+    
+CREATE TABLE IF NOT EXISTS sc_product_identification_codes (
+  product_id              MEDIUMINT(8) UNSIGNED  NOT NULL,
+  identification_type_id  TINYINT(3) UNSIGNED    NOT NULL,
+  PRIMARY KEY (product_id,identification_type_id)
+  CONSTRAINT FOREIGN KEY (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT FOREIGN KEY (identification_type_id) REFERENCES sc_product_identification_codes (identification_type_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_product_descriptions (
+  product_id          MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  language_id         SMALLINT(5) UNSIGNED   NOT NULL,
+  local_product_name  VARCHAR(255)           NULL  DEFAULT NULL,
+  keywords            VARCHAR(255)           NULL  DEFAULT NULL,
+  summary             VARCHAR(255)           NULL  DEFAULT NULL  COMMENT 'Plain text',
+  description         TEXT                   NULL  DEFAULT NULL  COMMENT 'Formatted HTML',
+  PRIMARY KEY (product_id,language_id),
+  CONSTRAINT FOREIGN KEY (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT FOREIGN KEY (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_units_of_measure (
+  uom_id        TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  abbreviation  VARCHAR(5)           NOT NULL,
+  description   VARCHAR(255)         NOT NULL,
+  PRIMARY KEY (identification_type_id),
+  UNIQUE KEY (abbreviation)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_units_of_measure_conversion (
+  from_uom_id        TINYINT(3) UNSIGNED  NOT NULL,
+  to_uom_id          TINYINT(3) UNSIGNED  NOT NULL,
+  conversion_factor  DECIMAL(8,4)         NOT NULL  COMMENT 'Multiplier',
+  PRIMARY KEY (from_uom_id,to_uom_id),
+  CONSTRAINT FOREIGN KEY (from_uom_id) REFERENCES sc_units_of_measure (uom_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT FOREIGN KEY (to_uom_id)   REFERENCES sc_units_of_measure (uom_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
 
 CREATE TABLE IF NOT EXISTS sc_brand_products (
   brand_id    SMALLINT(5) UNSIGNED   NOT NULL,
@@ -654,8 +983,11 @@ CREATE TABLE IF NOT EXISTS sc_brand_products (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_category_products (
-  category_id  SMALLINT(5) UNSIGNED   NOT NULL,
-  product_id   MEDIUMINT(8) UNSIGNED  NOT NULL,
+  category_id   SMALLINT(5) UNSIGNED   NOT NULL,
+  product_id    MEDIUMINT(8) UNSIGNED  NOT NULL,
+  primary_flag  TINYINT(1) UNSIGNED    NOT NULL  DEFAULT 0,
+  from_date     TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  thru_date     TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (category_id,product_id),
   CONSTRAINT FOREIGN KEY (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT FOREIGN KEY (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE
