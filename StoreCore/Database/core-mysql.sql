@@ -927,7 +927,7 @@ CREATE TABLE IF NOT EXISTS sc_product_identification_types (
   UNIQUE KEY (abbreviation)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-INSERT IGNORE INTO sc_product_identification_codes
+INSERT IGNORE INTO sc_product_identification_types
     (abbreviation, description)
   VALUES
     ('EAN', 'International Article Number'),
@@ -935,13 +935,13 @@ INSERT IGNORE INTO sc_product_identification_codes
     ('JAN', 'Japanese Article Number'),
     ('MPN', 'Manufacturer Part Number'),
     ('SKU', 'Stock Keeping Unit');
-    
+
 CREATE TABLE IF NOT EXISTS sc_product_identification_codes (
   product_id              MEDIUMINT(8) UNSIGNED  NOT NULL,
   identification_type_id  TINYINT(3) UNSIGNED    NOT NULL,
-  PRIMARY KEY (product_id,identification_type_id)
+  PRIMARY KEY (product_id,identification_type_id),
   CONSTRAINT FOREIGN KEY (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT FOREIGN KEY (identification_type_id) REFERENCES sc_product_identification_codes (identification_type_id) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT FOREIGN KEY (identification_type_id) REFERENCES sc_product_identification_types (identification_type_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_product_descriptions (
@@ -960,7 +960,7 @@ CREATE TABLE IF NOT EXISTS sc_units_of_measure (
   uom_id        TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   abbreviation  VARCHAR(5)           NOT NULL,
   description   VARCHAR(255)         NOT NULL,
-  PRIMARY KEY (identification_type_id),
+  PRIMARY KEY (uom_id),
   UNIQUE KEY (abbreviation)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
