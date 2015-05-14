@@ -18,8 +18,8 @@ class TranslationMemory extends \StoreCore\AbstractModel
     const VERSION = '0.0.2';
 
     /**
-     * @var int $LanguageID
-     * @var int $ParentLanguageID
+     * @var int $LanguageID        Unique identifier of the current language.
+     * @var int $ParentLanguageID  Identifier of the parent or root language.
      */
     private $LanguageID = 2057;
     private $ParentLanguageID = 2057;
