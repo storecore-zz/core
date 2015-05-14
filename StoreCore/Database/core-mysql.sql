@@ -978,7 +978,7 @@ CREATE TABLE IF NOT EXISTS sc_product_descriptions (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_product_price_components (
-  price_component_id  TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  price_component_id  TINYINT(3) UNSIGNED  NOT NULL,
   description         VARCHAR(255)         NOT NULL,
   comments            VARCHAR(255)         NOT NULL  DEFAULT '',
   PRIMARY KEY (price_component_id)
@@ -987,23 +987,31 @@ CREATE TABLE IF NOT EXISTS sc_product_price_components (
 INSERT IGNORE INTO sc_product_price_components
     (price_component_id, description, comments)
   VALUE
-    ( 1, 'Base price',                     'Default list price if no other price components are set and price used in calculations.'),
-    ( 2, 'Manufacturer’s suggested price', 'MSRP (Manufacturer’s Suggested Retail Price) or RRP (Recommended Retail Price).'),
-    ( 3, 'Minimum advertised price',       'MAP (Minimum Advertised Price) from legal agreements.'),
-    ( 4, 'Minimum price',                  'Lowerbound for price calculations.'),
-    ( 5, 'Maximum price',                  'Upperbound for price calculations.'),
-    ( 6, 'Fixed surcharge',                'Absolute price component that adds to the base price of the product.'),
-    ( 7, 'Variable surcharge',             'Percent price component that adds to the base price of the product.'),
-    ( 8, 'Fixed discount',                 'Absolute price component that subtracts from the base price of the product.'),
-    ( 9, 'Variable discount',              'Percent price component that subtracts from the base price of the product.'),
-    (10, 'Low price',                      'Lowest price of all offers available.'),
-    (11, 'Average price',                  'Average price of all offers available.'),
-    (12, 'Median price',                   'Median price of all offers available.'),
-    (13, 'High price',                     'Highest price of all offers available.');
+    (0, 'Base price',                      'Default list price if no other price components are set and price used in calculations.'),
+    (1, 'Manufacturer’s suggested price',  'MSRP (Manufacturer’s Suggested Retail Price) or RRP (Recommended Retail Price).'),
+    (2, 'Minimum advertised price',        'MAP (Minimum Advertised Price) from legal agreements.'),
+
+    (10, 'Minimum price',                  'Lowerbound for price calculations.'),
+    (11, 'Maximum price',                  'Upperbound for price calculations.'),
+    (12, 'Fixed surcharge',                'Absolute price component that adds to the base price of the product.'),
+    (13, 'Variable surcharge',             'Percent price component that adds to the base price of the product.'),
+    (14, 'Fixed discount',                 'Absolute price component that subtracts from the base price of the product.'),
+    (15, 'Variable discount',              'Percent price component that subtracts from the base price of the product.'),
+
+    (21, 'Low price',                      'Lowest price of all offers available.'),
+    (22, 'Average price',                  'Average price of all offers available.'),
+    (23, 'Median price',                   'Median price of all offers available.'),
+    (24, 'High price',                     'Highest price of all offers available.'),
+
+    (240, 'Fixed sale discount',           'Absolute temporary on sale discount.'),
+    (241, 'Variable sale discount',        'Percent temporary on sale discount.'),
+    
+    (254, 'List price',                    'Calculated, cached list price.'),
+    (255, 'Sale price',                    'Calculated, cached sale price.');
 
 CREATE TABLE IF NOT EXISTS sc_product_prices (
   product_id          MEDIUMINT(8) UNSIGNED  NOT NULL,
-  price_component_id  TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 1,
+  price_component_id  TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 0,
   currency_id         SMALLINT(3) UNSIGNED   NOT NULL  DEFAULT 978,
   from_date           TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
   thru_date           TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
