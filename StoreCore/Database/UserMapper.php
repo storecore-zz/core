@@ -1,11 +1,23 @@
 <?php
 namespace StoreCore\Database;
 
+/**
+ * User Mapper
+ *
+ * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @copyright Copyright (c) 2015 StoreCore
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\Core
+ * @version   0.0.2
+ */
 class UserMapper extends AbstractDataAccessObject
 {
-    /** @var string VERSION */
-    const VERSION = '0.0.1';
+    const VERSION = '0.0.2';
 
+    /**
+     * @var string $TableName  Name of the database table.
+     * @var string $PrimaryKey Name of primary key column.
+     */
     protected $TableName = 'sc_users';
     protected $PrimaryKey = 'user_id';
 
@@ -21,6 +33,7 @@ class UserMapper extends AbstractDataAccessObject
      *
      * @api
      * @param \StoreCore\User $user
+     * @uses \StoreCore\User::getUserID()
      */
     public function ban(\StoreCore\User $user)
     {
@@ -32,8 +45,31 @@ class UserMapper extends AbstractDataAccessObject
     }
 
     /**
+     * Map the user's data to a user object.
+     *
+     * @internal
+     * @param array $user_data
+     * @return \StoreCore\User
+     */
+    private function getUser(array $user_data)
+    {
+        $user = new \StoreCore\User();
+        $user->setEmailAddress($user_data['email_address']);
+        $user->setHashAlgorithm($user_data['hash_algo']);
+        $user->setPasswordHash($user_data['password_hash']);
+        $user->setPasswordSalt($user_data['password_salt']);
+        $user->setUserGroupID($user_data['user_group_id']);
+        $user->setUserID($user_data['user_id']);
+        $user->setUsername($user_data['username']);
+        return $user;
+    }
+    
+    /**
+     * Fetch a user by the user's e-mail address.
+     *
+     * @api
      * @param string $email_address
-     * @return StoreCore\User|null
+     * @return \StoreCore\User|null
      * @throws InvalidArgumentException
      */
     public function getUserByEmailAddress($email_address)
@@ -47,23 +83,18 @@ class UserMapper extends AbstractDataAccessObject
         if (count($result) == 1) {
             $user_data = $result[0];
             unset($result);
-            $user = new \StoreCore\User();
-            $user->setEmailAddress($user_data['email_address']);
-            $user->setHashAlgorithm($user_data['hash_algo']);
-            $user->setPasswordHash($user_data['password_hash']);
-            $user->setPasswordSalt($user_data['password_salt']);
-            $user->setUserGroupID($user_data['user_group_id']);
-            $user->setUserID($user_data['user_id']);
-            $user->setUsername($user_data['username']);
-            return $user;
+            return $this->getUser($user_data);
         } else {
             return null;
         }
     }
 
     /**
+     * Fetch a user by the user's username.
+     *
+     * @api
      * @param string $username
-     * @return StoreCore\User|null
+     * @return \StoreCore\User|null
      */
     public function getUserByUsername($username)
     {
@@ -77,14 +108,7 @@ class UserMapper extends AbstractDataAccessObject
         if (count($result) == 1) {
             $user_data = $result[0];
             unset($result);
-            $user = new \StoreCore\User();
-            $user->setEmailAddress($user_data['email_address']);
-            $user->setHashAlgorithm($user_data['hash_algo']);
-            $user->setPasswordHash($user_data['password_hash']);
-            $user->setPasswordSalt($user_data['password_salt']);
-            $user->setUserGroupID($user_data['user_group_id']);
-            $user->setUserID($user_data['user_id']);
-            $user->setUsername($user_data['username']);
+            return $this->getUser($user_data);
             return $user;
         } else {
             return null;
