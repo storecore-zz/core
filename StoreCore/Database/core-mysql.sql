@@ -3,7 +3,8 @@
 --
 -- @author    Ward van der Put <Ward.van.der.Put@gmail.com>
 -- @copyright Copyright (c) 2014-2015 StoreCore
--- @license   http://www.gnu.org/licenses/gpl.html GPLv3
+-- @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+-- @package   StoreCore\Database
 -- @version   0.0.1
 --
 
@@ -865,7 +866,7 @@ CREATE TABLE IF NOT EXISTS sc_addresses (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 
--- 
+--
 -- Catalog
 --
 
@@ -908,6 +909,7 @@ CREATE TABLE IF NOT EXISTS sc_store_categories (
   CONSTRAINT FOREIGN KEY (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT FOREIGN KEY (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
 
 CREATE TABLE IF NOT EXISTS sc_product_availability_types (
   availability_id    TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
@@ -985,18 +987,37 @@ CREATE TABLE IF NOT EXISTS sc_product_price_components (
 INSERT IGNORE INTO sc_product_price_components
     (price_component_id, description, comments)
   VALUE
-    ( 1, 'Base price',                     'Default price if no other price components are set and price used in calculations.'),
+    ( 1, 'Base price',                     'Default list price if no other price components are set and price used in calculations.'),
     ( 2, 'Manufacturer’s suggested price', 'MSRP (Manufacturer’s Suggested Retail Price) or RRP (Recommended Retail Price).'),
     ( 3, 'Minimum advertised price',       'MAP (Minimum Advertised Price) from legal agreements.'),
     ( 4, 'Minimum price',                  'Lowerbound for price calculations.'),
     ( 5, 'Maximum price',                  'Upperbound for price calculations.'),
-    ( 6, 'Low price',                      'The lowest price of all offers available.'),
-    ( 7, 'Average price',                  'The average price of all offers available.'),
-    ( 8, 'High price',                     'The highest price of all offers available.'),
-    ( 9, 'Fixed surcharge',                'Absolute price component that adds to the base price of the product.'),
-    (10, 'Variable surcharge',             'Percent price component that adds to the base price of the product.'),
-    (11, 'Fixed discount',                 'Absolute price component that subtracts from the base price of the product.'),
-    (12, 'Variable discount',              'Percent price component that subtracts from the base price of the product.');
+    ( 6, 'Fixed surcharge',                'Absolute price component that adds to the base price of the product.'),
+    ( 7, 'Variable surcharge',             'Percent price component that adds to the base price of the product.'),
+    ( 8, 'Fixed discount',                 'Absolute price component that subtracts from the base price of the product.'),
+    ( 9, 'Variable discount',              'Percent price component that subtracts from the base price of the product.'),
+    (10, 'Low price',                      'Lowest price of all offers available.'),
+    (11, 'Average price',                  'Average price of all offers available.'),
+    (12, 'Median price',                   'Median price of all offers available.'),
+    (13, 'High price',                     'Highest price of all offers available.');
+
+CREATE TABLE IF NOT EXISTS sc_product_prices (
+  product_id          MEDIUMINT(8) UNSIGNED  NOT NULL,
+  price_component_id  TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 1,
+  currency_id         SMALLINT(3) UNSIGNED   NOT NULL  DEFAULT 978,
+  from_date           TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  thru_date           TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  store_id            TINYINT(3) UNSIGNED    NULL  DEFAULT NULL  COMMENT 'Optional filter',
+  customer_group_id   TINYINT(3) UNSIGNED    NULL  DEFAULT NULL  COMMENT 'Optional filter',
+  price_or_factor     DECIMAL(15,4)          NOT NULL,
+  comments            VARCHAR(255)           NOT NULL  DEFAULT '',
+  PRIMARY KEY (product_id,price_component_id,currency_id,from_date),
+  CONSTRAINT FOREIGN KEY (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT FOREIGN KEY (currency_id) REFERENCES sc_currencies (currency_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT FOREIGN KEY (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT FOREIGN KEY (customer_group_id) REFERENCES sc_customer_groups (customer_group_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
 
 CREATE TABLE IF NOT EXISTS sc_units_of_measure (
   uom_id        TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
