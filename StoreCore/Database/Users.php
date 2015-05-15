@@ -1,37 +1,19 @@
 <?php
 namespace StoreCore\Database;
 
-class Users implements \Countable
+/**
+ * User Model
+ *
+ * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @copyright Copyright (c) 2015 StoreCore
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\Core
+ * @version   0.1.0
+ */
+class Users extends \StoreCore\Database\AbstractModel implements \Countable
 {
-    /**
-     * @var string VERSION
-     */
-    const VERSION = '0.0.1';
+    const VERSION = '0.1.0';
 
-    /**
-     * @var object StoreCore\Database\Connection
-     */
-    private $Connection;
-
-    /**
-     * @param void
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->connect();
-    }
-
-    /**
-     * Connect to the database.
-     *
-     * @param void
-     * @return void
-     */
-    private function connect()
-    {
-        $this->Connection = new \StoreCore\Database\Connection();
-    }
 
     /**
      * Count the number of active users.
@@ -39,10 +21,9 @@ class Users implements \Countable
      * @param void
      *
      * @return int
-     *     User accounts may be disabled, permanently or temporarily, by
-     *     setting the user group ID to 0 (zero).  This method therefore
-     *     returns a count of all users from different user groups
-     *     (WHERE user_group_id != 0).
+     *   User accounts may be disabled, permanently or temporarily, by setting
+     *   the user group ID to 0 (zero).  This method therefore returns a count
+     *   of all users from different user groups (WHERE user_group_id != 0).
      */
     public function count()
     {
