@@ -14,6 +14,7 @@ class ProductPrice extends \StoreCore\Database\AbstractModel
 {
     const VERSION = '0.0.1';
 
+
     /**
      * @var int $Precision
      *   The number of digits after the decimal place in a price.
@@ -35,7 +36,13 @@ class ProductPrice extends \StoreCore\Database\AbstractModel
     /**
      * Calculate or recalculate the product prices.
      *
+     * @api
+     *
      * @param int $currency_id
+     *   ISO 4217 currency identifier.  Defaults to 978 for EUR (euro).  This
+     *   method only calculates prices using price rules with the same
+     *   currency.  For example, it will not subtract a €2 discount in euros
+     *   from a $10 base price in dollars.
      *
      * @return bool
      *   Returns true if the product prices were calculated or false if they
@@ -51,61 +58,57 @@ class ProductPrice extends \StoreCore\Database\AbstractModel
             $this->read();
         }
 
-        // First set the list price to the base price
-        $base_price = $this->PriceComponents[0][978];
+        // Establish a base price and set the list price to the base price.
+        $currency_id = (int)$currency_id;
+        if (!isset($this->PriceComponents[0][$currency_id])) {
+            return false;
+        }
+        $base_price = $this->PriceComponents[0][$currency_id];
         $list_price = $base_price;
 
-        // Plus fixed surcharge
-        if (array_key_exists(12, $this->PriceComponents)) {
-            if (array_key_exists(978, $this->PriceComponents[12])) {
-                $list_price += $this->PriceComponents[12][978];
-            }
+        // Base price plus fixed surcharge
+        if (isset($this->PriceComponents[12][$currency_id])) {
+            $list_price += $this->PriceComponents[12][$currency_id];
         }
 
-        // Plus variable surcharge
-        if (
-            array_key_exists(13, $this->PriceComponents)
-            && array_key_exists(978, $this->PriceComponents[13])
-        ) {
-            $list_price += $this->PriceComponents[13][978] * $base_price;
+        // Base price plus variable surcharge
+        if (isset($this->PriceComponents[13][$currency_id])) {
+            $list_price += $this->PriceComponents[13][$currency_id] * $base_price;
         }
 
-        // Minus fixed discount
-        if (
-            array_key_exists(14, $this->PriceComponents)
-            && array_key_exists(978, $this->PriceComponents[14])
-        ) {
-            $list_price -= $this->PriceComponents[14][978];
+        // Base price minus fixed discount
+        if (isset($this->PriceComponents[14][$currency_id])) {
+            $list_price -= $this->PriceComponents[14][$currency_id];
         }
 
-        // Minus variable discount
-        if (
-            array_key_exists(15, $this->PriceComponents)
-            && array_key_exists(978, $this->PriceComponents[15])
-        ) {
-            $list_price -= $this->PriceComponents[15][978] * $base_price;
+        // Base price minus variable discount
+        if (isset($this->PriceComponents[15][$currency_id])) {
+            $list_price -= $this->PriceComponents[15][$currency_id] * $base_price;
         }
-
-        // Round calculated list price
-        $list_price = round($list_price, $this->Precision);
 
         // Check minimum and maximum price
         if (
-            array_key_exists(10, $this->PriceComponents)
-            && array_key_exists(978, $this->PriceComponents[10])
-            && $list_price < $this->PriceComponents[10]
+            isset($this->PriceComponents[10][$currency_id])
+            && $list_price < $this->PriceComponents[10][$currency_id]
         ) {
-            $list_price = $this->PriceComponents[10];
+            $list_price = $this->PriceComponents[10][$currency_id];
         } elseif (
-            array_key_exists(11, $this->PriceComponents)
-            && array_key_exists(978, $this->PriceComponents[11])
-            && $list_price > $this->PriceComponents[11]
+            isset($this->PriceComponents[11][$currency_id])
+            && $list_price < $this->PriceComponents[11][$currency_id]
         ) {
             $list_price = $this->PriceComponents[11];
         }
 
         // Store the calculated list price
-        $this->PriceComponents[254][978] = $list_price;
+        $list_price = round($list_price, $this->Precision);
+        $this->PriceComponents[254][$currency_id] = $list_price;
+        
+        // Calculate an ON SALE price
+        if (isset($this->PriceComponents[240][$currency_id])) {
+            $this->PriceComponents[255][$currency_id] = $list_price - $this->PriceComponents[240][$currency_id];
+        } elseif (isset($this->PriceComponents[241][$currency_id])) {
+            $this->PriceComponents[255][$currency_id] = (1 - $this->PriceComponents[241][$currency_id]) * $list_price;
+        }
 
         return true;
     }
@@ -148,7 +151,7 @@ class ProductPrice extends \StoreCore\Database\AbstractModel
          * Establish a base price (component key 0).  The base price is used in
          * price calculations.  If no base price was set, it defaults to the
          * recommended price (key 1), which in B2C e-commerce usually is the
-         * MSRP (Manufacturer's Suggested Retail Price) or RRP (Recommended
+         * MSRP (Manufacturer’s Suggested Retail Price) or RRP (Recommended
          * Retail Price).
          */
         if (!array_key_exists(0, $rows)) {
@@ -160,6 +163,17 @@ class ProductPrice extends \StoreCore\Database\AbstractModel
         $this->PriceComponents = $rows;
     }
 
+    
+    /**
+     * @api
+     * @param int $precision
+     * @return void
+     */
+    public function setPrecision($precision)
+    {
+        $this->Precision = $precision;
+    }
+    
     /**
      * @api
      * @param int $product_id
