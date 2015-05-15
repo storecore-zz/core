@@ -6,17 +6,18 @@ namespace StoreCore\Database;
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2015 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Database
- * @version   0.0.1
+ * @version   0.0.2
  */
 abstract class AbstractDataAccessObject
 {
-    /** @var string VERSION */
-    const VERSION = '0.0.1';
+    const VERSION = '0.0.2';
+
 
     /** @var object StoreCore\Database\Connection */
     private $Connection;
+
 
     /**
      * Connect on construction.
@@ -38,6 +39,29 @@ abstract class AbstractDataAccessObject
     private function connect()
     {
         $this->Connection = new \StoreCore\Database\Connection();
+    }
+
+    /**
+     * Create a new database row.
+     *
+     * @param array $keyed_data
+     * @return int
+     */
+    public function create(array $keyed_data)
+    {
+        $sql = 'INSERT INTO ' . $this->TableName
+            . ' (' . implode(',', array_keys($keyed_data)) . ') VALUES (';
+        $values = array_values($keyed_data);
+        foreach ($values as $key => $value) {
+            if (!is_numeric($value)) {
+                $values[$key] = $this->Connection->quote($value);
+            }
+        }
+        $sql .= implode(',', array_keys($values));
+        $sql .= ')';
+
+        $affected_rows = $this->Connection->exec($sql);
+        return $affected_rows;
     }
 
     /**
@@ -69,7 +93,7 @@ abstract class AbstractDataAccessObject
      * @param string|null $key
      * @return array
      */
-    public function fetch($value, $key = null)
+    public function read($value, $key = null)
     {
         if ($key == null) {
             $key = $this->PrimaryKey;
