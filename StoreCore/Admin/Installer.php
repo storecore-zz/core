@@ -197,7 +197,7 @@ class Installer extends \StoreCore\AbstractController
      */
     public function checkUsers()
     {
-        $users = new \StoreCore\Database\Users();
+        $users = new \StoreCore\Database\Users($this->Registry);
         if ($users->count() === 0) {
             $this->Logger->warning('No active user accounts found: adding new user.');
 
