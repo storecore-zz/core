@@ -377,19 +377,28 @@ CREATE TABLE IF NOT EXISTS sc_languages (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 INSERT IGNORE INTO sc_languages (language_id, parent_id, iso_code, english_name, local_name, status) VALUES
-  (1031, 1031, 'de-DE', 'German - Germany',         'Deutsch - Deutschland',    1),
-  (1036, 1036, 'fr-FR', 'French - France',          'Français - France',        1),
-  (1043, 1043, 'nl-NL', 'Dutch - Netherlands',      'Nederlands - Nederland',   1),
-  (2057, 2057, 'en-GB', 'English - United Kingdom', 'English - United Kingdom', 1);
+  (1031, 1031, 'de-DE', 'German - Germany',           'Deutsch - Deutschland',       1),
+  (1036, 1036, 'fr-FR', 'French - France',            'Français - France',           1),
+  (1040, 1040, 'it-IT', 'Italian - Italy',            'Italiano - Italia',           0),
+  (1043, 1043, 'nl-NL', 'Dutch - Netherlands',        'Nederlands - Nederland',      1),
+  (1049, 1049, 'ru-RU', 'Russian - Russia',           'Русский - Россия',            0),
+  (1134, 1134, 'lb-LU', 'Luxembourgish - Luxembourg', 'Lëtzebuergesch - Lëtzebuerg', 0),
+  (2057, 2057, 'en-GB', 'English - United Kingdom',   'English - United Kingdom',    1),
+  (2070, 2070, 'pt-PT', 'Portuguese - Portugal',      'Português - Portugal',        0),
+  (3082, 3082, 'es-ES', 'Spanish - Spain',            'Español - España',            0);
 
 INSERT IGNORE INTO sc_languages (language_id, parent_id, iso_code, english_name, local_name, status) VALUES
   (1033, 2057, 'en-US', 'English - United States', 'English - United States', 0),
   (2055, 1031, 'de-CH', 'German - Switzerland',    'Deutsch - Schweiz',       0),
   (2060, 1036, 'fr-BE', 'French - Belgium',        'Français - Belgique',     0),
+  (2064, 1040, 'it-CH', 'Italian - Switzerland',   'Italiano - Svizzera',     0),
   (2067, 1043, 'nl-BE', 'Dutch - Belgium',         'Nederlands - België',     0),
   (3079, 1031, 'de-AT', 'German - Austria',        'Deutsch - Österreich',    0),
+  (3084, 1036, 'fr-CA', 'French - Canada',         'Français - Canada',       0),
   (4103, 1031, 'de-LU', 'German - Luxembourg',     'Deutsch - Luxemburg',     0),
-  (5127, 1031, 'de-LI', 'German - Liechtenstein',  'Deutsch - Liechtenstein', 0);
+  (4105, 2057, 'en-CA', 'English - Canada',        'English - Canada',        0),
+  (5127, 1031, 'de-LI', 'German - Liechtenstein',  'Deutsch - Liechtenstein', 0),
+  (5132, 1036, 'fr-LU', 'French - Luxembourg',     'Français - Luxembourg',   0);
 
 CREATE TABLE IF NOT EXISTS sc_translation_memory (
   translation_id  VARCHAR(255)          CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
