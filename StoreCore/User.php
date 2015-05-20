@@ -6,14 +6,13 @@ namespace StoreCore;
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2015 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html
- * @package   StoreCore
- * @version   0.0.1
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\Security
+ * @version   0.1.0
  */
 class User
 {
-    /** @var string VERSION */
-    const VERSION = '0.0.1';
+    const VERSION = '0.1.0';
 
     /**
      * @var string   $EmailAddress
@@ -40,9 +39,9 @@ class User
      * @param string $password
      *
      * @return bool
-     *     Returns true if the user credentials check out and the user may be
-     *     granted access to parts of the StoreCore framework, otherwise false.
-     *     Members of user group 0 (zero) are always denied access.
+     *   Returns true if the user credentials check out and the user may be
+     *   granted access to parts of the StoreCore framework, otherwise false.
+     *   Members of user group 0 (zero) are always denied access.
      */
     public function authenticate($password)
     {
@@ -54,14 +53,18 @@ class User
             return false;
         }
 
-        if ($this->HashAlgorithm === null || $this->PasswordHash === null || $this->PasswordSalt === null) {
+        if ($this->PasswordHash === null || $this->PasswordSalt === null) {
             return false;
         }
 
-        if ($this->HashAlgorithm == 'sha1') {
+        if ($this->HashAlgorithm == 'SHA-1') {
             $hash = sha1($this->PasswordSalt . $password);
         } else {
-            $hash = hash($this->HashAlgorithm, $this->PasswordSalt . $password);
+            $hash_factory = new \StoreCore\Database\Password();
+            $hash_factory->setPassword($password);
+            $hash_factory->setSalt($this->PasswordSalt);
+            $hash_factory->encrypt();
+            $hash = $hash_factory->getHash();
         }
 
         if ($hash == $this->PasswordHash) {

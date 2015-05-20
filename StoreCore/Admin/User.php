@@ -6,18 +6,17 @@ namespace StoreCore\Admin;
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2015 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html
- * @package   StoreCore
- * @version   0.0.1
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\Security
+ * @version   0.0.2
  *
  * @uses \StoreCore\User
- *     The \StoreCore\Admin\User administration user extends the more
- *     generic \StoreCore\User framework user.
+ *   The \StoreCore\Admin\User administration user extends the more generic
+ *   \StoreCore\User framework user.
  */
 class User extends \StoreCore\User
 {
-    /** @var string VERSION */
-    const VERSION = '0.0.1';
+    const VERSION = '0.0.2';
 
     /**
      * @param void

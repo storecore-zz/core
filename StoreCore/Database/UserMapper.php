@@ -7,12 +7,12 @@ namespace StoreCore\Database;
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
- * @package   StoreCore\Core
- * @version   0.0.2
+ * @package   StoreCore\Security
+ * @version   0.0.3
  */
 class UserMapper extends AbstractDataAccessObject
 {
-    const VERSION = '0.0.2';
+    const VERSION = '0.0.3';
 
     /**
      * @var string $TableName  Name of the database table.
@@ -33,6 +33,7 @@ class UserMapper extends AbstractDataAccessObject
      *
      * @api
      * @param \StoreCore\User $user
+     * @return void
      * @uses \StoreCore\User::getUserID()
      */
     public function ban(\StoreCore\User $user)
@@ -41,7 +42,7 @@ class UserMapper extends AbstractDataAccessObject
             $this->PrimaryKey => $user->getUserID(),
             'user_group_id' => 0,
         );
-        return $this->update($data);
+        $this->update($data);
     }
 
     /**
@@ -63,7 +64,7 @@ class UserMapper extends AbstractDataAccessObject
         $user->setUsername($user_data['username']);
         return $user;
     }
-    
+
     /**
      * Fetch a user by the user's e-mail address.
      *
@@ -109,7 +110,6 @@ class UserMapper extends AbstractDataAccessObject
             $user_data = $result[0];
             unset($result);
             return $this->getUser($user_data);
-            return $user;
         } else {
             return null;
         }

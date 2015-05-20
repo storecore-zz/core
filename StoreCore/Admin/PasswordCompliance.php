@@ -7,20 +7,18 @@ namespace StoreCore\Admin;
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
- * @package   StoreCore\Admin
+ * @package   StoreCore\Security
  * @version   0.1.0
  */
 class PasswordCompliance
 {
-    /**
-     * @var int MINIMUM_LENGTH
-     */
-    const MINIMUM_LENGTH = 7;
+    const VERSION = '0.1.0';
 
     /**
-     * @var string VERSION
+     * @var int MINIMUM_LENGTH
+     *   Current minimum length of a password.
      */
-    const VERSION = '0.1.0';
+    const MINIMUM_LENGTH = 7;
 
     /**
      * Validate the password compliance.
@@ -30,20 +28,20 @@ class PasswordCompliance
      * @param string $password
      *
      * @return bool
-     *     Returns true if the password matches the current compliance rule set,
-     *     otherwise false.
+     *   Returns true if the password matches the current compliance rule set,
+     *   otherwise false.
      *
      * @todo
-     *     Currently there are only two strict PCI DSS requirements.  Passwords
-     *     and pass phrases (i) require a minimum length of at least seven
-     *     characters and (ii) must contain both numeric and alphabetic
-     *     characters.  Alternatively, the passwords/phrases MUST have
-     *     complexity and strength at least equivalent to the parameters
-     *     specified above, so the rule set MAY be extended.
+     *   Currently there are only two strict PCI DSS requirements.  Passwords
+     *   and pass phrases (i) require a minimum length of at least seven
+     *   characters and (ii) must contain both numeric and alphabetic
+     *   characters.  Alternatively, the passwords/phrases MUST have
+     *   complexity and strength at least equivalent to the parameters
+     *   specified above, so the rule set MAY be extended.
      *
      * @link https://www.pcisecuritystandards.org/documents/PCI_DSS_v3.pdf
-     *     Payment Card Industry (PCI) Data Security Standard
-     *     Requirements and Security Assessment Procedures
+     *   Payment Card Industry (PCI) Data Security Standard
+     *   Requirements and Security Assessment Procedures
      */
     public static function validate($password)
     {
