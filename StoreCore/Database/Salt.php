@@ -6,31 +6,32 @@ namespace StoreCore\Database;
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2014-2015 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html
- * @package   StoreCore\Database
- * @version   0.0.2
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\Security
+ * @version   0.1.0
  */
 class Salt
 {
+    const VERSION = '0.1.0';
+
     /**
-     * @type string CHARACTER_SET
-     *      Character set for the salt, currently set to ASCII digits (0-1),
-     *      uppercase letters (A-Z), and lowercase letters (a-z).
+     * @var string CHARACTER_SET
+     *   Character set for the salt, currently set to ASCII digits (0-1),
+     *   uppercase letters (A-Z), and lowercase letters (a-z).  Note that
+     *   adding other characters may break code that uses the default format
+     *   "./0-9A-Za-z" for Standard DES (Data Encryption Standard) or
+     *   Blowfish.
      */
     const CHARACTER_SET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-   
-    /**
-     * @type string VERSION
-     */
-    const VERSION = '0.0.2';
 
     /**
      * Get a random salt.
      *
      * @param int $length
-     *     Optional length of the salt string.  Defaults to 255 characters for
-     *     a CHAR(255) column in a MySQL database table.  The salt length is
-     *     reset to a minimum of 8 characters for very short salts.
+     *   Optional length of the salt string.  Defaults to 255 characters for
+     *   a CHAR(255) column in a MySQL database table.  The salt length is
+     *   reset to a minimum of 2 characters for very short salts used by
+     *   Standard DES (Data Encryption Standard).
      *
      * @return string
      */
@@ -38,8 +39,8 @@ class Salt
     {
         if (!is_int($length)) {
             $length = 255;
-        } elseif ($length < 8) {
-            $length = 8;
+        } elseif ($length < 2) {
+            $length = 2;
         }
 
         $charset = str_shuffle(self::CHARACTER_SET);
