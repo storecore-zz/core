@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS sc_user_agents (
   last_sighting    TIMESTAMP     NOT NULL  DEFAULT '0000-00-00 00:00:00',
   http_user_agent  VARCHAR(255)  NOT NULL  DEFAULT '',
   PRIMARY KEY (user_agent_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_login_attempts (
   attempt_id      BIGINT UNSIGNED       NOT NULL  AUTO_INCREMENT,
@@ -56,6 +56,27 @@ CREATE TABLE IF NOT EXISTS sc_login_attempts (
   PRIMARY KEY (attempt_id),
   INDEX (attempted)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_ip_blacklist (
+  ip_address  VARCHAR(255)  NOT NULL,
+  from_date   TIMESTAMP     NOT NULL  DEFAULT '0000-00-00 00:00:00'  COMMENT 'UTC',
+  thru_date   TIMESTAMP     NOT NULL  DEFAULT '0000-00-00 00:00:00'  COMMENT 'UTC',
+  comments    VARCHAR(255)  NOT NULL  DEFAULT ''  COMMENT 'Reason, source or other internal memo',
+  PRIMARY KEY (ip_address),
+  INDEX (from_date),
+  INDEX (thru_date)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_ip_whitelist (
+  ip_address  VARCHAR(255)         NOT NULL,
+  admin_flag  TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
+  api_flag    TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
+  from_date   TIMESTAMP            NOT NULL  DEFAULT '0000-00-00 00:00:00'  COMMENT 'UTC',
+  thru_date   TIMESTAMP            NOT NULL  DEFAULT '0000-00-00 00:00:00'  COMMENT 'UTC',
+  PRIMARY KEY (ip_address),
+  INDEX (from_date),
+  INDEX (thru_date)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 
 --
