@@ -26,18 +26,20 @@ INSERT IGNORE INTO sc_user_groups (user_group_id, user_group_name) VALUES
 CREATE TABLE IF NOT EXISTS sc_users (
   user_id         SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   user_group_id   TINYINT(3) UNSIGNED   NOT NULL  DEFAULT 0,
+  email_address   VARCHAR(255)          NOT NULL,
   password_reset  TIMESTAMP             NOT NULL  DEFAULT '0000-00-00 00:00:00'  COMMENT 'UTC',
+  username        VARCHAR(255)          NOT NULL,
   password_salt   CHAR(255)             NOT NULL,
   hash_algo       VARCHAR(255)          NOT NULL,
-  username        VARCHAR(255)          NOT NULL,
   password_hash   VARCHAR(255)          NOT NULL,
   first_name      VARCHAR(255)          NOT NULL  DEFAULT '',
   last_name       VARCHAR(255)          NOT NULL  DEFAULT '',
-  email_address   VARCHAR(255)          NOT NULL,
   email_token     VARCHAR(255)          NULL  DEFAULT NULL,
   PRIMARY KEY (user_id),
-  FOREIGN KEY (user_group_id) REFERENCES sc_user_groups (user_group_id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  FOREIGN KEY (user_group_id) REFERENCES sc_user_groups (user_group_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  UNIQUE (email_address),
+  INDEX (username)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_user_agents (
   user_agent_id    CHAR(40)      NOT NULL  COMMENT 'SHA-1 hash',
