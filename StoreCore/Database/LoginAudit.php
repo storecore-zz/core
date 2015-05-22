@@ -1,8 +1,19 @@
 <?php
 namespace StoreCore\Database;
 
-class LoginAudit implements \Countable
+/**
+ * Login Audit
+ *
+ * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @copyright Copyright (c) 2015 StoreCore
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\Security
+ * @version   0.1.0
+ */
+class LoginAudit
 {
+    const VERSION = '0.1.0';
+
     /**
      * @param void
      * @return void
@@ -17,26 +28,12 @@ class LoginAudit implements \Countable
     }
 
     /**
-     * Count the total number of stored attempts.
-     *
-     * @param void
-     * @return int
-     */
-    public function count()
-    {
-        $sql = 'SELECT COUNT(*) FROM sc_login_attempts';
-        $result = $this->Connection->query($sql);
-        $row = $result->fetch(\PDO::FETCH_NUM);
-        return $row[0];
-    }
-
-    /**
      * Count the recently failed login attempts.
      *
      * @api
      *
      * @param int $minutes
-     *     Size of the time frame in minutes, defaults to 15 minutes.
+     *   Size of the time frame in minutes, defaults to 15 minutes.
      *
      * @return int
      */
@@ -48,24 +45,24 @@ class LoginAudit implements \Countable
         $row = $result->fetch(\PDO::FETCH_NUM);
         return $row[0];
     }
-
+    
     /**
      * Store a login attempt.
      *
      * @api
      *
      * @param string|null $username
-     *     Username or some other user identifier of the user logging in.  The
-     *     username may be set to an e-mail address, or to an empty string if
-     *     the username is unknown.
+     *   Username or some other user identifier of the user logging in.  The
+     *   username may be set to an e-mail address or to an empty string if
+     *   the username is unknown.
      *
      * @param string|null $remote_address
-     *     Remote client IP address.
+     *   Remote client IP address.
      *
      * @param bool $successful
-     *     The login attempt was successful (true) or failed (false).  This
-     *     parameter MUST explicitly be set to a boolean true in order to log
-     *     a successful attempt.
+     *   The login attempt was successful (true) or failed (false).  This
+     *   parameter MUST explicitly be set to a boolean true in order to log
+     *   a successful attempt.
      *
      * @return void
      */
