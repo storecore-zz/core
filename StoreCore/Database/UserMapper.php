@@ -8,18 +8,14 @@ namespace StoreCore\Database;
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
- * @version   0.0.3
+ * @version   0.0.4
  */
 class UserMapper extends AbstractDataAccessObject
 {
-    const VERSION = '0.0.3';
+    const VERSION = '0.0.4';
 
-    /**
-     * @var string $TableName  Name of the database table.
-     * @var string $PrimaryKey Name of primary key column.
-     */
-    protected $TableName = 'sc_users';
-    protected $PrimaryKey = 'user_id';
+    const TABLE_NAME  = 'sc_users';
+    const PRIMARY_KEY = 'user_id';
 
     /**
      * Ban a user.
@@ -39,7 +35,7 @@ class UserMapper extends AbstractDataAccessObject
     public function ban(\StoreCore\User $user)
     {
         $data = array(
-            $this->PrimaryKey => $user->getUserID(),
+            self::PRIMARY_KEY => $user->getUserID(),
             'user_group_id' => 0,
         );
         $this->update($data);
@@ -80,7 +76,7 @@ class UserMapper extends AbstractDataAccessObject
             throw new \InvalidArgumentException(__METHOD__ . ' expects parameter 1 to be an e-mail address.');
         }
 
-        $result = $this->fetch($email_address, 'email_address');
+        $result = $this->read($email_address, 'email_address');
         if (count($result) == 1) {
             $user_data = $result[0];
             unset($result);
@@ -105,7 +101,7 @@ class UserMapper extends AbstractDataAccessObject
             return $this->getUserByEmailAddress($email_address);
         }
 
-        $result = $this->fetch($username, 'username');
+        $result = $this->read($username, 'username');
         if (count($result) == 1) {
             $user_data = $result[0];
             unset($result);

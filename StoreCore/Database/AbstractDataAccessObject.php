@@ -8,16 +8,14 @@ namespace StoreCore\Database;
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Database
- * @version   0.0.2
+ * @version   0.1.0
  */
 abstract class AbstractDataAccessObject
 {
-    const VERSION = '0.0.2';
+    const VERSION = '0.1.0';
 
-
-    /** @var object StoreCore\Database\Connection */
+    /** @var StoreCore\Database\Connection $Connection */
     private $Connection;
-
 
     /**
      * Connect on construction.
@@ -26,17 +24,6 @@ abstract class AbstractDataAccessObject
      * @return void
      */
     public function __construct()
-    {
-        $this->connect();
-    }
-
-    /**
-     * Connect to the database.
-     *
-     * @param void
-     * @return void
-     */
-    private function connect()
     {
         $this->Connection = new \StoreCore\Database\Connection();
     }
@@ -49,7 +36,7 @@ abstract class AbstractDataAccessObject
      */
     public function create(array $keyed_data)
     {
-        $sql = 'INSERT INTO ' . $this->TableName
+        $sql = 'INSERT INTO ' . static::TABLE_NAME
             . ' (' . implode(',', array_keys($keyed_data)) . ') VALUES (';
         $values = array_values($keyed_data);
         foreach ($values as $key => $value) {
@@ -67,21 +54,21 @@ abstract class AbstractDataAccessObject
     /**
      * Delete one or more database rows.
      *
-     * @param string $value
+     * @param mixed $value
      * @param string|null $key
      * @return int
      */
     public function delete($value, $key = null)
     {
-        if ($key == null) {
-            $key = $this->PrimaryKey;
+        if ($key === null) {
+            $key = static::PRIMARY_KEY;
         }
 
         if (!is_numeric($value)) {
             $value = $this->Connection->quote($value);
         }
 
-        $sql = 'DELETE FROM ' . $this->TableName . ' WHERE ' . $key . '=' . $value;
+        $sql = 'DELETE FROM ' . static::TABLE_NAME . ' WHERE ' . $key . '=' . $value;
         $affected_rows = $this->Connection->exec($sql);
         return $affected_rows;
     }
@@ -95,14 +82,15 @@ abstract class AbstractDataAccessObject
      */
     public function read($value, $key = null)
     {
-        if ($key == null) {
-            $key = $this->PrimaryKey;
+        if ($key === null) {
+            $key = static::PRIMARY_KEY;
         }
 
         if (!is_numeric($value)) {
             $value = $this->Connection->quote($value);
         }
-        $sql = 'SELECT * FROM ' . $this->TableName . ' WHERE ' . $key . '=' . $value;
+
+        $sql = 'SELECT * FROM ' . static::TABLE_NAME . ' WHERE ' . $key . '=' . $value;
 
         $rows = array();
         $stmt = $this->Connection->query($sql);
@@ -120,7 +108,7 @@ abstract class AbstractDataAccessObject
      */
     public function update(array $keyed_data)
     {
-        $sql = 'UPDATE ' . $this->TableName . ' SET ';
+        $sql = 'UPDATE ' . static::TABLE_NAME . ' SET ';
         $updates = array();
         foreach ($keyed_data as $column => $value) {
             if (!is_numeric($value)) {
@@ -129,7 +117,7 @@ abstract class AbstractDataAccessObject
             $updates[] = $column . '=' . $value;
         }
         $sql .= implode(',', $updates);
-        $sql .= ' WHERE ' . $this->PrimaryKey . '=' . $keyed_data[$this->PrimaryKey];
+        $sql .= ' WHERE ' . static::PRIMARY_KEY . '=' . $keyed_data[static::PRIMARY_KEY];
 
         $affected_rows = $this->Connection->exec($sql);
         return $affected_rows;
