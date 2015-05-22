@@ -977,9 +977,11 @@ INSERT IGNORE INTO sc_product_identification_types
 CREATE TABLE IF NOT EXISTS sc_product_identification_codes (
   product_id              MEDIUMINT(8) UNSIGNED  NOT NULL,
   identification_type_id  TINYINT(3) UNSIGNED    NOT NULL,
-  PRIMARY KEY (product_id,identification_type_id),
-  FOREIGN KEY (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (identification_type_id) REFERENCES sc_product_identification_types (identification_type_id) ON DELETE CASCADE ON UPDATE CASCADE
+  identification_code     VARCHAR(255)           NOT NULL,
+  PRIMARY KEY pk_id (product_id,identification_type_id),
+  FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_identification_type_id (identification_type_id) REFERENCES sc_product_identification_types (identification_type_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  UNIQUE KEY uk_identification_code (identification_code)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_product_descriptions (
@@ -1003,7 +1005,7 @@ CREATE TABLE IF NOT EXISTS sc_product_price_components (
 
 INSERT IGNORE INTO sc_product_price_components
     (price_component_id, description, comments)
-  VALUE
+  VALUES
     (0, 'Base price',                      'Default list price if no other price components are set and price used in calculations.'),
     (1, 'Manufacturer’s suggested price',  'MSRP (Manufacturer’s Suggested Retail Price) or RRP (Recommended Retail Price).'),
     (2, 'Minimum advertised price',        'MAP (Minimum Advertised Price) from legal agreements.'),
@@ -1048,17 +1050,49 @@ CREATE TABLE IF NOT EXISTS sc_units_of_measure (
   uom_id        TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   abbreviation  VARCHAR(5)           NOT NULL,
   description   VARCHAR(255)         NOT NULL,
-  PRIMARY KEY (uom_id),
-  UNIQUE KEY (abbreviation)
+  PRIMARY KEY pk_uom_id (uom_id),
+  UNIQUE KEY uk_abbreviation (abbreviation)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_units_of_measure_conversion (
   from_uom_id        TINYINT(3) UNSIGNED  NOT NULL,
   to_uom_id          TINYINT(3) UNSIGNED  NOT NULL,
-  conversion_factor  DECIMAL(8,4)         NOT NULL  COMMENT 'Multiplier',
+  conversion_factor  DECIMAL(18,9)        NOT NULL  COMMENT 'Multiplier',
   PRIMARY KEY (from_uom_id,to_uom_id),
   FOREIGN KEY (from_uom_id) REFERENCES sc_units_of_measure (uom_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (to_uom_id) REFERENCES sc_units_of_measure (uom_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+INSERT IGNORE INTO sc_units_of_measure
+    (uom_id, abbreviation, description)
+  VALUES
+    (1, 'm',   'metre'),
+    (2, 'kg',  'kilogram'),
+    (3, 's',   'second'),
+    (4, 'A',   'ampere'),
+    (5, 'K',   'kelvin'),
+    (6, 'mol', 'mole'),
+    (7, 'cd',  'candela'),
+
+    (8, 'g', 'gram'),
+    (9, 'mg', 'milligram'),
+    (10, 't', 'metric ton');
+
+INSERT IGNORE INTO sc_units_of_measure_conversion
+    (from_uom_id, to_uom_id, conversion_factor)
+  VALUES
+    (8, 2, 1000),
+    (9, 2, 1000000),
+    (10, 2, 0.001);
+
+
+CREATE TABLE IF NOT EXISTS sc_product_weights (
+  product_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
+  uom_id      TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 2,
+  weight      DECIMAL(18,9)          NOT NULL,
+  PRIMARY KEY pk_product_id (product_id),
+  FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_uom_id (uom_id) REFERENCES sc_units_of_measure (uom_id) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 
