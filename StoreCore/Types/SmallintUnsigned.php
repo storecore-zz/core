@@ -3,6 +3,8 @@ namespace StoreCore\Types;
 
 class SmallintUnsigned implements TypeInterface
 {
+    const VERSION = '0.1.0';
+
     protected $Value;
 
     public function __construct($initial_value, $strict = true)

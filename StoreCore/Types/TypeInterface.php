@@ -12,6 +12,10 @@ interface TypeInterface
      *
      * @param bool $strict
      *   Enforce strict typing (true) or loose typing (false).
+     *
+     * @throws Exception
+     *   Classes MUST throw exceptions if the initial value does not match
+     *   the type definition.
      */
     public function __construct($initial_value, $strict);
 }

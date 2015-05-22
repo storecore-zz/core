@@ -3,6 +3,8 @@ namespace StoreCore\Types;
 
 class FormToken
 {
+    const VERSION = '0.1.0';
+
     /**
      * Get a random ASCII token.
      *

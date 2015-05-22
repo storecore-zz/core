@@ -100,9 +100,9 @@ class Installer extends \StoreCore\AbstractController
                 $maintenance_module->restore();
 
                 $config = new \StoreCore\Admin\Configurator();
-                $config->set('StoreCore\\Database\\VERSION_INSTALLED', StoreCore\VERSION);
+                $config->set('StoreCore\\Database\\VERSION_INSTALLED', \StoreCore\VERSION);
                 $config->save();
-                $this->Logger->notice('StoreCore database version ' . StoreCore\VERSION . ' was installed.');
+                $this->Logger->notice('StoreCore database version ' . \StoreCore\VERSION . ' was installed.');
             }
 
         } catch (\PDOException $e) {
@@ -213,7 +213,7 @@ class Installer extends \StoreCore\AbstractController
     private function checkUsers()
     {
         $users = new \StoreCore\Database\Users($this->Registry);
-        if ($users->count() === 0) {
+        if ($users->count() !== 0) {
             $this->Logger->info('User accounts are good to go.');
             return true;
         }
@@ -241,15 +241,14 @@ class Installer extends \StoreCore\AbstractController
             }
 
             // E-mail address
-            if (
-                $this->Request->get('email_address') !== null
-                && filter_var($this->Request->get('email_address'), FILTER_VALIDATE_EMAIL) !== false
-            ) {
-                $e = $this->Request->get('email_address');
-                $e = explode('@', $e, 2);
-                $e[1] = mb_strtolower($e[1]);
-                $user_data['email_address'] = implode('@', $e);
-                unset($e);
+            if ($this->Request->get('email_address') !== null) {
+                try {
+                    $email_address = new \StoreCore\Types\EmailAddress($this->Request->get('email_address'));
+                    $user_data['email_address'] = (string)$email_address;
+                } catch (\Exception $e) {
+                    $this->Logger->warning('Invalid e-mail address:' . $this->Request->get('email_address'));
+                    $user_data['email_address'] = false;
+                }
             }
 
             // Username
