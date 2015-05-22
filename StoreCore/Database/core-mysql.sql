@@ -41,6 +41,17 @@ CREATE TABLE IF NOT EXISTS sc_users (
   INDEX (username)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+CREATE TABLE IF NOT EXISTS sc_users_password_history (
+  user_id        SMALLINT(5)          UNSIGNED  NOT NULL,
+  date_from      TIMESTAMP            NOT NULL  DEFAULT '0000-00-00 00:00:00'  COMMENT 'UTC',
+  date_thru      TIMESTAMP            NOT NULL  DEFAULT '0000-00-00 00:00:00'  COMMENT 'UTC',
+  checked_flag   TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
+  password_salt  VARCHAR(255)         NOT NULL,
+  password_hash  VARCHAR(255)         NOT NULL,
+  PRIMARY KEY pk_id (user_id,date_from),
+  FOREIGN KEY fk_user_id (user_id) REFERENCES sc_users (user_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
 CREATE TABLE IF NOT EXISTS sc_user_agents (
   user_agent_id    CHAR(40)      NOT NULL  COMMENT 'SHA-1 hash',
   first_sighting   TIMESTAMP     NOT NULL  DEFAULT '0000-00-00 00:00:00',
@@ -55,9 +66,10 @@ CREATE TABLE IF NOT EXISTS sc_login_attempts (
   attempted       TIMESTAMP             NOT NULL  DEFAULT '0000-00-00 00:00:00'  COMMENT 'UTC',
   remote_address  VARCHAR(255)          NULL  DEFAULT NULL,
   username        VARCHAR(255)          NULL  DEFAULT NULL,
-  PRIMARY KEY (attempt_id),
-  INDEX (attempted)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  PRIMARY KEY pk_attempt_id (attempt_id),
+  INDEX ix_attempted (attempted DESC),
+  INDEX ix_remote_address (remote_address)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_ip_blacklist (
   ip_address  VARCHAR(255)  NOT NULL,
