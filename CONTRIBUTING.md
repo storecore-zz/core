@@ -197,25 +197,25 @@ closer to the beginning of the table are therefore selected faster.
 Times and dates with times SHOULD be stored in Coordinated Universal Time
 (UTC).
 
-Incorrect:
+###### Incorrect:
 
 ```
 `date_added`  DATETIME  NOT NULL
 ```
 
-Correct:
+###### Correct:
 
 ```
 `date_added`  TIMESTAMP  NOT NULL  DEFAULT CURRENT_TIMESTAMP
 ```
 
-Incorrect:
+###### Incorrect:
 
 ```
 `date_modified`  DATETIME  NOT NULL
 ```
 
-Correct:
+###### Correct:
 
 ```
 `date_modified`  TIMESTAMP  NOT NULL  ON UPDATE CURRENT_TIMESTAMP
@@ -249,7 +249,7 @@ String equality comparisons are much more expensive than integer compares.
 If a database value is an integer, it MUST NOT be treated as a numeric string.
 This holds especially true for primary keys and foreign keys.
 
-Incorrect:
+###### Incorrect:
 
 ```php
 $sql = "
@@ -264,7 +264,7 @@ UPDATE sc_addresses
  WHERE address_id  = '67890';
 ```
 
-Correct:
+###### Correct:
 
 ```php
 $sql = '
@@ -345,7 +345,7 @@ exception instead, so the application using the model or controller may respond
 to the failure.  If the exception is not caught, it will result in a “Fatal
 error: Uncaught exception.”
 
-Incorrect:
+###### Incorrect:
 
 ```php
 if (!file_exists($file)) {
@@ -353,7 +353,7 @@ if (!file_exists($file)) {
 }
 ```
 
-Correct:
+###### Correct:
 
 ```php
 if (!file_exists($file)) {
@@ -365,7 +365,7 @@ In many cases it is RECOMMENDED to throw a more specific [Standard PHP Library
 (SPL) exception], for example a [runtime exception] if a file only exists after
 it was saved by an application.
 
-Correct:
+###### Correct:
 
 ```php
 if (!file_exists($file)) {
@@ -401,6 +401,41 @@ $registry = \StoreCore\Registry::getInstance();
 [service locator design pattern]: https://en.wikipedia.org/wiki/Service_locator_pattern "Service locator pattern"
 
 [singleton design pattern]: https://en.wikipedia.org/wiki/Singleton_pattern "Singleton pattern"
+
+## 5.2.1. MVC Models and Controllers
+
+Framework MVC controllers SHOULD extend the abstract core class
+`AbstractController`.  Likewise MVC models MAY extend the abstract class
+`AbstractModel`:
+
+```php
+class FooController extends AbstractController
+{
+    // <...>
+}
+
+class FooModel extends AbstractModel
+{
+    // <...>
+}
+```
+
+If a model needs access to the database, it MAY extend the `AbstractModel`
+from the `StoreCore\Database` namespace.  Therefore there a two abstract
+prototypes for models available, one without and one with a database
+connection:
+
+```php
+class FooModel extends \StoreCore\AbstractModel
+{
+    // <...>
+}
+
+class BarModel extends \StoreCore\Database\AbstractModel
+{
+    // <...>
+}
+```
 
 
 # 6. Internationalization (I18N) and Localization (L13N)
