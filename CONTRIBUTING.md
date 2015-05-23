@@ -152,13 +152,13 @@ Letting the server recalculate a fixed value over and over again, is lazy.
 Simply calculate the fixed value once yourself.  Add a comment if you would
 like to clarify a given value.
 
-Incorrect:
+###### Incorrect:
 
 ```php
 setcookie('language', $code, time() + 60 * 60 * 24 * 30, '/', $request->Server['HTTP_HOST']);
 ```
 
-Correct:
+###### Correct:
 
 ```php
 setcookie('language', $code, time() + 2592000, '/', $request->Server['HTTP_HOST']);
@@ -281,18 +281,18 @@ UPDATE sc_addresses
 
 ## 4.5. Don’t: Close and Immediately Re-Open PHP Tags
 
-Incorrect:
+###### Incorrect:
 
 ```php
-<?php echo $header; ?><?php echo $column_left; ?>
+<?php echo $header; ?><?php echo $menu; ?>
 ```
 
-Correct:
+###### Correct:
 
 ```php
 <?php
 echo $header;
-echo $column_left;
+echo $menu;
 ?>
 ```
 
@@ -302,7 +302,7 @@ Once the outcome of a PHP method or procedure has been established, it SHOULD
 be returned.  The examples below demonstrate this may save memory and
 computations.
 
-Incorrect:
+###### Incorrect:
 
 ```php
 public function hasDownload()
@@ -320,7 +320,7 @@ public function hasDownload()
 }
 ```
 
-Correct:
+###### Correct:
 
 ```php
 public function hasDownload()
@@ -386,13 +386,13 @@ The StoreCore registry is therefore implemented using the [singleton design
 pattern].  Because the registry implements a `SingletonInterface`, it cannot be
 instantiated.  Instead you should call the static `getInstance()` method.
 
-Incorrect:
+###### Incorrect:
 
 ```php
 $registry = new \StoreCore\Registry();
 ```
 
-Correct:
+###### Correct:
 
 ```php
 $registry = \StoreCore\Registry::getInstance();
@@ -402,15 +402,19 @@ $registry = \StoreCore\Registry::getInstance();
 
 [singleton design pattern]: https://en.wikipedia.org/wiki/Singleton_pattern "Singleton pattern"
 
+
 # 6. Internationalization (I18N) and Localization (L13N)
 
 ## 6.1. Limitations of MVC-L
 
-From the outset we decided multilingual support SHOULD be a key feature of an
-open-source e-commerce community operating from Europe.  Support of multiple
-languages would no longer be an option, but a MUST.  For companies
-operating in bilingual and multilingual European countries like Belgium,
-Finland, and Switzerland this may of course be an important core feature too.
+From the outset we decided multilingual support of [European languages]
+SHOULD be a key feature of an open-source e-commerce community operating from
+Europe.  Support of multiple languages would no longer be an option, but 
+a MUST.  For companies operating in bilingual and multilingual European
+countries like Belgium, Luxembourg, Finland, and Switzerland this may of
+course be an critical key feature too.
+
+[European languages]: https://en.wikipedia.org/wiki/Languages_of_Europe "Languages of Europe"
 
 The traditional MVC-L (model-view-controller-language) application structure
 adds severe limitations to performance, maintenance, and scalability.
@@ -447,7 +451,8 @@ the self-referencing key `parent_id`.  If the `language_id` is equal to the
 `parent_id`, a language has no parent and is therefore a core language located
 at the root of the language family tree.
 
-Currently, the core supports four European master languages:
+Currently, the core supports four European master languages.  These are defined
+in the `SUPPORTED_LANGUAGES` constant of the `Locale` class:
 
 - `de-DE` for German
 - `en-GB` for English
@@ -461,14 +466,14 @@ Master languages cannot be deleted; they can only be disabled.  If you do try
 to delete a master language from the database, the `DELETE` query fails on a
 foreign key constraint.
 
-Incorrect:
+###### Incorrect:
 
 ```sql
 DELETE FROM sc_languages
       WHERE iso_code = 'de-DE';
 ```
 
-Correct:
+###### Correct:
 
 ```sql
 UPDATE sc_languages
@@ -485,9 +490,35 @@ American English and British English in its “English - United Kingdom”
 (en-GB) master.  This allows for global localization while maintaining language
 consistency and a concise dictionary.
 
-## 6.3. Translation Guidelines
+## 6.3. Content Language Negotiation
 
-### 6.3.1. Compound Nouns
+StoreCore uses the HTTP `Accept-Language` header to determine which content
+language is preferred by visitors, customers, users, and client applications.
+The current language can be found by supplying an array of supported languages
+to the `Language::negotiate()` method.
+
+###### Class Synopsis
+
+```php
+Language {
+    public string negotiate ( array $supported [, string $default = 'en-GB'] )
+}
+```
+
+The `$supported` parameter must be an associative array of ISO language codes
+that evaluate to `true`.  For example, if an application supports both English
+and French, the supported languages may be defined as:
+
+```php
+$supported = array(
+    'en-GB' => true,
+    'fr-FR' => true,
+);
+```
+
+## 6.4. Translation Guidelines
+
+### 6.4.1. Compound Nouns
 
 Compound nouns are handled as single nouns.  For example, *shopping cart* is
 not stored as two terms like `NOUN_SHOPPING` plus `NOUN_CART`, but as a single
