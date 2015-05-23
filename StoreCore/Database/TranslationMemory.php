@@ -10,11 +10,8 @@ namespace StoreCore\Database;
  * @package   StoreCore\I18N
  * @version   0.0.2
  */
-class TranslationMemory extends \StoreCore\AbstractModel
+class TranslationMemory extends \StoreCore\Database\AbstractModel
 {
-    /**
-     * @var string VERSION
-     */
     const VERSION = '0.0.2';
 
     /**
@@ -31,6 +28,8 @@ class TranslationMemory extends \StoreCore\AbstractModel
 
     /**
      * Load translations as name/value pairs.
+     *
+     * @api
      *
      * @param int|string $language_code
      *   Internal language identifier (integer) or ISO language code (string).
@@ -64,26 +63,20 @@ class TranslationMemory extends \StoreCore\AbstractModel
     }
 
     /**
+     * @internal
      * @param int $language_id
      * @param bool $storefront
      * @return void
      */
     private function readTranslations($language_id, $storefront)
     {
-        $sql = "SELECT translation_id AS name, translation AS value FROM sc_translation_memory WHERE language_id = " . (int)$language_id;
+        $sql = 'SELECT translation_id AS name, translation AS value FROM sc_translation_memory WHERE language_id = ' . (int)$language_id;
         if ($storefront) {
-            $sql .= ' AND is_admin_only = 0';
+            $sql .= ' AND admin_only_flag = 0';
         }
         $sql .= ' ORDER BY translation_id ASC';
 
-        if ($this->Registry->has('Connection')) {
-            $dbh = $this->Registry->get('Connection');
-        } else {
-            $dbh = new \StoreCore\Database\Connection();
-            $this->Registry->set('Connection', $dbh);
-        }
-
-        $stmt = $dbh->prepare($sql);
+        $stmt = $this->Connection->prepare($sql);
         $stmt->execute();
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $this->Translations[$row['name']] = $row['value'];
@@ -93,12 +86,14 @@ class TranslationMemory extends \StoreCore\AbstractModel
     /**
      * Set the language to load.
      *
+     * @api
+     *
      * @param int|string $language_code
-     *     Internal language identifier (integer) or ISO language code (string).
+     *   Internal language identifier (integer) or ISO language code (string).
      *
      * @return bool
-     *     Returns true if the language was set or false if the language does
-     *     not exist or is not enabled.
+     *   Returns true if the language was set or false if the language does not
+     *   exist or is not enabled.
      */
     public function setLanguage($language_code)
     {
@@ -121,14 +116,7 @@ class TranslationMemory extends \StoreCore\AbstractModel
             return false;
         }
 
-        if ($this->Registry->has('Connection')) {
-            $dbh = $this->Registry->get('Connection');
-        } else {
-            $dbh = new \StoreCore\Database\Connection();
-            $this->Registry->set('Connection', $dbh);
-        }
-
-        $stmt = $dbh->prepare($sql);
+        $stmt = $this->Connection->prepare($sql);
         $stmt->execute();
         $row = $stmt->fetch(\PDO::FETCH_ASSOC);
 

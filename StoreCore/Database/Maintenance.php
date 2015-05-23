@@ -1,13 +1,12 @@
 <?php
 namespace StoreCore\Database;
 
+/**
+ * Database Maintenance
+ */
 class Maintenance extends \StoreCore\AbstractModel
 {
-    /**
-     * @var string VERSION
-     *   Semantic version (SemVer).
-     */
-    const VERSION = '0.1.0-alpha';
+    const VERSION = '0.1.0';
 
     /**
      * @var \StoreCore\Admin\Configurator|null $Configurator

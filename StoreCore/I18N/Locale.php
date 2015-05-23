@@ -2,6 +2,8 @@
 namespace StoreCore\I18N;
 
 /**
+ * Locale Loader
+ *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
@@ -10,26 +12,22 @@ namespace StoreCore\I18N;
  */
 class Locale
 {
+    const VERSION = '0.1.0';
+
     /**
      * @var string DEFAULT_LANGUAGE
-     *     Default language to load if no other default language is set or no
-     *     other language match was found.  Defaults to 'en-GB' for British
-     *     English.
+     *   Default language to load if no other default language is set or no
+     *   other language match was found.  Defaults to 'en-GB' for British
+     *   English.
      */
     const DEFAULT_LANGUAGE = 'en-GB';
 
     /**
      * @var string SUPPORTED_LANGUAGES
-     *     Array in JSON (JavaScript Object Notation) linking ISO codes for
-     *     supported languages to the status true or false.
+     *   Array in JSON (JavaScript Object Notation) linking ISO codes for
+     *   supported languages to the status true or false.
      */
     const SUPPORTED_LANGUAGES = '{"en-GB":true,"de-DE":true,"fr-FR":true,"nl-NL":true}';
-
-    /**
-     * @var string VERSION
-     *     Semantic version (SemVer).
-     */
-    const VERSION = '0.1.0';
 
     /**
      * Load a negotiable locale from the file system cache.
@@ -37,7 +35,7 @@ class Locale
      * @param void
      *
      * @return string
-     *     ISO code of the loaded locale.
+     *   ISO code of the loaded locale.
      */
     public static function load($default_language = null)
     {

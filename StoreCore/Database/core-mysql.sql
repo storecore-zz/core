@@ -404,19 +404,27 @@ CREATE TABLE IF NOT EXISTS sc_languages (
   sort_order    SMALLINT(5) UNSIGNED  NOT NULL  DEFAULT 0,
   iso_code      CHAR(5)               NOT NULL  COMMENT 'ISO 639',
   english_name  VARCHAR(32)           NOT NULL,
-  local_name    VARCHAR(32)           NOT NULL  DEFAULT '',
-  PRIMARY KEY (language_id),
-  FOREIGN KEY (parent_id) REFERENCES sc_languages (language_id) ON DELETE RESTRICT ON UPDATE CASCADE,
-  UNIQUE (iso_code),
-  KEY english_name (english_name)
+  local_name    VARCHAR(32)           NOT NULL,
+  PRIMARY KEY pk_language_id (language_id),
+  FOREIGN KEY fk_language_id (parent_id) REFERENCES sc_languages (language_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+  UNIQUE KEY uk_iso_code (iso_code),
+  UNIQUE KEY uk_english_name (english_name),
+  UNIQUE KEY uk_local_name (local_name)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 INSERT IGNORE INTO sc_languages (language_id, parent_id, iso_code, english_name, local_name, status) VALUES
+  (1026, 1026, 'bg-BG', 'Bulgarian - Bulgaria',       'Български - България',        0),
+  (1029, 1029, 'cs-CZ', 'Czech - Czech Republic',     'Čeština - Česká republika',   0),
+  (1030, 1030, 'da-DK', 'Danish - Denmark',           'Dansk - Danmark',             0),
   (1031, 1031, 'de-DE', 'German - Germany',           'Deutsch - Deutschland',       1),
+  (1035, 1035, 'fi-FI', 'Finnish - Finland',          'Suomi - Suomi',               1),
   (1036, 1036, 'fr-FR', 'French - France',            'Français - France',           1),
   (1040, 1040, 'it-IT', 'Italian - Italy',            'Italiano - Italia',           0),
   (1043, 1043, 'nl-NL', 'Dutch - Netherlands',        'Nederlands - Nederland',      1),
+  (1045, 1045, 'pl-PL', 'Polish - Poland',            'Polski - Polska',             0),
   (1049, 1049, 'ru-RU', 'Russian - Russia',           'Русский - Россия',            0),
+  (1050, 1050, 'hr-HR', 'Croatian - Croatia',         'Hrvatski - Hrvatska',         0),
+  (1061, 1061, 'et-EE', 'Estonian - Estonia',         'Eesti - Eesti',               0),
   (1134, 1134, 'lb-LU', 'Luxembourgish - Luxembourg', 'Lëtzebuergesch - Lëtzebuerg', 0),
   (2057, 2057, 'en-GB', 'English - United Kingdom',   'English - United Kingdom',    1),
   (2070, 2070, 'pt-PT', 'Portuguese - Portugal',      'Português - Portugal',        0),
@@ -429,18 +437,22 @@ INSERT IGNORE INTO sc_languages (language_id, parent_id, iso_code, english_name,
   (2064, 1040, 'it-CH', 'Italian - Switzerland',   'Italiano - Svizzera',     0),
   (2067, 1043, 'nl-BE', 'Dutch - Belgium',         'Nederlands - België',     0),
   (3079, 1031, 'de-AT', 'German - Austria',        'Deutsch - Österreich',    0),
+  (3081, 2057, 'en-AU', 'English - Australia',     'English - Australia',     0),
   (3084, 1036, 'fr-CA', 'French - Canada',         'Français - Canada',       0),
   (4103, 1031, 'de-LU', 'German - Luxembourg',     'Deutsch - Luxemburg',     0),
   (4105, 2057, 'en-CA', 'English - Canada',        'English - Canada',        0),
   (5127, 1031, 'de-LI', 'German - Liechtenstein',  'Deutsch - Liechtenstein', 0),
-  (5132, 1036, 'fr-LU', 'French - Luxembourg',     'Français - Luxembourg',   0);
+  (5129, 2057, 'en-NZ', 'English - New Zealand',   'English - New Zealand',   0),
+  (5132, 1036, 'fr-LU', 'French - Luxembourg',     'Français - Luxembourg',   0),
+  (6153, 2057, 'en-IE', 'English - Ireland',       'English - Ireland',       0),
+  (6156, 1036, 'fr-MC', 'French - Monaco',         'Français - Monaco',       0);
 
 CREATE TABLE IF NOT EXISTS sc_translation_memory (
-  translation_id  VARCHAR(255)          CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
-  language_id     SMALLINT(5) UNSIGNED  NOT NULL  DEFAULT 2057,
-  is_admin_only   TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
-  last_modified   TIMESTAMP             NOT NULL  DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP,
-  translation     TEXT                  NULL,
+  translation_id   VARCHAR(255)          CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
+  language_id      SMALLINT(5) UNSIGNED  NOT NULL  DEFAULT 2057,
+  admin_only_flag  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
+  last_modified    TIMESTAMP             NOT NULL  DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP,
+  translation      TEXT                  NULL,
   PRIMARY KEY (translation_id, language_id),
   FOREIGN KEY (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;

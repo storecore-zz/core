@@ -2,14 +2,15 @@
 namespace StoreCore\I18N;
 
 /**
+ * Content Language Negotiation
+ *
  * @copyright Copyright (c) 2014-2015 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\I18N
  * @version   0.1.0
  */
 class Language
 {
-    /** @type string VERSION */
     const VERSION = '0.1.0';
 
     /**
@@ -19,13 +20,13 @@ class Language
      * of supported options.
      *
      * @param string $header
-     *     The HTTP "Accept" header to parse.
+     *   The HTTP "Accept" header to parse.
      *
      * @param array $supported
-     *     A list of supported values.
+     *   A list of supported values.
      *
      * @return string|null
-     *     Returns a matched option or null if there is no match.
+     *   Returns a matched option or null if there is no match.
      */
     private function matchAcceptHeader($header, $supported)
     {
@@ -47,13 +48,13 @@ class Language
      * Negotiate preferred client language.
      *
      * @param array $supported
-     *     An associative array indexed by language codes (locale codes)
-     *     supported by the application.  Values must evaluate to true.
+     *   An associative array indexed by language codes (locale codes)
+     *   supported by the application.  Values must evaluate to true.
      *
      * @param string $default
-     *     The default language that should be used if none of the other
-     *     languages are found during negotiation.  Defaults to 'en-GB' for
-     *     British English.
+     *   The default language that should be used if none of the other
+     *   languages are found during negotiation.  Defaults to 'en-GB' for
+     *   British English.
      *
      * @return string
      */
@@ -90,10 +91,10 @@ class Language
      * Parse and sort a weighed "Accept" HTTP header.
      *
      * @param string $header
-     *     The HTTP "Accept" header to parse.
+     *   The HTTP "Accept" header to parse.
      *
      * @return array
-     *     Sorted list of "accept" options.
+     *   Sorted list of "accept" options.
      */
     private function sortAcceptHeader($header)
     {

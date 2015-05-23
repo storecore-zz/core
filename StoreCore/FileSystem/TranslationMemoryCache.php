@@ -16,9 +16,6 @@ use \StoreCore\FileSystem\Logger as Logger;
  */
 class TranslationMemoryCache
 {
-    /**
-     * @var string VERSION
-     */
     const VERSION = '0.0.2';
 
     /**

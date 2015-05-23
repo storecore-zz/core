@@ -16,7 +16,7 @@
 --
 -- @author    Ward van der Put <Ward.van.der.Put@gmail.com>
 -- @copyright Copyright (c) 2014-2015 StoreCore
--- @license   http://www.gnu.org/licenses/gpl.html GPLv3
+-- @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
 -- @version   0.0.3
 --
 
@@ -41,7 +41,7 @@ INSERT IGNORE INTO sc_translation_memory
 -- Nouns that are not translated, usually proper nouns and proper names
 --
 INSERT IGNORE INTO sc_translation_memory
-    (translation_id, translation, is_admin_only)
+    (translation_id, translation, admin_only_flag)
   VALUES
     ('NOUN_MYSQL', 'MySQL', 1),
     ('NOUN_PHP', 'PHP', 1);
@@ -214,7 +214,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_USERNAME', 2057, 'Username');
 
 INSERT IGNORE INTO sc_translation_memory
-    (translation_id, language_id, translation, is_admin_only)
+    (translation_id, language_id, translation, admin_only_flag)
   VALUES
     ('HEADING_DATABASE_NAME', 1031, 'Datenbankname', 1),
     ('HEADING_DATABASE_NAME', 1036, 'Nom de la base de données', 1),
