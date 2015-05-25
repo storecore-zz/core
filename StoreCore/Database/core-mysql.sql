@@ -5,7 +5,7 @@
 -- @copyright Copyright (c) 2014-2015 StoreCore
 -- @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
 -- @package   StoreCore\Database
--- @version   0.0.1
+-- @version   0.1.0-alpha.1
 --
 
 --
@@ -430,7 +430,7 @@ INSERT IGNORE INTO sc_languages (language_id, parent_id, iso_code, english_name,
   (2057, 2057, 'en-GB', 'English - United Kingdom',   'English - United Kingdom',    1),
   (2070, 2070, 'pt-PT', 'Portuguese - Portugal',      'Português - Portugal',        0),
   (3082, 3082, 'es-ES', 'Spanish - Spain',            'Español - España',            0);
-
+  
 INSERT IGNORE INTO sc_languages (language_id, parent_id, iso_code, english_name, local_name, status) VALUES
   (1033, 2057, 'en-US', 'English - United States', 'English - United States', 0),
   (2055, 1031, 'de-CH', 'German - Switzerland',    'Deutsch - Schweiz',       0),
@@ -960,6 +960,7 @@ INSERT IGNORE INTO sc_product_availability_types
     (7, 'PreOrder'),
     (8, 'SoldOut');
 
+
 CREATE TABLE IF NOT EXISTS sc_products (
   product_id                    MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   availability_id               TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 2,
@@ -1080,31 +1081,32 @@ CREATE TABLE IF NOT EXISTS sc_units_of_measure_conversion (
 INSERT IGNORE INTO sc_units_of_measure
     (uom_id, abbreviation, description)
   VALUES
-    (1, 'm',   'metre'),
-    (2, 'kg',  'kilogram'),
-    (3, 's',   'second'),
-    (4, 'A',   'ampere'),
-    (5, 'K',   'kelvin'),
-    (6, 'mol', 'mole'),
-    (7, 'cd',  'candela'),
+    (1, '',    'one unit'),
 
-    (8, 'g', 'gram'),
-    (9, 'mg', 'milligram'),
-    (10, 't', 'metric ton');
+    (2, 'm',   'metre'),
+    (3, 'kg',  'kilogram'),
+    (4, 's',   'second'),
+    (5, 'A',   'ampere'),
+    (6, 'K',   'kelvin'),
+    (7, 'mol', 'mole'),
+    (8, 'cd',  'candela'),
+
+    (9, 'g', 'gram'),
+    (10, 'mg', 'milligram'),
+    (11, 't', 'metric ton');
 
 INSERT IGNORE INTO sc_units_of_measure_conversion
     (from_uom_id, to_uom_id, conversion_factor)
   VALUES
-    (8, 2, 1000),
-    (9, 2, 1000000),
-    (10, 2, 0.001);
+    (9, 3, 1000),
+    (10, 3, 1000000),
+    (11, 3, 0.001);
 
 
 CREATE TABLE IF NOT EXISTS sc_product_weights (
   product_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
-  uom_id      TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 2,
+  uom_id      TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 3,
   weight      DECIMAL(18,9)          NOT NULL,
-  PRIMARY KEY pk_product_id (product_id),
   FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_uom_id (uom_id) REFERENCES sc_units_of_measure (uom_id) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
@@ -1113,9 +1115,9 @@ CREATE TABLE IF NOT EXISTS sc_product_weights (
 CREATE TABLE IF NOT EXISTS sc_brand_products (
   brand_id    SMALLINT(5) UNSIGNED   NOT NULL,
   product_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
-  PRIMARY KEY (brand_id,product_id),
-  FOREIGN KEY (brand_id) REFERENCES sc_brands (brand_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_id (brand_id,product_id),
+  FOREIGN KEY fk_brand_id (brand_id) REFERENCES sc_brands (brand_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_category_products (
@@ -1130,24 +1132,109 @@ CREATE TABLE IF NOT EXISTS sc_category_products (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 
+--
+-- Tags or Labels
+--
+
 CREATE TABLE IF NOT EXISTS sc_tags (
-  tag_id  SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
-  PRIMARY KEY (tag_id)
+  tag_id        SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  enabled_flag  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 1,
+  PRIMARY KEY pk_tag_id (tag_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_tag_keywords (
   tag_id       SMALLINT(5) UNSIGNED  NOT NULL,
   language_id  SMALLINT(5) UNSIGNED  NOT NULL,
   keyword      VARCHAR(255)          NOT NULL,
-  PRIMARY KEY (tag_id,language_id),
-  FOREIGN KEY (tag_id) REFERENCES sc_tags (tag_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_id (tag_id,language_id),
+  FOREIGN KEY fk_tag_id (tag_id) REFERENCES sc_tags (tag_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_product_tags (
   product_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
   tag_id      SMALLINT(5) UNSIGNED   NOT NULL,
-  PRIMARY KEY (product_id,tag_id),
-  FOREIGN KEY (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (tag_id) REFERENCES sc_tags (tag_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_id (product_id,tag_id),
+  FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_tag_id (tag_id) REFERENCES sc_tags (tag_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+
+--
+-- Product Attributes, Attribute Groups and Filters
+--
+
+CREATE TABLE IF NOT EXISTS sc_attributes (
+  attribute_id  MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  uom_id        TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 1,
+  enabled_flag  TINYINT(1) UNSIGNED    NOT NULL  DEFAULT 1,
+  PRIMARY KEY pk_attribute_id (attribute_id),
+  FOREIGN KEY fk_uom_id (uom_id) REFERENCES sc_units_of_measure (uom_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_attribute_descriptions (
+  attribute_id  MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  language_id   SMALLINT(5) UNSIGNED   NOT NULL,
+  description   VARCHAR(255)           NOT NULL,
+  PRIMARY KEY pk_id (attribute_id,language_id),
+  FOREIGN KEY fk_attribute_id (attribute_id) REFERENCES sc_attributes (attribute_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_product_attributes (
+  product_id    MEDIUMINT(8) UNSIGNED  NOT NULL,
+  attribute_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
+  date_from     TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  date_thru     TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  num_value     DECIMAL(18,9)          NULL  DEFAULT NULL,
+  str_value     DECIMAL(18,9)          NULL  DEFAULT NULL,
+  PRIMARY KEY pk_id (product_id,attribute_id),
+  FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_attribute_id (attribute_id) REFERENCES sc_attributes (attribute_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_category_attributes (
+  category_id     SMALLINT(5) UNSIGNED   NOT NULL,
+  attribute_id    MEDIUMINT(8) UNSIGNED  NOT NULL,
+  shared_flag     TINYINT(1)  UNSIGNED   NOT NULL  DEFAULT 0,
+  mandatory_flag  TINYINT(1)  UNSIGNED   NOT NULL  DEFAULT 0,
+  common_flag     TINYINT(1)  UNSIGNED   NOT NULL  DEFAULT 0,
+  PRIMARY KEY pk_id (category_id,attribute_id),
+  FOREIGN KEY fk_category_id (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_attribute_id (attribute_id) REFERENCES sc_attributes (attribute_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+
+CREATE TABLE IF NOT EXISTS sc_attribute_groups (
+  attribute_group_id  SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  group_name          VARCHAR(255)          NOT NULL,
+  group_description   VARCHAR(255)          NULL  DEFAULT NULL,
+  PRIMARY KEY pk_attribute_group_id (attribute_group_id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_attribute_group_attributes (
+  attribute_group_id  SMALLINT(5) UNSIGNED   NOT NULL,
+  attribute_id        MEDIUMINT(8) UNSIGNED  NOT NULL,
+  date_from           TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  date_thru           TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY pk_id (attribute_group_id,attribute_id),
+  FOREIGN KEY fk_attribute_group_id (attribute_group_id) REFERENCES sc_attribute_groups (attribute_group_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_attribute_id (attribute_id) REFERENCES sc_attributes (attribute_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_attribute_filters (
+  attribute_group_id  SMALLINT(5) UNSIGNED  NOT NULL,
+  enabled_flag        TINYINT(1) UNSIGNED   DEFAULT 1,
+  filter_position     TINYINT(3) UNSIGNED   DEFAULT 0,
+  PRIMARY KEY pk_attribute_group_id (attribute_group_id),
+  FOREIGN KEY fk_attribute_group_id (attribute_group_id) REFERENCES sc_attribute_groups (attribute_group_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_attribute_filter_descriptions (
+  attribute_group_id  SMALLINT(5) UNSIGNED  NOT NULL,
+  language_id         SMALLINT(5) UNSIGNED  NOT NULL,
+  description         VARCHAR(255)          NOT NULL,
+  PRIMARY KEY (attribute_group_id,language_id),
+  FOREIGN KEY fk_attribute_group_id (attribute_group_id) REFERENCES sc_attribute_filters (attribute_group_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;

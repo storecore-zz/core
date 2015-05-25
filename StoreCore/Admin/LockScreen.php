@@ -3,9 +3,6 @@ namespace StoreCore\Admin;
 
 class LockScreen extends \StoreCore\AbstractController
 {
-    /**
-     * @var string VERSION
-     */
     const VERSION = '0.1.0';
     
     /**
