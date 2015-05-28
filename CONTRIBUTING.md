@@ -61,7 +61,7 @@ from the [PSR-4 Autoloader] recommendation:
 
 ## 2.3. Global Constants
 
-Global constants match the StoreCore namespace and sub-namespaces prefixes.
+Global constants match the StoreCore namespace and sub-namespace prefixes.
 For example, the `StoreCore\Database` namespace uses constants with a
 `StoreCore\Database` prefix in constant names like `StoreCore\Database\DEFAULT_USERNAME`
 and `StoreCore\Database\DEFAULT_PASSWORD`.
@@ -142,6 +142,26 @@ setting:
 ```
 storecore.null_logger = Off
 ```
+
+## 3.5. SSL Modes
+
+StoreCore supports four SSL modes per store. This `ssl_mode` is a 4 bit value
+stored as a decimal integer in the core `sc_stores` table.  The binary bitmask
+is outlined below.
+
+| Bin  | Dec | SSL Secured Information                   |
+| ---- | --: | ----------------------------------------- |
+| 0000 |   0 | Off: no SSL support                       |
+| 0001 |   1 | Payment transactions                      |
+| 0010 |   2 | Personally identifiable information (PII) |
+| 0100 |   4 | Company and legal information             |
+| 1000 |   8 | General information                       |
+| 1111 |  15 | On: full SSL support                      |
+
+In most use cases, the SSL mode can simply be set to 15 (on) or 0 (off).
+The other two supported modes are 1 (0001) for payment transactions only and
+3 (0011) for payment transactions plus personally identifiable information
+(PII).
 
 
 # 4. Performance
@@ -285,6 +305,13 @@ UPDATE sc_addresses
 
 ```php
 <?php echo $header; ?><?php echo $menu; ?>
+```
+
+###### Incorrect:
+
+```php
+<?php echo $header; ?>
+<?php echo $menu; ?>
 ```
 
 ###### Correct:
@@ -444,7 +471,7 @@ class BarModel extends \StoreCore\Database\AbstractModel
 
 From the outset we decided multilingual support of [European languages]
 SHOULD be a key feature of an open-source e-commerce community operating from
-Europe.  Support of multiple languages would no longer be an option, but 
+Europe.  Support of multiple languages would no longer be an option, but
 a MUST.  For companies operating in bilingual and multilingual European
 countries like Belgium, Luxembourg, Finland, and Switzerland this may of
 course be an critical key feature too.
@@ -548,6 +575,16 @@ and French, the supported languages may be defined as:
 $supported = array(
     'en-GB' => true,
     'fr-FR' => true,
+);
+```
+
+This data structure allows you to temporarily disable a supported language,
+without fully dropping it:
+
+```php
+$supported = array(
+    'en-GB' => true,
+    'fr-FR' => false,
 );
 ```
 
