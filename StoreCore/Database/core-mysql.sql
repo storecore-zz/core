@@ -823,7 +823,7 @@ CREATE TABLE IF NOT EXISTS sc_store_hosts (
   host_ip        INT(11) UNSIGNED      NULL  DEFAULT NULL,
   host_name      VARCHAR(255)          NULL  DEFAULT NULL,
   redirect_to    VARCHAR(255)          NULL  DEFAULT NULL,
-  PRIMARY KEY pd_host_id (host_id),
+  PRIMARY KEY pk_host_id (host_id),
   FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
