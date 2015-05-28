@@ -8,12 +8,11 @@ namespace StoreCore\Database;
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Catalog
- * @version   0.0.1
+ * @version   0.1.0-alpha.1
  */
 class ProductPrice extends \StoreCore\Database\AbstractModel
 {
-    const VERSION = '0.0.1';
-
+    const VERSION = '0.1.0-alpha.1';
 
     /**
      * @var int $Precision
@@ -31,7 +30,6 @@ class ProductPrice extends \StoreCore\Database\AbstractModel
      *   Unique product identifier, used as primary key and foreign key.
      */
     private $ProductID;
-
 
     /**
      * Calculate or recalculate the product prices.
@@ -132,12 +130,12 @@ class ProductPrice extends \StoreCore\Database\AbstractModel
                    price_or_factor
             FROM   sc_product_prices
             WHERE  product_id = :product_id
-                   AND ( from_date = '0000-00-00 00:00:00'
+                   AND ( from_date IS NULL
                           OR from_date <= UTC_TIMESTAMP() )
-                   AND ( thru_date = '0000-00-00 00:00:00'
+                   AND ( thru_date IS NULL
                           OR thru_date > UTC_TIMESTAMP() )
          */
-        $stmt = $this->Connection->prepare("SELECT price_component_id, currency_id, price_or_factor FROM sc_product_prices WHERE product_id = :product_id AND (from_date = '0000-00-00 00:00:00' OR from_date <= UTC_TIMESTAMP()) AND (thru_date = '0000-00-00 00:00:00' OR thru_date > UTC_TIMESTAMP())");
+        $stmt = $this->Connection->prepare('SELECT price_component_id, currency_id, price_or_factor FROM sc_product_prices WHERE product_id = :product_id AND (from_date IS NULL OR from_date <= UTC_TIMESTAMP()) AND (thru_date IS NULL OR thru_date > UTC_TIMESTAMP())');
         $stmt->bindParam(':product_id', $this->ProductID, \PDO::PARAM_INT);
         $stmt->execute();
 
@@ -163,7 +161,6 @@ class ProductPrice extends \StoreCore\Database\AbstractModel
         $this->PriceComponents = $rows;
     }
 
-    
     /**
      * @api
      * @param int $precision
@@ -173,7 +170,7 @@ class ProductPrice extends \StoreCore\Database\AbstractModel
     {
         $this->Precision = $precision;
     }
-    
+
     /**
      * @api
      * @param int $product_id

@@ -17,7 +17,7 @@
 -- @author    Ward van der Put <Ward.van.der.Put@gmail.com>
 -- @copyright Copyright (c) 2014-2015 StoreCore
 -- @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
--- @version   0.0.3
+-- @version   0.0.4
 --
 
 --
@@ -44,6 +44,7 @@ INSERT IGNORE INTO sc_translation_memory
     (translation_id, translation, admin_only_flag)
   VALUES
     ('NOUN_MYSQL', 'MySQL', 1),
+    ('NOUN_PAYPAL', 'PayPal', 0),
     ('NOUN_PHP', 'PHP', 1);
 
 --
@@ -235,8 +236,3 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_PDO_DRIVER', 1036, 'Pilote PDO', 1),
     ('HEADING_PDO_DRIVER', 1043, 'PDO-stuurprogramma', 1),
     ('HEADING_PDO_DRIVER', 2057, 'PDO driver', 1);
-
---
--- Finally, optimize the TM table
---
-OPTIMIZE TABLE sc_translation_memory;
