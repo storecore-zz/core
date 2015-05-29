@@ -122,7 +122,7 @@ INSERT IGNORE INTO sc_translation_memory
 
 --
 -- Commands, used for command buttons and menu commands,
--- usually derived from nouns with the NOUN_ prefix.
+-- usually derived from verbs with the VERB_ prefix.
 --
 INSERT IGNORE INTO sc_translation_memory
     (translation_id, language_id, translation)

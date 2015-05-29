@@ -145,7 +145,7 @@ storecore.null_logger = Off
 
 ## 3.5. SSL Modes
 
-StoreCore supports four SSL modes per store. This `ssl_mode` is a 4 bit value
+StoreCore supports four SSL modes per store.  This `ssl_mode` is a 4 bit value
 stored as a decimal integer in the core `sc_stores` table.  The binary bitmask
 is outlined below.
 
@@ -429,7 +429,7 @@ $registry = \StoreCore\Registry::getInstance();
 
 [singleton design pattern]: https://en.wikipedia.org/wiki/Singleton_pattern "Singleton pattern"
 
-## 5.2.1. MVC Models and Controllers
+### 5.2.1. MVC Models and Controllers
 
 Framework MVC controllers SHOULD extend the abstract core class
 `AbstractController`.  Likewise MVC models MAY extend the abstract class
@@ -461,6 +461,52 @@ class FooModel extends \StoreCore\AbstractModel
 class BarModel extends \StoreCore\Database\AbstractModel
 {
     // <...>
+}
+```
+
+### 5.2.2. Shared Core Services
+
+| Service    | Class                          |
+| ---------- | ------------------------------ |
+| Connection | \StoreCore\Database\Connection |
+| Logger     | \StoreCore\FileSystem\Logger   |
+| Request    | \StoreCore\Request             |
+| Response   | \StoreCore\Request             |
+| Session    | \StoreCore\Session             |
+
+### 5.2.3. MVC Class Synopses
+
+```php
+\StoreCore\Registry implements SingletonInterface {
+    public mixed get ( string $key )
+    public static self getInstance ( void )
+    public bool has ( string $key )
+    public void set ( string $key, mixed $value )
+}
+
+\StoreCore\AbstractModel {
+    public __construct ( \StoreCore\Registry $registry )
+    public mixed __get ( string $key )
+    public void __set ( string $key, mixed $value )
+}
+
+\StoreCore\Database\AbstractModel extends \StoreCore\AbstractModel {
+    public __construct ( \StoreCore\Registry $registry )
+    public mixed __get ( string $key )
+    public void __set ( string $key, mixed $value )
+}
+
+\StoreCore\View {
+    public __construct ( [ string $template ] )
+    public $this setTemplate ( string $template )
+    public $this setValues ( array $values )
+    public string render ( void )
+}
+
+\StoreCore\AbstractController {
+    public __construct ( \StoreCore\Registry $registry )
+    public mixed __get ( string $key )
+    public void __set ( string $key, mixed $value )
 }
 ```
 

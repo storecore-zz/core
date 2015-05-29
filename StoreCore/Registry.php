@@ -12,13 +12,13 @@ namespace StoreCore;
  */
 final class Registry implements SingletonInterface
 {
-    /** @var string VERSION */
     const VERSION = '0.1.0';
     
-    /** @var array $Data */
+    /**
+     * @var array $Data
+     * @var object|null $Instance
+     */
     private $Data = array();
-
-    /** @var object|null $Instance */
     private static $Instance = null;
 
     // Disable object instantiation and cloning
@@ -44,6 +44,7 @@ final class Registry implements SingletonInterface
      *
      * @param string $key
      * @param mixed $value
+     * @return void
      */
     public function set($key, $value)
     {

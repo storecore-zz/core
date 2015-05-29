@@ -12,10 +12,6 @@ namespace StoreCore;
  */
 class Document
 {
-    /**
-     * @var string VERSION
-     *   Semantic version (SemVer)
-     */
     const VERSION = '0.1.0';
 
     /**
