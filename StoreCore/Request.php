@@ -8,12 +8,11 @@ namespace StoreCore;
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html
  * @package   StoreCore
- * @version   0.0.1
+ * @version   0.1.0-alpha.1
  */
 class Request
 {
-    /** @var string VERSION */
-    const VERSION = '0.0.1';
+    const VERSION = '0.1.0-alpha.1';
 
     /** @var string $HostName */
     private $HostName;
