@@ -10,8 +10,19 @@ use \StoreCore\Response as Response;
 use \StoreCore\Route as Route;
 use \StoreCore\Session as Session;
 
+/**
+ * Administration Front Controller
+ *
+ * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @copyright Copyright (c) 2015 StoreCore
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\Security
+ * @version   0.1.0-alpha.1
+ */
 class FrontController extends AbstractController implements LoggerAwareInterface
 {
+    const VERSION = '0.1.0-alpha.1';
+
     /**
      * @param \StoreCore\Registry $registry
      * @return void
@@ -26,7 +37,7 @@ class FrontController extends AbstractController implements LoggerAwareInterface
 
         // Check if there is a user signed in.
         if ($this->Session->has('User')) {
-            $this->User = unserialize($this->Session->get('User'));
+            $this->User = $this->Session->get('User');
         } else {
             $response = new Response($registry);
             $response->redirect('/admin/sign-in/');

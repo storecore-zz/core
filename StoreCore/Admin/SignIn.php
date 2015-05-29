@@ -3,16 +3,29 @@ namespace StoreCore\Admin;
 
 use \StoreCore\Response as Response;
 
+/**
+ * Administration Sign-In
+ *
+ * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @copyright Copyright (c) 2015 StoreCore
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\Security
+ * @version   0.1.0-alpha.1
+ */
 class SignIn extends \StoreCore\AbstractController
 {
+    const VERSION = '0.1.0-alpha.1';
+
     /**
      * @var string $Token
+     *   Handshake token that links a specific form to a specific session.
      */
     private $Token;
 
     /**
      * @param \StoreCore\Registry $registry
      * @return void
+     * @uses \StoreCore\FileSystem\Logger
      */
     public function __construct(\StoreCore\Registry $registry)
     {
@@ -96,7 +109,7 @@ class SignIn extends \StoreCore\AbstractController
         // Finally, store the user and open up the administration.
         $logger->notice('User "' . $this->Request->get('username') . '" signed in.');
         $login_audit->storeAttempt($this->Request->get('username'), null, true);
-        $this->Session->set('User', serialize($user));
+        $this->Session->set('User', $user);
         $response = new Response($this->Registry);
         $response->redirect('/admin/', 303);
         exit;
@@ -125,13 +138,13 @@ class SignIn extends \StoreCore\AbstractController
         $document = new \StoreCore\Admin\Document();
         $document->addSection($view);
         $document->setTitle(\StoreCore\I18N\COMMAND_SIGN_IN);
-        
+
         /*
          * After 1 minute (60000 milliseconds) the current window times out,
          * JavaScript then redirects the client to the lock screen.
          */
         $document->addScript("window.setTimeout(function() { top.location.href = '/admin/lock/'; }, 60000);");
-        
+
         $document = \StoreCore\Admin\Minifier::minify($document);
 
         $response = new Response($this->Registry);
@@ -141,6 +154,7 @@ class SignIn extends \StoreCore\AbstractController
     }
 
     /**
+     * @internal
      * @param void
      * @return void
      */

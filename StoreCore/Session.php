@@ -8,20 +8,18 @@ namespace StoreCore;
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore
- * @version   0.0.2
+ * @version   0.1.0-alpha.1
  */
 class Session
 {
-    /** @var string VERSION */
-    const VERSION = '0.0.2';
+    const VERSION = '0.1.0-alpha.1';
 
     /**
      * @var int $IdleTimeout
      *   Time-out of an inactive session in minutes.
      */
     private $IdleTimeout = 15;
-
-
+    
     /**
      * @param int $idle_timeout
      *   Optional idle timeout in minutes.  Defaults to 15 minutes.  Common
@@ -36,12 +34,10 @@ class Session
             ini_set('session.use_trans_sid', '0');
             ini_set('session.cookie_httponly', '1');
 
-            if ($idle_timeout != null) {
-                if ($idle_timeout > 30) {
-                    $idle_timeout = 30;
-                }
-                $this->IdleTimeout = (int)$idle_timeout;
+            if ($idle_timeout > 30) {
+                $idle_timeout = 30;
             }
+            $this->IdleTimeout = (int)$idle_timeout;
             session_cache_expire($this->IdleTimeout);
             ini_set('session.gc_maxlifetime', $this->IdleTimeout * 60);
 
@@ -60,31 +56,36 @@ class Session
             session_set_cookie_params(0, '/');
             session_start();
         }
-    }
 
-    /**
-     * @param string $name
-     * @return void
-     */
-    public function __get($name)
-    {
-        return $this->get($name);
-    }
+        // Regenerate the session ID when switching from HTTP to HTTP/S.
+        if (isset($_SERVER['HTTPS'])) {
+            if (!isset($_SESSION['HTTPS']) ) {
+                $_SESSION['HTTPS'] = $_SERVER['HTTPS'];
+            } elseif ($_SESSION['HTTPS'] !== $_SERVER['HTTPS']) {
+                $this->regenerate();
+            }
+        }
 
-    /**
-     * @param string $name
-     * @param mixed $value
-     * @return void
-     */
-    public function __set($name, $value)
-    {
-        return $this->set($name, $value);
+        // Destroy the session if the browser "fingerprint" has changed.
+        if (isset($_SERVER['HTTP_USER_AGENT'])) {
+            if (!isset($_SESSION['HTTP_USER_AGENT']) ) {
+                $_SESSION['HTTP_USER_AGENT'] = $_SERVER['HTTP_USER_AGENT'];
+            } elseif ($_SESSION['HTTP_USER_AGENT'] !== $_SERVER['HTTP_USER_AGENT']) {
+                $this->destroy();
+                $this->regenerate();
+            }
+        }
+        
+        // Create an object pool
+        if (!array_key_exists('SESSION_OBJECT_POOL', $_SESSION)) {
+            $_SESSION['SESSION_OBJECT_POOL'] = array();
+        }
     }
-
 
     /**
      * Destroy the session.
      *
+     * @api
      * @param void
      * @return bool
      */
@@ -104,31 +105,25 @@ class Session
     /**
      * Get the value of a session variable.
      *
-     * @param string $name
+     * @api
+     * @param string $key
      * @return mixed|null
      */
-    public function get($name)
+    public function get($key)
     {
-        if (array_key_exists($name, $_SESSION)) {
-            return $_SESSION[$name];
+        if (isset($_SESSION['SESSION_OBJECT_POOL'][$key])) {
+            return unserialize($_SESSION['SESSION_OBJECT_POOL'][$key]);
+        } elseif (isset($_SESSION[$key])) {
+            return $_SESSION[$key];
+        } else {
+            return null;
         }
-        return null;
-    }
-
-    /**
-     * Check if a session variable exists.
-     *
-     * @param string $name
-     * @return bool
-     */
-    public function has($name)
-    {
-        return array_key_exists($name, $_SESSION);
     }
 
     /**
      * Get the current session ID.
      *
+     * @api
      * @param void
      * @return string
      */
@@ -138,14 +133,56 @@ class Session
     }
 
     /**
+     * Check if a session variable exists.
+     *
+     * @api
+     * @param string $key
+     * @return bool
+     */
+    public function has($key)
+    {
+        if (isset($_SESSION['SESSION_OBJECT_POOL'][$key])) {
+            return true;
+        } else {
+            return isset($_SESSION[$key]);
+        }
+    }
+
+    /**
+     * Generate a new session ID.
+     *
+     * @api
+     * @param void
+     * @return bool
+     */
+    public function regenerate()
+    {
+        return session_regenerate_id(true);
+    }
+    
+    /**
      * Set a session value.
      *
-     * @param string $name
+     * @api
+     * @param string $key
      * @param mixed $value
      * @return void
      */
-    public function set($name, $value)
+    public function set($key, $value)
     {
-        $_SESSION[(string)$name] = $value;
+        if (
+            !is_string($key)
+            || $key == 'HTTP_USER_AGENT'
+            || $key == 'HTTPS' 
+            || $key == 'SESSION_OBJECT_POOL'
+        ) {
+            throw new \InvalidArgumentException();
+        }
+
+        if (is_object($value)) {
+            $_SESSION['SESSION_OBJECT_POOL'][$key] = serialize($value);
+        } else {
+            $_SESSION[$key] = $value;
+        }
     }
 }
