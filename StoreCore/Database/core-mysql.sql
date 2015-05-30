@@ -8,10 +8,7 @@
 -- @version   0.1.0-alpha.1
 --
 
---
--- Users and User Groups
---
-
+-- User groups
 CREATE TABLE IF NOT EXISTS sc_user_groups (
   user_group_id    TINYINT(3) UNSIGNED  NOT NULL,
   user_group_name  VARCHAR(255)         NOT NULL,
@@ -23,6 +20,7 @@ INSERT IGNORE INTO sc_user_groups (user_group_id, user_group_name) VALUES
   (254, 'Administrators'),
   (255, 'Root');
 
+-- Users
 CREATE TABLE IF NOT EXISTS sc_users (
   user_id         SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   user_group_id   TINYINT(3) UNSIGNED   NOT NULL  DEFAULT 0,
@@ -41,6 +39,7 @@ CREATE TABLE IF NOT EXISTS sc_users (
   INDEX (username)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+-- User password archive
 CREATE TABLE IF NOT EXISTS sc_users_password_history (
   user_id        SMALLINT(5)          UNSIGNED  NOT NULL,
   from_date      TIMESTAMP            NOT NULL  DEFAULT '0000-00-00 00:00:00'  COMMENT 'UTC',
@@ -52,6 +51,7 @@ CREATE TABLE IF NOT EXISTS sc_users_password_history (
   FOREIGN KEY fk_user_id (user_id) REFERENCES sc_users (user_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+-- Browsers and other user agents
 CREATE TABLE IF NOT EXISTS sc_user_agents (
   user_agent_id    CHAR(40)      NOT NULL  COMMENT 'SHA-1 hash',
   first_sighting   TIMESTAMP     NOT NULL  DEFAULT '0000-00-00 00:00:00',
@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS sc_user_agents (
   PRIMARY KEY pk_user_agent_id (user_agent_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+-- Successful and/or failed login attempts
 CREATE TABLE IF NOT EXISTS sc_login_attempts (
   attempt_id      BIGINT UNSIGNED       NOT NULL  AUTO_INCREMENT,
   successful      TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
@@ -71,16 +72,17 @@ CREATE TABLE IF NOT EXISTS sc_login_attempts (
   INDEX ix_remote_address (remote_address)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+-- IP blacklist
 CREATE TABLE IF NOT EXISTS sc_ip_blacklist (
   ip_address  VARCHAR(255)  NOT NULL,
   from_date   TIMESTAMP     NOT NULL  DEFAULT '0000-00-00 00:00:00'  COMMENT 'UTC',
   thru_date   TIMESTAMP     NULL  DEFAULT NULL,
   comments    VARCHAR(255)  NULL  DEFAULT NULL  COMMENT 'Reason, source or other internal memo',
   PRIMARY KEY (ip_address),
-  INDEX (from_date),
   INDEX (thru_date)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+-- IP whitelist for administrators and API consumers
 CREATE TABLE IF NOT EXISTS sc_ip_whitelist (
   ip_address  VARCHAR(255)         NOT NULL,
   admin_flag  TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
@@ -91,11 +93,6 @@ CREATE TABLE IF NOT EXISTS sc_ip_whitelist (
   INDEX (from_date),
   INDEX (thru_date)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
-
-
---
--- Robots Exclusion
---
 
 CREATE TABLE IF NOT EXISTS sc_robots (
   robot_id    SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
@@ -116,11 +113,6 @@ INSERT IGNORE INTO sc_robots (robot_id, user_agent) VALUES
 
 INSERT IGNORE INTO sc_robot_disallows (robot_id, disallow) VALUES
   (1, '/cgi-bin/');
-
-
---
--- Internationalization (I18N) and Localization (L10N)
---
 
 CREATE TABLE IF NOT EXISTS sc_currencies (
   currency_id      SMALLINT(3) UNSIGNED  NOT NULL  COMMENT 'ISO 4217 currency number',
@@ -396,7 +388,7 @@ UPDATE sc_currencies SET currency_symbol = '₫' WHERE currency_code = 'VND' AND
 UPDATE sc_currencies SET currency_symbol = 'R' WHERE currency_code = 'ZAR' AND currency_symbol = '¤';
 UPDATE sc_currencies SET currency_symbol = 'Z$' WHERE currency_code = 'ZWD' AND currency_symbol = '¤';
 
-
+-- Languages
 CREATE TABLE IF NOT EXISTS sc_languages (
   language_id   SMALLINT(5) UNSIGNED  NOT NULL  COMMENT 'LCID',
   parent_id     SMALLINT(5) UNSIGNED  NOT NULL  DEFAULT 2057,
@@ -412,6 +404,7 @@ CREATE TABLE IF NOT EXISTS sc_languages (
   UNIQUE KEY uk_local_name (local_name)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+-- Primary languages
 INSERT IGNORE INTO sc_languages (language_id, parent_id, iso_code, english_name, local_name, status) VALUES
   (1026, 1026, 'bg-BG', 'Bulgarian - Bulgaria',       'Български - България',        0),
   (1029, 1029, 'cs-CZ', 'Czech - Czech Republic',     'Čeština - Česká republika',   0),
@@ -424,13 +417,14 @@ INSERT IGNORE INTO sc_languages (language_id, parent_id, iso_code, english_name,
   (1045, 1045, 'pl-PL', 'Polish - Poland',            'Polski - Polska',             0),
   (1049, 1049, 'ru-RU', 'Russian - Russia',           'Русский - Россия',            0),
   (1050, 1050, 'hr-HR', 'Croatian - Croatia',         'Hrvatski - Hrvatska',         0),
-  (1053, 1053, 'sv-SE', 'Swedish - Sweden',           'Svenska  - Sverige',          0),
+  (1053, 1053, 'sv-SE', 'Swedish - Sweden',           'Svenska - Sverige',           0),
   (1061, 1061, 'et-EE', 'Estonian - Estonia',         'Eesti - Eesti',               0),
   (1134, 1134, 'lb-LU', 'Luxembourgish - Luxembourg', 'Lëtzebuergesch - Lëtzebuerg', 0),
   (2057, 2057, 'en-GB', 'English - United Kingdom',   'English - United Kingdom',    1),
   (2070, 2070, 'pt-PT', 'Portuguese - Portugal',      'Português - Portugal',        0),
   (3082, 3082, 'es-ES', 'Spanish - Spain',            'Español - España',            0);
 
+-- Secondary languages
 INSERT IGNORE INTO sc_languages (language_id, parent_id, iso_code, english_name, local_name, status) VALUES
   (1033, 2057, 'en-US', 'English - United States', 'English - United States', 0),
   (2055, 1031, 'de-CH', 'German - Switzerland',    'Deutsch - Schweiz',       0),
@@ -449,16 +443,18 @@ INSERT IGNORE INTO sc_languages (language_id, parent_id, iso_code, english_name,
   (6153, 2057, 'en-IE', 'English - Ireland',       'English - Ireland',       0),
   (6156, 1036, 'fr-MC', 'French - Monaco',         'Français - Monaco',       0);
 
+-- Translation Memory (TM)
 CREATE TABLE IF NOT EXISTS sc_translation_memory (
   translation_id   VARCHAR(255)          CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
   language_id      SMALLINT(5) UNSIGNED  NOT NULL  DEFAULT 2057,
   admin_only_flag  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
-  last_modified    TIMESTAMP             NOT NULL  DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP,
+  date_modified    TIMESTAMP             NOT NULL  DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP,
   translation      TEXT                  NULL,
-  PRIMARY KEY (translation_id, language_id),
-  FOREIGN KEY (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_translation_memory_id (translation_id, language_id),
+  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci;
 
+-- Countries and ISO country codes
 CREATE TABLE IF NOT EXISTS sc_countries (
   country_id            SMALLINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   status                TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 1,
@@ -474,24 +470,27 @@ CREATE TABLE IF NOT EXISTS sc_countries (
   UNIQUE KEY (iso_number)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+-- Localized country names
 CREATE TABLE IF NOT EXISTS sc_country_names (
   country_id          SMALLINT(3) UNSIGNED  NOT NULL,
   language_id         SMALLINT(5) UNSIGNED  NOT NULL,
   local_country_name  VARCHAR(128)          NOT NULL,
-  PRIMARY KEY (country_id,language_id),
+  PRIMARY KEY (country_id, language_id),
   FOREIGN KEY (country_id) REFERENCES sc_countries (country_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+-- Country states, provinces, and other subdivisions
 CREATE TABLE IF NOT EXISTS sc_country_subdivisions (
   iso_alpha_two     CHAR(2)       CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  COMMENT 'ISO 3166-1',
   iso_suffix        VARCHAR(3)    CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  COMMENT 'ISO 3166-2 add-on',
   subdivision_name  VARCHAR(255)  NOT NULL,
-  PRIMARY KEY pk_id (iso_alpha_two,iso_suffix),
+  PRIMARY KEY pk_id (iso_alpha_two, iso_suffix),
   FOREIGN KEY fk_iso_alpha_two (iso_alpha_two) REFERENCES sc_countries (iso_alpha_two) ON DELETE CASCADE ON UPDATE CASCADE,
   INDEX ix_subdivision_name (subdivision_name)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci;
 
+-- ISO country data
 INSERT IGNORE INTO sc_countries (iso_number, global_country_name, iso_alpha_two, iso_alpha_three, postcode_required, status) VALUES
   (  4, 'Afghanistan', 'AF', 'AFG',  0, 1),
   (248, 'Åland Islands', 'AX', 'ALA',  0, 1),
@@ -804,11 +803,7 @@ INSERT IGNORE INTO sc_country_subdivisions VALUES
 
 UPDATE sc_countries SET subdivision_required = 1 WHERE iso_alpha_two = 'US';
 
-
---
 -- Stores
---
-
 CREATE TABLE IF NOT EXISTS sc_stores (
   store_id    TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   ssl_mode    TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
@@ -816,6 +811,7 @@ CREATE TABLE IF NOT EXISTS sc_stores (
   PRIMARY KEY pk_store_id (store_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+-- Store hosts
 CREATE TABLE IF NOT EXISTS sc_store_hosts (
   host_id        SMALLINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   store_id       TINYINT(3) UNSIGNED   NOT NULL,
@@ -827,11 +823,7 @@ CREATE TABLE IF NOT EXISTS sc_store_hosts (
   FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-
---
--- Customers
---
-
+-- Customer groups
 CREATE TABLE IF NOT EXISTS sc_customer_groups (
   customer_group_id    TINYINT(3) UNSIGNED  NOT NULL,
   customer_group_name  VARCHAR(255)         NOT NULL,
@@ -841,6 +833,7 @@ CREATE TABLE IF NOT EXISTS sc_customer_groups (
 INSERT IGNORE INTO sc_customer_groups (customer_group_id, customer_group_name) VALUES
   (0, 'Default customer group');
 
+-- Customers
 CREATE TABLE IF NOT EXISTS sc_customers (
   customer_id        INT(11) UNSIGNED     NOT NULL  AUTO_INCREMENT,
   customer_group_id  TINYINT(3) UNSIGNED  NOT NULL  DEFAULT 0,
@@ -862,20 +855,22 @@ CREATE TABLE IF NOT EXISTS sc_customers (
   FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+-- Customer accounts
 CREATE TABLE IF NOT EXISTS sc_customer_accounts (
   account_id     INT(11) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   customer_id    INT(11) UNSIGNED  NOT NULL,
-  created        TIMESTAMP         NOT NULL  DEFAULT '0000-00-00 00:00:00',
-  last_modified  TIMESTAMP         NOT NULL  DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP,
   email_address  VARCHAR(255)      NOT NULL,
+  date_created   TIMESTAMP         NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  date_modified  TIMESTAMP         NULL  DEFAULT NULL,
   password_salt  VARCHAR(255)      NOT NULL,
   password_hash  VARCHAR(255)      NOT NULL,
   reset_token    CHAR(16)          CHARACTER SET ascii  COLLATE ascii_bin  NULL  DEFAULT NULL,
-  PRIMARY KEY (account_id),
-  FOREIGN KEY (customer_id) REFERENCES sc_customers (customer_id) ON DELETE NO ACTION ON UPDATE CASCADE,
-  INDEX (email_address)
+  PRIMARY KEY pk_account_id (account_id),
+  FOREIGN KEY fk_customer_id (customer_id) REFERENCES sc_customers (customer_id) ON DELETE NO ACTION ON UPDATE CASCADE,
+  INDEX ix_email_address (email_address)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+-- Customer and shipping addresses
 CREATE TABLE IF NOT EXISTS sc_addresses (
   address_id           INT(11) UNSIGNED      NOT NULL  AUTO_INCREMENT,
   customer_id          INT(11) UNSIGNED      NOT NULL,
@@ -897,27 +892,24 @@ CREATE TABLE IF NOT EXISTS sc_addresses (
   INDEX ix_postcode (postcode)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-
---
--- Catalog
---
-
+-- Brands and global brand names
 CREATE TABLE IF NOT EXISTS sc_brands (
   brand_id           SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   global_brand_name  VARCHAR(255)          NOT NULL,
   PRIMARY KEY (brand_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+-- Optional localized brand names
 CREATE TABLE IF NOT EXISTS sc_brand_names (
   brand_id          SMALLINT(5) UNSIGNED  NOT NULL,
   language_id       SMALLINT(5) UNSIGNED  NOT NULL,
   local_brand_name  VARCHAR(255)          NOT NULL,
-  PRIMARY KEY (brand_id, language_id),
-  FOREIGN KEY (brand_id) REFERENCES sc_brands (brand_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_id (brand_id, language_id),
+  FOREIGN KEY fk_brand_id (brand_id) REFERENCES sc_brands (brand_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-
+-- Product categories
 CREATE TABLE IF NOT EXISTS sc_categories (
   category_id  SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   parent_id    SMALLINT(5) UNSIGNED  NULL  DEFAULT NULL,
@@ -925,15 +917,17 @@ CREATE TABLE IF NOT EXISTS sc_categories (
   FOREIGN KEY (parent_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+-- Localized category names
 CREATE TABLE IF NOT EXISTS sc_category_names (
   category_id    SMALLINT(5) UNSIGNED  NOT NULL,
   language_id    SMALLINT(5) UNSIGNED  NOT NULL,
   category_name  VARCHAR(255)          NOT NULL,
-  PRIMARY KEY (category_id,language_id),
-  FOREIGN KEY (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_id (category_id, language_id),
+  FOREIGN KEY fk_category_id (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+-- Categories per store
 CREATE TABLE IF NOT EXISTS sc_store_categories (
   store_id     TINYINT(3) UNSIGNED   NOT NULL,
   category_id  SMALLINT(5) UNSIGNED  NOT NULL,
@@ -942,11 +936,11 @@ CREATE TABLE IF NOT EXISTS sc_store_categories (
   FOREIGN KEY fk_category_id (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-
+-- Schema.org item availability attributes
 CREATE TABLE IF NOT EXISTS sc_product_availability_types (
   availability_id    TINYINT(3) UNSIGNED  NOT NULL,
   item_availability  VARCHAR(255)         NOT NULL  COMMENT 'Schema.org ItemAvailability',
-  PRIMARY KEY (availability_id)
+  PRIMARY KEY pk_availability_id (availability_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 INSERT IGNORE INTO sc_product_availability_types
@@ -961,7 +955,7 @@ INSERT IGNORE INTO sc_product_availability_types
     (7, 'PreOrder'),
     (8, 'SoldOut');
 
-
+-- Products
 CREATE TABLE IF NOT EXISTS sc_products (
   product_id                    MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   availability_id               TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 2,
@@ -973,6 +967,7 @@ CREATE TABLE IF NOT EXISTS sc_products (
   FOREIGN KEY fk_availability_id (availability_id) REFERENCES sc_product_availability_types (availability_id) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+-- Product barcodes and other product IDs
 CREATE TABLE IF NOT EXISTS sc_product_identification_types (
   identification_type_id  TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   abbreviation            VARCHAR(5)           NOT NULL,
@@ -1000,6 +995,7 @@ CREATE TABLE IF NOT EXISTS sc_product_identification_codes (
   UNIQUE KEY uk_identification_code (identification_code)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+-- Product names and product descriptions
 CREATE TABLE IF NOT EXISTS sc_product_descriptions (
   product_id          MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   language_id         SMALLINT(5) UNSIGNED   NOT NULL,
@@ -1012,6 +1008,7 @@ CREATE TABLE IF NOT EXISTS sc_product_descriptions (
   FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+-- Product pricing
 CREATE TABLE IF NOT EXISTS sc_product_price_components (
   price_component_id  TINYINT(3) UNSIGNED  NOT NULL,
   description         VARCHAR(255)         NOT NULL,
@@ -1061,7 +1058,7 @@ CREATE TABLE IF NOT EXISTS sc_product_prices (
   FOREIGN KEY fk_customer_group_id (customer_group_id) REFERENCES sc_customer_groups (customer_group_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-
+-- Units of measure (UOM)
 CREATE TABLE IF NOT EXISTS sc_units_of_measure (
   uom_id        TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   abbreviation  VARCHAR(5)           NOT NULL,
@@ -1103,7 +1100,7 @@ INSERT IGNORE INTO sc_units_of_measure_conversion
     (10, 3, 1000000),
     (11, 3, 0.001);
 
-
+-- Optional product weights
 CREATE TABLE IF NOT EXISTS sc_product_weights (
   product_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
   uom_id      TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 3,
@@ -1112,7 +1109,7 @@ CREATE TABLE IF NOT EXISTS sc_product_weights (
   FOREIGN KEY fk_uom_id (uom_id) REFERENCES sc_units_of_measure (uom_id) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-
+-- Products per brand
 CREATE TABLE IF NOT EXISTS sc_brand_products (
   brand_id    SMALLINT(5) UNSIGNED   NOT NULL,
   product_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
@@ -1121,6 +1118,7 @@ CREATE TABLE IF NOT EXISTS sc_brand_products (
   FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+-- Products to categories
 CREATE TABLE IF NOT EXISTS sc_category_products (
   category_id   SMALLINT(5) UNSIGNED   NOT NULL,
   product_id    MEDIUMINT(8) UNSIGNED  NOT NULL,
@@ -1132,11 +1130,7 @@ CREATE TABLE IF NOT EXISTS sc_category_products (
   FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-
---
--- Tags or Labels
---
-
+-- Tags or labels
 CREATE TABLE IF NOT EXISTS sc_tags (
   tag_id        SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   enabled_flag  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 1,
@@ -1160,11 +1154,7 @@ CREATE TABLE IF NOT EXISTS sc_product_tags (
   FOREIGN KEY fk_tag_id (tag_id) REFERENCES sc_tags (tag_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-
---
--- Product Attributes, Attribute Groups and Filters
---
-
+-- Product attributes
 CREATE TABLE IF NOT EXISTS sc_attributes (
   attribute_id  MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   uom_id        TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 1,
@@ -1205,7 +1195,7 @@ CREATE TABLE IF NOT EXISTS sc_category_attributes (
   FOREIGN KEY fk_attribute_id (attribute_id) REFERENCES sc_attributes (attribute_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-
+-- Attribute groups and attribute filters
 CREATE TABLE IF NOT EXISTS sc_attribute_groups (
   attribute_group_id  SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   group_name          VARCHAR(255)          NOT NULL,
@@ -1240,11 +1230,7 @@ CREATE TABLE IF NOT EXISTS sc_attribute_filter_descriptions (
   FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-
---
--- Order Management
---
-
+-- Orders Management
 CREATE TABLE IF NOT EXISTS sc_orders (
   order_id        INT(11) UNSIGNED     NOT NULL,
   store_id        TINYINT(3) UNSIGNED  NOT NULL,
@@ -1260,7 +1246,7 @@ CREATE TABLE IF NOT EXISTS sc_orders (
   FOREIGN KEY fk_customer_id (customer_id) REFERENCES sc_customers (customer_id) ON DELETE NO ACTION ON UPDATE CASCADE,
   INDEX ix_cart (cart_uuid, cart_rand),
   INDEX ix_date_confirmed (date_confirmed DESC),
-  INDEX ix_date_created (date_created ASC)  
+  INDEX ix_date_created (date_created ASC)
 ) ENGINE=InnoDB  DEFAULT CHARSET=ascii  COLLATE=ascii_bin;
 
 CREATE TABLE IF NOT EXISTS sc_order_products (
@@ -1274,7 +1260,6 @@ CREATE TABLE IF NOT EXISTS sc_order_products (
   FOREIGN KEY fk_order_id (order_id) REFERENCES sc_orders (order_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=ascii  COLLATE=ascii_bin;
-
 
 CREATE TABLE IF NOT EXISTS sc_shipping_carriers (
   carrier_id           SMALLINT(5)   UNSIGNED  NOT NULL  AUTO_INCREMENT,
@@ -1293,7 +1278,6 @@ CREATE TABLE IF NOT EXISTS sc_shipping_carrier_descriptions (
   FOREIGN KEY fk_carrier_id (carrier_id) REFERENCES sc_shipping_carriers (carrier_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
-
 
 CREATE TABLE IF NOT EXISTS sc_shipments (
   shipment_id     INT(11) UNSIGNED      NOT NULL  AUTO_INCREMENT,
@@ -1320,7 +1304,6 @@ CREATE TABLE IF NOT EXISTS sc_order_shipments (
   FOREIGN KEY fk_shipment_id (shipment_id) REFERENCES sc_shipments (shipment_id) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-
 CREATE TABLE IF NOT EXISTS sc_invoices (
   invoice_id    INT(11) UNSIGNED       NOT NULL  AUTO_INCREMENT,
   currency_id   SMALLINT(3) UNSIGNED   NOT NULL,
@@ -1341,7 +1324,6 @@ CREATE TABLE IF NOT EXISTS sc_invoice_orders (
   FOREIGN KEY fk_invoice_id (invoice_id) REFERENCES sc_invoices (invoice_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_order_id (order_id) REFERENCES sc_orders (order_id) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
-
 
 CREATE TABLE IF NOT EXISTS sc_payment_service_providers (
   payment_service_provider_id  SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
