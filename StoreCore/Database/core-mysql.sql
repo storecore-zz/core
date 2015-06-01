@@ -414,7 +414,7 @@ INSERT IGNORE INTO sc_languages (language_id, parent_id, iso_code, english_name,
   -- World languages and languages with over 50 million native speakers
   (4, 4, 'zh-CN', 'Chinese (simplified) - China', '汉语', 0),
   (5, 5, 'zh-TW', 'Chinese (traditional) - Taiwan', '漢語', 0),
-  (6, 6, 'es-ES', 'Spanish - Spain', 'Español - España', 1),
+  (6, 6, 'es-ES', 'Spanish - Spain', 'Español - España', 0),
   (7, 7, 'hi-IN', 'Hindi - India', 'हिन्दी', 0),
   (8, 8, 'ar-SA', 'Arabic - Saudi Arabia', 'العَرَبِيةُ', 0),
   (9, 9, 'pt-PT', 'Portuguese - Portugal', 'Português - Portugal', 0),
