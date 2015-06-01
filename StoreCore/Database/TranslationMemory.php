@@ -8,18 +8,18 @@ namespace StoreCore\Database;
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\I18N
- * @version   0.0.2
+ * @version   0.0.3
  */
 class TranslationMemory extends \StoreCore\Database\AbstractModel
 {
-    const VERSION = '0.0.2';
+    const VERSION = '0.0.3';
 
     /**
      * @var int $LanguageID        Unique identifier of the current language.
      * @var int $ParentLanguageID  Identifier of the parent or root language.
      */
-    private $LanguageID = 2057;
-    private $ParentLanguageID = 2057;
+    private $LanguageID = 0;
+    private $ParentLanguageID = 0;
 
     /**
      * @var null|array $Translations
@@ -46,14 +46,14 @@ class TranslationMemory extends \StoreCore\Database\AbstractModel
 
         $storefront = (bool)$storefront;
 
-        // Populate with British English (2057) as the root language
-        if ($this->Translations === null || $this->LanguageID == 2057) {
+        // Populate with British English (0) as the root language
+        if ($this->Translations === null || $this->LanguageID == 0) {
             $this->Translations = array();
-            $this->readTranslations(2057, $storefront);
+            $this->readTranslations(0, $storefront);
         }
 
-        if ($this->LanguageID != 2057) {
-            if ($this->ParentLanguageID != 2057 && $this->ParentLanguageID != $this->LanguageID) {
+        if ($this->LanguageID != 0) {
+            if ($this->ParentLanguageID != 0 && $this->ParentLanguageID != $this->LanguageID) {
                 $this->readTranslations($this->ParentLanguageID, $storefront);
             }
             $this->readTranslations($this->LanguageID, $storefront);
