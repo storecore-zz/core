@@ -77,9 +77,17 @@ CREATE TABLE IF NOT EXISTS sc_ip_blacklist (
   ip_address  VARCHAR(255)  NOT NULL,
   from_date   TIMESTAMP     NOT NULL  DEFAULT '0000-00-00 00:00:00',
   thru_date   TIMESTAMP     NULL  DEFAULT NULL,
-  comments    VARCHAR(255)  NULL  DEFAULT NULL  COMMENT 'Reason, source or other internal memo',
   PRIMARY KEY pk_ip_address (ip_address),
   INDEX ix_thru_date (thru_date)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+-- Optional IP blacklist comments (without a foreign key to archive records)
+CREATE TABLE IF NOT EXISTS sc_ip_blacklist_comments (
+  ip_address     VARCHAR(255)  NOT NULL,
+  date_modified  TIMESTAMP     NOT NULL  DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP,
+  comments       VARCHAR(255)  NULL  DEFAULT NULL  COMMENT 'Reason, source or other internal memo',
+  PRIMARY KEY pk_ip_blacklist_comment_id (ip_address, date_modified),
+  INDEX ix_date_modified (date_modified DESC)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- IP whitelist for administrators and API consumers
