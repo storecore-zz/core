@@ -3,8 +3,8 @@
  * StoreCore Store Front Application
  *
  * @copyright Copyright (c) 2015 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html GPLv3
- * @version   0.1.0
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @version   0.1.0-alpha.1
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,12 @@
 
 // Load configuration
 require 'version.php';
-require 'config.php';
+$parent_directory = realpath(__DIR__ . '/../') . DIRECTORY_SEPARATOR;
+if (is_file($parent_directory . 'config.php')) {
+    require $parent_directory . 'config.php';
+} else {
+    require 'config.php';
+}
 
 // Bootstrap
 if (!defined('\\StoreCore\\FileSystem\\LIBRARY_ROOT_DIR')) {
@@ -31,7 +36,12 @@ if (!defined('\\StoreCore\\FileSystem\\LIBRARY_ROOT_DIR')) {
 require \StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'bootloader.php';
 
 // Parse config.ini overrides
-\StoreCore\Config::parse('config.ini');
+if (is_file($parent_directory . 'config.php')) {
+    \StoreCore\Config::parse($parent_directory . 'config.ini');
+} else {
+    \StoreCore\Config::parse('config.ini');
+}
+unset($parent_directory);
 
 // Working directory
 define('StoreCore\\FileSystem\\STOREFRONT_ROOT_DIR', __DIR__ . DIRECTORY_SEPARATOR);
@@ -111,8 +121,8 @@ switch ($request->getRequestPath()) {
         $pathinfo = pathinfo($request->getRequestPath());
         if (array_key_exists('basename', $pathinfo) && array_key_exists('extension', $pathinfo)) {
             $asset = new \StoreCore\Asset($pathinfo['basename'], $pathinfo['extension']);
+            unset($asset, $pathinfo);
         }
-        unset($pathinfo);
         
         if (!defined('StoreCore\\VERSION_INSTALLED')) {
             $route = new \StoreCore\Route('/install/', '\StoreCore\Admin\FrontController', 'install');

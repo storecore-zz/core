@@ -1,8 +1,19 @@
 <?php
 namespace StoreCore\Admin;
 
+/**
+ * Configurator
+ *
+ * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @copyright Copyright (c) 2014-2015 StoreCore
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\Core
+ * @version   0.1.0-alpha.1
+ */
 class Configurator
 {
+    const VERSION = '0.1.0-alpha.1';
+
     /**
      * @var array $DefaultSettings
      *   Default settings from the global config.ini configuration file.
@@ -25,7 +36,7 @@ class Configurator
         'StoreCore\\MAINTENANCE_MODE' => true,
         'StoreCore\\NULL_LOGGER'      => true,
         'StoreCore\\STATISTICS'       => true,
-    
+
         'StoreCore\\FileSystem\\CACHE_DIR'           => true,
         'StoreCore\\FileSystem\\LIBRARY_ROOT_DIR'    => true,
         'StoreCore\\FileSystem\\LOGS_DIR'            => true,
@@ -69,16 +80,9 @@ class Configurator
     }
 
     /**
-     * @uses \StoreCore\Admin\Configurator::set()
-     */
-    public function __set($name, $value)
-    {
-        $this->set($name, $value);
-    }
-
-    /**
      * Save the config.php configuration file.
      *
+     * @api
      * @param void
      * @return bool
      */
@@ -94,7 +98,7 @@ class Configurator
              */
             $name = ltrim($name, '\\');
             $name = str_ireplace('\\', '\\\\', $name);
-            
+
             if (is_numeric($value)) {
                 $file .= "define('{$name}', {$value});";
             } else {
@@ -109,7 +113,12 @@ class Configurator
             $file .= "\n";
         }
 
-        $return = file_put_contents(\StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.php', $file, LOCK_EX);
+        // Save config.php in the root or its parent directory.
+        $filename = realpath(\StoreCore\FileSystem\STOREFRONT_ROOT_DIR . '../') . DIRECTORY_SEPARATOR . 'config.php';
+        if (!is_file($filename) || !is_writable($filename)) {
+            $filename = \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.php';
+        }
+        $return = file_put_contents($filename, $file, LOCK_EX);
         if ($return === false) {
             return false;
         } else {
@@ -118,6 +127,7 @@ class Configurator
     }
 
     /**
+     * @api
      * @param string $name
      * @param mixed $value
      * @return void
@@ -132,6 +142,7 @@ class Configurator
     /**
      * Write a single setting to the config.php configuration file.
      *
+     * @api
      * @param string $name
      * @param mixed $value
      * @return bool

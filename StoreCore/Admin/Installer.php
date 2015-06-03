@@ -8,16 +8,17 @@ namespace StoreCore\Admin;
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @version   0.1.0
+ * @version   0.1.0-alpha.1
  */
 class Installer extends \StoreCore\AbstractController
 {
-    const VERSION = '0.1.0';
+    const VERSION = '0.1.0-alpha.1';
 
-    /**
-     * @var \StoreCore\FileSystem\Logger $Logger
-     */
+    /** @var \StoreCore\FileSystem\Logger $Logger */
     protected $Logger;
+
+    /** @var bool $SelfDestruct */
+    private $SelfDestruct = false;
 
     /**
      * @api
@@ -31,7 +32,7 @@ class Installer extends \StoreCore\AbstractController
         // Log to the file system (and never to a null logger)
         $this->Logger = new \StoreCore\FileSystem\Logger();
         $this->Registry->set('Logger', $this->Logger);
-        
+
         // Set multibyte character encoding to UTF-8
         mb_internal_encoding('UTF-8');
 
@@ -46,12 +47,31 @@ class Installer extends \StoreCore\AbstractController
                             $config->save();
                             $this->Logger->notice('Completed installation of StoreCore version ' . \StoreCore\VERSION . '.');
 
+                            if ($this->moveConfigurationFiles()) {
+                                $this->SelfDestruct = true;
+                            }
+
                             $response = new \StoreCore\Response($this->Registry);
                             $response->redirect('/admin/sign-in/');
                             exit;
                         }
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * @param void
+     * @return void
+     */
+    public function __destruct()
+    {
+        if (true === $this->SelfDestruct) {
+            if (true === unlink(__FILE__)) {
+                $this->Logger->notice('Deleted the StoreCore installer file ' . __FILE__ . '.');
+            } else {
+                $this->Logger->notice('Could not delete the StoreCore installer file ' . __FILE__ . '.');
             }
         }
     }
@@ -141,6 +161,11 @@ class Installer extends \StoreCore\AbstractController
         }
 
         $folders = array(
+            \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'css'  => true,
+            \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'ico'  => false,
+            \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'jpeg' => true,
+            \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'png'  => true,
+            \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'svg'  => false,
             \StoreCore\FileSystem\CACHE_DIR => true,
             \StoreCore\FileSystem\LOGS_DIR => true,
         );
@@ -265,7 +290,7 @@ class Installer extends \StoreCore\AbstractController
                 $user_data['username'] = $email_address[0];
                 unset($email_address);
             }
-            
+
             // Password
             if (
                 $user_data['email_address'] !== false
@@ -351,5 +376,44 @@ class Installer extends \StoreCore\AbstractController
             . ':dbname=' . \StoreCore\Database\DEFAULT_DATABASE
             . ';host=' . \StoreCore\Database\DEFAULT_HOST
             . ';charset=utf8';
+    }
+
+    /**
+     * Move config.ini and config.php out of the root.
+     *
+     * @param void
+     * @return bool
+     */
+    private function moveConfigurationFiles()
+    {
+        $root_parent_directory = realpath(\StoreCore\FileSystem\STOREFRONT_ROOT_DIR . '../');
+        if (!is_dir($root_parent_directory) || !is_writable($root_parent_directory)) {
+            $this->Logger->warning('The directory ' . $root_parent_directory . ' is inaccessible.');
+            return false;
+        }
+
+        $root_parent_directory .= DIRECTORY_SEPARATOR;
+
+        $renamed_config_ini = false;
+        if (is_file(\StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.ini')) {
+            $renamed_config_ini = rename(\StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.ini', $root_parent_directory . 'config.ini');
+            if ($renamed_config_ini) {
+                $this->Logger->notice('Moved configuration file config.ini to: ' . $root_parent_directory . 'config.ini');
+            }
+        }
+
+        $renamed_config_php = false;
+        if (is_file(\StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.php')) {
+            $renamed_config_php = rename(\StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.php', $root_parent_directory . 'config.php');
+            if ($renamed_config_php) {
+                $this->Logger->notice('Moved configuration file config.php to: ' . $root_parent_directory . 'config.php');
+            }
+        }
+
+        if ($renamed_config_ini && $renamed_config_php) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

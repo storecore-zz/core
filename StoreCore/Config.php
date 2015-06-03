@@ -8,12 +8,11 @@ namespace StoreCore;
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @version   0.1.0
+ * @version   0.1.0-alpha.1
  */
-class Config
+class Config implements SingletonInterface
 {
-    /** @var string VERSION */
-    const VERSION = '0.1.0';
+    const VERSION = '0.1.0-alpha.1';
 
     /** @var array $DefinedConstants */
     protected static $DefinedConstants = array();
@@ -65,7 +64,7 @@ class Config
     /**
      * Parse a .ini configuration file.
      *
-     * @param string $filename;
+     * @param string $filename
      * @return void
      */
     public static function parse($filename = 'config.ini')
