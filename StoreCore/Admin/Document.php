@@ -8,15 +8,11 @@ namespace StoreCore\Admin;
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Admin
- * @version   0.1.0
+ * @version   0.1.0-alpha.1
  */
 class Document extends \StoreCore\Document
 {
-    /**
-     * @var string VERSION
-     *   Semantic version (SemVer)
-     */
-    const VERSION = '0.1.0';
+    const VERSION = '0.1.0-alpha.1';
 
     /**
      * @var array $Links
@@ -34,6 +30,10 @@ class Document extends \StoreCore\Document
             'href' => '/css/admin.min.css',
             'rel'  => 'stylesheet',
         ),
+        '337e46124a7928fe45d454c01a905414' => array(
+            'href' => '/assets/ico/localhost.ico',
+            'rel'  => 'shortcut icon',
+        ),
     );
 
     /**
@@ -44,7 +44,7 @@ class Document extends \StoreCore\Document
         'robots' => 'noindex,nofollow',
         'viewport' => 'width=device-width, initial-scale=1',
     );
-    
+
     /**
      * @var string $Title
      */
