@@ -6,11 +6,13 @@ namespace StoreCore;
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2015 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html
- * @version   0.1.0
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @version   0.1.0-alpha.1
  */
 class Asset
 {
+    const VERSION = '0.1.0-alpha.1';
+
     /**
      * @type string $FileName
      * @type string $FileType
@@ -20,7 +22,7 @@ class Asset
 
     /**
      * @type array $Types
-     *     Array matching lowercase file extensions to MIME types.
+     *   Array matching lowercase file extensions to MIME types.
      */
     private $Types = array(
         'css'  => 'text/css; charset=utf-8',
@@ -30,6 +32,7 @@ class Asset
         'jpg'  => 'image/jpeg',
         'js'   => 'text/javascript; charset=utf-8',
         'png'  => 'image/png',
+        'svg'  => 'image/svg+xml',
     );
 
     /**
@@ -68,6 +71,7 @@ class Asset
     }
 
     /**
+     * @internal
      * @param void
      * @return void
      */
@@ -76,7 +80,7 @@ class Asset
         if ($this->FileType == 'css' || $this->FileType == 'js') {
             ob_start('ob_gzhandler');
         }
-        
+
         // Cache for 365 days = 31536000 seconds
         header('Cache-Control: public, max-age=31536000', true);
         header('Pragma: cache', true);
@@ -103,6 +107,7 @@ class Asset
     }
 
     /**
+     * @internal
      * @param string $filename
      * @return void
      */
@@ -113,6 +118,7 @@ class Asset
     }
 
     /**
+     * @internal
      * @param string $filetype
      * @return void
      */
