@@ -1,8 +1,13 @@
 <?php
 namespace StoreCore\FileSystem;
 
+use \Psr\Log\AbstractLogger as AbstractLogger;
+use \Psr\Log\LogLevel as LogLevel;
+use \StoreCore\ObserverInterface as ObserverInterface;
+use \StoreCore\SubjectInterface as SubjectInterface;
+
 /**
- * Logger
+ * File System Logger
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2014-2015 StoreCore
@@ -10,14 +15,9 @@ namespace StoreCore\FileSystem;
  * @package   StoreCore\Security
  * @version   0.1.0
  */
-class Logger extends \Psr\Log\AbstractLogger
+class Logger extends AbstractLogger implements SubjectInterface
 {
-    /**
-     * @var string VERSION
-     *   Semantic version (SemVer)
-     */
     const VERSION = '0.1.0';
-
 
     /** @type resource $Handle */
     private $Handle;
@@ -25,9 +25,11 @@ class Logger extends \Psr\Log\AbstractLogger
     /** @type string $Filename */
     private $Filename;
 
+    /** @var array $Observers */
+    private $Observers = array();
+
     /** @type string $OutputBuffer */
     private $OutputBuffer = '';
-
 
     /**
      * @param string $filename
@@ -46,7 +48,6 @@ class Logger extends \Psr\Log\AbstractLogger
             }
         }
         $this->Filename = $filename;
-        $this->Handle = fopen($filename, 'a');
     }
 
     /**
@@ -62,15 +63,35 @@ class Logger extends \Psr\Log\AbstractLogger
     }
 
     /**
+     * @param \StoreCore\ObserverInterface $observer
+     * @return void
+     */
+    public function attach(ObserverInterface $observer)
+    {
+        $id = spl_object_hash($observer);
+        $this->Observers[$id] = $observer;
+    }
+
+    /**
+     * @param \StoreCore\ObserverInterface $observer
+     * @return void
+     */
+    public function detach(ObserverInterface $observer)
+    {
+        $id = spl_object_hash($observer);
+        unset($this->Observers[$id]);
+    }
+
+    /**
      * Write to the log file and flush the output buffer.
      *
      * @param void
-     * @return null
+     * @return void
      */
     public function flush()
     {
         if (empty($this->OutputBuffer)) {
-            return null;
+            return;
         }
 
         if (!is_resource($this->Handle)) {
@@ -85,10 +106,10 @@ class Logger extends \Psr\Log\AbstractLogger
     /**
      * Log an event.
      *
-     * @param Psr\Log\LogLevel $level
+     * @param \Psr\Log\LogLevel $level
      * @param string $message
      * @param array $context
-     * @return null
+     * @return void
      */
     public function log($level, $message, array $context = array())
     {
@@ -113,5 +134,22 @@ class Logger extends \Psr\Log\AbstractLogger
 
         // Add the output to the output buffer
         $this->OutputBuffer .= $output;
+
+        // Notify observers
+        if ($level == LogLevel::EMERGENCY || $level == LogLevel::ALERT) {
+            $this->notify();
+        }
+    }
+
+    /**
+     * @param void
+     * @return void
+     */
+    public function notify()
+    {
+        foreach ($this->Observers as $observer)
+        {
+            $observer->update($this);
+        }
     }
 }
