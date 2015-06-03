@@ -5,6 +5,7 @@ use \Psr\Log\LoggerAwareInterface as LoggerAwareInterface;
 use \Psr\Log\LoggerInterface as LoggerInterface;
 
 use \StoreCore\AbstractController as AbstractController;
+use \StoreCore\Admin\AccessControlWhitelist as AccessControlWhitelist;
 use \StoreCore\Registry as Registry;
 use \StoreCore\Response as Response;
 use \StoreCore\Route as Route;
@@ -34,6 +35,10 @@ class FrontController extends AbstractController implements LoggerAwareInterface
         if (!defined('StoreCore\\VERSION_INSTALLED')) {
             $this->install();
         }
+
+        // Check the whitelist
+        $whitelist = new AccessControlWhitelist($this->Registry);
+        $whitelist->check();
 
         // Check if there is a user signed in.
         if ($this->Session->has('User')) {
