@@ -56,11 +56,11 @@ class Asset
     }
 
     /**
-     * @api
+     * @internal
      * @param void
      * @return bool
      */
-    public function fileExists()
+    private function fileExists()
     {
         // File type is not supported
         if ($this->FileType === null) {
