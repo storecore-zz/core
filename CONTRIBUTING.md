@@ -636,11 +636,70 @@ $supported = array(
 
 ## 6.4. Translation Guidelines
 
-### 6.4.1. Compound Nouns
+### 6.4.1. Language Components
+
+The translations memory contains seven components, divided into two groups.
+These groups are namespaced with an uppercase prefix.  The first group contains
+basic language constructs in plain text, without any formatting:
+
+- `ADJECTIVE` for adjectives
+- `NOUN` for nouns and names
+- `VERB` for verbs.
+
+The second group is used in user interfaces and MAY contain formatting,
+usually HTML5:
+
+- `COMMAND` for menu commands and command buttons
+- `ERROR` for error messages
+- `HEADING` for headings and form labels
+- `TEXT` for anything else.
+
+### 6.4.2. Compound Nouns
 
 Compound nouns are handled as single nouns.  For example, *shopping cart* is
 not stored as two terms like `NOUN_SHOPPING` plus `NOUN_CART`, but as a single
 segment like `NOUN_SHOPPING_CART`.
+
+### 6.4.3. Names as Nouns
+
+Names are treated as nouns.  Therefore they contain the default `NOUN` prefix,
+for example `NOUN_PAYPAL` for *PayPal* and `NOUN_MYSQL` for *MySQL*.
+
+### 6.4.4. Verbs to Commands
+
+Commands, menu commands and command buttons usually indicate an activity.
+Therefore commands SHOULD be derived from verbs.  The translation memory SQL
+file contains an example of this business logic.  The general verb *print*
+in lowercase becomes the command **Print…** with an uppercase first letter and
+three dots in user interfaces.
+
+```sql
+INSERT IGNORE INTO sc_translation_memory
+    (translation_id, language_id, translation)
+  VALUES
+    ('VERB_PRINT',   0, 'print'),
+    ('VERB_PRINT',   1, 'printen'),
+    ('VERB_PRINT',   2, 'drucken'),
+    ('VERB_PRINT',   3, 'imprimer');
+
+INSERT IGNORE INTO sc_translation_memory
+    (translation_id, language_id, translation)
+  VALUES
+    ('COMMAND_PRINT',   0, 'Print…'),
+    ('COMMAND_PRINT',   1, 'Printen…'),
+    ('COMMAND_PRINT',   2, 'Drucken…'),
+    ('COMMAND_PRINT',   3, 'Imprimer…');
+```
+
+In some cases verbs are included in the translation memory for reference
+purposes and consistency.  For example, the verb *to print* may in Dutch be
+translated as *printen*, *afdrukken*, or *drukken*.  The definition `afdrukken`
+of `VERB_PRINT` thus indicates the preferred translation.
+
+### 6.4.5. Errors and Exceptions
+
+Error messages and exception message strings currently are not translated as
+these are intended primarily for developers and server administrators.
 
 
 # 7. Documentation
@@ -684,7 +743,60 @@ Please note that documenting changes and proper attribution is REQUIRED by the
 GNU General Public License (GPL):
 
 *For the developers’ and authors’ protection, the GPL clearly explains that
-there is no warranty for this free software.  For both users' and authors’
+there is no warranty for this free software.  For both users’ and authors’
 sake, the GPL requires that modified versions be marked as changed, so that
 their problems will not be attributed erroneously to authors of previous
 versions.)*
+
+## 7.2. Class Versions
+
+All abstract classes and classes MUST include a `VERSION` constant.  Because
+class constants are always accessible outside the class scope, this allows for
+updates and possibly handling future compatibility issues.  For reference
+purposes the `const` definition is usually included on the first line in the
+`class` definition:
+
+```php
+<?php
+class FooBar
+{
+    const VERSION = '0.1.0-alpha.1';
+    
+    // <...>
+}
+```
+
+If the class file contains an initial DocBlock, the PHPDoc `@version` tag MUST
+be set to the currently defined `VERSION`:
+
+```php
+<?php
+/**
+ * Foo Bar
+ *
+ * @version 0.1.0-alpha.1
+ */
+class FooBar
+{
+    const VERSION = '0.1.0-alpha.1';
+
+    // <...>
+}
+```
+
+The `SetupInterface` interface in the `StoreCore\Modules` additionally
+prescribes the implementation a `getVersion()` method.  This formalizes an
+important reminder: classes and modules MUST include a publicly accessible
+version ID.
+
+```php
+<?php
+namespace StoreCore\Modules;
+
+interface SetupInterface
+{
+    public function getVersion();
+    public function install();
+    public function uninstall();
+}
+```
