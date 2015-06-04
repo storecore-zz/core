@@ -8,11 +8,11 @@ namespace StoreCore;
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @version   0.1.0
+ * @version   0.1.0-alpha.1
  */
 class Document
 {
-    const VERSION = '0.1.0';
+    const VERSION = '0.1.0-alpha.1';
 
     /**
      * @var string $Direction
@@ -224,11 +224,32 @@ class Document
         $html .= $this->getHead();
         $html .= $this->getBody();
 
-        if ($this->ScriptsDeferred !== null) {
+        /*
+         * jQuery
+         *
+         * Load jQuery from Google CDN with a fallback for Microsoft Internet
+         * Explorer (MSIE) <= 8.  If the CDN is not available, jQuery is loaded
+         * from the local /js/ assets.  Alternate CDNs are listed below.
+         *
+         * MaxCDN:         //code.jquery.com/jquery-2.1.4.min.js
+         * Microsoft CDN:  //ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.min.js
+         * CloudFlare CDN: //cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js
+         * jsDelivr CDN:   //cdn.jsdelivr.net/jquery/2.1.4/jquery.min.js
+         */
+        if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/(?i)msie [4-8]/', $_SERVER['HTTP_USER_AGENT'])) {
+            $html .= '<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.3.min.js"></script>';
             $html .= '<script>';
-            $html .= implode($this->ScriptsDeferred);
-            $html .= '</script>';
+            $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-1.11.3.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
+        } else {
+            $html .= '<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>';
+            $html .= '<script>';
+            $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-2.1.4.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
         }
+
+        if ($this->ScriptsDeferred !== null) {
+            $html .= implode($this->ScriptsDeferred);
+        }
+        $html .= '</script>';
 
         $html .= '</html>';
         return $html;
@@ -245,7 +266,7 @@ class Document
     {
         $head  = '<head>';
         $head .= '<meta charset="UTF-8">';
-        
+
         if ($this->Title != null) {
             $head .= '<title>' . $this->Title . '</title>';
         }
