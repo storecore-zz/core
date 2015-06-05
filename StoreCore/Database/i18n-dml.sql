@@ -193,11 +193,29 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_FIRST_NAME',   1, 'Voornaam'),
     ('HEADING_FIRST_NAME',   2, 'Vorname'),
     ('HEADING_FIRST_NAME',   3, 'Prénom'),
-
+    
+    ('HEADING_LANGUAGE',   0, 'Language:'),
+    ('HEADING_LANGUAGE',   1, 'Taal:'),
+    ('HEADING_LANGUAGE',   2, 'Sprache:'),
+    ('HEADING_LANGUAGE',   3, 'Langue:'),
+    
     ('HEADING_LAST_NAME',   0, 'Last name'),
     ('HEADING_LAST_NAME',   1, 'Achternaam'),
     ('HEADING_LAST_NAME',   2, 'Nachname'),
     ('HEADING_LAST_NAME',   3, 'Nom'),
+
+    ('HEADING_LOG_FILES',   0, 'Log files'),
+    ('HEADING_LOG_FILES',   1, 'Logboekbestanden'),
+    ('HEADING_LOG_FILES',   2, 'Protokolldateien'),
+    ('HEADING_LOG_FILES',   3, 'Fichiers journaux'),
+    ('HEADING_LOG_FILES',   6, 'Archivos de registro'),
+    ('HEADING_LOG_FILES',   9, 'Ficheiros de registo'),
+    ('HEADING_LOG_FILES',  21, 'File di registro'),
+
+    ('HEADING_ORDERS',   0, 'Orders'),
+    ('HEADING_ORDERS',   1, 'Orders'),
+    ('HEADING_ORDERS',   2, 'Bestellungen'),
+    ('HEADING_ORDERS',   3, 'Ordres'),
 
     ('HEADING_PASSWORD',   0, 'Password'),
     ('HEADING_PASSWORD',   1, 'Wachtwoord'),
@@ -217,6 +235,16 @@ INSERT IGNORE INTO sc_translation_memory
 INSERT IGNORE INTO sc_translation_memory
     (translation_id, language_id, translation, admin_only_flag)
   VALUES
+    ('HEADING_CATALOG',   0, 'Catalog', 1),
+    ('HEADING_CATALOG',   1, 'Catalogus', 1),
+    ('HEADING_CATALOG',   2, 'Katalog', 1),
+    ('HEADING_CATALOG',   3, 'Catalogue', 1),
+  
+    ('HEADING_CUSTOMERS',   0, 'Customers', 1),
+    ('HEADING_CUSTOMERS',   1, 'Klanten', 1),
+    ('HEADING_CUSTOMERS',   2, 'Kunden', 1),
+    ('HEADING_CUSTOMERS',   3, 'Clients', 1),
+
     ('HEADING_DATABASE_NAME',   0, 'Database name', 1),
     ('HEADING_DATABASE_NAME',   1, 'Databasenaam', 1),
     ('HEADING_DATABASE_NAME',   2, 'Datenbankname', 1),
@@ -226,6 +254,11 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_DATABASE_SETTINGS',   1, 'Database-instellingen', 1),
     ('HEADING_DATABASE_SETTINGS',   2, 'Datenbankeinstellungen', 1),
     ('HEADING_DATABASE_SETTINGS',   3, 'Paramètres de la base de données', 1),
+    
+    ('HEADING_LANGUAGES',   0, 'Languages', 1),
+    ('HEADING_LANGUAGES',   1, 'Talen', 1),
+    ('HEADING_LANGUAGES',   2, 'Sprachen', 1),
+    ('HEADING_LANGUAGES',   3, 'Langues', 1),
 
     ('HEADING_HOST_NAME_OR_IP_ADDRESS',   0, 'Host name or IP address', 1),
     ('HEADING_HOST_NAME_OR_IP_ADDRESS',   1, 'Hostnaam of IP-adres', 1),
@@ -235,4 +268,9 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_PDO_DRIVER',   0, 'PDO driver', 1),
     ('HEADING_PDO_DRIVER',   1, 'PDO-stuurprogramma', 1),
     ('HEADING_PDO_DRIVER',   2, 'PDO-Treiber', 1),
-    ('HEADING_PDO_DRIVER',   3, 'Pilote PDO', 1);
+    ('HEADING_PDO_DRIVER',   3, 'Pilote PDO', 1),
+
+    ('HEADING_SETTINGS',   0, 'Settings', 1),
+    ('HEADING_SETTINGS',   1, 'Instellingen', 1),
+    ('HEADING_SETTINGS',   2, 'Einstellungen', 1),
+    ('HEADING_SETTINGS',   3, 'Paramètres', 1);
