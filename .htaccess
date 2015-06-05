@@ -13,6 +13,11 @@ Options -Indexes
   Deny from all
 </FilesMatch>
 
+# Keep connections alive
+<IfModule mod_headers.c>
+  Header set Connection keep-alive
+</IfModule>
+
 # Rewrite all non-existent directories and files to index.php
 <IfModule mod_rewrite.c>
   RewriteEngine on
