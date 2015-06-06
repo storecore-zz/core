@@ -4,8 +4,8 @@
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2015 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html GPLv3
- * @version   0.1.0
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @version   0.1.0-alpha.1
  */
 
 // Coordinated Universal Time (UTC)
@@ -17,12 +17,14 @@ $loader = new \StoreCore\Autoloader();
 $loader->register();
 
 // Link namespaces to directories
-$loader->addNamespace('Psr\Cache', __DIR__ . DIRECTORY_SEPARATOR . 'Psr/Cache');
-$loader->addNamespace('Psr\Log', __DIR__ . DIRECTORY_SEPARATOR . 'Psr/Log');
-$loader->addNamespace('StoreCore', __DIR__);
+$loader->addNamespace('Psr\Cache', __DIR__ . DIRECTORY_SEPARATOR . 'Psr' . DIRECTORY_SEPARATOR . 'Cache');
+$loader->addNamespace('Psr\Log', __DIR__ . DIRECTORY_SEPARATOR . 'Psr' . DIRECTORY_SEPARATOR . 'Log');
+
+$loader->addNamespace('StoreCore\Database', __DIR__ . DIRECTORY_SEPARATOR . 'Database', true);
+$loader->addNamespace('StoreCore\FileSystem', __DIR__ . DIRECTORY_SEPARATOR . 'FileSystem', true);
+$loader->addNamespace('StoreCore', __DIR__, true);
+
 $loader->addNamespace('StoreCore\Admin', __DIR__ . DIRECTORY_SEPARATOR . 'Admin');
-$loader->addNamespace('StoreCore\Database', __DIR__ . DIRECTORY_SEPARATOR . 'Database');
-$loader->addNamespace('StoreCore\FileSystem', __DIR__ . DIRECTORY_SEPARATOR . 'FileSystem');
 $loader->addNamespace('StoreCore\Modules', __DIR__ . DIRECTORY_SEPARATOR . 'Modules');
 $loader->addNamespace('StoreCore\Types', __DIR__ . DIRECTORY_SEPARATOR . 'Types');
 
@@ -40,8 +42,9 @@ ini_set('display_errors', 0);
 require __DIR__ . DIRECTORY_SEPARATOR . 'SingletonInterface.php';
 require __DIR__ . DIRECTORY_SEPARATOR . 'Types' . DIRECTORY_SEPARATOR . 'TypeInterface.php';
 
-require __DIR__ . DIRECTORY_SEPARATOR . 'AbstractModel.php';
 require __DIR__ . DIRECTORY_SEPARATOR . 'AbstractController.php';
+require __DIR__ . DIRECTORY_SEPARATOR . 'AbstractModel.php';
+require __DIR__ . DIRECTORY_SEPARATOR . 'Database' . DIRECTORY_SEPARATOR . 'AbstractModel.php';
 
 require __DIR__ . DIRECTORY_SEPARATOR . 'Registry.php';
 require __DIR__ . DIRECTORY_SEPARATOR . 'Request.php';

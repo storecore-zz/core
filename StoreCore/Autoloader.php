@@ -15,15 +15,11 @@ namespace StoreCore;
  * @copyright Copyright (c) 2014-2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @link      https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader-examples.md
- * @version   0.1.0
+ * @version   0.1.0-alpha.1
  */
 class Autoloader
 {
-    /**
-     * @var string VERSION
-     *   Semantic version (SemVer)
-     */
-    const VERSION = '0.1.0';
+    const VERSION = '0.1.0-alpha.1';
 
     /**
      * @var array $Prefixes
@@ -36,14 +32,14 @@ class Autoloader
      * Add a base directory for a namespace prefix.
      *
      * @param string $prefix
-     *     The namespace prefix.
+     *   The namespace prefix.
      *
-     * @param string $base_dir 
-     *     A base directory for class files in the namespace.
+     * @param string $base_dir
+     *   A base directory for class files in the namespace.
      *
-     * @param bool $prepend 
-     *     If true, prepend the base directory to the stack instead of
-     *     appending it; this causes it to be searched first rather than last.
+     * @param bool $prepend
+     *   If true, prepend the base directory to the stack instead of
+     *   appending it; this causes it to be searched first rather than last.
      *
      * @return void
      */
@@ -72,10 +68,10 @@ class Autoloader
      * Load the class file for a given class name.
      *
      * @param string $class
-     *     The fully-qualified class name (FQCN).
+     *   The fully-qualified class name (FQCN).
      *
      * @return string|bool
-     *     The mapped file name on success, or boolean false on failure.
+     *   The mapped file name on success, or boolean false on failure.
      */
     public function loadClass($class)
     {
@@ -100,7 +96,7 @@ class Autoloader
 
             // Remove the trailing namespace separator for the next iteration
             // of strrpos().
-            $prefix = rtrim($prefix, '\\');   
+            $prefix = rtrim($prefix, '\\');
         }
 
         // Never found a mapped file
@@ -109,16 +105,16 @@ class Autoloader
 
     /**
      * Load the mapped file for a namespace prefix and relative class.
-     * 
+     *
      * @param string $prefix
-     *     The namespace prefix.
+     *   The namespace prefix.
      *
      * @param string $relative_class
-     *     The relative class name.
+     *   The relative class name.
      *
-     * @return bool|string 
-     *     Boolean false if no mapped file can be loaded, or the name of the
-     *     mapped file that was loaded.
+     * @return bool|string
+     *   Boolean false if no mapped file can be loaded, or the name of the
+     *   mapped file that was loaded.
      */
     protected function loadMappedFile($prefix, $relative_class)
     {
@@ -155,17 +151,17 @@ class Autoloader
      */
     public function register()
     {
-        spl_autoload_register(array($this, 'loadClass'));
+        spl_autoload_register(array($this, 'loadClass'), true, true);
     }
 
     /**
      * If a file exists, require it from the file system.
-     * 
+     *
      * @param string $file
-     *     The file to require.
+     *   The file to require.
      *
      * @return bool
-     *     True if the file exists, false if not.
+     *   True if the file exists, false if not.
      */
     protected function requireFile($file)
     {
