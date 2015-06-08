@@ -98,7 +98,7 @@ class Installer extends \StoreCore\AbstractController
             return false;
         }
         $dbh = null;
-        $this->Logger->info('Database connection is good to go.');
+        $this->Logger->info('Database connection is set up correctly.');
         return true;
     }
 
@@ -116,7 +116,7 @@ class Installer extends \StoreCore\AbstractController
 
             // Install all core tables
             if (count($tables) == 0) {
-                $this->Logger->notice('No tables found: installing database.');
+                $this->Logger->notice('No database tables found: installing StoreCore database.');
                 $maintenance_module->restore();
 
                 $config = new \StoreCore\Admin\Configurator();
@@ -129,7 +129,7 @@ class Installer extends \StoreCore\AbstractController
             $this->Logger->critical($e->getMessage());
             return false;
         }
-        $this->Logger->info('Database structure is good to go.');
+        $this->Logger->info('Database structure is set up correctly.');
         return true;
     }
 
@@ -180,7 +180,7 @@ class Installer extends \StoreCore\AbstractController
         }
 
         if (count($errors) == 0) {
-            $this->Logger->info('File system is good to go.');
+            $this->Logger->info('File system is set up correctly.');
             return true;
         } else {
             foreach ($errors as $error) {
@@ -219,7 +219,7 @@ class Installer extends \StoreCore\AbstractController
         }
 
         if (count($errors) == 0) {
-            $this->Logger->info('Server configuration is good to go.');
+            $this->Logger->info('Web server configuration is set up correctly.');
             return true;
         } else {
             foreach ($errors as $error) {
@@ -239,11 +239,11 @@ class Installer extends \StoreCore\AbstractController
     {
         $users = new \StoreCore\Database\Users($this->Registry);
         if ($users->count() !== 0) {
-            $this->Logger->info('User accounts are good to go.');
+            $this->Logger->info('User accounts are set up correctly.');
             return true;
         }
 
-        $this->Logger->warning('No active user accounts found: adding new user.');
+        $this->Logger->warning('No active user accounts were found: adding a new user with administrator privileges.');
         unset($users);
 
         $user_data = array(
