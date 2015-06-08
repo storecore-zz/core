@@ -8,15 +8,11 @@ namespace StoreCore\Database;
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Database
- * @version   0.0.2
+ * @version   0.1.0-alpha.1
  */
 class Connection extends \PDO
 {
-    /**
-     * @var string VERSION
-     *   Semantic version (SemVer)
-     */
-    const VERSION = '0.0.2';
+    const VERSION = '0.1.0-alpha.1';
 
     /**
      * @param string $dsn
@@ -55,7 +51,7 @@ class Connection extends \PDO
             parent::__construct($dsn, $username, $password, $options);
         } catch (\PDOException $e) {
             $logger = new \StoreCore\FileSystem\Logger();
-            $logger->error('Database connection failed: ' . trim($e->getMessage()));
+            $logger->critical('Database connection failed: ' . trim($e->getMessage()));
             if (!headers_sent()) {
                 header('HTTP/1.1 503 Service Unavailable', true, 503);
                 header('Retry-After: 60');
