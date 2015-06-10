@@ -135,7 +135,7 @@ em {
 
    - .breadcrumbs
    - .lock-screen
-   - #sidebar
+   - #navigation-drawer
    - #wrapper
 
  */
@@ -212,38 +212,44 @@ ul.breadcrumbs {
 }
 
 
-#sidebar {
+#navigation-drawer {
   background-color: #000;
   bottom: 0;
   color: #eee;
   float: left;
   left: 0;
   padding: 1em;
-  position: absolute;
+  position: fixed;
   text-align: left;
   top: 0;
+  width: 203px;
 }
 
-#sidebar li {
+#navigation-drawer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#navigation-drawer li {
   display: block;
   font-size: 16pt;
   font-weight: 500;
   list-style-type: none;
   margin: 0;
   padding: 1ex 0;
-
 }
 
-#sidebar li span {
+#navigation-drawer li span {
   padding: 0 0 0 .4em;
 }
 
-#sidebar .disabled {
+#navigation-drawer .disabled {
   color: #777;
   cursor: not-allowed;
 }
 
-#sidebar a {
+#navigation-drawer a {
   background: inherit;
   color: #eee;
   display: block;
@@ -257,12 +263,12 @@ ul.breadcrumbs {
   width: 100%;
 }
 
-#sidebar a:hover {
+#navigation-drawer a:hover {
   color: #fff;
   text-shadow: -1px 1px 7px #ffc, 1px -1px 9px #fff;
 }
 
-#sidebar-logo {
+#navigation-drawer-logo {
   background-color: #690;
   bottom: 0;
   color: #fff;
@@ -276,25 +282,34 @@ ul.breadcrumbs {
   width: 100%;
 }
 
-#sidebar-logo strong {
+#navigation-drawer-logo strong {
   font-weight: 700;
 }
 
 @media screen and (max-width: 560px) {
 
-  #sidebar li span {
+  #navigation-drawer {
+    width: 36px;
+  }
+
+  #navigation-drawer li span {
     display: none;
   }
 
-  #sidebar:hover li span {
+  #navigation-drawer:hover {
+    max-width: 203px;
+    width: 85.4%;
+  }
+
+  #navigation-drawer:hover li span {
     display: inline-block;
   }
 
-  #sidebar-logo {
+  #navigation-drawer-logo {
     display: none;
   }
 
-  #sidebar:hover #sidebar-logo {
+  #navigation-drawer:hover #navigation-drawer-logo {
     display: block;
   }
 
