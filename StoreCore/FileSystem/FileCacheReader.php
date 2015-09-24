@@ -107,7 +107,7 @@ class FileCacheReader
      * @param \StoreCore\Types\CacheKey $key
      * @return void
      */
-    private function setFileName(\StoreCore\Types\CacheKey $key)
+    protected function setFileName(\StoreCore\Types\CacheKey $key)
     {
         if (!defined('\\StoreCore\\FileSystem\\CACHE_DIR')) {
             return;
