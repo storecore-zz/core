@@ -50,7 +50,7 @@ class FileCacheReader
             $this->setFileName($key);
         }
 
-        if (is_file($this->getFileName()) {
+        if (is_file($this->getFileName())) {
             return true;
         } else {
             return false;
