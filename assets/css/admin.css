@@ -25,7 +25,6 @@ hgroup,
 main,
 menu,
 nav,
-section,
 summary {
   display: block;
 }
@@ -108,6 +107,7 @@ pre {
 }
 
 section {
+  display: inline-block;
   text-align: left;
 }
 
@@ -621,6 +621,7 @@ sup {
 
 
 #wrapper {
+  margin: auto;
   text-align: center;
 }
 
