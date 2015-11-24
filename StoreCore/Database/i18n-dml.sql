@@ -43,9 +43,11 @@ INSERT IGNORE INTO sc_translation_memory
 INSERT IGNORE INTO sc_translation_memory
     (translation_id, translation, admin_only_flag)
   VALUES
+    ('NOUN_IDEAL', 'iDEAL', 0),
     ('NOUN_MYSQL', 'MySQL', 1),
     ('NOUN_PAYPAL', 'PayPal', 0),
-    ('NOUN_PHP', 'PHP', 1);
+    ('NOUN_PHP', 'PHP', 1),
+    ('NOUN_STORECORE', 'StoreCore', 0);
 
 --
 -- Nouns
@@ -78,10 +80,41 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_GERMAN',   2, 'Deutsch'),
     ('NOUN_GERMAN',   3, 'allemand'),
 
+    ('NOUN_LATITUDE',   0, 'latitude'),
+    ('NOUN_LATITUDE',   1, 'breedtegraad'),
+    ('NOUN_LATITUDE',   2, 'Breitengrad'),
+    ('NOUN_LATITUDE',   3, 'latitude'),
+
+    ('NOUN_LONGITUDE',   0, 'longitude'),
+    ('NOUN_LONGITUDE',   1, 'lengtegraad'),
+    ('NOUN_LONGITUDE',   2, 'Längengrad'),
+    ('NOUN_LONGITUDE',   3, 'longitude'),
+
+    ('NOUN_PASSWORD',   0, 'password'),
+    ('NOUN_PASSWORD',   1, 'wachtwoord'),
     ('NOUN_PASSWORD',   2, 'Kennwort'),
     ('NOUN_PASSWORD',   3, 'mot de passe'),
-    ('NOUN_PASSWORD',   1, 'wachtwoord'),
-    ('NOUN_PASSWORD',   0, 'password'),
+
+    ('NOUN_POSTAL_CODE',   0, 'postcode'),
+    ('NOUN_POSTAL_CODE',   1, 'postcode'),
+    ('NOUN_POSTAL_CODE',   2, 'Postleitzahl'),
+    ('NOUN_POSTAL_CODE',   3, 'code postal'),
+    ('NOUN_POSTAL_CODE', 255, 'zip code'),
+
+    ('NOUN_SHOPPING_BASKET',   0, 'shopping basket'),
+    ('NOUN_SHOPPING_BASKET',   1, 'winkelmandje'),
+    ('NOUN_SHOPPING_BASKET',   2, 'Einkaufskorb'),
+    ('NOUN_SHOPPING_BASKET',   3, 'panier'),
+
+    ('NOUN_SHOPPING_CART',   0, 'shopping cart'),
+    ('NOUN_SHOPPING_CART',   1, 'winkelwagen'),
+    ('NOUN_SHOPPING_CART',   2, 'Einkaufswagen'),
+    ('NOUN_SHOPPING_CART',   3, 'chariot'),
+
+    ('NOUN_TRACKING_NUMBER',   0, 'tracking number'),
+    ('NOUN_TRACKING_NUMBER',   1, 'trackingnummer'),
+    ('NOUN_TRACKING_NUMBER',   2, 'Trackingnummer'),
+    ('NOUN_TRACKING_NUMBER',   3, 'numéro de suivi'),
 
     ('NOUN_USER',   0, 'user'),
     ('NOUN_USER',   1, 'gebruiker'),
@@ -193,12 +226,12 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_FIRST_NAME',   1, 'Voornaam'),
     ('HEADING_FIRST_NAME',   2, 'Vorname'),
     ('HEADING_FIRST_NAME',   3, 'Prénom'),
-    
+
     ('HEADING_LANGUAGE',   0, 'Language:'),
     ('HEADING_LANGUAGE',   1, 'Taal:'),
     ('HEADING_LANGUAGE',   2, 'Sprache:'),
     ('HEADING_LANGUAGE',   3, 'Langue:'),
-    
+
     ('HEADING_LAST_NAME',   0, 'Last name'),
     ('HEADING_LAST_NAME',   1, 'Achternaam'),
     ('HEADING_LAST_NAME',   2, 'Nachname'),
@@ -239,7 +272,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_CATALOG',   1, 'Catalogus', 1),
     ('HEADING_CATALOG',   2, 'Katalog', 1),
     ('HEADING_CATALOG',   3, 'Catalogue', 1),
-  
+
     ('HEADING_CUSTOMERS',   0, 'Customers', 1),
     ('HEADING_CUSTOMERS',   1, 'Klanten', 1),
     ('HEADING_CUSTOMERS',   2, 'Kunden', 1),
@@ -254,7 +287,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_DATABASE_SETTINGS',   1, 'Database-instellingen', 1),
     ('HEADING_DATABASE_SETTINGS',   2, 'Datenbankeinstellungen', 1),
     ('HEADING_DATABASE_SETTINGS',   3, 'Paramètres de la base de données', 1),
-    
+
     ('HEADING_LANGUAGES',   0, 'Languages', 1),
     ('HEADING_LANGUAGES',   1, 'Talen', 1),
     ('HEADING_LANGUAGES',   2, 'Sprachen', 1),
