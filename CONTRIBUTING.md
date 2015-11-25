@@ -471,7 +471,7 @@ class BarModel extends \StoreCore\Database\AbstractModel
 | Connection | \StoreCore\Database\Connection |
 | Logger     | \StoreCore\FileSystem\Logger   |
 | Request    | \StoreCore\Request             |
-| Response   | \StoreCore\Request             |
+| Response   | \StoreCore\Response            |
 | Session    | \StoreCore\Session             |
 
 ### 5.2.3. MVC Class Synopses

@@ -25,13 +25,10 @@ class SignIn extends \StoreCore\AbstractController
     /**
      * @param \StoreCore\Registry $registry
      * @return void
-     * @uses \StoreCore\FileSystem\Logger
      */
     public function __construct(\StoreCore\Registry $registry)
     {
         parent::__construct($registry);
-
-        $logger = new \StoreCore\FileSystem\Logger();
 
         if ($this->Request->getRequestMethod() == 'GET') {
             $this->resetToken();
@@ -42,7 +39,7 @@ class SignIn extends \StoreCore\AbstractController
             $this->resetToken();
             header('Allow: GET, POST');
             header('HTTP/1.1 405 Method Not Allowed', true, 405);
-            $logger->warning('HTTP/1.1 405 Method Not Allowed');
+            $this->Logger->warning('HTTP/1.1 405 Method Not Allowed');
             exit;
         }
 
@@ -59,11 +56,13 @@ class SignIn extends \StoreCore\AbstractController
         // Audit failed and successful attempts
         $login_audit = new \StoreCore\Database\LoginAudit();
 
+        // HTTP response object
+        $response = new Response($this->Registry);
+
         // Token handshake
         if ($this->Request->get('token') != $this->Session->get('Token')) {
-            $logger->notice('Token mismatch in admin sign-in.');
+            $this->Logger->notice('Token mismatch in admin sign-in.');
             $this->resetToken();
-            $response = new Response($this->Registry);
             $response->redirect('/admin/sign-in/', 303);
             exit;
         }
@@ -72,7 +71,7 @@ class SignIn extends \StoreCore\AbstractController
         $minutes = 15;
         $failed_attempts = $login_audit->countLastFailedAttempts($minutes);
         if ($failed_attempts > 10) {
-            $logger->warning('There were over 10 failed admin sign-in attempts in the last ' . $minutes . ' minutes.');
+            $this->Logger->warning('There were over 10 failed admin sign-in attempts in the last ' . $minutes . ' minutes.');
         }
 
         // Connection throttling: pause for 2 ^ n seconds.
@@ -88,29 +87,26 @@ class SignIn extends \StoreCore\AbstractController
         $user_mapper = new \StoreCore\Database\UserMapper();
         $user = $user_mapper->getUserByUsername($this->Request->get('username'));
         if ($user === null) {
-            $logger->warning('Unknown user "' . $this->Request->get('username') . '" attempted to sign in.');
+            $this->Logger->warning('Unknown user "' . $this->Request->get('username') . '" attempted to sign in.');
             $login_audit->storeAttempt($this->Request->get('username'));
             $this->resetToken();
-            $response = new Response($this->Registry);
             $response->redirect('/admin/sign-in/', 303);
             exit;
         }
 
         // Check the user password.
         if ($user->authenticate($this->Request->get('password')) == false) {
-            $logger->warning('Known user "' . $this->Request->get('username') . '" attempted to sign in with an illegal password.');
+            $this->Logger->warning('Known user "' . $this->Request->get('username') . '" attempted to sign in with an illegal password.');
             $login_audit->storeAttempt($this->Request->get('username'));
             $this->resetToken();
-            $response = new Response($this->Registry);
             $response->redirect('/admin/sign-in/', 303);
             exit;
         }
 
         // Finally, store the user and open up the administration.
-        $logger->notice('User "' . $this->Request->get('username') . '" signed in.');
+        $this->Logger->notice('User "' . $this->Request->get('username') . '" signed in.');
         $login_audit->storeAttempt($this->Request->get('username'), null, true);
         $this->Session->set('User', $user);
-        $response = new Response($this->Registry);
         $response->redirect('/admin/', 303);
         exit;
     }
