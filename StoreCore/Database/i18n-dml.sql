@@ -95,6 +95,11 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_PASSWORD',   2, 'Kennwort'),
     ('NOUN_PASSWORD',   3, 'mot de passe'),
 
+    ('NOUN_PIN_CODE',   0, 'PIN code'),
+    ('NOUN_PIN_CODE',   1, 'pincode'),
+    ('NOUN_PIN_CODE',   2, 'PIN-Code'),
+    ('NOUN_PIN_CODE',   3, 'code PIN'),
+
     ('NOUN_POSTAL_CODE',   0, 'postcode'),
     ('NOUN_POSTAL_CODE',   1, 'postcode'),
     ('NOUN_POSTAL_CODE',   2, 'Postleitzahl'),
