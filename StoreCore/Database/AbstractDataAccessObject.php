@@ -4,29 +4,22 @@ namespace StoreCore\Database;
 /**
  * Data Access Object (DAO)
  *
+ * The StoreCore abstract DAO provides a CRUD interface to Create, Read,
+ * Update, and Delete database records.   It executes the four basic SQL data
+ * manipulation operations: INSERT, SELECT, UPDATE, and DELETE.  Model classes
+ * that extend the abstract DAO MUST provide two class constants for late
+ * static bindings: a TABLE_NAME with the database table name the model
+ * operates on and a PRIMARY_KEY for the primary key column of this table.
+ *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Database
  * @version   0.1.0
  */
-abstract class AbstractDataAccessObject
+abstract class AbstractDataAccessObject extends AbstractModel
 {
     const VERSION = '0.1.0';
-
-    /** @var StoreCore\Database\Connection $Connection */
-    private $Connection;
-
-    /**
-     * Connect on construction.
-     *
-     * @param void
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->Connection = new \StoreCore\Database\Connection();
-    }
 
     /**
      * Create a new database row.
@@ -55,7 +48,7 @@ abstract class AbstractDataAccessObject
      * Delete one or more database rows.
      *
      * @param mixed $value
-     * @param string|null $key
+     * @param string|int|null $key
      * @return int
      */
     public function delete($value, $key = null)
@@ -76,8 +69,8 @@ abstract class AbstractDataAccessObject
     /**
      * Fetch one or more rows from a single database table.
      *
-     * @param string $value
-     * @param string|null $key
+     * @param mixed $value
+     * @param string|int|null $key
      * @return array
      */
     public function read($value, $key = null)

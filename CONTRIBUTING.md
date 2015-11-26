@@ -464,6 +464,13 @@ class BarModel extends \StoreCore\Database\AbstractModel
 }
 ```
 
+The StoreCore abstract DAO (Data Access Object) provides a CRUD interface to
+Create, Read, Update, and Delete database records.  It executes the four basic
+SQL data manipulation operations: `INSERT`, `SELECT`, `UPDATE`, and `DELETE`.
+Model classes that extend the abstract DAO MUST provide two class constants for
+late static bindings: a `TABLE_NAME` with the database table name the model
+operates on and a `PRIMARY_KEY` for the primary key column of this table.
+
 ### 5.2.2. Shared Core Services
 
 | Service    | Class                          |
@@ -494,6 +501,13 @@ class BarModel extends \StoreCore\Database\AbstractModel
     public __construct ( \StoreCore\Registry $registry )
     public mixed __get ( string $key )
     public void __set ( string $key, mixed $value )
+}
+
+\StoreCore\Database\AbstractDataAccessObject extends AbstractModel {
+    public int create ( array $keyed_data )
+    public int delete ( mixed $value, [ string|int $key = null ] )
+    public array read ( mixed $value, [ string|int $key = null ] )
+    public int update ( array $keyed_data )
 }
 
 \StoreCore\View {
@@ -761,7 +775,7 @@ purposes the `const` definition is usually included on the first line in the
 class FooBar
 {
     const VERSION = '0.1.0-alpha.1';
-    
+
     // <...>
 }
 ```
