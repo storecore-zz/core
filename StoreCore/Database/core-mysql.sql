@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS sc_users (
   password_salt   VARCHAR(255)          NOT NULL,
   hash_algo       VARCHAR(255)          NOT NULL,
   password_hash   VARCHAR(255)          NOT NULL,
+  pin_code        VARCHAR(6)            NOT NULL  DEFAULT '0000',
   first_name      VARCHAR(255)          NOT NULL  DEFAULT '',
   last_name       VARCHAR(255)          NOT NULL  DEFAULT '',
   email_token     VARCHAR(255)          NULL  DEFAULT NULL,

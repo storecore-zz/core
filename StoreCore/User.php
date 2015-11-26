@@ -8,17 +8,18 @@ namespace StoreCore;
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
- * @version   0.1.0
+ * @version   0.1.0-alpha.1
  */
 class User
 {
-    const VERSION = '0.1.0';
+    const VERSION = '0.1.0-alpha.1';
 
     /**
      * @var string   $EmailAddress
      * @var string   $HashAlgorithm
      * @var string   $PasswordHash
      * @var string   $PasswordSalt
+     * @var string   $PinCode
      * @var int|null $UserGroupID
      * @var int      $UserID
      * @var string   $Username
@@ -27,7 +28,8 @@ class User
     private $HashAlgorithm;
     private $PasswordHash;
     private $PasswordSalt;
-    private $UserGroupID;
+    private $PinCode = '0000';
+    private $UserGroupID = 0;
     private $UserID;
     private $Username;
 
@@ -100,12 +102,11 @@ class User
 
     /**
      * @param string $email_address
-     * @return $this
+     * @return void
      */
     public function setEmailAddress($email_address)
     {
         $this->EmailAddress = $email_address;
-        return $this;
     }
 
     /**
@@ -115,7 +116,6 @@ class User
     public function setHashAlgorithm($hash_algorithm)
     {
         $this->HashAlgorithm = $hash_algorithm;
-        return $this;
     }
 
     /**
@@ -130,41 +130,46 @@ class User
 
     /**
      * @param string $password_salt
-     * @return $this
+     * @return void
      */
     public function setPasswordSalt($password_salt)
     {
         $this->PasswordSalt = $password_salt;
-        return $this;
     }
 
     /**
+     * @param string $pin_code
+     * @return void
+     */    
+    public function setPinCode($pin_code)
+    {
+        $this->PinCode = $pin_code;
+    }
+    
+    /**
      * @param int $user_group_id
-     * @return $this
+     * @return void
      */
     public function setUserGroupID($user_group_id)
     {
         $this->UserGroupID = (int)$user_group_id;
-        return $this;
     }
 
     /**
      * @param int $user_id
-     * @return $this
+     * @return void
      */
     public function setUserID($user_id)
     {
         $this->UserID = (int)$user_id;
-        return $this;
     }
 
     /**
      * @param string $username
-     * @return $this
+     * @return void
      */
     public function setUsername($username)
     {
         $this->Username = $username;
-        return $this;
     }
 }

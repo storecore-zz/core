@@ -8,11 +8,11 @@ namespace StoreCore\Database;
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
- * @version   0.0.4
+ * @version   0.1.0-alpha.1
  */
 class UserMapper extends AbstractDataAccessObject
 {
-    const VERSION = '0.0.4';
+    const VERSION = '0.1.0-alpha.1';
 
     const TABLE_NAME  = 'sc_users';
     const PRIMARY_KEY = 'user_id';
@@ -55,6 +55,7 @@ class UserMapper extends AbstractDataAccessObject
         $user->setHashAlgorithm($user_data['hash_algo']);
         $user->setPasswordHash($user_data['password_hash']);
         $user->setPasswordSalt($user_data['password_salt']);
+        $user->setPinCode($user_data['pin_code']);
         $user->setUserGroupID($user_data['user_group_id']);
         $user->setUserID($user_data['user_id']);
         $user->setUsername($user_data['username']);
