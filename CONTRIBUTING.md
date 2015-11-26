@@ -503,7 +503,7 @@ operates on and a `PRIMARY_KEY` for the primary key column of this table.
     public void __set ( string $key, mixed $value )
 }
 
-\StoreCore\Database\AbstractDataAccessObject extends AbstractModel {
+\StoreCore\Database\AbstractDataAccessObject extends \StoreCore\Database\AbstractModel {
     public int create ( array $keyed_data )
     public int delete ( mixed $value, [ string|int $key = null ] )
     public array read ( mixed $value, [ string|int $key = null ] )
