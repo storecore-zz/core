@@ -35,7 +35,6 @@ class SignIn extends \StoreCore\AbstractController
             $this->render();
             exit;
         } elseif ($this->Request->getRequestMethod() != 'POST') {
-            // Only allow GET or POST requests
             $this->resetToken();
             header('Allow: GET, POST');
             header('HTTP/1.1 405 Method Not Allowed', true, 405);
@@ -84,7 +83,7 @@ class SignIn extends \StoreCore\AbstractController
         sleep($seconds);
 
         // Try to fetch the user.
-        $user_mapper = new \StoreCore\Database\UserMapper();
+        $user_mapper = new \StoreCore\Database\UserMapper($this->Registry);
         $user = $user_mapper->getUserByUsername($this->Request->get('username'));
         if ($user === null) {
             $this->Logger->warning('Unknown user "' . $this->Request->get('username') . '" attempted to sign in.');
@@ -95,8 +94,11 @@ class SignIn extends \StoreCore\AbstractController
         }
 
         // Check the user password.
-        if ($user->authenticate($this->Request->get('password')) == false) {
-            $this->Logger->warning('Known user "' . $this->Request->get('username') . '" attempted to sign in with an illegal password.');
+        if ($user->authenticate($this->Request->get('password')) !== true) {
+            $this->Logger->warning(
+                'Known user "' . $user->getUsername() . '" (#' .
+                $user->getUserID() . ') attempted to sign in with an illegal password.'
+            );
             $login_audit->storeAttempt($this->Request->get('username'));
             $this->resetToken();
             $response->redirect('/admin/sign-in/', 303);
