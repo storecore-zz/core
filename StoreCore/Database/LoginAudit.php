@@ -30,8 +30,6 @@ class LoginAudit
     /**
      * Count the recently failed login attempts.
      *
-     * @api
-     *
      * @param int $minutes
      *   Size of the time frame in minutes, defaults to 15 minutes.
      *
@@ -48,8 +46,6 @@ class LoginAudit
     
     /**
      * Store a login attempt.
-     *
-     * @api
      *
      * @param string|null $username
      *   Username or some other user identifier of the user logging in.  The
