@@ -44,7 +44,6 @@ class Document
     );
 
     /**
-     * @api
      * @param string $title
      * @return void
      */
@@ -107,7 +106,6 @@ class Document
     /**
      * Add meta data for a <meta name="..."  content="..."> tag.
      *
-     * @api
      * @param string $name
      * @param string $content
      * @return $this
@@ -123,7 +121,6 @@ class Document
     /**
      * Add meta property data for a <meta property="..." content="..."> tag.
      *
-     * @api
      * @param string $property
      * @param string $content
      * @return $this
@@ -197,7 +194,6 @@ class Document
     /**
      * Get the document <body>...</body> container.
      *
-     * @api
      * @param void
      * @return string
      */
@@ -258,7 +254,6 @@ class Document
     /**
      * Get the document <head>...</head> container.
      *
-     * @api
      * @param void
      * @return string
      */
@@ -304,7 +299,6 @@ class Document
     /**
      * Add a document description.
      *
-     * @api
      * @param string $description
      * @return $this
      * @uses \StoreCore\Document::addMetaData()
@@ -336,7 +330,6 @@ class Document
     /**
      * Set the document title.
      *
-     * @api
      * @param string $title
      * @return $this
      */

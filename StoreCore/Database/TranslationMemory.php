@@ -29,8 +29,6 @@ class TranslationMemory extends \StoreCore\Database\AbstractModel
     /**
      * Load translations as name/value pairs.
      *
-     * @api
-     *
      * @param int|string $language_code
      *   Internal language identifier (integer) or ISO language code (string).
      *   The numeric language ID is equal to the primary key and the
@@ -85,8 +83,6 @@ class TranslationMemory extends \StoreCore\Database\AbstractModel
 
     /**
      * Set the language to load.
-     *
-     * @api
      *
      * @param int|string $language_code
      *   Internal language identifier (integer) or ISO language code (string).

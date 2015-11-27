@@ -37,7 +37,6 @@ class Response extends AbstractController
     }
 
     /**
-     * @api
      * @param string $header
      * @return void
      */
@@ -84,7 +83,6 @@ class Response extends AbstractController
     /**
      * Output the full response.
      *
-     * @api
      * @param void
      * @return void
      */
@@ -112,7 +110,6 @@ class Response extends AbstractController
     }
 
     /**
-     * @api
      * @param string $url
      * @param int $status
      * @return void
@@ -127,8 +124,6 @@ class Response extends AbstractController
 
     /**
      * Set the response compression level.
-     *
-     * @api
      *
      * @param int|bool $level
      *   The level of output compression, ranging from 0 for no compression up
@@ -160,7 +155,6 @@ class Response extends AbstractController
     /**
      * Set the response content.
      *
-     * @api
      * @param string $output
      * @return void
      */

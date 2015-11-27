@@ -119,7 +119,6 @@ class Request
     /**
      * Get a request value by name.
      *
-     * @api
      * @param string $key
      * @return mixed|null
      */
@@ -137,7 +136,6 @@ class Request
     /**
      * Get the HTTP "Accept-Encoding" request-header field.
      *
-     * @api
      * @param void
      * @return string
      */
@@ -152,8 +150,6 @@ class Request
     /**
      * Get a cookie by name.
      *
-     * @api
-     *
      * @param string $cookie_name
      *     Case-insensitive name of a cookie.
      *
@@ -163,7 +159,7 @@ class Request
      */
     public function getCookie($cookie_name)
     {
-        $cookie_name = mb_strtolower($cookie_name);
+        $cookie_name = mb_strtolower($cookie_name, 'UTF-8');
         if ($this->hasCookie($cookie_name)) {
             return $this->Cookies[$cookie_name];
         } else {
@@ -188,7 +184,6 @@ class Request
     /**
      * Get the current request method.
      *
-     * @api
      * @param void
      * @return string|null
      */
@@ -211,7 +206,6 @@ class Request
     /**
      * Get the HTTP User-Agent request-header field.
      *
-     * @api
      * @param void
      * @return string
      */
@@ -225,8 +219,6 @@ class Request
 
     /**
      * Check if a cookie exists.
-     *
-     * @api
      *
      * @param string $cookie_name
      *     Case-insensitive name of a cookie.
@@ -246,7 +238,6 @@ class Request
     /**
      * Check if HTTP/S and SSL are used.
      *
-     * @api
      * @param void
      * @return bool
      */

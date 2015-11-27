@@ -22,7 +22,7 @@ class Password
      */
     const DEFAULT_ALGORITHM = 'Blowfish';
 
-     /**
+    /**
      * @var int WORK_FACTOR_BLOWFISH
      * @var int WORK_FACTOR_SHA512
      */
@@ -41,7 +41,6 @@ class Password
     private $Salt;
 
     /**
-     * @api
      * @param string|null $password
      * @param string|null $salt
      * @return void
@@ -61,7 +60,6 @@ class Password
     /**
      * Get the password hash string.
      *
-     * @api
      * @param void
      * @return string
      */
@@ -77,8 +75,6 @@ class Password
      * Encrypt the password to a hash string using the Blowfish or SHA-512
      * algorithm.  If these algorithms are not supported, hashing will first
      * fall back to Standard DES and then to SHA-1.
-     *
-     * @api
      *
      * @param string|null $password
      *   Optional password.
@@ -144,7 +140,6 @@ class Password
     }
 
     /**
-     * @api
      * @param void
      * @return string
      */
@@ -154,7 +149,6 @@ class Password
     }
 
     /**
-     * @api
      * @param void
      * @return string|null
      */

@@ -51,7 +51,6 @@ class Maintenance extends \StoreCore\AbstractModel
     /**
      * List the available SQL backup files.
      *
-     * @api
      * @param void
      * @return array
      */
@@ -85,7 +84,6 @@ class Maintenance extends \StoreCore\AbstractModel
     /**
      * Get all StoreCore database table names.
      *
-     * @api
      * @param void
      * @return array
      */
@@ -183,7 +181,6 @@ class Maintenance extends \StoreCore\AbstractModel
     /**
      * Update the database.
      *
-     * @api
      * @param void
      * @return bool
      */

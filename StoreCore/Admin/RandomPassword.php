@@ -14,7 +14,6 @@ class RandomPassword
     private $Password;
 
     /**
-     * @api
      * @param int $length
      * @return void
      */
@@ -24,7 +23,6 @@ class RandomPassword
     }
 
     /**
-     * @api
      * @param void
      * @return string
      * @uses \StoreCore\Admin\RandomPassword::get()
@@ -37,8 +35,8 @@ class RandomPassword
     /**
      * Get the random password.
      *
-     * @api
      * @param void
+     *
      * @return string
      *
      * @uses \StoreCore\Admin\RandomPassword::randomize()

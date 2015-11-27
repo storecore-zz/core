@@ -82,7 +82,6 @@ class Configurator
     /**
      * Save the config.php configuration file.
      *
-     * @api
      * @param void
      * @return bool
      */
@@ -127,7 +126,6 @@ class Configurator
     }
 
     /**
-     * @api
      * @param string $name
      * @param mixed $value
      * @return void
@@ -142,7 +140,6 @@ class Configurator
     /**
      * Write a single setting to the config.php configuration file.
      *
-     * @api
      * @param string $name
      * @param mixed $value
      * @return bool

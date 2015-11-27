@@ -80,7 +80,6 @@ class Languages extends \StoreCore\Database\AbstractModel
     /**
      * Get enabled languages.
      *
-     * @api
      * @param void
      * @return array
      */
@@ -107,7 +106,6 @@ class Languages extends \StoreCore\Database\AbstractModel
     /**
      * Get local language names.
      *
-     * @api
      * @param void
      * @return array
      */

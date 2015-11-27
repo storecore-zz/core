@@ -34,8 +34,6 @@ class ProductPrice extends \StoreCore\Database\AbstractModel
     /**
      * Calculate or recalculate the product prices.
      *
-     * @api
-     *
      * @param int $currency_id
      *   ISO 4217 currency identifier.  Defaults to 978 for EUR (euro).  This
      *   method only calculates prices using price rules with the same
@@ -162,7 +160,6 @@ class ProductPrice extends \StoreCore\Database\AbstractModel
     }
 
     /**
-     * @api
      * @param int $precision
      * @return void
      */
@@ -172,7 +169,6 @@ class ProductPrice extends \StoreCore\Database\AbstractModel
     }
 
     /**
-     * @api
      * @param int $product_id
      * @return void
      */

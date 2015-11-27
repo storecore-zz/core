@@ -17,7 +17,6 @@ class Whitelist extends \StoreCore\Database\AbstractModel implements \Countable
     /**
      * Count the number of active addresses on the whitelist.
      *
-     * @api
      * @param void
      * @return int
      */
@@ -44,7 +43,6 @@ class Whitelist extends \StoreCore\Database\AbstractModel implements \Countable
      * whitelist records at all and the whitelist therefore SHOULD NOT be used
      * to grant or deny access to the administration.
      *
-     * @api
      * @param void
      * @return bool
      */

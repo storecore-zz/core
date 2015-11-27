@@ -36,8 +36,6 @@ class User
     /**
      * Check the user credentials.
      *
-     * @api
-     *
      * @param string $password
      *
      * @return bool
@@ -79,7 +77,6 @@ class User
     /**
      * Get the user group identifier.
      *
-     * @api
      * @param void
      * @return int|null
      */
@@ -91,7 +88,6 @@ class User
     /**
      * Get the user identifier.
      *
-     * @api
      * @param void
      * @return int|null
      */

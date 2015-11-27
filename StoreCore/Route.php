@@ -50,7 +50,6 @@ class Route
     /**
      * Instantiate a controller and optionally call a method.
      *
-     * @api
      * @param void
      * @return void
      */

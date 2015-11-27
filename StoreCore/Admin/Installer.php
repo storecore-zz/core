@@ -21,7 +21,6 @@ class Installer extends \StoreCore\AbstractController
     private $SelfDestruct = false;
 
     /**
-     * @api
      * @param \StoreCore\Registry $registry
      * @return void
      */

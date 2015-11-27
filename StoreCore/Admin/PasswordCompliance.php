@@ -23,8 +23,6 @@ class PasswordCompliance
     /**
      * Validate the password compliance.
      *
-     * @api
-     *
      * @param string $password
      *
      * @return bool

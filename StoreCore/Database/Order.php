@@ -44,7 +44,6 @@ class Order extends \StoreCore\Database\AbstractModel
     /**
      * Count the total number of items in the order or cart.
      *
-     * @api
      * @param void
      * @return int
      */
@@ -67,7 +66,6 @@ class Order extends \StoreCore\Database\AbstractModel
     /**
      * Create and save a new order.
      *
-     * @api
      * @param int|null $store_id
      * @param int|null $customer_id
      * @return int
@@ -108,7 +106,6 @@ class Order extends \StoreCore\Database\AbstractModel
     /**
      * Check if an order exists.
      *
-     * @api
      * @param int|null $order_id
      * @return bool
      */
@@ -137,7 +134,6 @@ class Order extends \StoreCore\Database\AbstractModel
     /**
      * Get the order number.
      *
-     * @api
      * @param void
      * @return int|null
      */
@@ -149,7 +145,6 @@ class Order extends \StoreCore\Database\AbstractModel
     /**
      * Get the store identifier.
      *
-     * @api
      * @param void
      * @return int|null
      */
@@ -195,7 +190,6 @@ class Order extends \StoreCore\Database\AbstractModel
     /**
      * Get the cart token.
      *
-     * @api
      * @param void
      * @return string
      */
@@ -228,7 +222,6 @@ class Order extends \StoreCore\Database\AbstractModel
     /**
      * Set the customer identifier.
      *
-     * @api
      * @param int $customer_id
      * @return void
      */
@@ -240,7 +233,6 @@ class Order extends \StoreCore\Database\AbstractModel
     /**
      * Set the order number.
      *
-     * @api
      * @param int $order_id
      * @return void
      */
@@ -252,7 +244,6 @@ class Order extends \StoreCore\Database\AbstractModel
     /**
      * Set the store identifier.
      *
-     * @api
      * @param int $order_id
      * @return void
      */

@@ -27,7 +27,6 @@ class UserMapper extends AbstractDataAccessObject
      * employees, may therefore be "banned" by assigning them the special user
      * group ID 0 (zero).
      *
-     * @api
      * @param \StoreCore\User $user
      * @return void
      * @uses \StoreCore\User::getUserID()
@@ -65,7 +64,6 @@ class UserMapper extends AbstractDataAccessObject
     /**
      * Fetch a user by the user's e-mail address.
      *
-     * @api
      * @param string $email_address
      * @return \StoreCore\User|null
      * @throws InvalidArgumentException
@@ -90,7 +88,6 @@ class UserMapper extends AbstractDataAccessObject
     /**
      * Fetch a user by the user's username.
      *
-     * @api
      * @param string $username
      * @return \StoreCore\User|null
      */

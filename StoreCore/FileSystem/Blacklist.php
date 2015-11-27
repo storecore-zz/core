@@ -8,8 +8,6 @@ class Blacklist
     /**
      * Check if an IP address is blacklisted.
      *
-     * @api
-     *
      * @param $ip_address
      *   Remote IPv4 or IPv6 Internet Protocol (IP) address.
      *
