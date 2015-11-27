@@ -8,16 +8,14 @@ namespace StoreCore\Database;
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
- * @version   0.1.0
+ * @version   0.1.0-alpha.1
  */
 class LoginAuditManager extends AbstractModel
 {
-    const VERSION = '0.1.0';
+    const VERSION = '0.1.0-alpha.1';
 
     /**
      * Count the recently failed login attempts.
-     *
-     * @api
      *
      * @param int $minutes
      *   Size of the time frame in minutes, defaults to 60 minutes for the last
@@ -37,8 +35,6 @@ class LoginAuditManager extends AbstractModel
     /**
      * Clean up the login attempts table.
      *
-     * @api
-     *
      * @param void
      *
      * @return int
@@ -53,6 +49,9 @@ class LoginAuditManager extends AbstractModel
         // Delete successful attempts after 90 days
         $sql = 'DELETE FROM sc_login_attempts WHERE successful = 1 AND attempted < DATE_SUB(UTC_TIMESTAMP(), INTERVAL 90 DAY)';
         $affected_rows += $this->Connection->exec($sql);
+
+        // Optimize the database table
+        $this->Connection->exec('OPTIMIZE TABLE sc_login_attempts');
 
         return $affected_rows;
     }
