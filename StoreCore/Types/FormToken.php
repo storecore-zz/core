@@ -1,6 +1,15 @@
 <?php
 namespace StoreCore\Types;
 
+/**
+ * Form Token
+ *
+ * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @copyright Copyright (c) 2015 StoreCore
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\Security
+ * @version   0.1.0
+ */
 class FormToken
 {
     const VERSION = '0.1.0';

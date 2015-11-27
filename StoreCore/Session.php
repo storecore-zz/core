@@ -7,25 +7,27 @@ namespace StoreCore;
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
- * @package   StoreCore
- * @version   0.1.0-alpha.1
+ * @package   StoreCore\Core
+ * @version   0.1.0
  */
 class Session
 {
-    const VERSION = '0.1.0-alpha.1';
+    const VERSION = '0.1.0';
 
     /**
      * @var int $IdleTimeout
      *   Time-out of an inactive session in minutes.
      */
     private $IdleTimeout = 15;
-    
+
     /**
      * @param int $idle_timeout
      *   Optional idle timeout in minutes.  Defaults to 15 minutes.  Common
      *   idle timeouts are 2 to 5 minutes for high-value applications and
      *   15 to 30 minutes for low risk applications.  The default maximum
      *   is 30 minutes.
+     *
+     * @return void
      */
     public function __construct($idle_timeout = 15)
     {
@@ -41,15 +43,18 @@ class Session
             session_cache_expire($this->IdleTimeout);
             ini_set('session.gc_maxlifetime', $this->IdleTimeout * 60);
 
+            // Use SHA-1 (1) instead of MD5 (PHP default 0)
             ini_set('session.hash_function', '1');
+
+            // Attempt to use SHA-2 instead of SHA-1
             $hash_algos = hash_algos();
             if (in_array('sha512', $hash_algos)) {
                 ini_set('session.hash_function', 'sha512');
-            } elseif (in_array('sha384', $aHashAlgos)) {
+            } elseif (in_array('sha384', $hash_algos)) {
                 ini_set('session.hash_function', 'sha384');
-            } elseif (in_array('sha256', $aHashAlgos)) {
+            } elseif (in_array('sha256', $hash_algos)) {
                 ini_set('session.hash_function', 'sha256');
-            } elseif (in_array('sha224' , $aHashAlgos)) {
+            } elseif (in_array('sha224' , $hash_algos)) {
                 ini_set('session.hash_function', 'sha224');
             }
 
@@ -68,14 +73,14 @@ class Session
 
         // Destroy the session if the browser "fingerprint" has changed.
         if (isset($_SERVER['HTTP_USER_AGENT'])) {
-            if (!isset($_SESSION['HTTP_USER_AGENT']) ) {
+            if (!isset($_SESSION['HTTP_USER_AGENT'])) {
                 $_SESSION['HTTP_USER_AGENT'] = $_SERVER['HTTP_USER_AGENT'];
             } elseif ($_SESSION['HTTP_USER_AGENT'] !== $_SERVER['HTTP_USER_AGENT']) {
                 $this->destroy();
                 $this->regenerate();
             }
         }
-        
+
         // Create an object pool
         if (!array_key_exists('SESSION_OBJECT_POOL', $_SESSION)) {
             $_SESSION['SESSION_OBJECT_POOL'] = array();
@@ -85,7 +90,6 @@ class Session
     /**
      * Destroy the session.
      *
-     * @api
      * @param void
      * @return bool
      */
@@ -105,7 +109,6 @@ class Session
     /**
      * Get the value of a session variable.
      *
-     * @api
      * @param string $key
      * @return mixed|null
      */
@@ -123,7 +126,6 @@ class Session
     /**
      * Get the current session ID.
      *
-     * @api
      * @param void
      * @return string
      */
@@ -135,7 +137,6 @@ class Session
     /**
      * Check if a session variable exists.
      *
-     * @api
      * @param string $key
      * @return bool
      */
@@ -151,7 +152,6 @@ class Session
     /**
      * Generate a new session ID.
      *
-     * @api
      * @param void
      * @return bool
      */
@@ -159,21 +159,21 @@ class Session
     {
         return session_regenerate_id(true);
     }
-    
+
     /**
      * Set a session value.
      *
-     * @api
      * @param string $key
      * @param mixed $value
      * @return void
+     * @throws \InvalidArgumentException
      */
     public function set($key, $value)
     {
         if (
             !is_string($key)
             || $key == 'HTTP_USER_AGENT'
-            || $key == 'HTTPS' 
+            || $key == 'HTTPS'
             || $key == 'SESSION_OBJECT_POOL'
         ) {
             throw new \InvalidArgumentException();

@@ -166,6 +166,8 @@ The other two supported modes are 1 (0001) for payment transactions only and
 
 # 4. Performance
 
+This chapter contains several do’s and don’ts on performance.
+
 ## 4.1. Do: Your Own Math
 
 Letting the server recalculate a fixed value over and over again, is lazy.
@@ -483,6 +485,8 @@ operates on and a `PRIMARY_KEY` for the primary key column of this table.
 
 ### 5.2.3. MVC Class Synopses
 
+#### Models
+
 ```php
 \StoreCore\Registry implements SingletonInterface {
     public mixed get ( string $key )
@@ -494,35 +498,72 @@ operates on and a `PRIMARY_KEY` for the primary key column of this table.
 \StoreCore\AbstractModel {
     public __construct ( \StoreCore\Registry $registry )
     public mixed __get ( string $key )
-    public void __set ( string $key, mixed $value )
+    public void __set ( string $key , mixed $value )
 }
 
 \StoreCore\Database\AbstractModel extends \StoreCore\AbstractModel {
     public __construct ( \StoreCore\Registry $registry )
     public mixed __get ( string $key )
-    public void __set ( string $key, mixed $value )
+    public void __set ( string $key , mixed $value )
 }
 
 \StoreCore\Database\AbstractDataAccessObject extends \StoreCore\Database\AbstractModel {
     public int create ( array $keyed_data )
-    public int delete ( mixed $value, [ string|int $key = null ] )
-    public array read ( mixed $value, [ string|int $key = null ] )
+    public int delete ( mixed $value [, string|int $key = null ] )
+    public array read ( mixed $value [, string|int $key = null ] )
     public int update ( array $keyed_data )
 }
 
+\StoreCore\Session {
+    public __construct ( [ int $idle_timeout ] )
+    public void destroy ( void )
+    public mixed|null get ( string $key )
+    public string getSessionID ( void )
+    public bool has ( string $key )
+    public void regenerate ( void )
+    public void set ( string $key , mixed $value )
+}
+```
+
+#### Views
+
+```php
 \StoreCore\View {
     public __construct ( [ string $template ] )
     public $this setTemplate ( string $template )
     public $this setValues ( array $values )
     public string render ( void )
 }
+```
 
+#### Controllers
+
+```php
 \StoreCore\AbstractController {
     public __construct ( \StoreCore\Registry $registry )
     public mixed __get ( string $key )
-    public void __set ( string $key, mixed $value )
+    public void __set ( string $key , mixed $value )
 }
 ```
+
+### 5.2.4. Reserved Session Variables
+
+There are three session variable names that SHOULD NOT be used.  These are
+reserved for internal use by the core `Session` class.  If one of these
+reserved names is used, the `Session::set()` method will throw an invalid
+argument exception:
+
+- `string $_SESSION['HTTPS']`
+- `string $_SESSION['HTTP_USER_AGENT']`
+- `array $_SESSION['SESSION_OBJECT_POOL']`
+
+The reserved `$_SESSION['HTTPS']` and `$_SESSION['HTTP_USER_AGENT']` session
+variables contain copies of the global `$_SERVER['HTTPS']` and
+`$_SERVER['HTTP_USER_AGENT']` server variables.  The `$_SESSION['HTTPS']` is
+used to regenerate the session ID if the client connection switches from
+plain HTTP to HTTP Secure (HTTP/S) and back.  The `$_SESSION['HTTP_USER_AGENT']`
+variable is used to notice any changes of the HTTP client or the client
+configuration.
 
 
 # 6. Internationalization (I18N) and Localization (L13N)
