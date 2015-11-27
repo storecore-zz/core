@@ -15,14 +15,14 @@ class User
     const VERSION = '0.1.0-alpha.1';
 
     /**
-     * @var string   $EmailAddress
-     * @var string   $HashAlgorithm
-     * @var string   $PasswordHash
-     * @var string   $PasswordSalt
-     * @var string   $PinCode
-     * @var int|null $UserGroupID
-     * @var int      $UserID
-     * @var string   $Username
+     * @var string $EmailAddress
+     * @var string $HashAlgorithm
+     * @var string $PasswordHash
+     * @var string $PasswordSalt
+     * @var string $PinCode
+     * @var int    $UserGroupID
+     * @var int    $UserID
+     * @var string $Username
      */
     private $EmailAddress;
     private $HashAlgorithm;
@@ -107,7 +107,7 @@ class User
 
     /**
      * @param string $hash_algorithm
-     * @return $this
+     * @return void
      */
     public function setHashAlgorithm($hash_algorithm)
     {
@@ -116,12 +116,11 @@ class User
 
     /**
      * @param string $password_hash
-     * @return $this
+     * @return void
      */
     public function setPasswordHash($password_hash)
     {
         $this->PasswordHash = $password_hash;
-        return $this;
     }
 
     /**
