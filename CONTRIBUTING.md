@@ -565,6 +565,14 @@ plain HTTP to HTTP Secure (HTTP/S) and back.  The `$_SESSION['HTTP_USER_AGENT']`
 variable is used to notice any changes of the HTTP client or the client
 configuration.
 
+### 5.2.5. Global Session Objects and Variables
+
+| Name     | Type   | Class or Method                             |
+| -------- | ------ | ------------------------------------------- |
+| Language | string | `\StoreCore\I18N\Locale::load()`            |
+| Token    | string | `\StoreCore\Types\FormToken::getInstance()` |
+| User     | object | `\StoreCore\User`                           |
+
 
 # 6. Internationalization (I18N) and Localization (L13N)
 

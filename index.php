@@ -79,7 +79,7 @@ if (defined('\\StoreCore\\KILL_SWITCH') && \StoreCore\KILL_SWITCH == true) {
 }
 
 // Load a language pack
-$language = $session->get('language');
+$language = $session->get('Language');
 if ($language == null) {
     if ($request->hasCookie('Language')) {
         $cookie_language = $request->getCookie('Language');
