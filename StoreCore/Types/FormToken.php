@@ -22,20 +22,10 @@ class FormToken
      */
     public static function getInstance()
     {
+        $characters = '0123456789abcdefghijklmnopqrstuvwzyzABCDEFGHIJKLMNOPQRSTUVWZYZ';
         $token = (string)null;
         for ($i = 1; $i <= 512; $i++) {
-            switch (mt_rand(0, 2)) {
-                case 0:
-                    $ascii = mt_rand(48, 57);
-                    break;
-                case 1:
-                    $ascii = mt_rand(65, 90);
-                    break;
-                default:
-                    $ascii = mt_rand(97, 122);
-
-            }
-            $token .= chr($ascii);
+            $token .= $characters[mt_rand(0, 61)];
         }
         return $token;
     }
