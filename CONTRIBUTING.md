@@ -364,6 +364,27 @@ public function hasDownload()
 }
 ```
 
+## 4.7. Don’t: Use Temporary Variables That State the Obvious
+
+###### Incorrect:
+
+```php
+public function getNumber()
+{
+    $return = base_convert($this->CouponCode, 36, 10);
+    return $return;
+}
+```
+
+###### Correct:
+
+```php
+public function getNumber()
+{
+    return base_convert($this->CouponCode, 36, 10);
+}
+```
+
 
 # 5. PHP Development Guidelines
 
