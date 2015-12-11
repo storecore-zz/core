@@ -56,7 +56,7 @@ class AdminDocumentTest extends PHPUnit_Framework_TestCase
     public function testAdminDocumentUsesMinifiedIconsFromCdn()
     {
         $document = new \StoreCore\Admin\Document();
-        $this->assertContains('<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">', $document->getHead());
+        $this->assertContains('<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">', $document->getHead());
     }
 
     public function testAdminDocumentUsesMinifiedCssFromAssets()
