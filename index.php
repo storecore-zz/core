@@ -36,7 +36,7 @@ if (!defined('\\StoreCore\\FileSystem\\LIBRARY_ROOT_DIR')) {
 require \StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'bootloader.php';
 
 // Parse config.ini overrides
-if (is_file($parent_directory . 'config.php')) {
+if (is_file($parent_directory . 'config.ini')) {
     \StoreCore\Config::parse($parent_directory . 'config.ini');
 } else {
     \StoreCore\Config::parse('config.ini');
@@ -123,7 +123,7 @@ switch ($request->getRequestPath()) {
             $asset = new \StoreCore\Asset($pathinfo['basename'], $pathinfo['extension']);
             unset($asset, $pathinfo);
         }
-        
+
         if (!defined('StoreCore\\VERSION_INSTALLED')) {
             $route = new \StoreCore\Route('/install/', '\StoreCore\Admin\FrontController', 'install');
         } elseif (strpos($request->getRequestPath(), '/admin/', 0) === 0) {
