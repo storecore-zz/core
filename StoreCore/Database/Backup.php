@@ -8,12 +8,12 @@ namespace StoreCore\Database;
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Database
- * @version   0.0.1
+ * @version   0.1.0-alpha.1
  */
 class Backup
 {
     /** @var string VERSION */
-    const VERSION = '0.0.1';
+    const VERSION = '0.1.0-alpha.1';
 
     /**
      * Save a database backup to file.

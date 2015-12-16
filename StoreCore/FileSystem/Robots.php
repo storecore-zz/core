@@ -7,20 +7,24 @@ namespace StoreCore\FileSystem;
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html
- * @version   0.0.1
+ * @version   0.1.0-alpha.1
  */
 class Robots extends \StoreCore\AbstractController
 {
     /** @var string VERSION */
-    const VERSION = '0.0.1';
+    const VERSION = '0.1.0-alpha.1';
 
     /**
      * @var \StoreCore\Database\Robots $Model
-     * @var string $view
+     * @var string $View
      */
     private $Model;
     private $View = "User-agent: *\nDisallow:";
 
+    /**
+     * @param \StoreCore\Registry $registry
+     * @return void
+     */
     public function __construct(\StoreCore\Registry $registry)
     {
         parent::__construct($registry);
@@ -29,11 +33,19 @@ class Robots extends \StoreCore\AbstractController
         $this->respond();
     }
 
+    /**
+     * @param void
+     * @return void
+     */
     private function loadModel()
     {
         $this->Model = new \StoreCore\Database\Robots($this->Registry);
     }
 
+    /**
+     * @param void
+     * @return void
+     */
     private function renderView()
     {
         $robots = $this->Model->getAllDisallows();
@@ -54,6 +66,10 @@ class Robots extends \StoreCore\AbstractController
         }
     }
 
+    /**
+     * @param void
+     * @return void
+     */
     private function respond()
     {
         $response = new \StoreCore\Response($this->Registry);

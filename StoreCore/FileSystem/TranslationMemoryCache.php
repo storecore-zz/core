@@ -12,11 +12,11 @@ use \StoreCore\FileSystem\Logger as Logger;
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\I18N
- * @version   0.0.2
+ * @version   0.1.0-alpha.1
  */
 class TranslationMemoryCache
 {
-    const VERSION = '0.0.2';
+    const VERSION = '0.1.0-alpha.1';
 
     /**
      * Rebuild the cached language packs.
@@ -42,7 +42,7 @@ class TranslationMemoryCache
         }
 
         if (!is_writable($cache_directory)) {
-            $logger->error('Cache directory ' . $cache_directory . ' is not writeable');
+            $logger->error('Cache directory ' . $cache_directory . ' is not writeable.');
             return false;
         }
 
