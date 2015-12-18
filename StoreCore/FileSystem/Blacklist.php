@@ -1,6 +1,15 @@
 <?php
 namespace StoreCore\FileSystem;
 
+/**
+ * IP Blacklist
+ *
+ * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @copyright Copyright (c) 2015 StoreCore
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\Security
+ * @version   0.1.0
+ */
 class Blacklist
 {
     const VERSION = '0.1.0';
@@ -8,7 +17,7 @@ class Blacklist
     /**
      * Check if an IP address is blacklisted.
      *
-     * @param $ip_address
+     * @param string $ip_address
      *   Remote IPv4 or IPv6 Internet Protocol (IP) address.
      *
      * @return bool

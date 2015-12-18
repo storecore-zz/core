@@ -7,14 +7,12 @@ namespace StoreCore;
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
- * @version   0.1.0
+ * @package   StoreCore\Core
+ * @version   0.1.0-alpha.1
  */
 class Route
 {
-    /**
-     * @var string VERSION
-     */
-    const VERSION = '0.1.0';
+    const VERSION = '0.1.0-alpha.1';
 
     /**
      * @var string      $Controller

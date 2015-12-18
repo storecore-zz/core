@@ -24,18 +24,20 @@ class FullPageCache extends \StoreCore\AbstractController
      */
     public function trigger()
     {
-        $location = $this->Request->getHostName() . $this->Request->getRequestPath();
-        $key = new \StoreCore\Types\CacheKey($location);
+        $location = new \StoreCore\StoreFront\Location($this->Registry);
+        $key = new \StoreCore\Types\CacheKey($location->get());
         $cache = new \StoreCore\FileSystem\FileCacheReader();
 
         // Cache miss
         if ($cache->exists($key) === false) {
             return false;
         }
+        unset($location, $key);
 
         $response = new \StoreCore\Response($this->Registry);
         $cache_file_contents = $cache->read();
 
+        // Set expiration headers
         $last_modified = $cache->getFileModificationTimestamp();
         $etag = md5($cache_file_contents);
         $response->addHeader('Last-Modified: ' . gmdate('D, d M Y H:i:s', $last_modified) . ' GMT');

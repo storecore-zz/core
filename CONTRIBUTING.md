@@ -884,3 +884,105 @@ interface SetupInterface
     public function uninstall();
 }
 ```
+
+# Appendix A. StoreCore Packages and Package Classes
+
+## A.1. Package StoreCore\Core
+
+- \StoreCore\Route
+- \StoreCore\RouteCollection
+
+- \StoreCore\StoreFront\Location
+
+- \StoreCore\Types\CacheKey
+- \StoreCore\Types\EmailAddress
+
+## A.2. Package StoreCore\Security
+
+- \StoreCore\FileSystem\Blacklist
+- \StoreCore\Types\FormToken
+
+## A.3. Package StoreCore\Catalog
+
+- \StoreCore\FileSystem\FileCache
+- \StoreCore\FileSystem\FileCacheReader
+
+- \StoreCore\StoreFront\FullPageCache
+
+# Appendix B. StoreCore API
+
+# B.1. Namespace StoreCore
+
+```php
+Route {
+    public __construct ( string $path , string $controller [, string $method [, array $parameters ]] )
+    public void dispatch ( void )
+    public string getPath ( void )
+}
+
+RouteCollection implements \Countable {
+    public void add ( \StoreCore\Route $route )
+    public int count ( void )
+    public void dispatch ( void )
+    public bool isEmpty ( void )
+    public bool pathExists ( string $path )
+}
+```
+
+# B.2. Namespace StoreCore\Types
+
+```php
+CacheKey {
+    public __construct ( string $str )
+    public string __toString ( void )
+    public string get ( void )
+}
+```
+
+```php
+TypeInterface {
+    public __construct ( mixed $initial_value , bool $strict )
+}
+
+Varchar implements TypeInterface {
+    public __construct ( string $initial_value [, bool $strict = true ] )
+    public string __toString ( void )
+}
+
+EmailAddress extends Varchar implements TypeInterface {
+    public __construct ( string $initial_value [, bool $strict = true ] )
+    public string __toString ( void )
+}
+```
+
+# B.3. Namespace StoreCore\Admin
+
+# B.4. Namespace StoreCore\Database
+
+# B.5. Namespace StoreCore\FileSystem
+
+```php
+Blacklist {
+    public static bool exists ( string $ip_address )
+}
+```
+
+# B.6. Namespace StoreCore\I18N
+
+# B.7. Namespace StoreCore\Modules
+
+# B.8. Namespace StoreCore\StoreFront
+
+```php
+FullPageCache extends \StoreCore\AbstractController {
+    public __construct ( \StoreCore\Registry $registry )
+    public bool trigger ( void )
+}
+
+Location extends \StoreCore\AbstractController {
+    public __construct ( \StoreCore\Registry $registry )
+    public string __toString ( void )
+    public string get ( void )
+    public string set ( string $uri )
+}
+```
