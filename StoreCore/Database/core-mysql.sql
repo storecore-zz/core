@@ -854,7 +854,7 @@ CREATE TABLE IF NOT EXISTS sc_stores (
 CREATE TABLE IF NOT EXISTS sc_store_hosts (
   host_id        SMALLINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   store_id       TINYINT(3) UNSIGNED   NOT NULL,
-  redirect_only  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
+  redirect_flag  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
   host_ip        INT(11) UNSIGNED      NULL  DEFAULT NULL,
   host_name      VARCHAR(255)          NULL  DEFAULT NULL,
   redirect_to    VARCHAR(255)          NULL  DEFAULT NULL,
