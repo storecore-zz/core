@@ -207,14 +207,15 @@ class Request
      * Get the HTTP User-Agent request-header field.
      *
      * @param void
-     * @return string
+     * @return string|null
      */
     public function getUserAgent()
     {
         if (array_key_exists('HTTP_USER_AGENT', $this->Server)) {
             return $this->Server['HTTP_USER_AGENT'];
+        } else {
+            return null;
         }
-        return (string)null;
     }
 
     /**
