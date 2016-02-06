@@ -2,7 +2,7 @@
 -- MySQL Data Definition
 --
 -- @author    Ward van der Put <Ward.van.der.Put@gmail.com>
--- @copyright Copyright (c) 2014-2015 StoreCore
+-- @copyright Copyright (c) 2014-2016 StoreCore
 -- @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
 -- @package   StoreCore\Database
 -- @version   0.1.0-alpha.1
@@ -855,7 +855,7 @@ CREATE TABLE IF NOT EXISTS sc_store_hosts (
   host_id        SMALLINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   store_id       TINYINT(3) UNSIGNED   NOT NULL,
   redirect_flag  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
-  host_ip        INT(11) UNSIGNED      NULL  DEFAULT NULL,
+  host_ip        INT(10) UNSIGNED      NULL  DEFAULT NULL,
   host_name      VARCHAR(255)          NULL  DEFAULT NULL,
   redirect_to    VARCHAR(255)          NULL  DEFAULT NULL,
   PRIMARY KEY pk_host_id (host_id),
@@ -884,7 +884,7 @@ INSERT IGNORE INTO sc_customer_groups (customer_group_id, customer_group_name) V
 
 -- Customers
 CREATE TABLE IF NOT EXISTS sc_customers (
-  customer_id        INT(11) UNSIGNED     NOT NULL  AUTO_INCREMENT,
+  customer_id        INT(10) UNSIGNED     NOT NULL  AUTO_INCREMENT,
   customer_group_id  TINYINT(3) UNSIGNED  NOT NULL  DEFAULT 1,
   store_id           TINYINT(3) UNSIGNED  NOT NULL,
   date_created       TIMESTAMP            NOT NULL  DEFAULT '0000-00-00 00:00:00',
@@ -906,8 +906,8 @@ CREATE TABLE IF NOT EXISTS sc_customers (
 
 -- Customer accounts
 CREATE TABLE IF NOT EXISTS sc_customer_accounts (
-  account_id     INT(11) UNSIGNED  NOT NULL  AUTO_INCREMENT,
-  customer_id    INT(11) UNSIGNED  NOT NULL,
+  account_id     INT(10) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  customer_id    INT(10) UNSIGNED  NOT NULL,
   email_address  VARCHAR(255)      NOT NULL,
   date_created   TIMESTAMP         NOT NULL  DEFAULT '0000-00-00 00:00:00',
   date_modified  TIMESTAMP         NULL  DEFAULT NULL,
@@ -921,8 +921,8 @@ CREATE TABLE IF NOT EXISTS sc_customer_accounts (
 
 -- Customer and shipping addresses
 CREATE TABLE IF NOT EXISTS sc_addresses (
-  address_id           INT(11) UNSIGNED      NOT NULL  AUTO_INCREMENT,
-  customer_id          INT(11) UNSIGNED      NOT NULL,
+  address_id           INT(10) UNSIGNED      NOT NULL  AUTO_INCREMENT,
+  customer_id          INT(10) UNSIGNED      NOT NULL,
   country_id           SMALLINT(3) UNSIGNED  NOT NULL,
   postal_code          VARCHAR(16)           NOT NULL  DEFAULT '',
   date_created         TIMESTAMP             NOT NULL  DEFAULT '0000-00-00 00:00:00',
@@ -1281,11 +1281,12 @@ CREATE TABLE IF NOT EXISTS sc_attribute_filter_descriptions (
 
 -- Order Management
 CREATE TABLE IF NOT EXISTS sc_orders (
-  order_id        INT(11) UNSIGNED     NOT NULL,
-  store_id        TINYINT(3) UNSIGNED  NOT NULL,
-  customer_id     INT(11) UNSIGNED     NULL  DEFAULT NULL,
+  order_id        INT(10) UNSIGNED     NOT NULL,
+  store_id        TINYINT(3) UNSIGNED  NOT NULL  DEFAULT 1,
+  customer_id     INT(10) UNSIGNED     NULL  DEFAULT NULL,
+  backorder_flag  TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
   cart_uuid       CHAR(36)             NOT NULL,
-  cart_rand       CHAR(64)             NOT NULL,
+  cart_rand       CHAR(192)            NOT NULL,
   date_created    TIMESTAMP            NOT NULL  DEFAULT '0000-00-00 00:00:00',
   date_modified   TIMESTAMP            NULL  DEFAULT NULL,
   date_confirmed  TIMESTAMP            NULL  DEFAULT NULL,
@@ -1299,7 +1300,7 @@ CREATE TABLE IF NOT EXISTS sc_orders (
 ) ENGINE=InnoDB  DEFAULT CHARSET=ascii  COLLATE=ascii_bin;
 
 CREATE TABLE IF NOT EXISTS sc_order_products (
-  order_id       INT(11) UNSIGNED       NOT NULL,
+  order_id       INT(10) UNSIGNED       NOT NULL,
   product_id     MEDIUMINT(8) UNSIGNED  NOT NULL,
   units          SMALLINT(5) UNSIGNED   NOT NULL  DEFAULT 1,
   unit_price     DECIMAL(18,9)          NOT NULL  DEFAULT 0,
@@ -1329,8 +1330,8 @@ CREATE TABLE IF NOT EXISTS sc_shipping_carrier_descriptions (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_shipments (
-  shipment_id     INT(11) UNSIGNED      NOT NULL  AUTO_INCREMENT,
-  address_id      INT(11) UNSIGNED      NOT NULL,
+  shipment_id     INT(10) UNSIGNED      NOT NULL  AUTO_INCREMENT,
+  address_id      INT(10) UNSIGNED      NOT NULL,
   carrier_id      SMALLINT(5) UNSIGNED  NULL  DEFAULT NULL,
   date_created    TIMESTAMP             NOT NULL  DEFAULT '0000-00-00 00:00:00',
   date_notified   TIMESTAMP             NULL  DEFAULT NULL,
@@ -1346,16 +1347,16 @@ CREATE TABLE IF NOT EXISTS sc_shipments (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_order_shipments (
-  order_id       INT(11) UNSIGNED  NOT NULL,
-  shipment_id    INT(11) UNSIGNED  NOT NULL,
+  order_id       INT(10) UNSIGNED  NOT NULL,
+  shipment_id    INT(10) UNSIGNED  NOT NULL,
   PRIMARY KEY pk_id (order_id, shipment_id),
   FOREIGN KEY fk_order_id (order_id) REFERENCES sc_orders (order_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_shipment_id (shipment_id) REFERENCES sc_shipments (shipment_id) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_invoices (
-  invoice_id    INT(11) UNSIGNED       NOT NULL  AUTO_INCREMENT,
-  currency_id   SMALLINT(3) UNSIGNED   NOT NULL,
+  invoice_id    INT(10) UNSIGNED       NOT NULL  AUTO_INCREMENT,
+  currency_id   SMALLINT(3) UNSIGNED   NOT NULL  DEFAULT 978,
   invoice_date  DATE                   NOT NULL  DEFAULT '0000-00-00',
   terms_days    TINYINT(2) UNSIGNED    NOT NULL  DEFAULT 14,
   subtotal      DECIMAL(18,3)          NOT NULL,
@@ -1367,8 +1368,8 @@ CREATE TABLE IF NOT EXISTS sc_invoices (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_invoice_orders (
-  invoice_id  INT(11) UNSIGNED  NOT NULL  AUTO_INCREMENT,
-  order_id    INT(11) UNSIGNED  NOT NULL,
+  invoice_id  INT(10) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  order_id    INT(10) UNSIGNED  NOT NULL,
   PRIMARY KEY pk_invoice_order_id (invoice_id, order_id),
   FOREIGN KEY fk_invoice_id (invoice_id) REFERENCES sc_invoices (invoice_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_order_id (order_id) REFERENCES sc_orders (order_id) ON DELETE NO ACTION ON UPDATE CASCADE
@@ -1401,7 +1402,7 @@ CREATE TABLE IF NOT EXISTS sc_payment_service_descriptions (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_payments (
-  payment_id          INT(11) UNSIGNED      NOT NULL  AUTO_INCREMENT,
+  payment_id          INT(10) UNSIGNED      NOT NULL  AUTO_INCREMENT,
   currency_id         SMALLINT(3) UNSIGNED  NOT NULL,
   payment_service_id  SMALLINT(5) UNSIGNED  NULL  DEFAULT NULL,
   credit_flag         TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0  COMMENT 'Debit (0) or credit (1)',
@@ -1416,16 +1417,16 @@ CREATE TABLE IF NOT EXISTS sc_payments (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_order_payments (
-  order_id    INT(11) UNSIGNED  NOT NULL,
-  payment_id  INT(11) UNSIGNED  NOT NULL,
+  order_id    INT(10) UNSIGNED  NOT NULL,
+  payment_id  INT(10) UNSIGNED  NOT NULL,
   PRIMARY KEY pk_order_payment_id (order_id, payment_id),
   FOREIGN KEY fk_order_id (order_id) REFERENCES sc_orders (order_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_payment_id (payment_id) REFERENCES sc_payments (payment_id) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_invoice_payments (
-  invoice_id  INT(11) UNSIGNED  NOT NULL,
-  payment_id  INT(11) UNSIGNED  NOT NULL,
+  invoice_id  INT(10) UNSIGNED  NOT NULL,
+  payment_id  INT(10) UNSIGNED  NOT NULL,
   PRIMARY KEY pk_invoice_payment_id (invoice_id, payment_id),
   FOREIGN KEY fk_invoice_id (invoice_id) REFERENCES sc_invoices (invoice_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_payment_id (payment_id) REFERENCES sc_payments (payment_id) ON DELETE NO ACTION ON UPDATE CASCADE

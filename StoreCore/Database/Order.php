@@ -5,14 +5,20 @@ namespace StoreCore\Database;
  * Order Model
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @version   0.1.0-alpha.1
+ * @version   0.1.0
  */
 class Order extends \StoreCore\Database\AbstractModel
 {
-    const VERSION = '0.1.0-alpha.1';
+    const VERSION = '0.1.0';
+
+    /**
+     * @var \StoreCore\Types\CartID|null $CartID
+     *   Shopping cart identifier or null if the cart or order does not exist.
+     */
+    private $CartID;
 
     /**
      * @var int|null $CustomerID
@@ -23,7 +29,7 @@ class Order extends \StoreCore\Database\AbstractModel
 
     /**
      * @var int|null $OrderID
-     *   Order number, handled as an integer in both MySQL and PHP.
+     *   Order number, handled as an integer in both SQL and PHP.
      */
     private $OrderID;
 
@@ -33,13 +39,6 @@ class Order extends \StoreCore\Database\AbstractModel
      *   store is set.
      */
     private $StoreID = 1;
-
-    /**
-     * @var string|null $Token
-     *   Globally unique identifier consisting of a version ID, a UUID
-     *   (universally unique identifier) and a random string.
-     */
-    private $Token;
 
     /**
      * Count the total number of items in the order or cart.
@@ -80,13 +79,13 @@ class Order extends \StoreCore\Database\AbstractModel
             $this->setCustomerID($customer_id);
         }
 
+        $cart_id = new \StoreCore\Types\CartID();
+
         $sql = 'INSERT INTO sc_orders (order_id, store_id, cart_uuid, cart_rand, date_created, customer_id) VALUES (:order_id, :store_id, UUID(), :cart_rand, UTC_TIMESTAMP(), :customer_id)';
         $stmt = $this->Connection->prepare($sql);
 
         $stmt->bindParam(':store_id', $this->StoreID, \PDO::PARAM_INT);
-
-        $cart_rand = $this->getRandomCartString();
-        $stmt->bindParam(':cart_rand', $cart_rand, \PDO::PARAM_STR);
+        $stmt->bindParam(':cart_rand', $cart_id->getToken(), \PDO::PARAM_STR);
 
         if ($this->CustomerID === null) {
             $stmt->bindParam(':customer_id', $this->CustomerID, \PDO::PARAM_NULL);
@@ -99,7 +98,8 @@ class Order extends \StoreCore\Database\AbstractModel
         $stmt->execute();
 
         $this->OrderID = $order_id;
-        $this->Token = null;
+        $this->CartID = null;
+
         return $order_id;
     }
 
@@ -146,41 +146,27 @@ class Order extends \StoreCore\Database\AbstractModel
      * Get the store identifier.
      *
      * @param void
-     * @return int|null
+     * @return \StoreCore\Types\StoreID
      */
     public function getStoreID()
     {
-        return $this->StoreID;
+        return new \StoreCore\Types\StoreID($this->StoreID);
     }
 
     /**
-     * Get a random UUID add-on.
+     * Get a new pseudo-random order number.
      *
-     * @internal
-     * @param void
-     * @return string
-     */
-    private function getRandomCartString()
-    {
-        return base_convert(bin2hex(openssl_random_pseudo_bytes(128)), 16, 36);
-    }
-
-    /**
-     * Get a new random order number.
-     *
-     * @internal
      * @param void
      * @return int
      */
     private function getRandomOrderID()
     {
-        // MySQL INT(11) UNSIGNED maximum is 4294967295
-        $max = mt_getrandmax();
-        if ($max > 4294967295) {
-            $max = 4294967295;
-        }
+        // The INT(10) UNSIGNED maximum is 4294967295 in MySQL
+        // and 42949 67295 when split down the middle.
+        $new_order_id = mt_rand(0, 42948) . sprintf('%05d', mt_rand(0, 99999));
+        $new_order_id = ltrim($new_order_id, '0');
+        $new_order_id = (int)$new_order_id;
 
-        $new_order_id = mt_rand(1, $max);
         if ($this->exists($new_order_id)) {
             $new_order_id = $this->getRandomOrderID();
         }
@@ -188,19 +174,19 @@ class Order extends \StoreCore\Database\AbstractModel
     }
 
     /**
-     * Get the cart token.
+     * Get the shopping cart ID.
      *
      * @param void
-     * @return string
+     * @return \StoreCore\Types\CartID|null
      */
-    public function getToken()
+    public function getCartID()
     {
         if ($this->OrderID === null) {
             return null;
         }
 
-        if ($this->Token !== null) {
-            return $this->Token;
+        if ($this->CartID !== null) {
+            return $this->CartID;
         }
 
         $stmt = $this->Connection->prepare('SELECT cart_uuid, cart_rand FROM sc_orders WHERE order_id = :order_id');
@@ -208,15 +194,8 @@ class Order extends \StoreCore\Database\AbstractModel
         $stmt->execute();
         $row = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        $token = array(
-            0 => self::VERSION,
-            1 => $row['cart_uuid'],
-            2 => $row['cart_rand']
-        );
-        $token = json_encode($token);
-        $token = base64_encode($token);
-        $this->Token = $token;
-        return $token;
+        $this->CartID = new \StoreCore\Types\CartID($row['cart_uuid'], $row['cart_rand']);
+        return $this->CartID;
     }
 
     /**
@@ -244,11 +223,12 @@ class Order extends \StoreCore\Database\AbstractModel
     /**
      * Set the store identifier.
      *
-     * @param int $order_id
+     * @param \StoreCore\Types\StoreID $order_id
      * @return void
      */
-    public function setStoreID($store_id)
+    public function setStoreID(\StoreCore\Types\StoreID $store_id)
     {
-        $this->StoreID = $store_id;
+        $store_id = (string)$store_id;
+        $this->StoreID = (int)$store_id;
     }
 }
