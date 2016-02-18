@@ -5,7 +5,7 @@ namespace StoreCore;
  * HTML5 Document
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0-alpha.1
@@ -40,7 +40,7 @@ class Document
         'generator' => 'StoreCore',
         'rating' => 'general',
         'robots' => 'index,follow',
-        'viewport' => 'width=device-width, initial-scale=1',
+        'viewport' => 'width=device-width,initial-scale=1,minimum-scale=1',
     );
 
     /**
