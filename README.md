@@ -89,5 +89,6 @@ Sometimes we may screw up, but we’ll adhere to those rules whenever possible.
 
 ## Copyright and License
 
-Code copyright © 2015 StoreCore™.  All code is released as **free software**
+Code copyright © 2015-2016 StoreCore™.
+All code is released as **Free and Open-Source Software (FOSS)**
 under the [GNU General Public License](https://github.com/storecore/core/blob/master/LICENSE.txt).
