@@ -50,7 +50,7 @@ class EmailAddress extends Varchar implements TypeInterface
                 throw new \UnexpectedValueException();
             }
 
-            $strlen = mb_strlen($server_address_length);
+            $strlen = mb_strlen($server_address);
             if ($strlen < 1 || $strlen > 255) {
                 throw new \UnexpectedValueException();
             }
