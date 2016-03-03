@@ -3,8 +3,9 @@
  * StoreCore Framework Bootloader
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\Core
  * @version   0.1.0-alpha.1
  */
 
@@ -41,6 +42,8 @@ ini_set('display_errors', 0);
 // Load core interfaces, abstract classes, and classes
 require __DIR__ . DIRECTORY_SEPARATOR . 'SingletonInterface.php';
 require __DIR__ . DIRECTORY_SEPARATOR . 'Types' . DIRECTORY_SEPARATOR . 'TypeInterface.php';
+require __DIR__ . DIRECTORY_SEPARATOR . 'ObserverInterface.php';
+require __DIR__ . DIRECTORY_SEPARATOR . 'SubjectInterface.php';
 
 require __DIR__ . DIRECTORY_SEPARATOR . 'AbstractController.php';
 require __DIR__ . DIRECTORY_SEPARATOR . 'AbstractModel.php';
