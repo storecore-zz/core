@@ -5,14 +5,14 @@ namespace StoreCore\Database;
  * User Mapper
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
- * @version   0.1.0-alpha.1
+ * @version   0.1.0
  */
 class UserMapper extends AbstractDataAccessObject
 {
-    const VERSION = '0.1.0-alpha.1';
+    const VERSION = '0.1.0';
 
     const TABLE_NAME  = 'sc_users';
     const PRIMARY_KEY = 'user_id';
@@ -50,14 +50,16 @@ class UserMapper extends AbstractDataAccessObject
     private function getUser(array $user_data)
     {
         $user = new \StoreCore\User();
+        $user->setUserID($user_data['user_id']);
+        $user->setUserGroupID($user_data['user_group_id']);
         $user->setEmailAddress($user_data['email_address']);
+        $user->setUsername($user_data['username']);
+        $user->setPasswordSalt($user_data['password_salt']);
         $user->setHashAlgorithm($user_data['hash_algo']);
         $user->setPasswordHash($user_data['password_hash']);
-        $user->setPasswordSalt($user_data['password_salt']);
-        $user->setPinCode($user_data['pin_code']);
-        $user->setUserGroupID($user_data['user_group_id']);
-        $user->setUserID($user_data['user_id']);
-        $user->setUsername($user_data['username']);
+        $user->setPIN($user_data['pin_code']);
+        $user->setFirstName($user_data['first_name']);
+        $user->setLastName($user_data['last_name']);
         return $user;
     }
 
@@ -106,6 +108,54 @@ class UserMapper extends AbstractDataAccessObject
             return $this->getUser($user_data);
         } else {
             return null;
+        }
+    }
+
+    /**
+     * Save a user.
+     *
+     * @param \StoreCore\User $user
+     * @return void
+     */
+    public function save(\StoreCore\User $user)
+    {
+        if ($user->getUserID() === null) {
+            $user_data = array(
+                'password_reset' => gmdate('Y-m-d H:i:s'),
+            );
+        } else {
+            $user_data = array(
+                self::PRIMARY_KEY => $user->getUserID(),
+                'user_group_id' => 0,
+            );
+        }
+
+        $user_data['user_group_id'] => $user->getUserGroupID();
+        $user_data['email_address'] => $user->getEmailAddress();
+        $user_data['username'] => $user->getUsername();
+        $user_data['password_salt'] => $user->getPasswordSalt();
+        $user_data['hash_algo'] => $user->getHashAlgorithm();
+        $user_data['password_hash'] => $user->getPasswordHash();
+        $user_data['pin_code'] => $user->getPIN();
+
+        if (in_array(null, $user_data, true) {
+            throw new \DomainException();
+        }
+
+        $user_data['first_name'] = $user->getFirstName();
+        if ($user->getFirstName() == null) {
+            $user_data['first_name'] = '';
+        }
+
+        $user_data['last_name'] = $user->getLastName();
+        if ($user->getLastName() == null) {
+            $user_data['last_name'] = '';
+        }
+
+        if ($user->getUserID() === null) {
+            $this->create($user_data);
+        } else {
+            $this->update($user_data);
         }
     }
 }

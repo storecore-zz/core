@@ -5,7 +5,7 @@ namespace StoreCore\Admin;
  * StoreCore Installer
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0-alpha.1
@@ -123,7 +123,6 @@ class Installer extends \StoreCore\AbstractController
                 $config->save();
                 $this->Logger->notice('StoreCore database version ' . \StoreCore\VERSION . ' was installed.');
             }
-
         } catch (\PDOException $e) {
             $this->Logger->critical($e->getMessage());
             return false;
@@ -143,6 +142,7 @@ class Installer extends \StoreCore\AbstractController
         $errors = array();
 
         $files = array(
+            \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.ini' => false,
             \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.php' => true,
             \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'de-DE.php' => true,
             \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'en-GB.php' => true,
@@ -154,7 +154,7 @@ class Installer extends \StoreCore\AbstractController
         foreach ($files as $filename => $must_be_writable) {
             if (!is_file($filename)) {
                 $errors[] = 'Bad or missing file: ' . $filename;
-            } elseif ($must_be_writable && !is_writable($filename) ) {
+            } elseif ($must_be_writable && !is_writable($filename)) {
                 $errors[] = 'Wrong file permissions: ' . $filename . ' is not writable.';
             }
         }
@@ -245,54 +245,58 @@ class Installer extends \StoreCore\AbstractController
         $this->Logger->warning('No active user accounts were found: adding a new user with administrator privileges.');
         unset($users);
 
-        $user_data = array(
-            'password_salt' => false,
-            'hash_algo'     => false,
-            'username'      => false,
-            'password_hash' => false,
-            'first_name'    => false,
-            'last_name'     => false,
-            'email_address' => false,
-        );
-
         if ($this->Request->getRequestMethod() == 'POST') {
+
+            $user = new \StoreCore\User();
+            $user->setUserGroupID(254);
+
             // First name and last name
             if ($this->Request->get('first_name') !== null) {
-                $user_data['first_name'] = $this->Request->get('first_name');
+                $user->setFirstName($this->Request->get('first_name'));
             }
             if ($this->Request->get('last_name') !== null) {
-                $user_data['last_name'] = $this->Request->get('last_name');
+                $user->setLastName($this->Request->get('last_name'));
             }
 
             // E-mail address
             if ($this->Request->get('email_address') !== null) {
                 try {
                     $email_address = new \StoreCore\Types\EmailAddress($this->Request->get('email_address'));
-                    $user_data['email_address'] = (string)$email_address;
+                    $user->setEmailAddress($email_address);
                 } catch (\Exception $e) {
-                    $this->Logger->warning('Invalid e-mail address:' . $this->Request->get('email_address'));
-                    $user_data['email_address'] = false;
+                    $this->Logger->warning('Invalid e-mail address: ' . $this->Request->get('email_address'));
                 }
+            }
+            
+            // Personal identification number (optional, defaults to '0000')
+            if ($this->Request->get('pin_code') !== null) {
+                $pin_code = trim($this->Request->get('pin_code'));
+                if ( 
+                    is_numeric($pin_code)
+                    && strlen($pin_code) >= 4
+                    && strlen($pin_code) <= 6
+                ) {
+                    $user->setPIN($pin_code);
+                }
+                unset($pin_code);
             }
 
             // Username
             if (is_string($this->Request->get('username'))) {
                 $username = trim($this->Request->get('username'));
                 if (!empty($username)) {
-                    $user_data['username'] = $username;
+                    $user->setUsername($username);
                 }
             }
 
-            // Set omitted username to "someone" in "someone@example.com"
-            if ($user_data['username'] === false && $user_data['email_address'] !== false) {
-                $email_address = explode('@', $user_data['email_address']);
-                $user_data['username'] = $email_address[0];
-                unset($email_address);
+            // Set an omitted username to the user's first name.
+            if ($user->getUsername() === null && $user->getFirstName() !== null) {
+                $user->setUsername($user->getFirstName());
             }
 
             // Password
             if (
-                $user_data['email_address'] !== false
+                $user->getEmailAddress() !== null
                 && is_string($this->Request->get('password'))
                 && is_string($this->Request->get('confirm_password'))
                 && $this->Request->get('password') == $this->Request->get('confirm_password')
@@ -303,9 +307,9 @@ class Installer extends \StoreCore\AbstractController
                 $password = new \StoreCore\Database\Password();
                 $password->setPassword($this->Request->get('password'));
                 $password->encrypt();
-                $user_data['password_salt'] = $password->getSalt();
-                $user_data['hash_algo']     = $password->getAlgorithm();
-                $user_data['password_hash'] = $password->getHash();
+                $user->setPasswordSalt($password->getSalt());
+                $user->setHashAlgorithm($password->getAlgorithm());
+                $user->setPasswordHash($password->getHash());
                 unset($password);
             }
 
@@ -315,9 +319,9 @@ class Installer extends \StoreCore\AbstractController
                     $dbh = new \StoreCore\Database\Connection();
                     $stmt = $dbh->prepare('
                         INSERT INTO sc_users
-                             (user_group_id, password_reset, password_salt, hash_algo, username, password_hash, first_name, last_name, email_address)
+                             (user_group_id, password_reset, password_salt, hash_algo, username, password_hash, first_name, last_name, email_address, pin_code)
                            VALUES
-                             (254, UTC_TIMESTAMP(), :password_salt, :hash_algo, :username, :password_hash, :first_name, :last_name, :email_address)
+                             (254, UTC_TIMESTAMP(), :password_salt, :hash_algo, :username, :password_hash, :first_name, :last_name, :email_address, :pin_code)
                     ');
                     $stmt->bindParam(':password_salt', $user_data['password_salt']);
                     $stmt->bindParam(':hash_algo',     $user_data['hash_algo']);
@@ -326,6 +330,7 @@ class Installer extends \StoreCore\AbstractController
                     $stmt->bindParam(':first_name',    $user_data['first_name']);
                     $stmt->bindParam(':last_name',     $user_data['last_name']);
                     $stmt->bindParam(':email_address', $user_data['email_address']);
+                    $stmt->bindParam(':pin_code',      $user_data['pin_code']);
                     $success = $stmt->execute();
                 } catch (\PDOException $e) {
                     $this->Logger->critical($e->getMessage());
