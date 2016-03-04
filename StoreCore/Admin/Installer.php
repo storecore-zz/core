@@ -141,23 +141,6 @@ class Installer extends \StoreCore\AbstractController
     {
         $errors = array();
 
-        $files = array(
-            \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.php' => true,
-            \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'de-DE.php' => true,
-            \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'en-GB.php' => true,
-            \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'fr-FR.php' => true,
-            \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'nl-NL.php' => true,
-            \StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Database' . DIRECTORY_SEPARATOR . 'core-mysql.sql' => false,
-            \StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Database' . DIRECTORY_SEPARATOR . 'i18n-dml.sql' => false,
-        );
-        foreach ($files as $filename => $must_be_writable) {
-            if (!is_file($filename)) {
-                $errors[] = 'Bad or missing file: ' . $filename;
-            } elseif ($must_be_writable && !is_writable($filename)) {
-                $errors[] = 'Wrong file permissions: ' . $filename . ' is not writable.';
-            }
-        }
-
         $folders = array(
             \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'css'  => true,
             \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'ico'  => false,
@@ -174,6 +157,23 @@ class Installer extends \StoreCore\AbstractController
                 if (!is_writable($filename)) {
                     $errors[] = 'Wrong directory permissions: ' . $filename . ' is not writable.';
                 }
+            }
+        }
+
+        $files = array(
+            \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.php' => true,
+            \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'de-DE.php' => true,
+            \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'en-GB.php' => true,
+            \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'fr-FR.php' => true,
+            \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'nl-NL.php' => true,
+            \StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Database' . DIRECTORY_SEPARATOR . 'core-mysql.sql' => false,
+            \StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Database' . DIRECTORY_SEPARATOR . 'i18n-dml.sql' => false,
+        );
+        foreach ($files as $filename => $must_be_writable) {
+            if (!is_file($filename)) {
+                $errors[] = 'Bad or missing file: ' . $filename;
+            } elseif ($must_be_writable && !is_writable($filename)) {
+                $errors[] = 'Wrong file permissions: ' . $filename . ' is not writable.';
             }
         }
 
