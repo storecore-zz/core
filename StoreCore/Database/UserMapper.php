@@ -130,13 +130,13 @@ class UserMapper extends AbstractDataAccessObject
             );
         }
 
-        $user_data['user_group_id'] => $user->getUserGroupID();
-        $user_data['email_address'] => $user->getEmailAddress();
-        $user_data['username'] => $user->getUsername();
-        $user_data['password_salt'] => $user->getPasswordSalt();
-        $user_data['hash_algo'] => $user->getHashAlgorithm();
-        $user_data['password_hash'] => $user->getPasswordHash();
-        $user_data['pin_code'] => $user->getPIN();
+        $user_data['user_group_id'] = $user->getUserGroupID();
+        $user_data['email_address'] = $user->getEmailAddress();
+        $user_data['username'] = $user->getUsername();
+        $user_data['password_salt'] = $user->getPasswordSalt();
+        $user_data['hash_algo'] = $user->getHashAlgorithm();
+        $user_data['password_hash'] = $user->getPasswordHash();
+        $user_data['pin_code'] = $user->getPIN();
 
         if (in_array(null, $user_data, true) {
             throw new \DomainException();
