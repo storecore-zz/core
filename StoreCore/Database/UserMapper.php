@@ -138,7 +138,7 @@ class UserMapper extends AbstractDataAccessObject
         $user_data['password_hash'] = $user->getPasswordHash();
         $user_data['pin_code'] = $user->getPIN();
 
-        if (in_array(null, $user_data, true) {
+        if (in_array(null, $user_data, true)) {
             throw new \DomainException();
         }
 
