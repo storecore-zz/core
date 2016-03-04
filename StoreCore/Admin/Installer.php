@@ -46,9 +46,8 @@ class Installer extends \StoreCore\AbstractController
                             $config->save();
                             $this->Logger->notice('Completed installation of StoreCore version ' . \StoreCore\VERSION . '.');
 
-                            if ($this->moveConfigurationFiles()) {
-                                $this->SelfDestruct = true;
-                            }
+                            $this->moveConfigurationFiles();
+                            $this->SelfDestruct = true;
 
                             $response = new \StoreCore\Response($this->Registry);
                             $response->redirect('/admin/sign-in/');
@@ -241,20 +240,29 @@ class Installer extends \StoreCore\AbstractController
             return true;
         }
 
-        $this->Logger->warning('No active user accounts were found: adding a new user with administrator privileges.');
         unset($users);
+        $this->Logger->warning('No active user accounts were found: adding a new user with administrator privileges.');
+
+        $user = new \StoreCore\User();
+        $user->setUserGroupID(254);
+        $user_data = array(
+            'first_name' => false,
+            'last_name' => false,
+            'email_address' => false,
+            'username' => false,
+            'pin_code' => '0000',
+        );
 
         if ($this->Request->getRequestMethod() == 'POST') {
-
-            $user = new \StoreCore\User();
-            $user->setUserGroupID(254);
 
             // First name and last name
             if ($this->Request->get('first_name') !== null) {
                 $user->setFirstName($this->Request->get('first_name'));
+                $user_data['first_name'] = $user->getFirstName();
             }
             if ($this->Request->get('last_name') !== null) {
                 $user->setLastName($this->Request->get('last_name'));
+                $user_data['last_name'] = $user->getLastName();
             }
 
             // E-mail address
@@ -262,20 +270,22 @@ class Installer extends \StoreCore\AbstractController
                 try {
                     $email_address = new \StoreCore\Types\EmailAddress($this->Request->get('email_address'));
                     $user->setEmailAddress($email_address);
+                    $user_data['email_address'] = $user->getEmailAddress();
                 } catch (\Exception $e) {
                     $this->Logger->warning('Invalid e-mail address: ' . $this->Request->get('email_address'));
                 }
             }
-            
+
             // Personal identification number (optional, defaults to '0000')
             if ($this->Request->get('pin_code') !== null) {
                 $pin_code = trim($this->Request->get('pin_code'));
-                if ( 
+                if (
                     is_numeric($pin_code)
                     && strlen($pin_code) >= 4
                     && strlen($pin_code) <= 6
                 ) {
                     $user->setPIN($pin_code);
+                    $user_data['pin_code'] = $user->getPIN();
                 }
                 unset($pin_code);
             }
@@ -285,15 +295,18 @@ class Installer extends \StoreCore\AbstractController
                 $username = trim($this->Request->get('username'));
                 if (!empty($username)) {
                     $user->setUsername($username);
+                    $user_data['username'] = $user->getUsername();
                 }
             }
 
             // Set an omitted username to the user's first name.
             if ($user->getUsername() === null && $user->getFirstName() !== null) {
                 $user->setUsername($user->getFirstName());
+                $user_data['username'] = $user->getUsername();
             }
 
             // Password
+            $user_has_password = false;
             if (
                 $user->getEmailAddress() !== null
                 && is_string($this->Request->get('password'))
@@ -310,42 +323,44 @@ class Installer extends \StoreCore\AbstractController
                 $user->setHashAlgorithm($password->getAlgorithm());
                 $user->setPasswordHash($password->getHash());
                 unset($password);
+                $user_has_password = true;
             }
 
             // Insert user
-            if (in_array(false, $user_data, true) !== true) {
+            if ($user_has_password && !in_array(false, $user_data, true)) {
                 try {
-                    $dbh = new \StoreCore\Database\Connection();
-                    $stmt = $dbh->prepare('
-                        INSERT INTO sc_users
-                             (user_group_id, password_reset, password_salt, hash_algo, username, password_hash, first_name, last_name, email_address, pin_code)
-                           VALUES
-                             (254, UTC_TIMESTAMP(), :password_salt, :hash_algo, :username, :password_hash, :first_name, :last_name, :email_address, :pin_code)
-                    ');
-                    $stmt->bindParam(':password_salt', $user_data['password_salt']);
-                    $stmt->bindParam(':hash_algo',     $user_data['hash_algo']);
-                    $stmt->bindParam(':username',      $user_data['username']);
-                    $stmt->bindParam(':password_hash', $user_data['password_hash']);
-                    $stmt->bindParam(':first_name',    $user_data['first_name']);
-                    $stmt->bindParam(':last_name',     $user_data['last_name']);
-                    $stmt->bindParam(':email_address', $user_data['email_address']);
-                    $stmt->bindParam(':pin_code',      $user_data['pin_code']);
-                    $success = $stmt->execute();
-                } catch (\PDOException $e) {
-                    $this->Logger->critical($e->getMessage());
-                    return false;
-                }
-
-                if ($success == true) {
-                    $this->Logger->notice('User account created for: ' . $user_data['first_name'] . ' ' . $user_data['last_name'] . '.');
+                    $user_mapper = new \StoreCore\Database\UserMapper($this->Registry);
+                    $user_mapper->save($user);
+                    $this->Logger->notice('User account created for: ' . $user->getFullName());
                     return true;
+                } catch (\Exception $e) {
+                    $this->Logger->critical($e->getMessage());
+                }
+            }
+        }
+
+        // Try to find a known administrator or general e-mail address
+        if ($user_data['email_address'] === false) {
+            if (isset($_SERVER['SERVER_ADMIN']) && !empty($_SERVER['SERVER_ADMIN'])) {
+                $email_address = filter_var($_SERVER['SERVER_ADMIN'], FILTER_SANITIZE_EMAIL);
+                if (filter_var($email_address, FILTER_VALIDATE_EMAIL) !== false) {
+                    $user_data['email_address'] = $email_address;
+                }
+            }
+        }
+        if ($user_data['email_address'] === false) {
+            $email_address = ini_get('sendmail_from');
+            if ($email_address !== false && !empty($email_address)) {
+                $email_address = filter_var($email_address, FILTER_SANITIZE_EMAIL);
+                if (filter_var($email_address, FILTER_VALIDATE_EMAIL) !== false) {
+                    $user_data['email_address'] = $email_address;
                 }
             }
         }
 
         // Create a view to add an account
         foreach ($user_data as $name => $value) {
-            if ($value === false) {
+            if ($value === false || $value === null) {
                 $user_data[$name] = '';
             }
         }

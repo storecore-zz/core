@@ -63,7 +63,7 @@ class Configurator
                     strpos($name, 'StoreCore\\', 0) === 0
                     && strpos($name, 'StoreCore\\I18N\\', 0) !== 0
                 ) {
-                    $this->set($name, $value);
+                    $this->Settings[$name] = $value;
                 }
             }
         }
