@@ -12,7 +12,7 @@ namespace StoreCore\Database;
  * operates on and a PRIMARY_KEY for the primary key column of this table.
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Database
  * @version   0.1.0
@@ -37,7 +37,7 @@ abstract class AbstractDataAccessObject extends AbstractModel
                 $values[$key] = $this->Connection->quote($value);
             }
         }
-        $sql .= implode(',', array_keys($values));
+        $sql .= implode(',', $values);
         $sql .= ')';
 
         $affected_rows = $this->Connection->exec($sql);
