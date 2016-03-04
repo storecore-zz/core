@@ -142,7 +142,6 @@ class Installer extends \StoreCore\AbstractController
         $errors = array();
 
         $files = array(
-            \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.ini' => false,
             \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.php' => true,
             \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'de-DE.php' => true,
             \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'en-GB.php' => true,
@@ -383,7 +382,7 @@ class Installer extends \StoreCore\AbstractController
     }
 
     /**
-     * Move config.ini and config.php out of the root.
+     * Move config.php out of the root.
      *
      * @param void
      * @return bool
@@ -392,19 +391,11 @@ class Installer extends \StoreCore\AbstractController
     {
         $root_parent_directory = realpath(\StoreCore\FileSystem\STOREFRONT_ROOT_DIR . '../');
         if (!is_dir($root_parent_directory) || !is_writable($root_parent_directory)) {
-            $this->Logger->warning('The directory ' . $root_parent_directory . ' is inaccessible.');
+            $this->Logger->notice('The directory ' . $root_parent_directory . ' is inaccessible.');
             return false;
         }
 
         $root_parent_directory .= DIRECTORY_SEPARATOR;
-
-        $renamed_config_ini = false;
-        if (is_file(\StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.ini')) {
-            $renamed_config_ini = rename(\StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.ini', $root_parent_directory . 'config.ini');
-            if ($renamed_config_ini) {
-                $this->Logger->notice('Moved configuration file config.ini to: ' . $root_parent_directory . 'config.ini');
-            }
-        }
 
         $renamed_config_php = false;
         if (is_file(\StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.php')) {
@@ -414,7 +405,7 @@ class Installer extends \StoreCore\AbstractController
             }
         }
 
-        if ($renamed_config_ini && $renamed_config_php) {
+        if ($renamed_config_php) {
             return true;
         } else {
             return false;

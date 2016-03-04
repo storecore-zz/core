@@ -5,31 +5,21 @@ namespace StoreCore\Admin;
  * Configurator
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2014-2015 StoreCore
+ * @copyright Copyright (c) 2014-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @version   0.1.0-alpha.1
+ * @version   0.1.0
  */
 class Configurator
 {
-    const VERSION = '0.1.0-alpha.1';
-
-    /**
-     * @var array $DefaultSettings
-     *   Default settings from the global config.ini configuration file.
-     */
-    private $DefaultSettings = array(
-        'StoreCore\\Database\\DRIVER'           => 'mysql',
-        'StoreCore\\Database\\DEFAULT_HOST'     => 'localhost',
-        'StoreCore\\Database\\DEFAULT_DATABASE' => 'test',
-        'StoreCore\\Database\\DEFAULT_USERNAME' => 'root',
-        'StoreCore\\Database\\DEFAULT_PASSWORD' => '',
-    );
+    const VERSION = '0.1.0';
 
     /**
      * @var array $IgnoredSettings
-     *   Settings that MAY be set manually in the config.ini configuration file
-     *   and settings that SHOULD NOT be defined by config.php.
+     *   Settings that MUST be set manually in the config.php configuration
+     *   file and settings that SHOULD NOT be defined by config.php.  For
+     *   example, the four version constants are defined in version.php, so
+     *   these cannot be defined in config.php.
      */
     private $IgnoredSettings = array(
         'StoreCore\\KILL_SWITCH'      => true,
@@ -59,21 +49,21 @@ class Configurator
      */
     public function __construct()
     {
+        foreach ($this->IgnoredSettings as $name => $value) {
+            if ($value === false) {
+                unset($this->IgnoredSettings[$name]);
+            }
+        }
+
         $defined_constants = get_defined_constants(true);
         if (array_key_exists('user', $defined_constants)) {
             $defined_constants = $defined_constants['user'];
             foreach ($defined_constants as $name => $value) {
-                $name = strtoupper($name);
                 if (
                     strpos($name, 'StoreCore\\', 0) === 0
                     && strpos($name, 'StoreCore\\I18N\\', 0) !== 0
                 ) {
-                    if (
-                        array_key_exists($name, $this->DefaultSettings) === false
-                        || $this->DefaultSettings[$name] !== $value
-                    ) {
-                        $this->set($name, $value);
-                    }
+                    $this->set($name, $value);
                 }
             }
         }
@@ -98,7 +88,11 @@ class Configurator
             $name = ltrim($name, '\\');
             $name = str_ireplace('\\', '\\\\', $name);
 
-            if (is_numeric($value)) {
+            if ($value === true) {
+                $file .= "define('{$name}', true);";
+            } elseif ($value === false) {
+                $file .= "define('{$name}', false);";
+            } elseif (is_numeric($value)) {
                 $file .= "define('{$name}', {$value});";
             } else {
                 if (is_array($value)) {
@@ -126,6 +120,8 @@ class Configurator
     }
 
     /**
+     * Set a setting as a name/value pair.
+     *
      * @param string $name
      * @param mixed $value
      * @return void

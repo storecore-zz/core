@@ -24,8 +24,8 @@
 3. Add a MySQL user who has all privileges for accessing and modifying the
    StoreCore database.
 
-4. Find the `config.ini` configuration file, then edit the file and add your
-   database information in the `[Database]` section.
+4. Find the `config.php` configuration file, then edit the file and add your
+   database information in the `Database` section.
 
 5. *Optional.*  If configured correctly, StoreCore is able to install the
    database by itself.  However, the installation MAY run faster and smoother

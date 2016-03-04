@@ -28,20 +28,13 @@ if (is_file($parent_directory . 'config.php')) {
 } else {
     require 'config.php';
 }
+unset($parent_directory);
 
-// Bootstrap
+// Boot
 if (!defined('\\StoreCore\\FileSystem\\LIBRARY_ROOT_DIR')) {
     define('StoreCore\\FileSystem\\LIBRARY_ROOT_DIR', __DIR__ . DIRECTORY_SEPARATOR . 'StoreCore' . DIRECTORY_SEPARATOR);
 }
 require \StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'bootloader.php';
-
-// Parse config.ini overrides
-if (is_file($parent_directory . 'config.ini')) {
-    \StoreCore\Config::parse($parent_directory . 'config.ini');
-} else {
-    \StoreCore\Config::parse('config.ini');
-}
-unset($parent_directory);
 
 // Working directory
 define('StoreCore\\FileSystem\\STOREFRONT_ROOT_DIR', __DIR__ . DIRECTORY_SEPARATOR);
