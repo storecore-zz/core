@@ -83,8 +83,9 @@ class Password
      *   Optional salt.  If no salt is set, a random salt is used.
      *
      * @return float
-     *   Returns the time elapsed accurate to the nearest microsecond.  This
-     *   return value may be used to balance the work factors.
+     *   Returns the time elapsed in seconds, accurate to the nearest
+     *   microsecond.  This return value may be used to balance the work
+     *   factors.
      *
      * @throws BadMethodCallException
      */
@@ -105,7 +106,7 @@ class Password
         if (version_compare(PHP_VERSION, '5.3.7', '>=') && CRYPT_BLOWFISH == 1) {
 
             $this->Algorithm = 'Blowfish';
-            if ($salt === null || strlen($this->Salt) !== 22) {
+            if ($this->Salt === null || strlen($this->Salt) !== 22) {
                 $this->Salt = \StoreCore\Database\Salt::getInstance(22);
             }
             $salt = '$2y$' . self::WORK_FACTOR_BLOWFISH . '$' . $this->Salt . '$';
@@ -114,7 +115,7 @@ class Password
         } elseif (version_compare(PHP_VERSION, '5.3.2', '>=') && CRYPT_SHA512 == 1) {
 
             $this->Algorithm = 'SHA-512';
-            if ($salt === null || strlen($this->Salt) !== 16) {
+            if ($this->Salt === null || strlen($this->Salt) !== 16) {
                 $this->Salt = \StoreCore\Database\Salt::getInstance(16);
             }
             $salt = '$6$rounds=' . self::WORK_FACTOR_SHA512 . '$' . $this->Salt . '$';
@@ -123,7 +124,7 @@ class Password
         } elseif (CRYPT_STD_DES == 1) {
 
             $this->Algorithm = 'Standard DES';
-            if ($salt === null || strlen($this->Salt) !== 2) {
+            if ($this->Salt === null || strlen($this->Salt) !== 2) {
                 $this->Salt = \StoreCore\Database\Salt::getInstance(2);
             }
             $this->Hash = crypt($this->Password, $this->Salt);

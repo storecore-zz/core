@@ -7,14 +7,14 @@ use \StoreCore\Response as Response;
  * Administration Sign-In
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
- * @version   0.1.0-alpha.1
+ * @version   0.1.0
  */
 class SignIn extends \StoreCore\AbstractController
 {
-    const VERSION = '0.1.0-alpha.1';
+    const VERSION = '0.1.0';
 
     /**
      * @var string $Token
@@ -74,9 +74,9 @@ class SignIn extends \StoreCore\AbstractController
         }
 
         // Connection throttling: pause for 2 ^ n seconds.
-        // Maximum execution is set to the PHP default minus 2 seconds.
+        // Maximum execution is set to the PHP default minus 5 seconds.
         $seconds = pow(2, (int)($failed_attempts / 10));
-        $max_execution_time = (int)ini_get('max_execution_time') - 2;
+        $max_execution_time = (int)ini_get('max_execution_time') - 5;
         if ($seconds > $max_execution_time) {
             $seconds = $max_execution_time;
         }
@@ -106,7 +106,7 @@ class SignIn extends \StoreCore\AbstractController
         }
 
         // Finally, store the user and open up the administration.
-        $this->Logger->notice('User "' . $this->Request->get('username') . '" signed in.');
+        $this->Logger->notice('User "' . $user->getUsername() . '" (#' . getUserID() . ') signed in.');
         $login_audit->storeAttempt($this->Request->get('username'), null, true);
         $this->Session->set('User', $user);
         $response->redirect('/admin/', 303);

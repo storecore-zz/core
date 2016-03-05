@@ -49,7 +49,7 @@ class User
      */
     public function authenticate($password)
     {
-        if (!is_string($password)) {
+        if (!is_string($password) || empty($password)) {
             return false;
         }
 
