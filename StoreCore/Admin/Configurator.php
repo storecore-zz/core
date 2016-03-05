@@ -22,16 +22,6 @@ class Configurator
      *   these cannot be defined in config.php.
      */
     private $IgnoredSettings = array(
-        'StoreCore\\KILL_SWITCH'      => true,
-        'StoreCore\\MAINTENANCE_MODE' => true,
-        'StoreCore\\NULL_LOGGER'      => true,
-        'StoreCore\\STATISTICS'       => true,
-
-        'StoreCore\\FileSystem\\CACHE_DIR'           => true,
-        'StoreCore\\FileSystem\\LIBRARY_ROOT_DIR'    => true,
-        'StoreCore\\FileSystem\\LOGS_DIR'            => true,
-        'StoreCore\\FileSystem\\STOREFRONT_ROOT_DIR' => true,
-
         'StoreCore\\VERSION'       => true,
         'StoreCore\\MAJOR_VERSION' => true,
         'StoreCore\\MINOR_VERSION' => true,
