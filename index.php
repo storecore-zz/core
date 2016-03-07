@@ -2,7 +2,7 @@
 /**
  * StoreCore Store Front Application
  *
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @version   0.1.0-alpha.1
  *
@@ -54,11 +54,22 @@ if (defined('\\StoreCore\\NULL_LOGGER') && \StoreCore\NULL_LOGGER == true) {
     $logger = new \StoreCore\FileSystem\Logger();
 }
 
-// Load and populate the global service locator
+// Load and populate the global service locator.
 $registry = \StoreCore\Registry::getInstance();
 $registry->set('Logger', $logger);
-$request = new \StoreCore\Request();
-$registry->set('Request', $request);
+
+// Refuse requests from a blacklisted client IP address.
+if (\StoreCore\FileSystem\Blacklist::exists($_SERVER['REMOTE_ADDR'])) {
+    $response = new \StoreCore\Response($registry);
+    $response->setCompression(0);
+    $response->addHeader('HTTP/1.1 403 Forbidden');
+    $response->output();
+    $logger->info('HTTP/1.1 403 Forbidden: client IP address is blacklisted.');
+    exit;
+} else {
+    $request = new \StoreCore\Request();
+    $registry->set('Request', $request);
+}
 
 $session = new \StoreCore\Session();
 if (defined('\\StoreCore\\KILL_SWITCH') && \StoreCore\KILL_SWITCH == true) {
@@ -66,7 +77,7 @@ if (defined('\\StoreCore\\KILL_SWITCH') && \StoreCore\KILL_SWITCH == true) {
     $session->destroy();
     $response->setCompression(0);
     $response->addHeader('HTTP/1.1 503 Service Unavailable');
-    $response->addheader('Retry-After: 3600');
+    $response->addHeader('Retry-After: 3600');
     $response->output();
     exit;
 }
@@ -133,7 +144,7 @@ if ($route !== false) {
 }
 
 // Statistics and analytics
-if (\StoreCore\STATISTICS == true) {
+if (defined('\\StoreCore\\STATISTICS') && \StoreCore\STATISTICS == true) {
     $request = $registry->get('Request');
     $user_agent = $request->getUserAgent();
     $user_agent_mapper = new \StoreCore\Database\UserAgent($user_agent);
