@@ -69,6 +69,16 @@ For example, the `StoreCore\Database` namespace uses constants with a
 `StoreCore\Database` prefix in constant names like `StoreCore\Database\DEFAULT_USERNAME`
 and `StoreCore\Database\DEFAULT_PASSWORD`.
 
+## 2.4. Functional Packages
+
+There are five functional packages:
+
+- `@package StoreCore\Core` for core system files;
+- `@package StoreCore\Security` for files related to security;
+- `@package StoreCore\I18N` for internationalization and localization;
+- `@package StoreCore\Marketing` for marketing and sales;
+- `@package StoreCore\Operations` for order handling and logistics.
+
 
 # 3. Security
 

@@ -5,17 +5,17 @@ namespace StoreCore\Database;
  * Common Password
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2014-2015 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html
- * @package   StoreCore\Database
+ * @copyright Copyright (c) 2014-2016 StoreCore
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\Security
  * @version   0.0.1
  */
 class CommonPassword
 {
     /**
      * @type array $CommonPasswords
-     *     List of frequently used passwords, based on the "Top 10,000
-     *     Passwords List" by Mark Burnett (xato.net).
+     *   List of frequently used passwords, based on the "Top 10,000
+     *   Passwords List" by Mark Burnett (xato.net).
      *
      * @link https://xato.net/passwords/more-top-worst-passwords/
      */

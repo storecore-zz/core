@@ -4,10 +4,11 @@ namespace StoreCore;
 /**
  * Server Response
  *
+ * @api
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html
- * @package   StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\Core
  * @version   0.1.0-alpha.1
  */
 class Response extends AbstractController

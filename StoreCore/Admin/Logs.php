@@ -5,9 +5,9 @@ namespace StoreCore\Admin;
  * Logs
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
- * @package   StoreCore\Admin
+ * @package   StoreCore\Security
  * @version   0.1.0-alpha.1
  */
 class Logs extends \StoreCore\AbstractController
