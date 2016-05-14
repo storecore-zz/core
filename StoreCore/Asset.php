@@ -5,13 +5,14 @@ namespace StoreCore;
  * Asset Management
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
+ * @internal
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
- * @version   0.1.0-alpha.1
+ * @version   0.1.0
  */
 class Asset
 {
-    const VERSION = '0.1.0-alpha.1';
+    const VERSION = '0.1.0';
 
     /**
      * @type string $FileName
@@ -25,17 +26,25 @@ class Asset
      *   Array matching lowercase file extensions to MIME types.
      */
     private $Types = array(
-        'css'  => 'text/css; charset=utf-8',
-        'gif'  => 'image/gif',
-        'ico'  => 'image/x-icon',
-        'jpeg' => 'image/jpeg',
-        'jpg'  => 'image/jpeg',
-        'js'   => 'text/javascript; charset=utf-8',
-        'png'  => 'image/png',
-        'svg'  => 'image/svg+xml',
+        'css'   => 'text/css; charset=utf-8',
+        'eot'   => 'application/vnd.ms-fontobject',
+        'gif'   => 'image/gif',
+        'ico'   => 'image/x-icon',
+        'jpeg'  => 'image/jpeg',
+        'jpg'   => 'image/jpeg',
+        'js'    => 'text/javascript; charset=utf-8',
+        'otf'   => 'application/font-sfnt',
+        'png'   => 'image/png',
+        'svg'   => 'image/svg+xml',
+        'ttc'   => 'application/font-sfnt',
+        'ttf'   => 'application/font-sfnt',
+        'woff'  => 'application/font-woff',
+        'woff2' => 'font/woff2',
     );
 
     /**
+     * Silently publish a cacheable asset file.
+     *
      * @param string $filename
      * @param null|string $filetype
      * @return void
@@ -56,7 +65,8 @@ class Asset
     }
 
     /**
-     * @internal
+     * Check if an asset file exists.
+     *
      * @param void
      * @return bool
      */
@@ -71,13 +81,14 @@ class Asset
     }
 
     /**
-     * @internal
+     * Publish the asset file.
+     *
      * @param void
      * @return void
      */
     private function getFile()
     {
-        if ($this->FileType == 'css' || $this->FileType == 'js') {
+        if ($this->FileType == 'css' || $this->FileType == 'js' || $this->FileType == 'svg') {
             ob_start('ob_gzhandler');
         }
 
@@ -107,7 +118,8 @@ class Asset
     }
 
     /**
-     * @internal
+     * Set the asset filename.
+     *
      * @param string $filename
      * @return void
      */
@@ -118,7 +130,8 @@ class Asset
     }
 
     /**
-     * @internal
+     * Set the asset filetype.
+     *
      * @param string $filetype
      * @return void
      */
