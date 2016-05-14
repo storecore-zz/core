@@ -4,15 +4,16 @@ namespace StoreCore;
 /**
  * Client Request
  *
+ * @api
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html
- * @package   StoreCore
- * @version   0.1.0-alpha.1
+ * @copyright Copyright (c) 2015-2016 StoreCore
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\Core
+ * @version   0.1.0
  */
 class Request
 {
-    const VERSION = '0.1.0-alpha.1';
+    const VERSION = '0.1.0';
 
     /** @var string $HostName */
     private $HostName;
@@ -110,7 +111,7 @@ class Request
                     $data[$name] = $value;
                 }
             }
-            if (count($data) > 1) {
+            if (!empty($data)) {
                 $this->Cookies = $data;
             }
         }
@@ -151,27 +152,25 @@ class Request
      * Get a cookie by name.
      *
      * @param string $cookie_name
-     *     Case-insensitive name of a cookie.
+     *   Case-insensitive name of a cookie.
      *
      * @return mixed|null
-     *     Returns the contents of a cookie or null if the cookie does not
-     *     exist.
+     *   Returns the contents of a cookie or null if the cookie does not exist.
      */
     public function getCookie($cookie_name)
     {
         $cookie_name = mb_strtolower($cookie_name, 'UTF-8');
         if ($this->hasCookie($cookie_name)) {
             return $this->Cookies[$cookie_name];
-        } else {
-            return null;
         }
+        return null;
     }
 
     /**
      * Get the host name.
      *
      * @return string
-     *     Returns the HTTP host being requested.
+     *   Returns the HTTP host being requested.
      */
     public function getHostName()
     {
@@ -222,10 +221,10 @@ class Request
      * Check if a cookie exists.
      *
      * @param string $cookie_name
-     *     Case-insensitive name of a cookie.
+     *   Case-insensitive name of a cookie.
      *
      * @return bool
-     *     Returns true if the cookie exists, otherwise false.
+     *   Returns true if the cookie exists, otherwise false.
      */
     public function hasCookie($cookie_name)
     {
@@ -252,7 +251,6 @@ class Request
     /**
      * Set the requested host name.
      *
-     * @internal
      * @param void
      * @return void
      */
@@ -277,7 +275,6 @@ class Request
      * considered reliable as long as the web server allows only certain
      * request methods.
      *
-     * @internal
      * @param string $method
      * @return void
      */
@@ -299,7 +296,6 @@ class Request
     /**
      * Set the request path.
      *
-     * @internal
      * @param string $path
      * @return void
      */
