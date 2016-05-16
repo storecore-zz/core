@@ -8,12 +8,17 @@ namespace StoreCore;
  * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @version   0.1.0-alpha.1
+ * @version   0.1.0
  */
 class Document
 {
-    const VERSION = '0.1.0-alpha.1';
+    const VERSION = '0.1.0';
 
+    /**
+     * @var bool $AcceleratedMobilePage
+     */
+    $AcceleratedMobilePage = false;
+    
     /**
      * @var string $Direction
      * @var string $Language
@@ -191,6 +196,22 @@ class Document
         return $this;
     }
 
+    /**
+     * Enable AMP HTML.
+     *
+     * @param bool $use_amp_html
+     *   Use Google AMP HTML for Accelerated Mobile Pages (default true) or not
+     *   (false).
+     *
+     * @return void
+     */
+    public function amplify($use_amp_html = true)
+    {
+        if (is_bool($use_amp_html)) {
+            $this->AcceleratedMobilePage = $use_amp_html;
+        }
+    }
+    
     /**
      * Get the document <body>...</body> container.
      *
