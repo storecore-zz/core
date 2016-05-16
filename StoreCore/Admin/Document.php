@@ -21,15 +21,15 @@ class Document extends \StoreCore\Document
             'href' => '//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css',
             'rel'  => 'stylesheet',
         ),
-        '2d783734d8d336832734ba1fe7d4f946' => array(
+        '8416d10a98cec1c3de986c32a9d4fbf0' => array(
             'href' => '//fonts.googleapis.com/css?family=Noto+Sans:400,700',
             'rel'  => 'stylesheet',
         ),
-        '04f1d2ff0d8e68f475342c1bcd041c60' => array(
+        'dd3333881cfd6d7ac6c08d40315257bf' => array(
             'href' => '//fonts.googleapis.com/css?family=Roboto:300,400,500,700,900',
             'rel'  => 'stylesheet',
         ),
-        '11c9a9565f922585fabb9218d7ea2703' => array(
+        'cc841a6f8ba105179e457c1c4e60a14e' => array(
             'href' => '//fonts.googleapis.com/icon?family=Material+Icons',
             'rel'  => 'stylesheet',
         ),

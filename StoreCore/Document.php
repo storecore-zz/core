@@ -104,7 +104,8 @@ class Document
             $link['hreflang'] = $hreflang;
         }
 
-        $this->Links[md5($href)] = $link;
+        $key = md5(strtolower($href));
+        $this->Links[$key] = $link;
         return $this;
     }
 
