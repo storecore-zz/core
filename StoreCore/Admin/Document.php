@@ -9,15 +9,13 @@ namespace StoreCore\Admin;
  * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @version   0.1.0-alpha.1
+ * @version   0.1.0
  */
 class Document extends \StoreCore\Document
 {
-    const VERSION = '0.1.0-alpha.1';
+    const VERSION = '0.1.0';
 
-    /**
-     * @var array $Links
-     */
+    /** @var array $Links */
     protected $Links = array(
         'cbc332749284345c63e87d1e727ae56e' => array(
             'href' => '//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css',
@@ -41,17 +39,13 @@ class Document extends \StoreCore\Document
         ),
     );
 
-    /**
-     * @var array $MetaData
-     */
+    /** @var array $MetaData */
     protected $MetaData = array(
         'generator' => 'StoreCore',
         'robots' => 'noindex,nofollow',
-        'viewport' => 'width=device-width, initial-scale=1',
+        'viewport' => 'width=device-width,initial-scale=1,minimum-scale=1',
     );
 
-    /**
-     * @var string $Title
-     */
+    /** @var string $Title */
     protected $Title = 'StoreCore';
 }
