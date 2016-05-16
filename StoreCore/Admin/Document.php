@@ -17,8 +17,8 @@ class Document extends \StoreCore\Document
 
     /** @var array $Links */
     protected $Links = array(
-        'cbc332749284345c63e87d1e727ae56e' => array(
-            'href' => '//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css',
+        'cf9a7ff54be9109cc67e55353fda8219' => array(
+            'href' => '//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css',
             'rel'  => 'stylesheet',
         ),
         '2d783734d8d336832734ba1fe7d4f946' => array(
