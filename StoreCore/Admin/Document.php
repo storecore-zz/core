@@ -29,6 +29,10 @@ class Document extends \StoreCore\Document
             'href' => '//fonts.googleapis.com/css?family=Roboto:300,400,500,700,900',
             'rel'  => 'stylesheet',
         ),
+        '11c9a9565f922585fabb9218d7ea2703' => array(
+            'href' => '//fonts.googleapis.com/icon?family=Material+Icons',
+            'rel'  => 'stylesheet',
+        ),
         '945633b0695ae97d11f7ce3435b978c7' => array(
             'href' => '/css/admin.min.css',
             'rel'  => 'stylesheet',
