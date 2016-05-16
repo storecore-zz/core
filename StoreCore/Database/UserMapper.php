@@ -43,7 +43,6 @@ class UserMapper extends AbstractDataAccessObject
     /**
      * Map the user's data to a user object.
      *
-     * @internal
      * @param array $user_data
      * @return \StoreCore\User
      */

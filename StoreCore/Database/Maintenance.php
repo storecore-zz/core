@@ -3,6 +3,9 @@ namespace StoreCore\Database;
 
 /**
  * Database Maintenance
+ *
+ * @internal
+ * @version 0.1.0
  */
 class Maintenance extends \StoreCore\AbstractModel
 {
@@ -165,7 +168,6 @@ class Maintenance extends \StoreCore\AbstractModel
     }
 
     /**
-     * @internal
      * @param string $name
      * @param string $value
      */

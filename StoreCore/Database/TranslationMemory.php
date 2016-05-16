@@ -5,7 +5,8 @@ namespace StoreCore\Database;
  * Translation Memory Model
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
+ * @internal
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\I18N
  * @version   0.0.3
@@ -61,7 +62,6 @@ class TranslationMemory extends \StoreCore\Database\AbstractModel
     }
 
     /**
-     * @internal
      * @param int $language_id
      * @param bool $storefront
      * @return void

@@ -49,7 +49,6 @@ class Response extends AbstractController
     /**
      * Create a gzip compressed string.
      *
-     * @internal
      * @param string $data
      * @param int $level
      * @return string

@@ -152,7 +152,6 @@ class SignIn extends \StoreCore\AbstractController
     }
 
     /**
-     * @internal
      * @param void
      * @return void
      */

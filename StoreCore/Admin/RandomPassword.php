@@ -52,7 +52,6 @@ class RandomPassword
     }
 
     /**
-     * @internal
      * @param int $length
      * @return void
      */

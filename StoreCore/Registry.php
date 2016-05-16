@@ -4,8 +4,9 @@ namespace StoreCore;
 /**
  * Global Registry Singleton
  *
+ * @api
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
@@ -13,7 +14,7 @@ namespace StoreCore;
 final class Registry implements SingletonInterface
 {
     const VERSION = '0.1.0';
-    
+
     /**
      * @var array $Data
      * @var object|null $Instance
