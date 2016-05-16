@@ -18,8 +18,8 @@ class Request
     /** @var string $HostName */
     private $HostName;
 
-    /** @var string|null $RequestMethod */
-    private $RequestMethod;
+    /** @var string $RequestMethod */
+    private $RequestMethod = 'GET';
 
     /** @var string $RequestPath */
     private $RequestPath = '/';
@@ -61,13 +61,22 @@ class Request
         }
         $this->Server = $data;
 
-        // Request method (GET, POST, HEAD, etc.)
-        if (isset($_SERVER['REQUEST_METHOD'])) {
+        /*
+         * Set the HTTP request method (POST, HEAD, PUT, etc.) other than the
+         * default method (GET).  The HTTP request method in the superglobal
+         * PHP variable $_SERVER['REQUEST_METHOD'] is controlled by the client.
+         * It MAY be considered reliable as long as the web server allows only
+         * certain request methods.
+         */
+        if (
+            isset($_SERVER['REQUEST_METHOD'])
+            && ($_SERVER['REQUEST_METHOD'] !== $this->RequestMethod)
+            && is_string($_SERVER['REQUEST_METHOD'])
+        ) {
             if ($magic_quotes_gpc !== false) {
                 $_SERVER['REQUEST_METHOD'] = stripslashes($_SERVER['REQUEST_METHOD']);
             }
-            $this->setRequestMethod($_SERVER['REQUEST_METHOD']);
-            unset($this->Server['REQUEST_METHOD']);
+            $this->RequestMethod = strtoupper(trim($_SERVER['REQUEST_METHOD']));
         }
 
         // Request path (URI without host)
@@ -265,32 +274,6 @@ class Request
         $host_name = preg_replace('/:\d+$/', '', $host_name);
         $host_name = mb_strtolower($host_name, 'UTF-8');
         $this->HostName = $host_name;
-    }
-
-    /**
-     * Set the request method.
-     *
-     * The HTTP request method in the superglobal PHP variable
-     * $_SERVER['REQUEST_METHOD'] is controlled by the client.  It MAY be
-     * considered reliable as long as the web server allows only certain
-     * request methods.
-     *
-     * @param string $method
-     * @return void
-     */
-    private function setRequestMethod($method)
-    {
-        if (!is_string($method)) {
-            return;
-        }
-
-        $method = strip_tags($method);
-        $method = trim($method);
-        $method = strtoupper($method);
-
-        if (!empty($method)) {
-            $this->RequestMethod = $method;
-        }
     }
 
     /**
