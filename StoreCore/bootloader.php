@@ -9,6 +9,9 @@
  * @version   0.1.0-alpha.1
  */
 
+// Set the default character set to UTF-8
+ini_set('default_charset', 'UTF-8');
+
 // Coordinated Universal Time (UTC)
 date_default_timezone_set('UTC');
 
