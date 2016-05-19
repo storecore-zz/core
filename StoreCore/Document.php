@@ -17,8 +17,8 @@ class Document
     /**
      * @var bool $AcceleratedMobilePage
      */
-    $AcceleratedMobilePage = false;
-    
+    protected $AcceleratedMobilePage = false;
+
     /**
      * @var string $Direction
      * @var string $Language
@@ -214,7 +214,7 @@ class Document
             $this->AcceleratedMobilePage = $use_amp_html;
         }
     }
-    
+
     /**
      * Get the document <body>...</body> container.
      *
@@ -348,6 +348,19 @@ class Document
             $language_code = strtolower($language_codes[0]) . '-' . strtoupper($language_codes[1]);
         }
         $this->Language = $language_code;
+        return $this;
+    }
+
+    /**
+     * Set the theme color.
+     *
+     * @param string $color
+     * @return $this
+     */
+    public function setThemeColor($color)
+    {
+        $this->addMetaData('msapplication-navbutton-color', $color);
+        $this->addMetaData('theme-color', $color);
         return $this;
     }
 
