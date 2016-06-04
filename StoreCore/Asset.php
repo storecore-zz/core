@@ -101,14 +101,24 @@ class Asset
         $file = \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . $this->FileType . DIRECTORY_SEPARATOR . $this->FileName;
 
         $last_modified = filemtime($file);
-        $etag = md5_file($file);
         header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $last_modified) . ' GMT');
-        header('Etag: ' . $etag);
 
-        $http_if_none_match = (isset($_SERVER['HTTP_IF_NONE_MATCH']) ? trim($_SERVER['HTTP_IF_NONE_MATCH']) : false);
+        $etag = md5_file($file, true);
+        $etag = base64_encode($etag);
+        $etag = rtrim($etag, '=');
+        header('ETag: "' . $etag . '"');
+
+        if (isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
+            $http_if_none_match = strip_tags($_SERVER['HTTP_IF_NONE_MATCH']);
+            $http_if_none_match = trim($http_if_none_match);
+            $http_if_none_match = trim($http_if_none_match, '"');
+        } else {
+            $http_if_none_match = false;
+        }
+
         if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
             if (strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $last_modified || $http_if_none_match == $etag) {
-                header('HTTP/1.1 304 Not Modified', true, 304);
+                header('HTTP/1.1 304 Not Modified', true);
                 exit;
             }
         }
