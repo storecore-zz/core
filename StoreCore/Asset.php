@@ -101,7 +101,7 @@ class Asset
         $file = \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . $this->FileType . DIRECTORY_SEPARATOR . $this->FileName;
 
         $last_modified = filemtime($file);
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $last_modified) . ' GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s T', $last_modified));
 
         $etag = md5_file($file, true);
         $etag = base64_encode($etag);
