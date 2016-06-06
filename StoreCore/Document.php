@@ -284,7 +284,16 @@ class Document
     public function getHead()
     {
         $head  = '<head>';
-        $head .= '<meta charset="UTF-8">';
+
+        /*
+         * If the character set name UTF-8 in the `<meta charset="UTF-8">` tag
+         * is written in uppercase, the AMP validation results in two errors:
+         *
+         * - The attribute 'charset' may not appear in tag 'meta name= and content='.
+         *
+         * - The mandatory tag 'meta charset=utf-8' is missing or incorrect.
+         */
+        $head .= '<meta charset="utf-8">';
 
         if ($this->Title != null) {
             $head .= '<title>' . $this->Title . '</title>';
