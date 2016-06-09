@@ -64,7 +64,7 @@ if (\StoreCore\FileSystem\Blacklist::exists($_SERVER['REMOTE_ADDR'])) {
     $response->setCompression(0);
     $response->addHeader('HTTP/1.1 403 Forbidden');
     $response->output();
-    $logger->info('HTTP/1.1 403 Forbidden: client IP address is blacklisted.');
+    $logger->info('HTTP/1.1 403 Forbidden: client IP address ' . $_SERVER['REMOTE_ADDR'] . ' is blacklisted.');
     exit;
 } else {
     $request = new \StoreCore\Request();
