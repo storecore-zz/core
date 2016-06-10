@@ -27,6 +27,7 @@ class Document
      * @var null|array $Scripts
      * @var null|array $ScriptsDeferred
      * @var array $Sections
+     * @var string $Style
      * @var string $Title
      */
     protected $Direction = 'ltr';
@@ -36,6 +37,7 @@ class Document
     protected $Scripts;
     protected $ScriptsDeferred;
     protected $Sections = array();
+    protected $Style = '';
     protected $Title;
 
     /**
@@ -171,17 +173,17 @@ class Document
      *   Content for a new HTML container.  Please note that multiple sections
      *   are parsed and displayed in the order they are added.
      *
-     * @param string|null $container
+     * @param string|bool|null $container
      *   Enclosing parent container for the new content.  Defaults to `section`
      *   for a generic `<section>...</section>` container.  This parameter MAY
-     *   be set to null or an empty string if the parent container is to be
-     *   omitted.
+     *   be set to null, to false or to an empty string if the parent container
+     *   is to be omitted.
      *
      * @return $this
      */
     public function addSection($content, $container = 'section')
     {
-        if (empty($container)) {
+        if (empty($container) || $container === false) {
             $container = null;
         } else {
             $container = trim($container);
@@ -196,6 +198,28 @@ class Document
             $this->Sections[] = '<' . $container . '>' . $content . '</' . $container . '>';
         }
 
+        return $this;
+    }
+
+    /**
+     * Add internal (embedded) CSS code.
+     *
+     * @param string $css
+     * @return $this
+     */
+    public function addStyle($css)
+    {
+        $css = strip_tags($css);
+        $css = trim($css);
+        $css = str_ireplace("\r\n", null, $css);
+        $css = str_ireplace("\n", null, $css);
+        $css = str_ireplace(' {', '{', $css);
+        $css = str_ireplace('{ ', '{', $css);
+        $css = str_ireplace('} ', '}', $css);
+        $css = str_ireplace(': ', ':', $css);
+        $css = str_ireplace('; ', ';', $css);
+        $css = str_ireplace(';}', '}', $css);
+        $this->Style .= $css;
         return $this;
     }
 
@@ -237,7 +261,14 @@ class Document
     public function getDocument()
     {
         $html  = '<!DOCTYPE html>';
-        $html .= '<html dir="' . $this->Direction . '" lang="' . $this->Language . '">';
+
+        if ($this->AcceleratedMobilePage) {
+            $html .= '<html amp';
+        } else {
+            $html .= '<html';
+        }
+        $html .= ' dir="' . $this->Direction . '" lang="' . $this->Language . '">';
+
         $html .= $this->getHead();
         $html .= $this->getBody();
 
@@ -253,20 +284,22 @@ class Document
          * CloudFlare CDN: //cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js
          * jsDelivr CDN:   //cdn.jsdelivr.net/jquery/2.1.4/jquery.min.js
          */
-        if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/(?i)msie [4-8]/', $_SERVER['HTTP_USER_AGENT'])) {
-            $html .= '<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.3.min.js"></script>';
-            $html .= '<script>';
-            $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-1.11.3.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
-        } else {
-            $html .= '<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>';
-            $html .= '<script>';
-            $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-2.1.4.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
-        }
+         if (!$this->AcceleratedMobilePage) {
+            if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/(?i)msie [4-8]/', $_SERVER['HTTP_USER_AGENT'])) {
+                $html .= '<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.3.min.js"></script>';
+                $html .= '<script>';
+                $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-1.11.3.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
+            } else {
+                $html .= '<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>';
+                $html .= '<script>';
+                $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-2.1.4.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
+            }
 
-        if ($this->ScriptsDeferred !== null) {
-            $html .= implode($this->ScriptsDeferred);
+            if ($this->ScriptsDeferred !== null) {
+                $html .= implode($this->ScriptsDeferred);
+            }
+            $html .= '</script>';
         }
-        $html .= '</script>';
 
         $html .= '</html>';
         return $html;
@@ -297,6 +330,20 @@ class Document
             }
         }
 
+        if ($this->AcceleratedMobilePage) {
+            $head .= '<style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>';
+        }
+
+        if (!empty($this->Style)) {
+            if ($this->AcceleratedMobilePage) {
+                $head .= '<style amp-custom>';
+            } else {
+                $head .= '<style>';
+            }
+            $head .= $this->Style;
+            $head .= '</style>';
+        }
+
         foreach ($this->MetaData as $name => $content) {
             $head .= '<meta name="' . $name . '" content="' . $content . '">';
         }
@@ -307,7 +354,9 @@ class Document
             }
         }
 
-        if ($this->Scripts !== null) {
+        if ($this->AcceleratedMobilePage) {
+            $head .= '<script async src="https://cdn.ampproject.org/v0.js"></script>';
+        } elseif ($this->Scripts !== null) {
             $head .= '<script>';
             $head .= implode($this->Scripts);
             $head .= '</script>';
