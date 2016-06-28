@@ -13,6 +13,7 @@
  * - Drop h5 and h6 headings.
  * - Merge the opacity .54 and .87 selectors.
  * - Upgrade Helvetica to Helvetica Neue.
+ * - Add missing Roboto to the font stacks.
  * - Strip double quotes from "Roboto" and "Arial".
  */
 
@@ -1280,7 +1281,7 @@ fieldset[disabled] .mdl-switch .mdl-switch__ripple-container .mdl-ripple,.mdl-sw
 .mdl-textfield--align-right{text-align:right}
 .mdl-textfield--full-width{width:100%}
 .mdl-textfield--expandable{min-width:32px;width:auto;min-height:32px}
-.mdl-textfield__input{border:none;border-bottom:1px solid rgba(0,0,0,.12);display:block;font-size:16px;font-family:"Helvetica Neue",Arial,sans-serif;margin:0;padding:4px 0;width:100%;background:0 0;text-align:left;color:inherit}
+.mdl-textfield__input{border:none;border-bottom:1px solid rgba(0,0,0,.12);display:block;font-size:16px;font-family:Roboto,"Helvetica Neue",Arial,sans-serif;margin:0;padding:4px 0;width:100%;background:0 0;text-align:left;color:inherit}
 .mdl-textfield__input[type="number"]{-moz-appearance:textfield}
 .mdl-textfield__input[type="number"]::-webkit-inner-spin-button,.mdl-textfield__input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 .mdl-textfield.is-focused .mdl-textfield__input{outline:none}
