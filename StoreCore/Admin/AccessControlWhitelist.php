@@ -37,7 +37,7 @@ class AccessControlWhitelist extends AbstractController
         }
 
         $this->Logger->warning('Whitelist access denied to remote IP address ' . $_SERVER['REMOTE_ADDR'] . '.');
-        header('HTTP/1.1 404 Not Found', true, 404);
+        header('HTTP/1.1 404 Not Found', true);
         exit;
     }
 }

@@ -8,11 +8,11 @@ namespace StoreCore\Admin;
  * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
- * @version   0.1.0-alpha.1
+ * @version   0.1.0
  */
 class Logs extends \StoreCore\AbstractController
 {
-    const VERSION = '0.1.0-alpha.1';
+    const VERSION = '0.1.0';
 
     /** @var \StoreCore\FileSystem\LogFileManager $Model */
     private $Model;
@@ -39,7 +39,7 @@ class Logs extends \StoreCore\AbstractController
     {
         $download = $this->read();
         if ($download === null) {
-            header('HTTP/1.1 204 No Content', true, 204);
+            header('HTTP/1.1 204 No Content', true);
             exit;
         }
 

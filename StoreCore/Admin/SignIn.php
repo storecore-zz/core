@@ -37,7 +37,7 @@ class SignIn extends \StoreCore\AbstractController
         } elseif ($this->Request->getRequestMethod() != 'POST') {
             $this->resetToken();
             header('Allow: GET, POST');
-            header('HTTP/1.1 405 Method Not Allowed', true, 405);
+            header('HTTP/1.1 405 Method Not Allowed', true);
             $this->Logger->warning('HTTP/1.1 405 Method Not Allowed');
             exit;
         }
