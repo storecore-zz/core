@@ -29,7 +29,7 @@
  * @copyright 2015 Google, Inc.
  * @link https://github.com/google/material-design-lite
  */
- 
+
 html{color:rgba(0,0,0,.87)}
 
 html,
@@ -81,8 +81,8 @@ h4 small,
 }
 
 html,
-address,
 body,
+address,
 h1,
 h1 small,
 h2,
