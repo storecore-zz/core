@@ -29,6 +29,10 @@ class Document extends \StoreCore\Document
             'href' => '//fonts.googleapis.com/icon?family=Material+Icons',
             'rel'  => 'stylesheet',
         ),
+        '5963f6c37630f19a97ee8ca328a71656' => array(
+            'href' => '/css/mdl-v1.1.3.min.css',
+            'rel'  => 'stylesheet',
+        ),        
         '945633b0695ae97d11f7ce3435b978c7' => array(
             'href' => '/css/admin.min.css',
             'rel'  => 'stylesheet',
