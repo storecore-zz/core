@@ -19,3 +19,16 @@ https://code.getmdl.io/1.1.3/material.blue-orange.min.css
 - Merge font stack into a single font-family declaration.
 - Merge default `font-weight: 400` into a single declaration.
 - Drop the `-force-` classes.
+
+# Overwrites not supported
+
+The following MDL `-force-` class names are not supported in StoreCore CSS:
+
+- .mdl-typography--body-1-force-preferred-font
+- .mdl-typography--body-1-force-preferred-font-color-contrast
+- .mdl-typography--body-2-force-preferred-font
+- .mdl-typography--body-2-force-preferred-font-color-contrast
+- .mdl-typography--caption-force-preferred-font
+- .mdl-typography--caption-force-preferred-font-color-contrast
+- .mdl-typography--caption-force-preferred-font
+- .mdl-typography--caption-force-preferred-font-color-contrast
