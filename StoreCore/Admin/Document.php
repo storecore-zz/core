@@ -21,10 +21,6 @@ class Document extends \StoreCore\Document
             'href' => '//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css',
             'rel'  => 'stylesheet',
         ),
-        '8416d10a98cec1c3de986c32a9d4fbf0' => array(
-            'href' => '//fonts.googleapis.com/css?family=Noto+Sans:400,700',
-            'rel'  => 'stylesheet',
-        ),
         'dd3333881cfd6d7ac6c08d40315257bf' => array(
             'href' => '//fonts.googleapis.com/css?family=Roboto:300,400,500,700,900',
             'rel'  => 'stylesheet',
