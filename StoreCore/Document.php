@@ -356,7 +356,11 @@ class Document
 
         if ($this->AcceleratedMobilePage) {
             $head .= '<script async src="https://cdn.ampproject.org/v0.js"></script>';
-        } elseif ($this->Scripts !== null) {
+        } else {
+            $head .= '<script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>';
+        }
+            
+        if ($this->Scripts !== null) {
             $head .= '<script>';
             $head .= implode($this->Scripts);
             $head .= '</script>';
