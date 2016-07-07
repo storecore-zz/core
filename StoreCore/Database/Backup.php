@@ -33,7 +33,7 @@ class Backup
      */
     public static function save($tables = '*', $drop_tables = false)
     {
-        if (\StoreCore\NULL_LOGGER) {
+        if (STORECORE_NULL_LOGGER) {
             $logger = new \Psr\Log\NullLogger();
         } else {
             $logger = new \StoreCore\FileSystem\Logger();

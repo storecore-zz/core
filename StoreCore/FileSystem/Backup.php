@@ -30,7 +30,7 @@ class Backup
      */
     public static function save($compress = true)
     {
-        if (\StoreCore\NULL_LOGGER) {
+        if (STORECORE_NULL_LOGGER) {
             $logger = new \Psr\Log\NullLogger();
         } else {
             $logger = new \StoreCore\FileSystem\Logger();

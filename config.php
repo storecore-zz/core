@@ -4,10 +4,10 @@
  */
 
 /* Core */
-define('StoreCore\\KILL_SWITCH', false);
-define('StoreCore\\MAINTENANCE_MODE', false);
-define('StoreCore\\NULL_LOGGER', false);
-define('StoreCore\\STATISTICS', false);
+define('STORECORE_KILL_SWITCH', false);
+define('STORECORE_MAINTENANCE_MODE', false);
+define('STORECORE_NULL_LOGGER', false);
+define('STORECORE_STATISTICS', false);
 
 /* Database */
 define('StoreCore\\Database\\DRIVER',           'mysql');

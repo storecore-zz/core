@@ -48,7 +48,7 @@ if (!defined('\\StoreCore\\FileSystem\\CACHE_DIR')) {
 if (!defined('\\StoreCore\\FileSystem\\LOGS_DIR')) {
     define('StoreCore\\FileSystem\\LOGS_DIR', \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'logs' . DIRECTORY_SEPARATOR);
 }
-if (defined('\\StoreCore\\NULL_LOGGER') && \StoreCore\NULL_LOGGER == true) {
+if (STORECORE_NULL_LOGGER) {
     $logger = new \Psr\Log\NullLogger();
 } else {
     $logger = new \StoreCore\FileSystem\Logger();
@@ -79,7 +79,7 @@ if (\StoreCore\FileSystem\Blacklist::exists($_SERVER['REMOTE_ADDR'])) {
 
 // Start or restart and optionally destroy a session.
 $session = new \StoreCore\Session();
-if (defined('\\StoreCore\\KILL_SWITCH') && \StoreCore\KILL_SWITCH == true) {
+if (defined('STORECORE_KILL_SWITCH') && STORECORE_KILL_SWITCH == true) {
     $response = new \StoreCore\Response($registry);
     $session->destroy();
     $response->setCompression(0);
@@ -149,7 +149,7 @@ if ($route !== false) {
 }
 
 // Statistics and analytics
-if (defined('\\StoreCore\\STATISTICS') && \StoreCore\STATISTICS == true) {
+if (STORECORE_STATISTICS) {
     $request = $registry->get('Request');
     $user_agent = $request->getUserAgent();
     $user_agent_mapper = new \StoreCore\Database\UserAgent($user_agent);
