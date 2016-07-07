@@ -32,7 +32,7 @@ class FrontController extends AbstractController implements LoggerAwareInterface
     {
         parent::__construct($registry);
 
-        if (!defined('StoreCore\\VERSION_INSTALLED')) {
+        if (!defined('STORECORE_VERSION_INSTALLED')) {
             $this->install();
         }
 

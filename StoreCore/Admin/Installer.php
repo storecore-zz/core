@@ -43,7 +43,7 @@ class Installer extends \StoreCore\AbstractController
                     if ($this->checkDatabaseStructure()) {
                         if ($this->checkUsers()) {
                             $config = new \StoreCore\Admin\Configurator();
-                            $config->set('StoreCore\\VERSION_INSTALLED', \StoreCore\VERSION);
+                            $config->set('STORECORE_VERSION_INSTALLED', \StoreCore\VERSION);
                             $config->save();
                             $this->Logger->notice('Completed installation of StoreCore version ' . \StoreCore\VERSION . '.');
 
@@ -119,7 +119,7 @@ class Installer extends \StoreCore\AbstractController
                 $maintenance_module->restore();
 
                 $config = new \StoreCore\Admin\Configurator();
-                $config->set('StoreCore\\Database\\VERSION_INSTALLED', \StoreCore\VERSION);
+                $config->set('STORECORE_DATABASE_VERSION_INSTALLED', \StoreCore\VERSION);
                 $config->save();
                 $this->Logger->notice('StoreCore database version ' . \StoreCore\VERSION . ' was installed.');
             }

@@ -58,6 +58,13 @@ if (defined('\\StoreCore\\NULL_LOGGER') && \StoreCore\NULL_LOGGER == true) {
 $registry = \StoreCore\Registry::getInstance();
 $registry->set('Logger', $logger);
 
+// Run the installer on a missing installed version ID.
+if (!defined('STORECORE_VERSION_INSTALLED')) {
+    $route = new \StoreCore\Route('/install/', '\StoreCore\Admin\FrontController', 'install');
+    $route->dispatch();
+    exit;
+}
+
 // Refuse requests from a blacklisted client IP address.
 if (\StoreCore\FileSystem\Blacklist::exists($_SERVER['REMOTE_ADDR'])) {
     $response = new \StoreCore\Response($registry);
@@ -128,9 +135,7 @@ switch ($request->getRequestPath()) {
             unset($asset, $pathinfo);
         }
 
-        if (!defined('StoreCore\\VERSION_INSTALLED')) {
-            $route = new \StoreCore\Route('/install/', '\StoreCore\Admin\FrontController', 'install');
-        } elseif (strpos($request->getRequestPath(), '/admin/', 0) === 0) {
+        if (strpos($request->getRequestPath(), '/admin/', 0) === 0) {
             $route = new \StoreCore\Route('/admin/', '\StoreCore\Admin\FrontController');
         }
 }

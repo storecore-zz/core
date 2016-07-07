@@ -40,8 +40,8 @@ class Maintenance extends \StoreCore\AbstractModel
          * maintenance module, an update is available.
          */
         if (
-            !defined('StoreCore\\Database\\VERSION_INSTALLED')
-            || version_compare(\StoreCore\Database\VERSION_INSTALLED, self::VERSION, '<')
+            !defined('STORECORE_DATABASE_VERSION_INSTALLED')
+            || version_compare(STORECORE_DATABASE_VERSION_INSTALLED, self::VERSION, '<')
         ) {
             $this->UpdateAvailable = true;
         }
@@ -202,7 +202,7 @@ class Maintenance extends \StoreCore\AbstractModel
                 }
             }
 
-            $this->saveConfigurationSetting('StoreCore\\Database\\VERSION_INSTALLED', $version);
+            $this->saveConfigurationSetting('STORECORE_DATABASE_VERSION_INSTALLED', $version);
             $logger->notice('StoreCore database version ' . self::VERSION . ' was installed.');
 
         } catch (\PDOException $e) {
