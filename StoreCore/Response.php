@@ -100,7 +100,7 @@ class Response extends AbstractController
                 }
             }
             header('X-Frame-Options: SAMEORIGIN', true);
-            header('X-Powered-By: StoreCore/' . \StoreCore\VERSION, true);
+            header('X-Powered-By: StoreCore/' . STORECORE_VERSION, true);
             header('X-UA-Compatible: IE=edge', true);
         }
 

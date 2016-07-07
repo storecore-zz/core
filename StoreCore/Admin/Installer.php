@@ -43,9 +43,9 @@ class Installer extends \StoreCore\AbstractController
                     if ($this->checkDatabaseStructure()) {
                         if ($this->checkUsers()) {
                             $config = new \StoreCore\Admin\Configurator();
-                            $config->set('STORECORE_VERSION_INSTALLED', \StoreCore\VERSION);
+                            $config->set('STORECORE_VERSION_INSTALLED', STORECORE_VERSION);
                             $config->save();
-                            $this->Logger->notice('Completed installation of StoreCore version ' . \StoreCore\VERSION . '.');
+                            $this->Logger->notice('Completed installation of StoreCore version ' . STORECORE_VERSION . '.');
 
                             $this->moveConfigurationFiles();
                             $this->SelfDestruct = true;
@@ -119,9 +119,9 @@ class Installer extends \StoreCore\AbstractController
                 $maintenance_module->restore();
 
                 $config = new \StoreCore\Admin\Configurator();
-                $config->set('STORECORE_DATABASE_VERSION_INSTALLED', \StoreCore\VERSION);
+                $config->set('STORECORE_DATABASE_VERSION_INSTALLED', STORECORE_VERSION);
                 $config->save();
-                $this->Logger->notice('StoreCore database version ' . \StoreCore\VERSION . ' was installed.');
+                $this->Logger->notice('StoreCore database version ' . STORECORE_VERSION . ' was installed.');
             }
         } catch (\PDOException $e) {
             $this->Logger->critical($e->getMessage());

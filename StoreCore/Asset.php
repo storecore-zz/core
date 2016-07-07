@@ -96,7 +96,7 @@ class Asset
         header('Cache-Control: public, max-age=31536000', true);
         header('Pragma: cache', true);
         header('Content-Type: ' . $this->Types[$this->FileType], true);
-        header('X-Powered-By: StoreCore/' . \StoreCore\VERSION, true);
+        header('X-Powered-By: StoreCore/' . STORECORE_VERSION, true);
 
         $file = \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . $this->FileType . DIRECTORY_SEPARATOR . $this->FileName;
 
