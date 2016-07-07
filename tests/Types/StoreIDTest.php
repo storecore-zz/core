@@ -7,7 +7,7 @@ class StoreIDTest extends PHPUnit_Framework_TestCase
      */
     public function testCoreStoreIdClassFileExists()
     {
-        $this->assertFileExists(\StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Types' . DIRECTORY_SEPARATOR .  'StoreID.php');
+        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Types' . DIRECTORY_SEPARATOR .  'StoreID.php');
     }
 
     /**
@@ -15,7 +15,7 @@ class StoreIDTest extends PHPUnit_Framework_TestCase
      */
     public function testExtendedTinyintUnsignedClassFileExists()
     {
-        $this->assertFileExists(\StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Types' . DIRECTORY_SEPARATOR .  'TinyintUnsigned.php');
+        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Types' . DIRECTORY_SEPARATOR .  'TinyintUnsigned.php');
     }
 
     /**

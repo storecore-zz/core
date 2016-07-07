@@ -17,6 +17,7 @@ define('StoreCore\\Database\\DEFAULT_USERNAME', 'root');
 define('StoreCore\\Database\\DEFAULT_PASSWORD', '');
 
 /* File System */
-// define('StoreCore\\FileSystem\\CACHE_DIR', '');
-// define('StoreCore\\FileSystem\\LIBRARY_ROOT_DIR', '');
-// define('StoreCore\\FileSystem\\LOGS_DIR', '');
+// define('STORECORE_FILESYSTEM_CACHE_DIR', '');
+// define('STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR', '');
+// define('STORECORE_FILESYSTEM_LOGS_DIR', '');
+define('STORECORE_FILESYSTEM_LOGS_FILENAME_FORMAT', 'YmdH');

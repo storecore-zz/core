@@ -21,7 +21,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
      */
     public function testCoreAutoloaderClassFileExists()
     {
-        $this->assertFileExists(\StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Autoloader.php');
+        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Autoloader.php');
     }
 
     /**
@@ -29,7 +29,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
      */
     public function testCoreBootloaderFileExists()
     {
-        $this->assertFileExists(\StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'bootloader.php');
+        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'bootloader.php');
     }
 
     public function testVersionConstantIsDefined()

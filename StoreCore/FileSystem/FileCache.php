@@ -71,6 +71,6 @@ class FileCache extends \StoreCore\FileSystem\FileCacheReader
      */
     public function flush()
     {
-        array_map('unlink', glob(\StoreCore\FileSystem\CACHE_DIR . '/pages/*.tmp'));
+        array_map('unlink', glob(STORECORE_FILESYSTEM_CACHE_DIR . '/pages/*.tmp'));
     }
 }

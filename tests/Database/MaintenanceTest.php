@@ -6,7 +6,7 @@ class MaintenanceTest extends PHPUnit_Framework_TestCase
      */
     public function testDatabaseMaintenanceClassFileExists()
     {
-        $this->assertFileExists(\StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Database/Maintenance.php');
+        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Database/Maintenance.php');
     }
 
     public function testVersionConstantIsDefined()

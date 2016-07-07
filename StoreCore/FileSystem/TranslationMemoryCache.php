@@ -28,12 +28,12 @@ class TranslationMemoryCache
     {
         $logger = new Logger();
 
-        if (!defined('\\StoreCore\\FileSystem\\CACHE_DIR')) {
+        if (!defined('STORECORE_FILESYSTEM_CACHE_DIR')) {
             $logger->error('Cache directory is not defined.');
             return false;
         }
 
-        $cache_directory = \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR;
+        $cache_directory = STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR;
         if (!is_dir($cache_directory)) {
             if (!mkdir($cache_directory, 0755)) {
                 $logger->error('Could not create cache directory ' . $cache_directory);

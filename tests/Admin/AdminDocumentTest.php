@@ -15,7 +15,7 @@ class AdminDocumentTest extends PHPUnit_Framework_TestCase
      */
     public function testAdminDocumentClassFileExists()
     {
-        $this->assertFileExists(\StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Admin/Document.php');
+        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Admin/Document.php');
     }
 
     public function testVersionConstantIsDefined()

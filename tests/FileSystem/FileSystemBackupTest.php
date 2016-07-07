@@ -6,7 +6,7 @@ class FileSystemBackupTest extends PHPUnit_Framework_TestCase
      */
     public function testFileSystemBackupClassFileExists()
     {
-        $this->assertFileExists(\StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'FileSystem/Backup.php');
+        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'FileSystem/Backup.php');
     }
 
     public function testVersionConstantIsDefined()

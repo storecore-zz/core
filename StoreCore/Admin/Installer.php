@@ -147,8 +147,8 @@ class Installer extends \StoreCore\AbstractController
             \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'jpeg' => true,
             \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'png'  => true,
             \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'svg'  => false,
-            \StoreCore\FileSystem\CACHE_DIR => true,
-            \StoreCore\FileSystem\LOGS_DIR => true,
+            STORECORE_FILESYSTEM_CACHE_DIR => true,
+            STORECORE_FILESYSTEM_LOGS_DIR => true,
         );
         foreach ($folders as $filename => $must_be_writable) {
             if (!is_dir($filename)) {
@@ -162,12 +162,12 @@ class Installer extends \StoreCore\AbstractController
 
         $files = array(
             \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.php' => true,
-            \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'de-DE.php' => true,
-            \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'en-GB.php' => true,
-            \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'fr-FR.php' => true,
-            \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'nl-NL.php' => true,
-            \StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Database' . DIRECTORY_SEPARATOR . 'core-mysql.sql' => false,
-            \StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Database' . DIRECTORY_SEPARATOR . 'i18n-dml.sql' => false,
+            STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'de-DE.php' => true,
+            STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'en-GB.php' => true,
+            STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'fr-FR.php' => true,
+            STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'nl-NL.php' => true,
+            STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Database' . DIRECTORY_SEPARATOR . 'core-mysql.sql' => false,
+            STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Database' . DIRECTORY_SEPARATOR . 'i18n-dml.sql' => false,
         );
         foreach ($files as $filename => $must_be_writable) {
             if (!is_file($filename)) {

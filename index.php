@@ -31,17 +31,17 @@ if (is_file($parent_directory . 'config.php')) {
 unset($parent_directory);
 
 // Boot
-if (!defined('\\StoreCore\\FileSystem\\LIBRARY_ROOT_DIR')) {
-    define('StoreCore\\FileSystem\\LIBRARY_ROOT_DIR', __DIR__ . DIRECTORY_SEPARATOR . 'StoreCore' . DIRECTORY_SEPARATOR);
+if (!defined('STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR')) {
+    define('STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR', __DIR__ . DIRECTORY_SEPARATOR . 'StoreCore' . DIRECTORY_SEPARATOR);
 }
-require \StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'bootloader.php';
+require STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'bootloader.php';
 
 // Working directory
 define('StoreCore\\FileSystem\\STOREFRONT_ROOT_DIR', __DIR__ . DIRECTORY_SEPARATOR);
 
 // Cache directory
-if (!defined('\\StoreCore\\FileSystem\\CACHE_DIR')) {
-    define('StoreCore\\FileSystem\\CACHE_DIR', \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'cache' . DIRECTORY_SEPARATOR);
+if (!defined('STORECORE_FILESYSTEM_CACHE_DIR')) {
+    define('STORECORE_FILESYSTEM_CACHE_DIR', \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'cache' . DIRECTORY_SEPARATOR);
 }
 
 // Logging

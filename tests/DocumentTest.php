@@ -6,7 +6,7 @@ class DocumentTest extends PHPUnit_Framework_TestCase
      */
     public function testCoreDocumentClassFileExists()
     {
-        $this->assertFileExists(\StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Document.php');
+        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Document.php');
     }
 
     public function testVersionConstantIsDefined()

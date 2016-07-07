@@ -7,17 +7,17 @@ namespace StoreCore\FileSystem;
  * This helper class contains methods to handle cached web page files.
  * By default, cached web pages are stored as .tmp HTML text files in the
  * /cache/pages/ subdirectory.  The main /cache/ directory is defined by the
- * global constant \StoreCore\FileSystem\CACHE_DIR.
+ * global constant STORECORE_FILESYSTEM_CACHE_DIR.
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Catalog
- * @version   0.1.0-alpha.1
+ * @version   0.1.0
  */
 class FileCacheReader
 {
-    const VERSION = '0.1.0-alpha.1';
+    const VERSION = '0.1.0';
 
     /** @var string $FileName */
     private $FileName;
@@ -42,7 +42,7 @@ class FileCacheReader
      */
     public function exists(\StoreCore\Types\CacheKey $key = null)
     {
-        if (!defined('\\StoreCore\\FileSystem\\CACHE_DIR')) {
+        if (!defined('STORECORE_FILESYSTEM_CACHE_DIR')) {
             return false;
         }
 
@@ -109,9 +109,9 @@ class FileCacheReader
      */
     protected function setFileName(\StoreCore\Types\CacheKey $key)
     {
-        if (!defined('\\StoreCore\\FileSystem\\CACHE_DIR')) {
+        if (!defined('STORECORE_FILESYSTEM_CACHE_DIR')) {
             return;
         }
-        $this->FileName = \StoreCore\FileSystem\CACHE_DIR . 'pages' . DIRECTORY_SEPARATOR . $key . '.tmp';
+        $this->FileName = STORECORE_FILESYSTEM_CACHE_DIR . 'pages' . DIRECTORY_SEPARATOR . $key . '.tmp';
     }
 }

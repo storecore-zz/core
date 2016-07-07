@@ -9,7 +9,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
      */
     public function testCoreRequestClassFileExists()
     {
-        $this->assertFileExists(\StoreCore\FileSystem\LIBRARY_ROOT_DIR . 'Request.php');
+        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Request.php');
     }
 
     public function testVersionConstantIsDefined()

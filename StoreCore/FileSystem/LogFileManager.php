@@ -23,7 +23,7 @@ class LogFileManager implements \Countable
      */
     public function __construct()
     {
-        $this->LogFiles = scandir(\StoreCore\FileSystem\LOGS_DIR);
+        $this->LogFiles = scandir(STORECORE_FILESYSTEM_LOGS_DIR);
         if ($this->LogFiles !== false) {
             $this->clear();
         }
@@ -41,14 +41,14 @@ class LogFileManager implements \Countable
     {
         $files = $this->LogFiles;
         foreach ($files as $key => $filename) {
-            if (is_dir(\StoreCore\FileSystem\LOGS_DIR . $filename)) {
+            if (is_dir(STORECORE_FILESYSTEM_LOGS_DIR . $filename)) {
                 unset($files[$key]);
             } elseif ($filename === '.htaccess') {
                 unset($files[$key]);
             } else {
                 $filename = str_ireplace('.log', null, $filename) . '.log';
-                if ($all === true || filesize(\StoreCore\FileSystem\LOGS_DIR . $filename) === 0) {
-                    if (unlink(\StoreCore\FileSystem\LOGS_DIR . $filename)) {
+                if ($all === true || filesize(STORECORE_FILESYSTEM_LOGS_DIR . $filename) === 0) {
+                    if (unlink(STORECORE_FILESYSTEM_LOGS_DIR . $filename)) {
                         unset($files[$key]);
                     }
                 }
@@ -87,7 +87,7 @@ class LogFileManager implements \Countable
 
         $return = (string)null;
         foreach ($files as $filename) {
-            $file_contents = file_get_contents(\StoreCore\FileSystem\LOGS_DIR . $filename, false);
+            $file_contents = file_get_contents(STORECORE_FILESYSTEM_LOGS_DIR . $filename, false);
             if ($file_contents !== false && !empty($file_contents)) {
                 $return .= $file_contents . "\n";
             }

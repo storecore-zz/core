@@ -27,7 +27,7 @@ class Blacklist
      */
     public static function exists($ip_address)
     {
-        $filename = \StoreCore\FileSystem\CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'ip-blacklist.ini';
+        $filename = STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'ip-blacklist.ini';
         if (!is_file($filename)) {
             return false;
         }
