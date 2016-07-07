@@ -56,7 +56,9 @@ if (defined('\\StoreCore\\NULL_LOGGER') && \StoreCore\NULL_LOGGER == true) {
 
 // Load and populate the global service locator.
 $registry = \StoreCore\Registry::getInstance();
+$request = new \StoreCore\Request();
 $registry->set('Logger', $logger);
+$registry->set('Request', $request);
 
 // Run the installer on a missing installed version ID.
 if (!defined('STORECORE_VERSION_INSTALLED')) {
@@ -73,11 +75,9 @@ if (\StoreCore\FileSystem\Blacklist::exists($_SERVER['REMOTE_ADDR'])) {
     $response->output();
     $logger->info('HTTP/1.1 403 Forbidden: client IP address ' . $_SERVER['REMOTE_ADDR'] . ' is blacklisted.');
     exit;
-} else {
-    $request = new \StoreCore\Request();
-    $registry->set('Request', $request);
 }
 
+// Start or restart and optionally destroy a session.
 $session = new \StoreCore\Session();
 if (defined('\\StoreCore\\KILL_SWITCH') && \StoreCore\KILL_SWITCH == true) {
     $response = new \StoreCore\Response($registry);
