@@ -48,10 +48,9 @@ class DocumentTest extends PHPUnit_Framework_TestCase
         $this->assertContains('<title>Foo Bar</title>', $document->getHead());
     }
 
-    public function testEmptyBodyHasWrapper()
+    public function testEmptyBodyHasClosingTag()
     {
         $this->Document = new \StoreCore\Document();
-        $this->assertContains('<div id="wrapper"></div>', $this->Document->getBody());
-        $this->assertEquals('<body><div id="wrapper"></div></body>', $this->Document->getBody());
+        $this->assertEquals('<body></body>', $this->Document->getBody());
     }
 }
