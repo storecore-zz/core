@@ -128,7 +128,7 @@ h3{font-size:34px;line-height:40px}
 h4{font-size:24px;line-height:32px;-moz-osx-font-smoothing:grayscale;margin:24px 0 16px}
 p{font-size:14px;letter-spacing:0;margin:0 0 16px}
 a{color:rgb(255,171,64);font-weight:500}
-blockquote{position:relative;font-size:24px;font-weight:300;font-style:italic;line-height:1.35;letter-spacing:.08em}
+blockquote{position:relative;font-size:24px;font-weight:300;font-style:normal;line-height:1.35;letter-spacing:.08em}
 blockquote:before{position:absolute;left:-.5em;content:'â€œ'}
 blockquote:after{content:'â€';margin-left:-.05em}
 mark{background-color:#f4ff81}
