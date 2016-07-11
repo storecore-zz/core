@@ -20,6 +20,7 @@ https://code.getmdl.io/1.1.3/material.blue-orange.min.css
 - Merge default `font-weight: 400` into a single declaration.
 - Drop the `-force-` classes.
 - Drop the `--` duplicates of class names with `__`.
+- Drop extreme font weights 100, 200, and 900.
 
 
 ## Overwrites Not Supported
