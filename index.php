@@ -37,16 +37,19 @@ if (!defined('STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR')) {
 require STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'bootloader.php';
 
 // Working directory
-define('StoreCore\\FileSystem\\STOREFRONT_ROOT_DIR', __DIR__ . DIRECTORY_SEPARATOR);
+define('STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR', __DIR__ . DIRECTORY_SEPARATOR);
 
 // Cache directory
 if (!defined('STORECORE_FILESYSTEM_CACHE_DIR')) {
-    define('STORECORE_FILESYSTEM_CACHE_DIR', \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'cache' . DIRECTORY_SEPARATOR);
+    define('STORECORE_FILESYSTEM_CACHE_DIR', STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'cache' . DIRECTORY_SEPARATOR);
 }
 
 // Logging
-if (!defined('\\StoreCore\\FileSystem\\LOGS_DIR')) {
-    define('StoreCore\\FileSystem\\LOGS_DIR', \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'logs' . DIRECTORY_SEPARATOR);
+if (!defined('STORECORE_FILESYSTEM_LOGS_DIR')) {
+    define('STORECORE_FILESYSTEM_LOGS_DIR', STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'logs' . DIRECTORY_SEPARATOR);
+}
+if (!defined('STORECORE_NULL_LOGGER')) {
+    define('STORECORE_NULL_LOGGER', false);
 }
 if (STORECORE_NULL_LOGGER) {
     $logger = new \Psr\Log\NullLogger();

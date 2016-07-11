@@ -9,11 +9,11 @@ namespace StoreCore\Admin;
  * @internal
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @version   0.1.0-alpha.1
+ * @version   0.1.0
  */
 class Installer extends \StoreCore\AbstractController
 {
-    const VERSION = '0.1.0-alpha.1';
+    const VERSION = '0.1.0';
 
     /** @var \StoreCore\FileSystem\Logger $Logger */
     protected $Logger;
@@ -84,7 +84,7 @@ class Installer extends \StoreCore\AbstractController
     private function checkDatabaseConnection()
     {
         try {
-            $dbh = new \PDO($this->getDSN(), \StoreCore\Database\DEFAULT_USERNAME, \StoreCore\Database\DEFAULT_PASSWORD, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
+            $dbh = new \PDO($this->getDSN(), STORECORE_DATABASE_DEFAULT_USERNAME, STORECORE_DATABASE_DEFAULT_PASSWORD, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
         } catch (\PDOException $e) {
             $this->Logger->critical($e->getMessage());
             if ($this->Request->getRequestPath() !== '/admin/settings/database/') {
@@ -142,11 +142,11 @@ class Installer extends \StoreCore\AbstractController
         $errors = array();
 
         $folders = array(
-            \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'css'  => true,
-            \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'ico'  => false,
-            \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'jpeg' => true,
-            \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'png'  => true,
-            \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'svg'  => false,
+            STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'css'  => true,
+            STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'ico'  => false,
+            STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'jpeg' => true,
+            STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'png'  => true,
+            STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'svg'  => false,
             STORECORE_FILESYSTEM_CACHE_DIR => true,
             STORECORE_FILESYSTEM_LOGS_DIR => true,
         );
@@ -161,7 +161,7 @@ class Installer extends \StoreCore\AbstractController
         }
 
         $files = array(
-            \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.php' => true,
+            STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'config.php' => true,
             STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'de-DE.php' => true,
             STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'en-GB.php' => true,
             STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'fr-FR.php' => true,
@@ -210,10 +210,10 @@ class Installer extends \StoreCore\AbstractController
             $errors[] = 'PHP extension PDO is not loaded.';
         }
 
-        if (\StoreCore\Database\DRIVER === 'mysql' && !extension_loaded('pdo_mysql')) {
+        if (STORECORE_DATABASE_DRIVER === 'mysql' && !extension_loaded('pdo_mysql')) {
             $errors[] = 'PHP extension PDO for MySQL (pdo_mysql) is not loaded.';
-        } elseif (!in_array(\StoreCore\Database\DRIVER, \PDO::getAvailableDrivers(), true)) {
-            $errors[] = 'PDO driver ' . \StoreCore\Database\DRIVER . ' is not available.';
+        } elseif (!in_array(STORECORE_DATABASE_DRIVER, \PDO::getAvailableDrivers(), true)) {
+            $errors[] = 'PDO driver ' . STORECORE_DATABASE_DRIVER . ' is not available.';
         }
 
         if (count($errors) == 0) {
@@ -391,9 +391,9 @@ class Installer extends \StoreCore\AbstractController
      */
     private function getDSN()
     {
-        return \StoreCore\Database\DRIVER
-            . ':dbname=' . \StoreCore\Database\DEFAULT_DATABASE
-            . ';host=' . \StoreCore\Database\DEFAULT_HOST
+        return STORECORE_DATABASE_DRIVER
+            . ':dbname=' . STORECORE_DATABASE_DEFAULT_DATABASE
+            . ';host=' . STORECORE_DATABASE_DEFAULT_HOST
             . ';charset=utf8';
     }
 

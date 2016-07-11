@@ -10,11 +10,11 @@ define('STORECORE_NULL_LOGGER', false);
 define('STORECORE_STATISTICS', false);
 
 /* Database */
-define('StoreCore\\Database\\DRIVER',           'mysql');
-define('StoreCore\\Database\\DEFAULT_HOST',     'localhost');
-define('StoreCore\\Database\\DEFAULT_DATABASE', 'test');
-define('StoreCore\\Database\\DEFAULT_USERNAME', 'root');
-define('StoreCore\\Database\\DEFAULT_PASSWORD', '');
+define('STORECORE_DATABASE_DRIVER',           'mysql');
+define('STORECORE_DATABASE_DEFAULT_HOST',     'localhost');
+define('STORECORE_DATABASE_DEFAULT_DATABASE', 'test');
+define('STORECORE_DATABASE_DEFAULT_USERNAME', 'root');
+define('STORECORE_DATABASE_DEFAULT_PASSWORD', '');
 
 /* File System */
 // define('STORECORE_FILESYSTEM_CACHE_DIR', '');

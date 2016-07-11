@@ -19,24 +19,24 @@ class SettingsDatabase extends \StoreCore\AbstractController
             $driver = $this->Request->get('driver');
             if (
                 $driver !== null
-                && $driver !== \StoreCore\Database\DRIVER
+                && $driver !== STORECORE_DATABASE_DRIVER
                 && in_array($driver, \PDO::getAvailableDrivers(), true) === true
             ) {
-                $config->set('StoreCore\\Database\\DRIVER', $driver);
+                $config->set('STORECORE_DATABASE_DRIVER', $driver);
                 $save_config = true;
             }
 
             // Database server host name or IP address
             $hostname = $this->Request->get('hostname');
-            if ($hostname !== \StoreCore\Database\DEFAULT_HOST) {
-                $config->set('StoreCore\\Database\\DEFAULT_HOST', $hostname);
+            if ($hostname !== STORECORE_DATABASE_DEFAULT_HOST) {
+                $config->set('STORECORE_DATABASE_DEFAULT_HOST', $hostname);
                 $save_config = true;
             }
 
             // Database name
             $databasename = $this->Request->get('databasename');
-            if ($databasename !== \StoreCore\Database\DEFAULT_DATABASE) {
-                $config->set('StoreCore\\Database\\DEFAULT_DATABASE', $databasename);
+            if ($databasename !== STORECORE_DATABASE_DEFAULT_DATABASE) {
+                $config->set('STORECORE_DATABASE_DEFAULT_DATABASE', $databasename);
                 $save_config = true;
             }
 
@@ -44,8 +44,8 @@ class SettingsDatabase extends \StoreCore\AbstractController
             $username = $this->Request->get('username');
             if (is_string($username)) {
                 $username = trim($username);
-                if ($username !== \StoreCore\Database\DEFAULT_USERNAME && strlen($username) <= 16) {
-                    $config->set('StoreCore\\Database\\DEFAULT_USERNAME', $username);
+                if ($username !== STORECORE_DATABASE_DEFAULT_USERNAME && strlen($username) <= 16) {
+                    $config->set('STORECORE_DATABASE_DEFAULT_USERNAME', $username);
                     $save_config = true;
                 }
             }
@@ -53,8 +53,8 @@ class SettingsDatabase extends \StoreCore\AbstractController
             $password = $this->Request->get('password');
             if ($password !== null) {
                 $password = trim($password);
-                if ($password !== \StoreCore\Database\DEFAULT_PASSWORD) {
-                    $config->set('StoreCore\\Database\\DEFAULT_PASSWORD', $password);
+                if ($password !== STORECORE_DATABASE_DEFAULT_PASSWORD) {
+                    $config->set('STORECORE_DATABASE_DEFAULT_PASSWORD', $password);
                     $save_config = true;
                 }
             }
@@ -75,7 +75,7 @@ class SettingsDatabase extends \StoreCore\AbstractController
             // Only select PDO drivers that are available in PHP as well as
             // supported by the StoreCore\Database.
             $supported_drivers = array(
-                'mysql' => 'MySQL (' . \STORECORE\I18N\ADJECTIVE_DEFAULT . ')',
+                'mysql' => 'MySQL (' . \StoreCore\I18N\ADJECTIVE_DEFAULT . ')',
             );
             $this->View->setValues(array('available_drivers' => \PDO::getAvailableDrivers()));
             $this->View->setValues(array('supported_drivers' => $supported_drivers));

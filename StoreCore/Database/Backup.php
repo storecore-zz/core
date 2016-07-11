@@ -39,7 +39,12 @@ class Backup
             $logger = new \StoreCore\FileSystem\Logger();
         }
 
-        $mysqli = new \mysqli(\StoreCore\Database\DEFAULT_HOST, \StoreCore\Database\DEFAULT_USERNAME, \StoreCore\Database\DEFAULT_PASSWORD, \StoreCore\Database\DEFAULT_DATABASE);
+        $mysqli = new \mysqli(
+            STORECORE_DATABASE_DEFAULT_HOST,
+            STORECORE_DATABASE_DEFAULT_USERNAME,
+            STORECORE_DATABASE_DEFAULT_PASSWORD,
+            STORECORE_DATABASE_DEFAULT_DATABASE
+        );
         if ($mysqli->connect_error) {
             $logger->error('Connect error number ' . $mysqli->connect_errno . ': ' . $mysqli->connect_error);
             exit;

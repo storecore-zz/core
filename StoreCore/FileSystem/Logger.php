@@ -42,7 +42,7 @@ class Logger extends AbstractLogger implements SubjectInterface
     public function __construct($filename = null)
     {
         if ($filename == null) {
-            if (defined(STORECORE_FILESYSTEM_LOGS_FILENAME_FORMAT)) {
+            if (defined('STORECORE_FILESYSTEM_LOGS_FILENAME_FORMAT')) {
                 $filename = gmdate(STORECORE_FILESYSTEM_LOGS_FILENAME_FORMAT) . '.log';
             } else {
                 $filename = gmdate('YmdH') . '.log';
