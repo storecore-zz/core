@@ -243,16 +243,16 @@ input.mdl-button[type="submit"]{-webkit-appearance:none}
 .mdl-button--icon .mdl-button__ripple-container{border-radius:50%;-webkit-mask-image:-webkit-radial-gradient(circle,#fff,#000)}
 .mdl-button__ripple-container{display:block;height:100%;left:0;position:absolute;top:0;width:100%;z-index:0;overflow:hidden}
 .mdl-button[disabled] .mdl-button__ripple-container .mdl-ripple,.mdl-button.mdl-button--disabled .mdl-button__ripple-container .mdl-ripple{background-color:transparent}
-.mdl-button--primary.mdl-button--primary{color:rgb(33,150,243)}
-.mdl-button--primary.mdl-button--primary .mdl-ripple{background:rgb(255,255,255)}
-.mdl-button--primary.mdl-button--primary.mdl-button--raised,.mdl-button--primary.mdl-button--primary.mdl-button--fab{color:rgb(255,255,255);background-color:rgb(33,150,243)}
-.mdl-button--accent.mdl-button--accent{color:rgb(255,171,64)}
-.mdl-button--accent.mdl-button--accent .mdl-ripple{background:rgb(66,66,66)}
-.mdl-button--accent.mdl-button--accent.mdl-button--raised,.mdl-button--accent.mdl-button--accent.mdl-button--fab{color:rgb(66,66,66);background-color:rgb(255,171,64)}
-.mdl-button[disabled][disabled],.mdl-button.mdl-button--disabled.mdl-button--disabled{color:rgba(0,0,0,.26);cursor:default;background-color:transparent}
-.mdl-button--fab[disabled][disabled],.mdl-button--fab.mdl-button--disabled.mdl-button--disabled{background-color:rgba(0,0,0,.12);color:rgba(0,0,0,.26)}
-.mdl-button--raised[disabled][disabled],.mdl-button--raised.mdl-button--disabled.mdl-button--disabled{background-color:rgba(0,0,0,.12);color:rgba(0,0,0,.26);box-shadow:none}
-.mdl-button--colored[disabled][disabled],.mdl-button--colored.mdl-button--disabled.mdl-button--disabled{color:rgba(0,0,0,.26)}
+.mdl-button--primary{color:rgb(33,150,243)}
+.mdl-button--primary .mdl-ripple{background:rgb(255,255,255)}
+.mdl-button--primary.mdl-button--raised,.mdl-button--primary.mdl-button--fab{color:rgb(255,255,255);background-color:rgb(33,150,243)}
+.mdl-button--accent{color:rgb(255,171,64)}
+.mdl-button--accent .mdl-ripple{background:rgb(66,66,66)}
+.mdl-button--accent .mdl-button--raised,.mdl-button--accent.mdl-button--fab{color:rgb(66,66,66);background-color:rgb(255,171,64)}
+.mdl-button[disabled][disabled],.mdl-button.mdl-button--disabled{color:rgba(0,0,0,.26);cursor:default;background-color:transparent}
+.mdl-button--fab[disabled][disabled],.mdl-button--fab.mdl-button--disabled{background-color:rgba(0,0,0,.12);color:rgba(0,0,0,.26)}
+.mdl-button--raised[disabled][disabled],.mdl-button--raised.mdl-button--disabled{background-color:rgba(0,0,0,.12);color:rgba(0,0,0,.26);box-shadow:none}
+.mdl-button--colored[disabled][disabled],.mdl-button--colored.mdl-button--disabled{color:rgba(0,0,0,.26)}
 .mdl-button .material-icons{vertical-align:middle}
 .mdl-card{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;font-size:16px;min-height:200px;overflow:hidden;width:330px;z-index:1;position:relative;background:#fff;border-radius:2px;box-sizing:border-box}
 .mdl-card__media{background-color:rgb(255,171,64);background-repeat:repeat;background-position:50% 50%;background-size:cover;background-origin:padding-box;background-attachment:scroll;box-sizing:border-box}
