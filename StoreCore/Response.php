@@ -9,11 +9,11 @@ namespace StoreCore;
  * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @version   0.1.0-alpha.1
+ * @version   0.1.0
  */
 class Response extends AbstractController
 {
-    const VERSION = '0.1.0-alpha.1';
+    const VERSION = '0.1.0';
 
     /**
      * @type int    $CompressionLevel
@@ -99,6 +99,7 @@ class Response extends AbstractController
                     header($header, true);
                 }
             }
+            header('X-DNS-Prefetch-Control: on');
             header('X-Frame-Options: SAMEORIGIN', true);
             header('X-Powered-By: StoreCore/' . STORECORE_VERSION, true);
             header('X-UA-Compatible: IE=edge', true);
