@@ -262,10 +262,9 @@ class Document
     {
         $html  = '<!DOCTYPE html>';
 
+        $html .= '<html';
         if ($this->AcceleratedMobilePage) {
-            $html .= '<html amp';
-        } else {
-            $html .= '<html';
+            $html .= ' amp';
         }
         $html .= ' dir="' . $this->Direction . '" lang="' . $this->Language . '">';
 
