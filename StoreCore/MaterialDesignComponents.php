@@ -23,6 +23,7 @@ class MaterialDesignComponents
      *   and SHOULD NOT be added to this array.
      */
     private $EnabledComponents = array(
+        'mdl-badge'       => false,
         'mdl-checkbox'    => false,
         'mdl-chip'        => false,
         'mdl-data-table'  => false,
