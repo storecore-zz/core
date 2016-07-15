@@ -145,13 +145,7 @@ ul,ol{font-size:14px;line-height:24px}
 .mdl-animation--default,.mdl-animation--fast-out-slow-in{transition-timing-function:cubic-bezier(.4,0,.2,1)}
 .mdl-animation--linear-out-slow-in{transition-timing-function:cubic-bezier(0,0,.2,1)}
 .mdl-animation--fast-out-linear-in{transition-timing-function:cubic-bezier(.4,0,1,1)}
-.mdl-badge{position:relative;white-space:nowrap;margin-right:24px}
-.mdl-badge:not([data-badge]){margin-right:auto}
-.mdl-badge[data-badge]:after{content:attr(data-badge);display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-flex-wrap:wrap;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;-webkit-align-content:center;-ms-flex-line-pack:center;align-content:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center;position:absolute;top:-11px;right:-24px;font-weight:600;font-size:12px;width:22px;height:22px;border-radius:50%;background:rgb(255,171,64);color:rgb(66,66,66)}
-.mdl-button .mdl-badge[data-badge]:after{top:-10px;right:-5px}
-.mdl-badge.mdl-badge--no-background[data-badge]:after{color:rgb(255,171,64);background:rgba(66,66,66,.2);box-shadow:0 0 1px gray}
-.mdl-badge.mdl-badge--overlap{margin-right:10px}
-.mdl-badge.mdl-badge--overlap:after{right:-10px}
+
 .mdl-button{background:0 0;border:none;border-radius:2px;color:#000;position:relative;height:36px;margin:0;min-width:64px;padding:0 16px;display:inline-block;font-size:14px;font-weight:500;text-transform:uppercase;letter-spacing:0;overflow:hidden;will-change:box-shadow;transition:box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1);outline:none;cursor:pointer;text-decoration:none;text-align:center;line-height:36px;vertical-align:middle}
 .mdl-button::-moz-focus-inner{border:0}
 .mdl-button:hover{background-color:rgba(158,158,158,.2)}
