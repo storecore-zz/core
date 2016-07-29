@@ -22,10 +22,10 @@ class Configurator
      *   these cannot be defined in config.php.
      */
     private $IgnoredSettings = array(
-        'StoreCore\\VERSION'       => true,
-        'StoreCore\\MAJOR_VERSION' => true,
-        'StoreCore\\MINOR_VERSION' => true,
-        'StoreCore\\PATCH_VERSION' => true,
+        'STORECORE_VERSION'       => true,
+        'STORECORE_MAJOR_VERSION' => true,
+        'STORECORE_MINOR_VERSION' => true,
+        'STORECORE_PATCH_VERSION' => true,
     );
 
     /**
@@ -97,9 +97,9 @@ class Configurator
         }
 
         // Save config.php in the root or its parent directory.
-        $filename = realpath(\StoreCore\FileSystem\STOREFRONT_ROOT_DIR . '../') . DIRECTORY_SEPARATOR . 'config.php';
+        $filename = realpath(STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . '../') . DIRECTORY_SEPARATOR . 'config.php';
         if (!is_file($filename) || !is_writable($filename)) {
-            $filename = \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.php';
+            $filename = STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'config.php';
         }
         $return = file_put_contents($filename, $file, LOCK_EX);
         if ($return === false) {
