@@ -809,8 +809,8 @@ the StoreCore framework:
 
 ```
 /**
- * @copyright Copyright (c) 2015 StoreCore
- * @copyright Portions copyright (c) 2009-2014 FooBar
+ * @copyright Copyright (c) 2016 StoreCore
+ * @copyright Portions copyright (c) 2009-2015 FooBar
  * @version   0.1.0
  */
 ```

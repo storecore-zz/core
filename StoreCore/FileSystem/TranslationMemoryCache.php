@@ -9,14 +9,14 @@ use \StoreCore\FileSystem\Logger as Logger;
  * Translation Memory Cache
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\I18N
- * @version   0.1.0-alpha.1
+ * @version   0.1.0
  */
 class TranslationMemoryCache
 {
-    const VERSION = '0.1.0-alpha.1';
+    const VERSION = '0.1.0';
 
     /**
      * Rebuild the cached language packs.

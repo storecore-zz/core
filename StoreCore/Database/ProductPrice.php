@@ -8,11 +8,11 @@ namespace StoreCore\Database;
  * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Marketing
- * @version   0.1.0-alpha.1
+ * @version   0.1.0
  */
 class ProductPrice extends \StoreCore\Database\AbstractModel
 {
-    const VERSION = '0.1.0-alpha.1';
+    const VERSION = '0.1.0';
 
     /**
      * @var int $Precision

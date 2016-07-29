@@ -7,14 +7,14 @@ use \StoreCore\AbstractController as AbstractController;
  * Access Control Whitelist Controller
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
- * @version   0.1.0-alpha.1
+ * @version   0.1.0
  */
 class AccessControlWhitelist extends AbstractController
 {
-    const VERSION = '0.1.0-alpha.1';
+    const VERSION = '0.1.0';
 
     /**
      * @param void

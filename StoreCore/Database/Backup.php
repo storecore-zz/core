@@ -5,15 +5,14 @@ namespace StoreCore\Database;
  * StoreCore Database Backup
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Database
- * @version   0.1.0-alpha.1
+ * @version   0.1.0
  */
 class Backup
 {
-    /** @var string VERSION */
-    const VERSION = '0.1.0-alpha.1';
+    const VERSION = '0.1.0';
 
     /**
      * Save a database backup to file.

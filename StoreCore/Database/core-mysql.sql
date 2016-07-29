@@ -5,7 +5,7 @@
 -- @copyright Copyright (c) 2014-2016 StoreCore
 -- @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
 -- @package   StoreCore\Database
--- @version   0.1.0-alpha.1
+-- @version   0.1.0
 --
 
 -- User groups

@@ -17,7 +17,7 @@ class DatabaseBackupTest extends PHPUnit_Framework_TestCase
 
     public function testVersionMatchesDevelopmentBranch()
     {
-        $this->assertGreaterThanOrEqual('0.1.0-alpha.1', \StoreCore\Database\Backup::VERSION);
+        $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Database\Backup::VERSION);
     }
 
     public function testSaveMethodIsPublic()
