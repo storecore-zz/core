@@ -63,13 +63,6 @@ $request = new \StoreCore\Request();
 $registry->set('Logger', $logger);
 $registry->set('Request', $request);
 
-// Run the installer on a missing installed version ID.
-if (!defined('STORECORE_VERSION_INSTALLED')) {
-    $route = new \StoreCore\Route('/install/', '\StoreCore\Admin\FrontController', 'install');
-    $route->dispatch();
-    exit;
-}
-
 // Refuse requests from a blacklisted client IP address.
 if (\StoreCore\FileSystem\Blacklist::exists($_SERVER['REMOTE_ADDR'])) {
     $response = new \StoreCore\Response($registry);
@@ -115,6 +108,13 @@ if ($language == null) {
 setcookie('Language', base64_encode($language), time() + 7776000, '/');
 $session->set('Language', $language);
 $registry->set('Session', $session);
+
+// Run the installer on a missing installed version ID.
+if (!defined('STORECORE_VERSION_INSTALLED')) {
+    $route = new \StoreCore\Route('/install/', '\StoreCore\Admin\FrontController', 'install');
+    $route->dispatch();
+    exit;
+}
 
 // Routing
 $route = false;
