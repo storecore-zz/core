@@ -159,11 +159,31 @@ class ProductPrice extends \StoreCore\Database\AbstractModel
     }
 
     /**
+     * Set the default precision.
+     *
      * @param int $precision
+     *   Number of digits from 0 up to and including 4.
+     *
      * @return void
      */
     public function setPrecision($precision)
     {
+        if (!is_int($precision)) {
+            if (ctype_digit($precision)) {
+                $precision = (int)$precision;
+            } else {
+                throw new \InvalidArgumentException(
+                    __METHOD__ . ' expects parameter 1 to be integer, '
+                    . gettype($precision) .' given.'
+                );
+            }
+        }
+        
+        if ($precision < 0) {
+            $precision = 0;
+        } elseif ($precision > 4) {
+            $precision = 4;
+        }
         $this->Precision = $precision;
     }
 
