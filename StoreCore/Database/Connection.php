@@ -5,7 +5,7 @@ namespace StoreCore\Database;
  * Database Connection
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Database
  * @version   0.1.0
@@ -30,15 +30,15 @@ class Connection extends \PDO
     public function __construct($dsn = null, $username = null, $password = null)
     {
         if ($dsn == null) {
-            $dsn = \StoreCore\Database\DRIVER
-                . ':dbname=' . \StoreCore\Database\DEFAULT_DATABASE
+            $dsn = STORECORE_DATABASE_DRIVER
+                . ':dbname=' . STORECORE_DATABASE_DEFAULT_DATABASE
                 . ';host=' . STORECORE_DATABASE_DEFAULT_HOST
                 . ';charset=utf8';
         }
 
         if ($username == null) {
-            $username = \StoreCore\Database\DEFAULT_USERNAME;
-            $password = \StoreCore\Database\DEFAULT_PASSWORD;
+            $username = STORECORE_DATABASE_DEFAULT_USERNAME;
+            $password = STORECORE_DATABASE_DEFAULT_PASSWORD;
         }
 
         // Force lower case column names and exceptions on errors.
@@ -47,20 +47,37 @@ class Connection extends \PDO
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
         );
 
+        // Try to connect.
         try {
             parent::__construct($dsn, $username, $password, $options);
+            $retry = false;
         } catch (\PDOException $e) {
             $logger = new \StoreCore\FileSystem\Logger();
-            $logger->critical('Database connection failed: ' . trim($e->getMessage()));
-            if (!headers_sent()) {
-                header('HTTP/1.1 503 Service Unavailable', true);
-                header('Retry-After: 60');
-            }
-            exit;
+            $logger->error('Database connection error: ' . trim($e->getMessage()));
+            $retry = true;
         }
 
-        if (version_compare(PHP_VERSION, '5.3.6', '<')) {
-            $this->exec('SET NAMES utf8 COLLATE utf8_general_ci');
+        // Retry to connect and fail on a critical error.
+        if ($retry === true) {
+            sleep(mt_rand(3, 5));
+            try {
+                parent::__construct($dsn, $username, $password, $options);
+            } catch (\PDOException $e) {
+                $logger->critical('Database connection failed: ' . trim($e->getMessage()));
+                if (!headers_sent()) {
+                    header('HTTP/1.1 503 Service Unavailable', true);
+                    header('Retry-After: 60');
+                }
+                exit;
+            }
+        }
+
+        // Options for MySQL only
+        if ($this->getAttribute(\PDO::ATTR_DRIVER_NAME) == 'mysql') {
+            if (version_compare(PHP_VERSION, '5.3.6', '<')) {
+                $this->exec('SET NAMES utf8 COLLATE utf8_general_ci');
+            }
+            $this->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
         }
     }
 }
