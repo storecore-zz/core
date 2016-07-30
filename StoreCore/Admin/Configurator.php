@@ -50,8 +50,8 @@ class Configurator
             $defined_constants = $defined_constants['user'];
             foreach ($defined_constants as $name => $value) {
                 if (
-                    strpos($name, 'StoreCore\\', 0) === 0
-                    && strpos($name, 'StoreCore\\I18N\\', 0) !== 0
+                    strpos($name, 'STORECORE_', 0) === 0
+                    || (strpos($name, 'StoreCore\\', 0) === 0 && strpos($name, 'StoreCore\\I18N\\', 0) !== 0)
                 ) {
                     $this->Settings[$name] = $value;
                 }
@@ -97,10 +97,7 @@ class Configurator
         }
 
         // Save config.php in the root or its parent directory.
-        $filename = realpath(STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . '../') . DIRECTORY_SEPARATOR . 'config.php';
-        if (!is_file($filename) || !is_writable($filename)) {
-            $filename = STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'config.php';
-        }
+        $filename = STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'config.php';
         $return = file_put_contents($filename, $file, LOCK_EX);
         if ($return === false) {
             return false;

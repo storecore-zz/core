@@ -22,13 +22,7 @@
 
 // Load configuration
 require 'version.php';
-$parent_directory = realpath(__DIR__ . '/../') . DIRECTORY_SEPARATOR;
-if (is_file($parent_directory . 'config.php')) {
-    require $parent_directory . 'config.php';
-} else {
-    require 'config.php';
-}
-unset($parent_directory);
+require 'config.php';
 
 // Boot
 if (!defined('STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR')) {
