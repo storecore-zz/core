@@ -56,9 +56,13 @@ class FrontController extends AbstractController implements LoggerAwareInterface
      */
     public function install()
     {
-        $this->Logger->warning('Installer loaded.');
-        $route = new Route('/install/', '\StoreCore\Admin\Installer');
-        $route->dispatch();
+        if (is_file(__DIR__ . DIRECTORY_SEPARATOR . 'Installer.php')) {
+            $this->Logger->warning('Installer loaded.');
+            $route = new Route('/install/', '\StoreCore\Admin\Installer');
+            $route->dispatch();
+        } else {
+            $this->Logger->notice('StoreCore core class file Installer.php not found.');
+        }
         exit;
     }
 
