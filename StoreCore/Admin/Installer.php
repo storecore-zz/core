@@ -44,10 +44,10 @@ class Installer extends \StoreCore\AbstractController
                         if ($this->checkUsers()) {
                             $config = new \StoreCore\Admin\Configurator();
                             $config->set('STORECORE_VERSION_INSTALLED', STORECORE_VERSION);
+                            $config->set('STORECORE_MAINTENANCE_MODE', true);
                             $config->save();
                             $this->Logger->notice('Completed installation of StoreCore version ' . STORECORE_VERSION . '.');
 
-                            $this->moveConfigurationFiles();
                             $this->SelfDestruct = true;
 
                             $response = new \StoreCore\Response($this->Registry);
@@ -395,36 +395,5 @@ class Installer extends \StoreCore\AbstractController
             . ':dbname=' . STORECORE_DATABASE_DEFAULT_DATABASE
             . ';host=' . STORECORE_DATABASE_DEFAULT_HOST
             . ';charset=utf8';
-    }
-
-    /**
-     * Move config.php out of the root.
-     *
-     * @param void
-     * @return bool
-     */
-    private function moveConfigurationFiles()
-    {
-        $root_parent_directory = realpath(\StoreCore\FileSystem\STOREFRONT_ROOT_DIR . '../');
-        if (!is_dir($root_parent_directory) || !is_writable($root_parent_directory)) {
-            $this->Logger->notice('The directory ' . $root_parent_directory . ' is inaccessible.');
-            return false;
-        }
-
-        $root_parent_directory .= DIRECTORY_SEPARATOR;
-
-        $renamed_config_php = false;
-        if (is_file(\StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.php')) {
-            $renamed_config_php = rename(\StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'config.php', $root_parent_directory . 'config.php');
-            if ($renamed_config_php) {
-                $this->Logger->notice('Moved configuration file config.php to: ' . $root_parent_directory . 'config.php');
-            }
-        }
-
-        if ($renamed_config_php) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }
