@@ -41,18 +41,6 @@ final class Registry implements SingletonInterface
     }
 
     /**
-     * Set a shared value in the global registry.
-     *
-     * @param string $key
-     * @param mixed $value
-     * @return void
-     */
-    public function set($key, $value)
-    {
-        $this->Data[$key] = $value;
-    }
-
-    /**
      * Get a value from the registry.
      *
      * @param string $key
@@ -72,5 +60,17 @@ final class Registry implements SingletonInterface
     public function has($key)
     {
         return isset($this->Data[$key]);
+    }
+
+    /**
+     * Set a shared value in the global registry.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    public function set($key, $value)
+    {
+        $this->Data[$key] = $value;
     }
 }

@@ -5,12 +5,12 @@ namespace StoreCore\Database;
  * Salt
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2014-2015 StoreCore
+ * @copyright Copyright (c) 2014-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
  * @version   0.1.0
  */
-class Salt
+class Salt implements \StoreCore\SingletonInterface
 {
     const VERSION = '0.1.0';
 
@@ -44,10 +44,10 @@ class Salt
         }
 
         $charset = str_shuffle(self::CHARACTER_SET);
-        $charset_size = strlen($charset);
+        $charset_size = strlen($charset) - 1;
         $salt = (string)null;
         for ($i = 0; $i < $length; $i++) {
-            $salt .= $charset[mt_rand(0, $charset_size - 1)];
+            $salt .= $charset[mt_rand(0, $charset_size)];
         }
         return $salt;
     }

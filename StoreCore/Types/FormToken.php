@@ -10,7 +10,7 @@ namespace StoreCore\Types;
  * @package   StoreCore\Security
  * @version   0.1.0
  */
-class FormToken
+class FormToken implements \StoreCore\SingletonInterface
 {
     const VERSION = '0.1.0';
 
