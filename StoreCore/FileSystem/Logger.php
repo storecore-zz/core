@@ -3,19 +3,17 @@ namespace StoreCore\FileSystem;
 
 use \Psr\Log\AbstractLogger as AbstractLogger;
 use \Psr\Log\LogLevel as LogLevel;
-use \StoreCore\ObserverInterface as ObserverInterface;
-use \StoreCore\SubjectInterface as SubjectInterface;
 
 /**
  * File System Logger
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2014-2015 StoreCore
+ * @copyright Copyright (c) 2014-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
  * @version   0.1.0
  */
-class Logger extends AbstractLogger implements SubjectInterface
+class Logger extends AbstractLogger
 {
     const VERSION = '0.1.0';
 
@@ -25,17 +23,14 @@ class Logger extends AbstractLogger implements SubjectInterface
     /** @type string $Filename */
     private $Filename;
 
-    /** @var array $Observers */
-    private $Observers = array();
-
     /** @type string $OutputBuffer */
     private $OutputBuffer = '';
 
     /**
      * @param string $filename
      *   Optional name of the log file, with or without a trailing path.  If
-     *   the filename is not set, it defaults to the YYYYMMDD.log format with
-     *   a YYYY-MM-DD date for daily log files.
+     *   the filename is not set, it defaults to the YYYYMMDDHH.log format with
+     *   a YYYY-MM-DD date and HH hours for hourly log files.
      *
      * @return void
      */
@@ -64,26 +59,6 @@ class Logger extends AbstractLogger implements SubjectInterface
         if (is_resource($this->Handle)) {
             fclose($this->Handle);
         }
-    }
-
-    /**
-     * @param \StoreCore\ObserverInterface $observer
-     * @return void
-     */
-    public function attach(ObserverInterface $observer)
-    {
-        $id = spl_object_hash($observer);
-        $this->Observers[$id] = $observer;
-    }
-
-    /**
-     * @param \StoreCore\ObserverInterface $observer
-     * @return void
-     */
-    public function detach(ObserverInterface $observer)
-    {
-        $id = spl_object_hash($observer);
-        unset($this->Observers[$id]);
     }
 
     /**
@@ -142,18 +117,6 @@ class Logger extends AbstractLogger implements SubjectInterface
         // Notify observers
         if ($level == LogLevel::EMERGENCY || $level == LogLevel::ALERT) {
             $this->notify();
-        }
-    }
-
-    /**
-     * @param void
-     * @return void
-     */
-    public function notify()
-    {
-        foreach ($this->Observers as $observer)
-        {
-            $observer->update($this);
         }
     }
 }
