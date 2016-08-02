@@ -123,6 +123,24 @@ INSERT IGNORE INTO sc_robots (robot_id, user_agent) VALUES
 INSERT IGNORE INTO sc_robot_disallows (robot_id, disallow) VALUES
   (1, '/cgi-bin/');
 
+-- Cronjobs
+CREATE TABLE IF NOT EXISTS sc_cron_routes (
+  route_id     BIGINT UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  description  VARCHAR(255)     NOT NULL,
+  schedule     VARCHAR(255)     NOT NULL  DEFAULT '* * * * *',
+  route        TEXT             NOT NULL,
+  PRIMARY KEY pk_route_id (route_id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_cron_events (
+  route_id   BIGINT UNSIGNED  NOT NULL,
+  scheduled  TIMESTAMP        NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  executed   TIMESTAMP        NULL  DEFAULT NULL,
+  PRIMARY KEY pk_id (route_id, scheduled),
+  FOREIGN KEY fk_route_id (route_id) REFERENCES sc_cron_routes (route_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  INDEX ix_executed (executed)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
 -- Currencies
 CREATE TABLE IF NOT EXISTS sc_currencies (
   currency_id      SMALLINT(3) UNSIGNED  NOT NULL  COMMENT 'ISO 4217 currency number',
