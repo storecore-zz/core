@@ -73,6 +73,27 @@ class InternationalArticleNumber extends Varchar implements TypeInterface, Valid
     }
 
     /**
+     * Get the next EAN-13 article number.
+     *
+     * @param void
+     * @return \StoreCore\Types\InternationalArticleNumber
+     * @throws \RangeException
+     */
+    public function getNextNumber()
+    {
+        $prefix = substr($this->Value, 0, 7);
+        $current_number = (int)substr($this->Value, 7, 5);
+
+        if ($current_number === 99999) {
+            throw new \RangeException();
+        }
+
+        $next_number = $current_number + 1;
+        $next_number = sprintf('%05d', $next_number);
+        return new InternationalArticleNumber($prefix . $next_number);
+    }
+
+    /**
      * Generate a random EAN-13 article number.
      *
      * @param string|int|null $prefix
@@ -85,7 +106,7 @@ class InternationalArticleNumber extends Varchar implements TypeInterface, Valid
         }
         return new InternationalArticleNumber($prefix, false);
     }
-    
+
     /**
      * Validate an EAN-13 article number.
      *

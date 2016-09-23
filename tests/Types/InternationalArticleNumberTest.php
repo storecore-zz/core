@@ -167,6 +167,74 @@ class InternationalArticleNumberTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @testdox Public getNextNumber() method exists
+     */
+    public function testPublicGetNextNumberMethodExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Types\InternationalArticleNumber');
+        $this->assertTrue($class->hasMethod('getNextNumber'));
+    }
+
+    /**
+     * @testdox Public getNextNumber() method is public
+     */
+    public function testPublicGetNextNumberMethodIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Types\InternationalArticleNumber', 'getNextNumber');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @testdox Public getNextNumber() method returns object
+     */
+    public function testPublicGetNextNumberMethodReturnsObject()
+    {
+        $ean = new \StoreCore\Types\InternationalArticleNumber('4006381333931');
+        $this->assertTrue(is_object($ean->getNextNumber()));
+    }
+
+    /**
+     * @testdox Public getNextNumber() method returns object
+     */
+    public function testPublicGetNextNumberMethodReturnsInternationalArticleNumber()
+    {
+        $ean = new \StoreCore\Types\InternationalArticleNumber('4006381333931');
+        $this->assertTrue(is_object($ean->getNextNumber()));
+    }
+
+    /**
+     * @testdox Public getNextNumber() method returns InternationalArticleNumber object
+     */
+    public function testPublicGetNextNumberMethodReturnsInternationalArticleNumberObject()
+    {
+        $current_ean = new \StoreCore\Types\InternationalArticleNumber('4006381333931');
+        $next_ean = $current_ean->getNextNumber();
+        $this->assertTrue($next_ean instanceof \StoreCore\Types\InternationalArticleNumber);
+    }
+
+    /**
+     * @testdox Public getNextNumber() method returns current number + 1
+     */
+    public function testPublicGetNextNumberMethodReturnsCurrentNumberPlusOne()
+    {
+        $current_number = '4006381333931';
+        $current_ean = new \StoreCore\Types\InternationalArticleNumber($current_number);
+        $next_ean = $current_ean->getNextNumber();
+        $next_number = (string)$next_ean;
+        $this->assertEquals($next_number, '4006381333948');
+    }
+
+    /**
+     * @expectedException \RangeException
+     * @testdox Public getNextNumber() method throws \RangeException on 99999
+     */
+    public function testPublicGetNextNumberMethodThrowsRangeExceptionOn99999()
+    {
+        $ean = new \StoreCore\Types\InternationalArticleNumber('123400099999', false);
+        $next_number = $ean->getNextNumber();
+    }
+
+    /**
      * @testdox Public static getRandomNumber() method exists
      */
     public function testPublicStaticGetRandomNumberMethodExists()
@@ -208,7 +276,10 @@ class InternationalArticleNumberTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($method->isStatic());
     }
 
-    public function testValidArticleNumbersAreValid()
+    /**
+     * @testdox Public static validate() returns true on valid numbers
+     */
+    public function testPublicStaticValidateReturnsTrueOnValidNumbers()
     {
         $valid_ean_numbers = array(
             '0190198067098',
