@@ -17,7 +17,7 @@
 -- @author    Ward van der Put <Ward.van.der.Put@gmail.com>
 -- @copyright Copyright (c) 2014-2015 StoreCore
 -- @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
--- @version   0.0.4
+-- @version   0.1.0
 --
 
 --
@@ -53,83 +53,93 @@ INSERT IGNORE INTO sc_translation_memory
 -- Nouns
 --
 INSERT IGNORE INTO sc_translation_memory
-    (translation_id, language_id, translation)
+    (translation_id, language_id, translation, admin_only_flag)
   VALUES
-    ('NOUN_DATABASE',   0, 'database'),
-    ('NOUN_DATABASE',   1, 'database'),
-    ('NOUN_DATABASE',   2, 'Datenbank'),
-    ('NOUN_DATABASE',   3, 'base de données'),
+    ('NOUN_DATABASE',   0, 'database', 1),
+    ('NOUN_DATABASE',   1, 'database', 1),
+    ('NOUN_DATABASE',   2, 'Datenbank', 1),
+    ('NOUN_DATABASE',   3, 'base de données', 1),
 
-    ('NOUN_DUTCH',   0, 'Dutch'),
-    ('NOUN_DUTCH',   1, 'Nederlands'),
-    ('NOUN_DUTCH',   2, 'Holländisch'),
-    ('NOUN_DUTCH',   3, 'néerlandais'),
+    ('NOUN_DEFAULT_TIMEZONE',   0, 'default timezone', 1),
+    ('NOUN_DEFAULT_TIMEZONE',   1, 'standaardtijdzone', 1),
+    ('NOUN_DEFAULT_TIMEZONE',   2, 'Standardzeitzone', 1),
+    ('NOUN_DEFAULT_TIMEZONE',   3, 'fuseau horaire par défaut', 1),    
 
-    ('NOUN_ENGLISH',   0, 'English'),
-    ('NOUN_ENGLISH',   1, 'Engels'),
-    ('NOUN_ENGLISH',   2, 'Englisch'),
-    ('NOUN_ENGLISH',   3, 'anglais'),
+    ('NOUN_DUTCH',   0, 'Dutch', 0),
+    ('NOUN_DUTCH',   1, 'Nederlands', 0),
+    ('NOUN_DUTCH',   2, 'Holländisch', 0),
+    ('NOUN_DUTCH',   3, 'néerlandais', 0),
 
-    ('NOUN_FRENCH',   0, 'French'),
-    ('NOUN_FRENCH',   1, 'Frans'),
-    ('NOUN_FRENCH',   2, 'Französisch'),
-    ('NOUN_FRENCH',   3, 'français'),
+    ('NOUN_ENGLISH',   0, 'English', 0),
+    ('NOUN_ENGLISH',   1, 'Engels', 0),
+    ('NOUN_ENGLISH',   2, 'Englisch', 0),
+    ('NOUN_ENGLISH',   3, 'anglais', 0),
 
-    ('NOUN_GERMAN',   0, 'German'),
-    ('NOUN_GERMAN',   1, 'Duits'),
-    ('NOUN_GERMAN',   2, 'Deutsch'),
-    ('NOUN_GERMAN',   3, 'allemand'),
+    ('NOUN_FRENCH',   0, 'French', 0),
+    ('NOUN_FRENCH',   1, 'Frans', 0),
+    ('NOUN_FRENCH',   2, 'Französisch', 0),
+    ('NOUN_FRENCH',   3, 'français', 0),
 
-    ('NOUN_LATITUDE',   0, 'latitude'),
-    ('NOUN_LATITUDE',   1, 'breedtegraad'),
-    ('NOUN_LATITUDE',   2, 'Breitengrad'),
-    ('NOUN_LATITUDE',   3, 'latitude'),
+    ('NOUN_GERMAN',   0, 'German', 0),
+    ('NOUN_GERMAN',   1, 'Duits', 0),
+    ('NOUN_GERMAN',   2, 'Deutsch', 0),
+    ('NOUN_GERMAN',   3, 'allemand', 0),
 
-    ('NOUN_LONGITUDE',   0, 'longitude'),
-    ('NOUN_LONGITUDE',   1, 'lengtegraad'),
-    ('NOUN_LONGITUDE',   2, 'Längengrad'),
-    ('NOUN_LONGITUDE',   3, 'longitude'),
+    ('NOUN_LATITUDE',   0, 'latitude', 0),
+    ('NOUN_LATITUDE',   1, 'breedtegraad', 0),
+    ('NOUN_LATITUDE',   2, 'Breitengrad', 0),
+    ('NOUN_LATITUDE',   3, 'latitude', 0),
 
-    ('NOUN_PASSWORD',   0, 'password'),
-    ('NOUN_PASSWORD',   1, 'wachtwoord'),
-    ('NOUN_PASSWORD',   2, 'Kennwort'),
-    ('NOUN_PASSWORD',   3, 'mot de passe'),
+    ('NOUN_LONGITUDE',   0, 'longitude', 0),
+    ('NOUN_LONGITUDE',   1, 'lengtegraad', 0),
+    ('NOUN_LONGITUDE',   2, 'Längengrad', 0),
+    ('NOUN_LONGITUDE',   3, 'longitude', 0),
 
-    ('NOUN_PIN_CODE',   0, 'PIN code'),
-    ('NOUN_PIN_CODE',   1, 'pincode'),
-    ('NOUN_PIN_CODE',   2, 'PIN-Code'),
-    ('NOUN_PIN_CODE',   3, 'code PIN'),
+    ('NOUN_PASSWORD',   0, 'password', 0),
+    ('NOUN_PASSWORD',   1, 'wachtwoord', 0),
+    ('NOUN_PASSWORD',   2, 'Kennwort', 0),
+    ('NOUN_PASSWORD',   3, 'mot de passe', 0),
 
-    ('NOUN_POSTAL_CODE',   0, 'postcode'),
-    ('NOUN_POSTAL_CODE',   1, 'postcode'),
-    ('NOUN_POSTAL_CODE',   2, 'Postleitzahl'),
-    ('NOUN_POSTAL_CODE',   3, 'code postal'),
-    ('NOUN_POSTAL_CODE', 255, 'zip code'),
+    ('NOUN_PIN_CODE',   0, 'PIN code', 1),
+    ('NOUN_PIN_CODE',   1, 'pincode', 1),
+    ('NOUN_PIN_CODE',   2, 'PIN-Code', 1),
+    ('NOUN_PIN_CODE',   3, 'code PIN', 1),
 
-    ('NOUN_SHOPPING_BASKET',   0, 'shopping basket'),
-    ('NOUN_SHOPPING_BASKET',   1, 'winkelmandje'),
-    ('NOUN_SHOPPING_BASKET',   2, 'Einkaufskorb'),
-    ('NOUN_SHOPPING_BASKET',   3, 'panier'),
+    ('NOUN_POSTAL_CODE',   0, 'postcode', 0),
+    ('NOUN_POSTAL_CODE',   1, 'postcode', 0),
+    ('NOUN_POSTAL_CODE',   2, 'Postleitzahl', 0),
+    ('NOUN_POSTAL_CODE',   3, 'code postal', 0),
+    ('NOUN_POSTAL_CODE', 255, 'zip code', 0),
 
-    ('NOUN_SHOPPING_CART',   0, 'shopping cart'),
-    ('NOUN_SHOPPING_CART',   1, 'winkelwagen'),
-    ('NOUN_SHOPPING_CART',   2, 'Einkaufswagen'),
-    ('NOUN_SHOPPING_CART',   3, 'chariot'),
+    ('NOUN_SHOPPING_BASKET',   0, 'shopping basket', 0),
+    ('NOUN_SHOPPING_BASKET',   1, 'winkelmandje', 0),
+    ('NOUN_SHOPPING_BASKET',   2, 'Einkaufskorb', 0),
+    ('NOUN_SHOPPING_BASKET',   3, 'panier', 0),
 
-    ('NOUN_TRACKING_NUMBER',   0, 'tracking number'),
-    ('NOUN_TRACKING_NUMBER',   1, 'trackingnummer'),
-    ('NOUN_TRACKING_NUMBER',   2, 'Trackingnummer'),
-    ('NOUN_TRACKING_NUMBER',   3, 'numéro de suivi'),
+    ('NOUN_SHOPPING_CART',   0, 'shopping cart', 0),
+    ('NOUN_SHOPPING_CART',   1, 'winkelwagen', 0),
+    ('NOUN_SHOPPING_CART',   2, 'Einkaufswagen', 0),
+    ('NOUN_SHOPPING_CART',   3, 'chariot', 0),
 
-    ('NOUN_USER',   0, 'user'),
-    ('NOUN_USER',   1, 'gebruiker'),
-    ('NOUN_USER',   2, 'Benutzer'),
-    ('NOUN_USER',   3, 'utilisateur'),
+    ('NOUN_TIMEZONE',   0, 'timezone', 1),
+    ('NOUN_TIMEZONE',   1, 'tijdzone', 1),
+    ('NOUN_TIMEZONE',   2, 'Zeitzone', 1),
+    ('NOUN_TIMEZONE',   3, 'fuseau horaire', 1),
+    
+    ('NOUN_TRACKING_NUMBER',   0, 'tracking number', 0),
+    ('NOUN_TRACKING_NUMBER',   1, 'trackingnummer', 0),
+    ('NOUN_TRACKING_NUMBER',   2, 'Trackingnummer', 0),
+    ('NOUN_TRACKING_NUMBER',   3, 'numéro de suivi', 0),
 
-    ('NOUN_USERS',   0, 'users'),
-    ('NOUN_USERS',   1, 'gebruikers'),
-    ('NOUN_USERS',   2, 'Benutzer'),
-    ('NOUN_USERS',   3, 'utilisateurs');
+    ('NOUN_USER',   0, 'user', 0),
+    ('NOUN_USER',   1, 'gebruiker', 0),
+    ('NOUN_USER',   2, 'Benutzer', 0),
+    ('NOUN_USER',   3, 'utilisateur', 0),
+
+    ('NOUN_USERS',   0, 'users', 0),
+    ('NOUN_USERS',   1, 'gebruikers', 0),
+    ('NOUN_USERS',   2, 'Benutzer', 0),
+    ('NOUN_USERS',   3, 'utilisateurs', 0);
 
 
 --
