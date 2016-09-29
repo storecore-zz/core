@@ -31,6 +31,21 @@ class Thing extends AbstractRichSnippet
     );
 
     /**
+     * Get the item name.
+     *
+     * @param void
+     * @return string|null
+     */
+    public function getName()
+    {
+        if (array_key_exists('name', $this->Data)) {
+            return $this->Data['name'];
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Set the name and alternate name of an item.
      *
      * @param string $name
