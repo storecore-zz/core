@@ -46,6 +46,18 @@ class Thing extends AbstractRichSnippet
     }
 
     /**
+     * Set the alternate name of an item.
+     *
+     * @param string $alternate_name
+     * @return $this
+     */
+    public function setAlternateName($alternate_name)
+    {
+        $this->setStringProperty('alternateName', $alternate_name);
+        return $this;
+    }
+
+    /**
      * Set the name and alternate name of an item.
      *
      * @param string $name
@@ -64,7 +76,7 @@ class Thing extends AbstractRichSnippet
             $alternate_name !== null
             && strtolower($alternate_name) != strtolower($name)
         ) {
-            $this->setStringProperty('alternateName', $alternate_name);
+            $this->setAlternateName($alternate_name);
         }
 
         return $this;
