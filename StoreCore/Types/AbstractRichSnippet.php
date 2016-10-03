@@ -23,6 +23,14 @@ abstract class AbstractRichSnippet
     );
 
     /**
+     * @var array $SupportedTypes
+     *   Array consisting of Schema.org types.  To allow for case-insensitive
+     *   types, the lowercase keys point to the proper case values.  This array
+     *   is replaced in derived classes if a type has more specific child types.
+     */
+    protected $SupportedTypes = array();
+
+    /**
      * @param void
      * @return string
      */
@@ -30,14 +38,6 @@ abstract class AbstractRichSnippet
     {
         return json_encode($this->Data, JSON_UNESCAPED_SLASHES);
     }
-
-    /**
-     * @var array $SupportedTypes
-     *   Array consisting of Schema.org types.  To allow for case-insensitive
-     *   types, the lowercase keys point to the proper case values.  This array
-     *   is replaced in derived classes if a type has more specific child types.
-     */
-    protected $SupportedTypes = array();
 
     /**
      * Get a JSON-LD script tag for HTML or AMP HTML.
@@ -70,6 +70,46 @@ abstract class AbstractRichSnippet
             . '<script>' . $eol;
     }
 
+    /**
+     * Generic date property setter.
+     *
+     * @param string $name
+     *
+     * @param DateTime|string $date
+     *   Date value as a DateTime object or a string in the ISO 8601 date
+     *   format yyyy-mm-dd (the PHP date format 'Y-m-d').
+     *
+     * @return $this
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function setDateProperty($name, $date)
+    {
+        if ($date instanceof DateTime) {
+            $date = $date->format('Y-m-d');
+        }
+
+        if (is_string($date)) {
+            $date = trim($date);
+            if (strlen($date) !== 10) {
+                throw new \InvalidArgumentException();
+            } else {
+                $parsed_date = date_parse($date);
+                if (
+                    $parsed_date === false
+                    || checkdate($parsed_date['month'], $parsed_date['day'], $parsed_date['year']) === false
+                ) {
+                    throw new \InvalidArgumentException();
+                } else {
+                    $this->setStringProperty($name, $date);
+                }
+            }
+        } else {
+            throw new \InvalidArgumentException();
+        }
+
+        return $this;
+    }
 
     /**
      * Generic property setter.
@@ -130,6 +170,14 @@ abstract class AbstractRichSnippet
      *   One of the supported Schema.org types.
      *
      * @return void
+     *
+     * @throws \InvalidArgumentException
+     *   Throws an invalid argument logic exception if the $type parameter is
+     *   not a string.
+     *
+     * @throws \DomainException
+     *   Throws a domain exception if the $type parameter is not one of the
+     *   supported classes or subclasses.
      */
     public function setType($type)
     {
