@@ -73,6 +73,7 @@ abstract class AbstractRichSnippet
         $json = str_ireplace('":"{', '":{', $json);
         $json = str_ireplace('"}",', '"},', $json);
         $json = str_ireplace('}"}', '}}', $json);
+        $json = str_ireplace('}}","', '}},"', $json);
 
         return
             '<script type="application/ld+json">' . PHP_EOL
