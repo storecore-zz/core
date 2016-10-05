@@ -27,7 +27,7 @@ class PostalAddress extends ContactPoint
      * Set the country.
      *
      * @param string $address_country
-     *   The two-letter ISO 3166-1 alpha-2 country code.
+     *   Two-letter ISO 3166-1 alpha-2 country code.
      *
      * @return $this
      *
@@ -78,9 +78,14 @@ class PostalAddress extends ContactPoint
      *
      * @param string $postal_code
      * @return $this
+     * @throws \InvalidArgumentException
      */
     public function setPostalCode($postal_code)
     {
+        if (!is_string($postal_code)) {
+            throw new \InvalidArgumentException();
+        }
+        $postal_code = strtoupper($postal_code);
         $this->setStringProperty('postalCode', $postal_code);
         return $this;
     }
