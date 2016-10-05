@@ -58,6 +58,18 @@ class Thing extends AbstractRichSnippet
     }
 
     /**
+     * Set a description of the item.
+     *
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->setStringProperty('description', $description);
+        return $this;
+    }
+
+    /**
      * Set the name and alternate name of an item.
      *
      * @param string $name
