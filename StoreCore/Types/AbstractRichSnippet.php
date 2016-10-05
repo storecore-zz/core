@@ -61,6 +61,8 @@ abstract class AbstractRichSnippet
     /**
      * Get a JSON-LD script tag for HTML or AMP HTML.
      *
+     * @param void
+     *
      * @return string
      *
      * @see https://search.google.com/structured-data/testing-tool
@@ -68,7 +70,7 @@ abstract class AbstractRichSnippet
      */
     public function getScript()
     {
-        $json = json_encode($this->Data, JSON_UNESCAPED_SLASHES);
+        $json = json_encode($this->getDataArray(), JSON_UNESCAPED_SLASHES);
         $json = stripcslashes($json);
         $json = str_ireplace('":"{', '":{', $json);
         $json = str_ireplace('"}",', '"},', $json);
