@@ -78,7 +78,7 @@ abstract class AbstractRichSnippet
         return
             '<script type="application/ld+json">' . PHP_EOL
             . $json . PHP_EOL
-            . '<script>';
+            . '</script>';
     }
 
     /**
