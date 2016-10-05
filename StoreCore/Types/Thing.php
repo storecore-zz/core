@@ -108,6 +108,50 @@ class Thing extends AbstractRichSnippet
     }
 
     /**
+     * Add an alternate URL for the item.
+     *
+     * @param string $same_as
+     *   URL of a reference web page that unambiguously indicates the item's
+     *   identity, for example the URL of the item's Wikipedia page.
+     *   Google supports this property for these types of social profiles:
+     *   Facebook, Twitter, Google+, Instagram, YouTube, LinkedIn, Myspace
+     *   Pinterest, SoundCloud, and Tumblr.  You MAY specify other social
+     *   profiles as well, but they aren't currently included in Google Search
+     *   results.
+     *
+     * @return $this
+     *
+     * @see https://developers.google.com/search/docs/data-types/social-profile-links
+     *
+     * @throws \InvalidArgumentException
+     *   Throws an invalid argument logic exception if the $same_as argument
+     *   is not a string or an empty string.  This method currently does not
+     *   check if the argument is a valid URL nor does it check if the URL
+     *   exists.
+     */
+    public function setSameAs($same_as)
+    {
+        if (!is_string($same_as)) {
+            throw new \InvalidArgumentException();
+        }
+
+        $same_as = trim($same_as);
+        if (empty($same_as)) {
+            throw new \InvalidArgumentException();
+        }
+
+        // Handle single property as a string and multiple properties as an array.
+        if (!array_key_exists('sameAs', $this->Data)) {
+            $this->Data['sameAs'] = $same_as;
+        } elseif (is_string($this->Data['sameAs'])) {
+            $this->Data['sameAs'] = array($this->Data['sameAs'], $same_as);
+        } else {
+            $this->Data['sameAs'][] = $same_as;
+        }
+        return $this;
+    }
+
+    /**
      * Set the URL of the item.
      *
      * @param string $url
