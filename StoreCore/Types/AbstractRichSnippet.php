@@ -36,38 +36,48 @@ abstract class AbstractRichSnippet
      */
     public function __toString()
     {
-        return json_encode($this->Data, JSON_UNESCAPED_SLASHES);
+        $data = $this->getDataArray();
+        return json_encode($data, JSON_UNESCAPED_SLASHES);
+    }
+
+    /**
+     * Get the object data as an array.
+     *
+     * @param void
+     * @return array
+     */
+    private function getDataArray()
+    {
+        $data = array();
+        foreach ($this->Data as $key => $value) {
+            if (is_object($value)) {
+                $value = $value->getDataArray();
+            }
+            $data[$key] = $value;
+        }
+        return $data;
     }
 
     /**
      * Get a JSON-LD script tag for HTML or AMP HTML.
-     *
-     * @param bool $pretty_print
      *
      * @return string
      *
      * @see https://search.google.com/structured-data/testing-tool
      *      Google Structured Data Testing Tool (SDTT)
      */
-    public function getScript($pretty_print = false)
+    public function getScript()
     {
-        if ($pretty_print) {
-            $eol = PHP_EOL;
-            $json = json_encode($this->Data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-        } else {
-            $eol = (string)null;
-            $json = json_encode($this->Data, JSON_UNESCAPED_SLASHES);
-        }
-
+        $json = json_encode($this->Data, JSON_UNESCAPED_SLASHES);
         $json = stripcslashes($json);
         $json = str_ireplace('":"{', '":{', $json);
-        $json = str_ireplace('": "{', '": {' . $eol, $json);
-        $json = str_ireplace('"}",', '"},' . $eol, $json);
+        $json = str_ireplace('"}",', '"},', $json);
+        $json = str_ireplace('}"}', '}}', $json);
 
         return
-            '<script type="application/ld+json">' . $eol
-            . $json . $eol
-            . '<script>' . $eol;
+            '<script type="application/ld+json">' . PHP_EOL
+            . $json . PHP_EOL
+            . '<script>';
     }
 
     /**
