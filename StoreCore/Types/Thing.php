@@ -40,6 +40,8 @@ class Thing extends AbstractRichSnippet
     {
         if (array_key_exists('name', $this->Data)) {
             return $this->Data['name'];
+        } elseif (array_key_exists('alternateName', $this->Data)) {
+            return $this->Data['alternateName'];
         } else {
             return null;
         }
