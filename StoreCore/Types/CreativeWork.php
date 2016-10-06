@@ -97,6 +97,41 @@ class CreativeWork extends Thing
     }
 
     /**
+     * Set or add keywords and tags.
+     *
+     * @param string $keywords
+     *   Keywords or tags used to describe this content.  Multiple entries in
+     *   a keywords list are typically delimited by commas.  This method MAY
+     *   be called repeatedly to add new keywords or tags to an existing
+     *   keywords list; possible duplicates will then be removed.
+     *
+     * @return $this
+     */
+    public function setKeywords($keywords)
+    {
+        if (array_key_exists('keywords', $this->Data)) {
+            $keywords = $this->Data['keywords'] . ', ' . $keywords;
+        }
+
+        $keywords = explode(',', $keywords);
+        foreach ($keywords as $key => $keyword) {
+            $keyword = trim($keyword);
+            if (empty($keyword)) {
+                unset($keywords[$key]);
+            } else {
+                $keywords[$key] = $keyword;
+            }
+        }
+
+        // Remove duplicate keywords.
+        $keywords = array_unique($keywords);
+
+        $keywords = implode(', ', $keywords);
+        $this->Data['keywords'] = $keywords;
+        return $this;
+    }
+
+    /**
      * Set the schema version.
      *
      * @param string $schema_version
