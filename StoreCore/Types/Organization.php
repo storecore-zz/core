@@ -94,6 +94,22 @@ class Organization extends Thing
     }
 
     /**
+     * Set the organization logo.
+     *
+     * @param ImageObject|string
+     *   The fully-qualified URL of the logo image file or an ImageObject.
+     *
+     * @see https://developers.google.com/search/docs/data-types/logo
+     *
+     * @return $this
+     */
+    public function setLogo($logo)
+    {
+        $this->Data['logo'] = $logo;
+        return $this;
+    }
+
+    /**
      * Set the telephone number.
      *
      * @param string $telephone
