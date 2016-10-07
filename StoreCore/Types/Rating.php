@@ -24,15 +24,20 @@ class Rating extends Intangible
     );
 
     /**
-     * @param void
+     * @param int|string|null $rating_value
      * @return void
      * @uses \StoreCore\Types\AbstractRichSnippet::setType()
+     * @uses \StoreCore\Types\Rating::setWorstRating()
      * @uses \StoreCore\Types\Rating::setBestRating()
+     * @uses \StoreCore\Types\Rating::setRatingValue()
      */
-    public function __construct()
+    public function __construct($rating_value = null)
     {
         $this->setType('Rating');
         $this->setWorstRating(1)->setBestRating(5);
+        if ($rating_value !== null) {
+            $this->setRatingValue($rating_value);
+        }
     }
 
     /**
