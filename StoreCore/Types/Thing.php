@@ -72,6 +72,21 @@ class Thing extends AbstractRichSnippet
     }
 
     /**
+     * Set an image of the item.
+     *
+     * @param ImageObject|string $image
+     *   An image of the item.  This can be a URL or a fully described
+     *   Schema.org ImageObject.
+     *
+     * @return $this
+     */
+    public function setImage($image)
+    {
+        $this->Data['image'] = $image;
+        return $this;
+    }
+
+    /**
      * Set the name and alternate name of an item.
      *
      * @param string $name
