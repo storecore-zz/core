@@ -31,6 +31,20 @@ abstract class AbstractRichSnippet
     protected $SupportedTypes = array();
 
     /**
+     * Generic property getter.
+     *
+     * @param string $name
+     * @return mixed|null
+     */
+    public function __get($name) {
+        if (array_key_exists($name, $this->Data)) {
+            return $this->Data[$name];
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * @param void
      * @return string
      */
@@ -46,7 +60,7 @@ abstract class AbstractRichSnippet
      * @param void
      * @return array
      */
-    private function getDataArray()
+    public function getDataArray()
     {
         $data = array();
         foreach ($this->Data as $key => $value) {

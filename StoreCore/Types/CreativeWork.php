@@ -85,6 +85,23 @@ class CreativeWork extends Thing
     }
 
     /**
+     * Set the author of the creative work.
+     *
+     * @param Person|Organization $author
+     * @return $this
+     * @throws \InvalidArgumentException
+     */
+    public function setAuthor($author)
+    {
+        if ($author instanceof Person || $author instanceof Organization) {
+            $this->Data['author'] = $author;
+        } else {
+            throw new \InvalidArgumentException();
+        }
+        return $this;
+    }
+
+    /**
      * Indicate whether this content is family friendly.
      *
      * @param bool $is_family_friendly
