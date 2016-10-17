@@ -5,14 +5,14 @@ namespace StoreCore\FileSystem;
  * File Cache
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
- * @package   StoreCore\Catalog
- * @version   0.1.0-alpha.1
+ * @package   StoreCore\CMS
+ * @version   0.1.0
  */
 class FileCache extends \StoreCore\FileSystem\FileCacheReader
 {
-    const VERSION = '0.1.0-alpha.1';
+    const VERSION = '0.1.0';
 
     /**
      * Create a cache file.
