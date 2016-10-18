@@ -5,14 +5,14 @@ namespace StoreCore\Types;
  * Cache Key
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @version   0.1.0-alpha.1
+ * @version   0.1.0
  */
 class CacheKey
 {
-    const VERSION = '0.1.0-alpha.1';
+    const VERSION = '0.1.0';
 
     /** @var string $Key */
     private $Key = '';
@@ -51,13 +51,21 @@ class CacheKey
      */
     private function set($str)
     {
-        if (!is_string($str)) {
+        if (!is_string($str) || empty($str)) {
             throw new \InvalidArgumentException(
                 'Argument 1 passed to ' . __METHOD__ . '() must be of the type string, ' . gettype($str) . ' given'
             );
         }
 
         $str = mb_strtolower($str, 'UTF-8');
-        $this->Key = md5($str);
+
+        if (filter_var($str, FILTER_VALIDATE_URL) !== false) {
+            $str = urldecode($str);
+            $str = str_ireplace('https://', null, $str);
+            $str = str_ireplace('http://',  null, $str);
+            $str = '//' . ltrim($str, '/');
+        }
+
+        $this->Key = sha1($str);
     }
 }
