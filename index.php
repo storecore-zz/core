@@ -126,15 +126,20 @@ switch ($request->getRequestPath()) {
         $route = new \StoreCore\Route('/robots.txt', '\StoreCore\FileSystem\Robots');
         break;
     default:
+        // Load an asset.
         $pathinfo = pathinfo($request->getRequestPath());
         if (array_key_exists('basename', $pathinfo) && array_key_exists('extension', $pathinfo)) {
             $asset = new \StoreCore\Asset($pathinfo['basename'], $pathinfo['extension']);
             unset($asset, $pathinfo);
         }
 
+        // Execute an administration route.
         if (strpos($request->getRequestPath(), '/admin/', 0) === 0) {
             $route = new \StoreCore\Route('/admin/', '\StoreCore\Admin\FrontController');
         }
+
+        // Execute a redirect if a destination is found.
+        \StoreCore\Redirector::find();
 }
 
 if ($route !== false) {
