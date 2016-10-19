@@ -37,7 +37,7 @@ class PasswordCompliance
      *   complexity and strength at least equivalent to the parameters
      *   specified above, so the rule set MAY be extended.
      *
-     * @link https://www.pcisecuritystandards.org/documents/PCI_DSS_v3.pdf
+     * @see https://www.pcisecuritystandards.org/documents/PCI_DSS_v3.pdf
      *   Payment Card Industry (PCI) Data Security Standard
      *   Requirements and Security Assessment Procedures
      */

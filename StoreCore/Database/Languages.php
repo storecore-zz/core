@@ -5,7 +5,7 @@ namespace StoreCore\Database;
  * Languages
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\I18N
  * @version   0.0.3
@@ -17,20 +17,20 @@ namespace StoreCore\Database;
  *   versions or updates if the contain enough translations to run a decent
  *   store in the given language.
  *
- * @link https://en.wikipedia.org/wiki/World_language
- *       World language
+ * @see https://en.wikipedia.org/wiki/World_language
+ *      World language
  *
- * @link https://en.wikipedia.org/wiki/List_of_languages_by_number_of_native_speakers
- *       List of languages by number of native speakers
+ * @see https://en.wikipedia.org/wiki/List_of_languages_by_number_of_native_speakers
+ *      List of languages by number of native speakers
  *
- * @link https://en.wikipedia.org/wiki/Languages_of_Europe
- *       Languages of Europe
+ * @see https://en.wikipedia.org/wiki/Languages_of_Europe
+ *      Languages of Europe
  *
- * @link https://en.wikipedia.org/wiki/Languages_of_the_European_Union
- *       Languages of the European Union
+ * @see https://en.wikipedia.org/wiki/Languages_of_the_European_Union
+ *      Languages of the European Union
  *
- * @link https://msdn.microsoft.com/en-US/library/ee825488(v=cs.20).aspx
- *       Table of Language Culture Names, Codes, and ISO Values Method
+ * @see https://msdn.microsoft.com/en-US/library/ee825488(v=cs.20).aspx
+ *      Table of Language Culture Names, Codes, and ISO Values Method
  */
 class Languages extends \StoreCore\Database\AbstractModel
 {

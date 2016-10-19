@@ -11,10 +11,11 @@ namespace StoreCore;
  *      $loader->addNamespace('Foo\Bar', '/path/to/packages/foo-bar/src');
  *      $loader->addNamespace('Foo\Bar', '/path/to/packages/foo-bar/tests');
  *
+ * @api
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2014-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
- * @link      https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader-examples.md
+ * @see       https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader-examples.md
  * @version   0.1.0
  */
 class Autoloader
