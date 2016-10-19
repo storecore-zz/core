@@ -5,9 +5,10 @@ namespace StoreCore\Admin;
  * Minify HTML or CSS
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
- * @package   StoreCore\Admin
+ * @method    string Minifier::minify ( string $str [, bool $css = false ] )
+ * @package   StoreCore\CMS
  * @version   0.1.0
  */
 class Minifier
@@ -18,32 +19,32 @@ class Minifier
     const VERSION = '0.1.0';
 
     /**
-     * @param string $text
+     * @param string $str
      * @param bool $css
      * @return string
      */
-    public static function minify($text, $css = false)
+    public static function minify($str, $css = false)
     {
-        $text = str_ireplace("\r\n", "\n", $text);
-        $text = str_ireplace("\r", "\n", $text);
-        $text = str_ireplace("\t", ' ', $text);
-        
-        $text = preg_replace('!\s+!', ' ', $text);
+        $str = str_ireplace("\r\n", "\n", $str);
+        $str = str_ireplace("\r", "\n", $str);
+        $str = str_ireplace("\t", ' ', $str);
 
-        if (stripos($text, '<pre') !== false) {
+        $str = preg_replace('!\s+!', ' ', $str);
+
+        if (stripos($str, '<pre') !== false) {
             $css = false;
         } else {
-            $text = str_ireplace("\n", null, $text);
+            $str = str_ireplace("\n", null, $str);
         }
-        $text = str_ireplace('> <', '><', $text);
+        $str = str_ireplace('> <', '><', $str);
 
         if ($css === true) {
-            $text = str_ireplace(': ', ':', $text);
-            $text = str_ireplace(', ', ',', $text);
-            $text = str_ireplace(' {', '{', $text);
-            $text = str_ireplace(';}', '}', $text);
+            $str = str_ireplace(': ', ':', $str);
+            $str = str_ireplace(', ', ',', $str);
+            $str = str_ireplace(' {', '{', $str);
+            $str = str_ireplace(';}', '}', $str);
         }
 
-        return $text;
+        return $str;
     }
 }

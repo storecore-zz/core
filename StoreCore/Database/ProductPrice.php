@@ -7,8 +7,12 @@ namespace StoreCore\Database;
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
- * @package   StoreCore\Marketing
+ * @package   StoreCore\Core
  * @version   0.1.0
+ *
+ * @method bool calculate ( [ int $currency_id = 978 ] )
+ * @method void setPrecision ( int $precision )
+ * @method void setProductID ( int $product_id )
  */
 class ProductPrice extends \StoreCore\Database\AbstractModel
 {
@@ -98,7 +102,7 @@ class ProductPrice extends \StoreCore\Database\AbstractModel
         // Store the calculated list price
         $list_price = round($list_price, $this->Precision);
         $this->PriceComponents[254][$currency_id] = $list_price;
-        
+
         // Calculate an ON SALE price
         if (isset($this->PriceComponents[240][$currency_id])) {
             $this->PriceComponents[255][$currency_id] = $list_price - $this->PriceComponents[240][$currency_id];
@@ -178,7 +182,7 @@ class ProductPrice extends \StoreCore\Database\AbstractModel
                 );
             }
         }
-        
+
         if ($precision < 0) {
             $precision = 0;
         } elseif ($precision > 4) {

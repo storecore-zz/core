@@ -27,7 +27,9 @@ recommendations for the current best practices.
 - [Semantic Versioning (SemVer)] for version IDs
 - [PSR-1 Basic Coding Standard] for PHP
 - [PSR-2 Coding Style Guide] for PHP
+- [PSR-3 Logger Interface] for logging
 - [PSR-5 PHPDoc (proposal)] for PHPDoc and DocBlocks
+- [PSR-6 Cache] for cache item and cache pool interfaces
 - [Google HTML/CSS Style Guide] for HTML and CSS
 - [Google JSON Style Guide] for JSON
 - [Google XML Document Format Style Guide] for XML
@@ -38,7 +40,11 @@ recommendations for the current best practices.
 
 [PSR-2 Coding Style Guide]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md "PSR-2 Coding Style Guide"
 
+[PSR-3 Logger Interface]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md "PSR-3 Logger Interface"
+
 [PSR-5 PHPDoc (proposal)]: https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md "PSR-5 PHPDoc"
+
+[PSR-6 Cache]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-6-cache.md "PSR-6 Cache"
 
 [Google HTML/CSS Style Guide]: https://google-styleguide.googlecode.com/svn/trunk/htmlcssguide.xml "Google HTML/CSS Style Guide"
 
@@ -69,15 +75,20 @@ For example, the `StoreCore\Database` namespace uses constants with a
 `StoreCore\Database` prefix in constant names like `StoreCore\Database\DEFAULT_USERNAME`
 and `StoreCore\Database\DEFAULT_PASSWORD`.
 
-## 2.4. Functional Packages
+## 2.4. Packages
 
-There are five functional packages:
+There are three packages dedicated to the core:
 
-- `@package StoreCore\Core` for core system files;
-- `@package StoreCore\Security` for files related to security;
-- `@package StoreCore\I18N` for internationalization and localization;
-- `@package StoreCore\Marketing` for marketing and sales;
-- `@package StoreCore\Operations` for order handling and logistics.
+- `@package StoreCore\Core` for core system files and core services;
+- `@package StoreCore\I18N` for internationalization (I18N) and localization (L10N);
+- `@package StoreCore\Security` for everything related to security.
+
+Furthermore, there are four packages for functional areas:
+
+- `@package StoreCore\BI` for Business Intelligence (BI);
+- `@package StoreCore\CMS` for the Content Management System (CMS);
+- `@package StoreCore\CRM` for Customer Relationship Management (CRM);
+- `@package StoreCore\OML` for Operations Management and Logistics (OML).
 
 
 # 3. Security
@@ -860,7 +871,7 @@ class FooBar
 }
 ```
 
-The `SetupInterface` interface in the `StoreCore\Modules` additionally
+The `SetupInterface` interface in the `StoreCore\Modules` namespace additionally
 prescribes the implementation a `getVersion()` method.  This formalizes an
 important reminder: classes and modules MUST include a publicly accessible
 version ID.
