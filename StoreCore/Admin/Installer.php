@@ -254,7 +254,7 @@ class Installer extends \StoreCore\AbstractController
             'pin_code' => '0000',
         );
 
-        if ($this->Request->getRequestMethod() == 'POST') {
+        if ($this->Request->getMethod() == 'POST') {
 
             // First name and last name
             if ($this->Request->get('first_name') !== null) {

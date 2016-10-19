@@ -105,7 +105,7 @@ class Response extends AbstractController
             header('X-UA-Compatible: IE=edge', true);
         }
 
-        if ($this->ResponseBody !== null && $this->Request->getRequestMethod() !== 'HEAD') {
+        if ($this->ResponseBody !== null && $this->Request->getMethod() !== 'HEAD') {
             echo $this->ResponseBody;
         }
     }

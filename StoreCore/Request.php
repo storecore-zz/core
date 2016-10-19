@@ -4,12 +4,23 @@ namespace StoreCore;
 /**
  * Client Request
  *
- * @api
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
+ *
+ * @api
+ * @method void __construct ( void )
+ * @method mixed|null get ( string $key )
+ * @method string getAcceptEncoding ( void )
+ * @method mixed|null getCookie ( string $cookie_name )
+ * @method string getHostName ( void )
+ * @method string getMethod ( void )
+ * @method string getRequestPath ( void )
+ * @method string|null getUserAgent ( void )
+ * @method bool hasCookie ( string $cookie_name )
+ * @method bool isSecure ( void )
  */
 class Request
 {
@@ -89,7 +100,7 @@ class Request
         }
 
         // Posted data
-        if ($this->getRequestMethod() == 'POST') {
+        if ($this->getMethod() == 'POST') {
             $data = array();
             foreach ($_POST as $key => $value) {
                 if (is_string($value)) {
@@ -193,9 +204,9 @@ class Request
      * Get the current request method.
      *
      * @param void
-     * @return string|null
+     * @return string
      */
-    public function getRequestMethod()
+    public function getMethod()
     {
         return $this->RequestMethod;
     }

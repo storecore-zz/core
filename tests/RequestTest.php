@@ -30,7 +30,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
     {
         $_SERVER['REQUEST_METHOD'] = 'get';
         $request = new \StoreCore\Request();
-        $this->assertEquals('GET', $request->getRequestMethod());
+        $this->assertEquals('GET', $request->getMethod());
     }
 
     /**
@@ -40,7 +40,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
     {
         $_SERVER['REQUEST_METHOD'] = 'post';
         $request = new \StoreCore\Request();
-        $this->assertEquals('POST', $request->getRequestMethod());
+        $this->assertEquals('POST', $request->getMethod());
     }
 
     public function testKnownUserAgentsMatch()

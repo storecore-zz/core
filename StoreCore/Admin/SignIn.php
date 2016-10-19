@@ -30,11 +30,11 @@ class SignIn extends \StoreCore\AbstractController
     {
         parent::__construct($registry);
 
-        if ($this->Request->getRequestMethod() == 'GET') {
+        if ($this->Request->getMethod() == 'GET') {
             $this->resetToken();
             $this->render();
             exit;
-        } elseif ($this->Request->getRequestMethod() != 'POST') {
+        } elseif ($this->Request->getMethod() != 'POST') {
             $this->resetToken();
             header('Allow: GET, POST');
             header('HTTP/1.1 405 Method Not Allowed', true);

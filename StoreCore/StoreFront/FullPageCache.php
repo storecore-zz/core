@@ -45,7 +45,7 @@ class FullPageCache extends \StoreCore\AbstractController
         $response->addHeader('Etag: ' . $etag);
 
         // Handle HTTP HEAD requests
-        if ($this->Request->getRequestMethod() === 'HEAD') {
+        if ($this->Request->getMethod() === 'HEAD') {
             $response->output();
             return true;
         }

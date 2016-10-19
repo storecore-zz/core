@@ -11,7 +11,7 @@ class SettingsDatabase extends \StoreCore\AbstractController
     {
         parent::__construct($registry);
 
-        if ($this->Request->getRequestMethod() == 'POST') {
+        if ($this->Request->getMethod() === 'POST') {
             $config = new \StoreCore\Admin\Configurator();
             $save_config = false;
 
