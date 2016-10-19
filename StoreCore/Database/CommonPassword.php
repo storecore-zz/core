@@ -6,18 +6,22 @@ namespace StoreCore\Database;
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright (c) 2014-2016 StoreCore
+ * @internal
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
- * @version   0.0.1
+ * @version   1.0.0
  */
 class CommonPassword
 {
+    const VERSION = '1.0.0';
+
     /**
      * @type array $CommonPasswords
      *   List of frequently used passwords, based on the "Top 10,000
      *   Passwords List" by Mark Burnett (xato.net).
      *
-     * @link https://xato.net/passwords/more-top-worst-passwords/
+     * @see https://xato.net/passwords/more-top-worst-passwords/
+     *      10,000 Top Passwords
      */
     private static $CommonPasswords = array(
         'password', '123456', '12345678', '1234', 'qwerty', '12345', 'dragon',
@@ -89,7 +93,7 @@ class CommonPassword
         'jordan23', 'eagle1', 'shelby', 'america', '11111', 'jessie', 'house',
         'free', '123321', 'chevy', 'bullshit', 'white', 'broncos', 'horney',
         'surfer', 'nissan', '999999', 'saturn', 'airborne', 'elephant',
-        'marvin', 'shit', 'action', 'adidas', 'qwert', 'kevin', '1313', 
+        'marvin', 'shit', 'action', 'adidas', 'qwert', 'kevin', '1313',
         'explorer', 'walker', 'police', 'christin', 'december', 'benjamin',
         'wolf', 'sweet', 'therock', 'king', 'online', 'dickhead', 'brooklyn',
         'teresa', 'cricket', 'sharon', 'dexter', 'racing', 'penis', 'gregory',
@@ -132,10 +136,10 @@ class CommonPassword
         'forest', 'cream', '212121', 'flash', 'maximus', 'nipple', 'bobby',
         'bradley', 'vision', 'pokemon', 'champion', 'fireman', 'indian',
         'softball', 'picard', 'system', 'clinton', 'cobra', 'enjoy', 'lucky1',
-        'claire', 'claudia', 'boogie', 'timothy', 'marines', 'security', 
+        'claire', 'claudia', 'boogie', 'timothy', 'marines', 'security',
         'dirty', 'admin', 'wildcats', 'pimp', 'dancer', 'hardon', 'veronica',
-        'fucked', 'abcd1234', 'abcdefg', 'ironman', 'wolverin', 'remember', 
-        'great', 'freepass', 'bigred', 'squirt', 'justice', 'francis', 
+        'fucked', 'abcd1234', 'abcdefg', 'ironman', 'wolverin', 'remember',
+        'great', 'freepass', 'bigred', 'squirt', 'justice', 'francis',
         'hobbes', 'kermit', 'pearljam', 'mercury', 'domino', '9999', 'denver',
         'brooke', 'rascal', 'hitman', 'mistress', 'simon', 'tony', 'bbbbbb',
         'friend', 'peekaboo', 'naked', 'budlight', 'electric', 'sluts',
@@ -156,7 +160,7 @@ class CommonPassword
         'kodiak', 'people', 'phpbb', 'light', '54321', 'kramer', 'chopper',
         'hooker', 'honey', 'whynot', 'lesbian', 'lisa', 'baxter', 'adam',
         'snake', 'teen', 'ncc1701d', 'qqqqqq', 'airplane', 'britney', 'avalon',
-        'sandy', 'sugar', 'sublime', 'stewart', 'wildcat', 'raven', 'scarface', 
+        'sandy', 'sugar', 'sublime', 'stewart', 'wildcat', 'raven', 'scarface',
         'elizabet', '123654', 'trucks', 'wolfpack', 'pervert', 'lawrence',
         'raymond', 'redhead', 'american', 'alyssa', 'bambam', 'movie', 'woody',
         'shaved', 'snowman', 'tiger1', 'chicks', 'raptor', '1969', 'stingray',
@@ -389,7 +393,7 @@ class CommonPassword
         'back', 'harley1', 'falcons', 'dorothy', 'turkey50', 'kenwood',
         'keyboard', 'ilovesex', '1978', 'blackman', 'shazam', 'shalom',
         'lickit', 'jimbob', 'richmond', 'roller', 'carson', 'check', 'fatman',
-        'funny', 'garbage', 'sandiego', 'loving', 'magnus', 'cooldude', 
+        'funny', 'garbage', 'sandiego', 'loving', 'magnus', 'cooldude',
         'clover', 'mobile', 'bell', 'payton', 'plumber', 'texas1', 'tool',
         'topper', 'jenna', 'mariners', 'rebel', 'harmony', 'caliente',
         'celica', 'fletcher', 'german', 'diana', 'oxford', 'osiris', 'orgasm',
@@ -1557,7 +1561,7 @@ class CommonPassword
         'hoes', 'howie', 'hevnm4', 'hugohugo', 'eighty', 'epson', 'evangeli',
         'eeeee1', 'eyphed'
     );
-    
+
     /**
      * Check for a common password.
      *
