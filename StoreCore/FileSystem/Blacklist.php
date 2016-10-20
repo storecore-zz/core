@@ -1,16 +1,24 @@
 <?php
 namespace StoreCore\FileSystem;
 
+use \StoreCore\AbstractController as AbstractController;
+use \StoreCore\Database\Blacklist as BlacklistModel;
+use \StoreCore\Registry as Registry;
+
 /**
  * IP Blacklist
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
  * @version   0.1.0
+ *
+ * @api
+ * @method static bool exists ( string $ip_address )
+ * @method bool flush ( void )
  */
-class Blacklist
+class Blacklist extends AbstractController
 {
     const VERSION = '0.1.0';
 
@@ -27,7 +35,12 @@ class Blacklist
      */
     public static function exists($ip_address)
     {
-        $filename = STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'ip-blacklist.ini';
+        $ip_address = filter_var($ip_address, FILTER_VALIDATE_IP);
+        if ($ip_address === false) {
+            return false;
+        }
+
+        $filename = STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'blacklist.json';
         if (!is_file($filename)) {
             return false;
         }
@@ -37,11 +50,42 @@ class Blacklist
             return false;
         }
 
-        $blacklist = json_decode($blacklist);
-        if (!is_array($blacklist)) {
+        $blacklist = json_decode($blacklist, true);
+        if (empty($blacklist) || !is_array($blacklist)) {
             return false;
         }
 
-        return in_array($ip_address, $blacklist);
+        return array_key_exists($ip_address, $blacklist);
+    }
+
+    /**
+     * Recreate the blacklist file cache.
+     *
+     * @param void
+     * @return bool
+     */
+    public function flush()
+    {
+        $model = new BlacklistModel(Registry::getInstance());
+        $list = $model->read();
+
+        if ($list === null) {
+            $list = json_encode(array());
+        } else {
+            $list = json_encode($list);
+        }
+
+        $handle = fopen(STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'blacklist.json', 'w');
+        if ($handle === false) {
+            return false;
+        }
+
+        $written = fwrite($handle, $list);
+        if ($written === false) {
+            return false;
+        } else {
+            fclose($handle);
+            return true;
+        }
     }
 }

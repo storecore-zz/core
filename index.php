@@ -55,10 +55,9 @@ if (STORECORE_NULL_LOGGER) {
 $registry = \StoreCore\Registry::getInstance();
 $request = new \StoreCore\Request();
 $registry->set('Logger', $logger);
-$registry->set('Request', $request);
 
 // Refuse requests from a blacklisted client IP address.
-if (\StoreCore\FileSystem\Blacklist::exists($_SERVER['REMOTE_ADDR'])) {
+if (\StoreCore\FileSystem\Blacklist::exists($request->getRemoteAddress())) {
     $response = new \StoreCore\Response($registry);
     $response->setCompression(0);
     $response->addHeader('HTTP/1.1 403 Forbidden');
@@ -66,6 +65,9 @@ if (\StoreCore\FileSystem\Blacklist::exists($_SERVER['REMOTE_ADDR'])) {
     $logger->info('HTTP/1.1 403 Forbidden: client IP address ' . $_SERVER['REMOTE_ADDR'] . ' is blacklisted.');
     exit;
 }
+
+// Add an undenied request to the registry.
+$registry->set('Request', $request);
 
 // Start or restart and optionally destroy a session.
 $session = new \StoreCore\Session();

@@ -79,6 +79,7 @@ CREATE TABLE IF NOT EXISTS sc_ip_blacklist (
   from_date   TIMESTAMP     NOT NULL  DEFAULT '0000-00-00 00:00:00',
   thru_date   TIMESTAMP     NULL  DEFAULT NULL,
   PRIMARY KEY pk_ip_address (ip_address),
+  INDEX ix_from_date (from_date),
   INDEX ix_thru_date (thru_date)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 

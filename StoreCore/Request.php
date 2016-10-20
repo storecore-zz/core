@@ -17,7 +17,9 @@ namespace StoreCore;
  * @method mixed|null getCookie ( string $cookie_name )
  * @method string getHostName ( void )
  * @method string getMethod ( void )
+ * @method string|null getRemoteAddress ( vpid )
  * @method string getRequestPath ( void )
+ * @method array getServerParams ( vpid )
  * @method string|null getUserAgent ( void )
  * @method bool hasCookie ( string $cookie_name )
  * @method bool isSecure ( void )
@@ -66,7 +68,8 @@ class Request
                     $value = stripslashes($value);
                 }
                 if (!empty($value)) {
-                    $data[mb_strtoupper($key)] = strip_tags($value);
+                    $key = mb_strtoupper($key);
+                    $data[$key] = strip_tags($value);
                 }
             }
         }
@@ -100,7 +103,7 @@ class Request
         }
 
         // Posted data
-        if ($this->getMethod() == 'POST') {
+        if ($this->getMethod() === 'POST') {
             $data = array();
             foreach ($_POST as $key => $value) {
                 if (is_string($value)) {
@@ -145,6 +148,13 @@ class Request
      */
     public function get($key)
     {
+        if (!is_string($key)) {
+            return null;
+        }
+
+        // Keys are case-insensitive, but are stored in lower case.
+        $key = mb_strtolower($key, 'UTF-8');
+
         if ($this->Post !== null && array_key_exists($key, $this->Post)) {
             return $this->Post[$key];
         } elseif ($this->Get !== null && array_key_exists($key, $this->Get)) {
@@ -212,6 +222,21 @@ class Request
     }
 
     /**
+     * Get the client IP address.
+     *
+     * @param void
+     * @return string|null
+     */
+    public function getRemoteAddress()
+    {
+        if (array_key_exists('REMOTE_ADDR', $this->Server)) {
+            return $this->Server['REMOTE_ADDR'];
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Get the current request path.
      *
      * @param void
@@ -220,6 +245,21 @@ class Request
     public function getRequestPath()
     {
         return $this->RequestPath;
+    }
+
+    /**
+     * Retrieve server parameters.
+     *
+     * Retrieves data related to the incoming request environment,
+     * typically derived from PHP's $_SERVER superglobal. The data IS NOT
+     * REQUIRED to originate from $_SERVER.
+     *
+     * @param void
+     * @return array
+     */
+    public function getServerParams()
+    {
+        return $this->Server;
     }
 
     /**
