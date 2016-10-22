@@ -977,10 +977,31 @@ CREATE TABLE IF NOT EXISTS sc_brand_names (
   FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+
+--
+-- Google product taxonomy
+--
+-- @see https://support.google.com/merchants/answer/188494?hl=en
+--      Products Feed Specification - Google Merchant Center Help
+--
+-- @see https://support.google.com/merchants/answer/1705911?hl=en
+--      The Google product taxonomy - Google Merchant Center Help
+--
+CREATE TABLE IF NOT EXISTS sc_product_taxonomy (
+  taxonomy_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
+  language_id  TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 255,
+  full_path    VARCHAR(255)           NOT NULL,
+  PRIMARY KEY pk_id (taxonomy_id, language_id),
+  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  INDEX ix_full_path (full_path ASC)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+
 -- Product categories
 CREATE TABLE IF NOT EXISTS sc_categories (
-  category_id  SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
-  parent_id    SMALLINT(5) UNSIGNED  NULL  DEFAULT NULL,
+  category_id  SMALLINT(5) UNSIGNED   NOT NULL  AUTO_INCREMENT,
+  parent_id    SMALLINT(5) UNSIGNED   NULL  DEFAULT NULL,
+  taxonomy_id  MEDIUMINT(8) UNSIGNED  NULL  DEFAULT NULL,
   PRIMARY KEY pk_category_id (category_id),
   FOREIGN KEY fk_parent_id (parent_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
@@ -1028,11 +1049,13 @@ CREATE TABLE IF NOT EXISTS sc_products (
   product_id                    MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   availability_id               TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 2,
   introduction_date             TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  taxonomy_id                   MEDIUMINT(8) UNSIGNED  NULL  DEFAULT NULL,
   sales_discontinuation_date    TIMESTAMP              NULL  DEFAULT NULL,
   support_discontinuation_date  TIMESTAMP              NULL  DEFAULT NULL,
   global_product_name           VARCHAR(255)           NULL  DEFAULT NULL,
   PRIMARY KEY pk_product_id (product_id),
-  FOREIGN KEY fk_availability_id (availability_id) REFERENCES sc_product_availability_types (availability_id) ON DELETE NO ACTION ON UPDATE CASCADE
+  FOREIGN KEY fk_availability_id (availability_id) REFERENCES sc_product_availability_types (availability_id) ON DELETE NO ACTION ON UPDATE CASCADE,
+  INDEX ix_introduction_date (introduction_date DESC)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Product barcodes and other product IDs
