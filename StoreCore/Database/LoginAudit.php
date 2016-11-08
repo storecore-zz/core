@@ -5,10 +5,14 @@ namespace StoreCore\Database;
  * Login Audit
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
  * @version   0.1.0
+ *
+ * @method void __construct ( void )
+ * @method int count ( [ int $minutes = 15 ] )
+ * @method void storeAttempt ( [ string $username [, string $remote_address [, bool $successful = false ]]] )
  */
 class LoginAudit
 {
@@ -35,15 +39,20 @@ class LoginAudit
      *
      * @return int
      */
-    public function countLastFailedAttempts($minutes = 15)
+    public function count($minutes = 15)
     {
+        if (!is_numeric($minutes)) {
+            throw new \InvalidArgumentException();
+        }
         $minutes = (int)abs($minutes);
-        $sql = 'SELECT COUNT(*) FROM sc_login_attempts WHERE successful = 0 AND attempted > DATE_SUB(UTC_TIMESTAMP(), INTERVAL ' . $minutes . ' MINUTE)';
-        $result = $this->Connection->query($sql);
-        $row = $result->fetch(\PDO::FETCH_NUM);
-        return $row[0];
+
+        $stmt = $this->Connection->prepare('SELECT COUNT(*) FROM sc_login_attempts WHERE successful = 0 AND attempted > DATE_SUB(UTC_TIMESTAMP(), INTERVAL :minutes MINUTE)');
+        $stmt->bindValue(':minutes', $minutes, \PDO::PARAM_INT);
+        $stmt->execute();
+        $count = $stmt->fetchColumn();
+        return (int)$count;
     }
-    
+
     /**
      * Store a login attempt.
      *
@@ -83,8 +92,7 @@ class LoginAudit
             $successful = 0;
         }
 
-        $sql = "INSERT INTO sc_login_attempts (successful, attempted, remote_address, username) VALUES (:successful, UTC_TIMESTAMP(), :remote_address, :username)";
-        $stmt = $this->Connection->prepare($sql);
+        $stmt = $this->Connection->prepare('INSERT INTO sc_login_attempts (successful, attempted, remote_address, username) VALUES (:successful, UTC_TIMESTAMP(), :remote_address, :username)');
 
         $stmt->bindParam(':successful', $successful, \PDO::PARAM_INT);
 

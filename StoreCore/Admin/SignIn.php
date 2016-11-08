@@ -68,9 +68,9 @@ class SignIn extends \StoreCore\AbstractController
 
         // Check recent failed attempts
         $minutes = 15;
-        $failed_attempts = $login_audit->countLastFailedAttempts($minutes);
+        $failed_attempts = $login_audit->count($minutes);
         if ($failed_attempts > 10) {
-            $this->Logger->warning('There were over 10 failed admin sign-in attempts in the last ' . $minutes . ' minutes.');
+            $this->Logger->warning('There were over ' . $failed_attempts . ' failed admin sign-in attempts in the last ' . $minutes . ' minutes.');
         }
 
         // Connection throttling: pause for 2 ^ n seconds.
