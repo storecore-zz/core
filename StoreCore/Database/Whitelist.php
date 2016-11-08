@@ -29,13 +29,13 @@ class Whitelist extends \StoreCore\Database\AbstractModel implements \Countable
                AND from_date <= UTC_TIMESTAMP()
                AND (thru_date = '0000-00-00 00:00:00' OR thru_date > UTC_TIMESTAMP())
          */
-        $sql = "SELECT SQL_NO_CACHE COUNT(*) FROM sc_ip_whitelist WHERE (admin_flag = 1 OR api_flag = 1) AND from_date <= UTC_TIMESTAMP() AND (thru_date = '0000-00-00 00:00:00' OR thru_date > UTC_TIMESTAMP())";
-        $stmt = $this->Connection->query($sql);
-        $row = $stmt->fetch(\PDO::FETCH_NUM);
-        return (int)$row[0];
+        $stmt = $this->Connection->prepare("SELECT SQL_NO_CACHE COUNT(*) FROM sc_ip_whitelist WHERE (admin_flag = 1 OR api_flag = 1) AND from_date <= UTC_TIMESTAMP() AND (thru_date = '0000-00-00 00:00:00' OR thru_date > UTC_TIMESTAMP())");
+        $stmt->execute();
+        $count = $stmt->fetchColumn();
+        return (int)$count;
     }
- 
-     /**
+
+    /**
      * Check if the whitelist table is empty.
      *
      * Note the differences between the Whitelist::count() method and the
@@ -48,10 +48,9 @@ class Whitelist extends \StoreCore\Database\AbstractModel implements \Countable
      */
     public function isEmpty()
     {
-        $sql = "SELECT SQL_NO_CACHE COUNT(*) FROM sc_ip_whitelist";
-        $stmt = $this->Connection->query($sql);
-        $row = $stmt->fetch(\PDO::FETCH_NUM);
-        $count = (int)$row[0];
+        $stmt = $this->Connection->prepare('SELECT SQL_NO_CACHE COUNT(*) FROM sc_ip_whitelist');
+        $stmt->execute();
+        $count = (int) $stmt->fetchColumn();
         return ($count === 0) ? true : false;
     }
 
@@ -102,12 +101,11 @@ class Whitelist extends \StoreCore\Database\AbstractModel implements \Countable
         }
         $sql .= " AND from_date <= UTC_TIMESTAMP() AND (thru_date = '0000-00-00 00:00:00' OR thru_date > UTC_TIMESTAMP())";
 
-        $count = 0;
         try {
             $stmt = $this->Connection->prepare($sql);
             $stmt->bindParam(':ip_address', $ip_address);
-            $row = $stmt->fetch(\PDO::FETCH_NUM);
-            $count = (int)$row[0];
+            $stmt->execute();
+            $count = (int) $stmt->fetchColumn(0);
         } catch (\PDOException $e) {
             return false;
         }
