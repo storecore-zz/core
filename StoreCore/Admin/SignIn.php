@@ -53,7 +53,7 @@ class SignIn extends \StoreCore\AbstractController
         }
 
         // Audit failed and successful attempts
-        $login_audit = new \StoreCore\Database\LoginAudit();
+        $login_audit = new \StoreCore\Database\LoginAudit($this->Registry);
 
         // HTTP response object
         $response = new Response($this->Registry);

@@ -10,26 +10,13 @@ namespace StoreCore\Database;
  * @package   StoreCore\Security
  * @version   0.1.0
  *
- * @method void __construct ( void )
+ * @internal
  * @method int count ( [ int $minutes = 15 ] )
  * @method void storeAttempt ( [ string $username [, string $remote_address [, bool $successful = false ]]] )
  */
-class LoginAudit
+class LoginAudit extends AbstractModel
 {
     const VERSION = '0.1.0';
-
-    /**
-     * @param void
-     * @return void
-     * @uses \StoreCore\Database\Connection()::__construct()
-     */
-    public function __construct()
-    {
-        // Open a fresh connection
-        $this->Connection = new \StoreCore\Database\Connection();
-        // Do not emulate prepares but use true prepared statements
-        $this->Connection->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
-    }
 
     /**
      * Count the recently failed login attempts.
