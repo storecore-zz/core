@@ -313,7 +313,18 @@ class Document
     public function getHead()
     {
         $head  = '<head>';
+
+        /*
+         * In an AMP page the charset definition MUST be the first child of the
+         * <head> tag and the AMP runtime MUST be loaded as the second child of
+         * the <head> tag.
+         */
         $head .= '<meta charset="utf-8">';
+        if ($this->AcceleratedMobilePage) {
+            $head .= '<script async src="https://cdn.ampproject.org/v0.js"></script>';
+        } else {
+            $head .= '<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>';
+        }
 
         if ($this->Title != null) {
             $head .= '<title>' . $this->Title . '</title>';
@@ -329,10 +340,6 @@ class Document
             }
         }
 
-        if ($this->AcceleratedMobilePage) {
-            $head .= '<style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>';
-        }
-
         if (!empty($this->Style)) {
             if ($this->AcceleratedMobilePage) {
                 $head .= '<style amp-custom>';
@@ -341,6 +348,9 @@ class Document
             }
             $head .= $this->Style;
             $head .= '</style>';
+        }
+        if ($this->AcceleratedMobilePage) {
+            $head .= '<style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>';
         }
 
         foreach ($this->MetaData as $name => $content) {
@@ -353,12 +363,6 @@ class Document
             }
         }
 
-        if ($this->AcceleratedMobilePage) {
-            $head .= '<script async src="https://cdn.ampproject.org/v0.js"></script>';
-        } else {
-            $head .= '<script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>';
-        }
-            
         if ($this->Scripts !== null) {
             $head .= '<script>';
             $head .= implode($this->Scripts);
