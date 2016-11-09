@@ -173,7 +173,7 @@ class Document
      *   Content for a new HTML container.  Please note that multiple sections
      *   are parsed and displayed in the order they are added.
      *
-     * @param string|bool|null $container
+     * @param string|false|null $container
      *   Enclosing parent container for the new content.  Defaults to `section`
      *   for a generic `<section>...</section>` container.  This parameter MAY
      *   be set to null, to false or to an empty string if the parent container

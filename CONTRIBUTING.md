@@ -893,6 +893,29 @@ interface SetupInterface
 
 ## A.1. Package StoreCore\Core
 
+### Namespace StoreCore
+
+```php
+class \StoreCore\Document {
+    public void __construct ( [ string $title ] )
+    public string __toString ( void )
+    public $this addLink ( string $href [, string $rel [, string $type [, string $media [, string $hreflang ]]]] )
+    public $this addMetaData ( string $name , string $content )
+    public $this addMetaProperty ( string $property , string $content )
+    public $this addScript ( string $script [, bool $defer = true ] )
+    public $this addSection ( string $content [, string|false|null $container = 'section' ] )
+    public $this addStyle ( string $css )
+    public void amplify ( [ bool $use_amp_html = true ] )
+    public string getBody ( void )
+    public string getDocument ( void )
+    public string getHead ( void )
+    public $this setDescription ( string $description )
+    public $this setLanguage ( string $language_code )
+    public $this setThemeColor ( string $color )
+    public $this function setTitle ( string $title )
+}
+```
+
 ## A.2. Package StoreCore\I18N
 
 ### Namespace StoreCore\Database
