@@ -419,96 +419,109 @@ UPDATE sc_currencies SET currency_symbol = 'Z$' WHERE currency_code = 'ZWD' AND 
 
 -- Languages
 CREATE TABLE IF NOT EXISTS sc_languages (
-  language_id   TINYINT(3) UNSIGNED  NOT NULL  COMMENT 'LCID',
-  parent_id     TINYINT(3) UNSIGNED  NOT NULL  DEFAULT 0,
-  status        TINYINT(1) UNSIGNED  NOT NULL,
+  language_id   CHAR(5)              CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
+  parent_id     CHAR(5)              CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  DEFAULT 'en-GB',
+  enabled_flag  TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
   sort_order    TINYINT(3) UNSIGNED  NOT NULL  DEFAULT 0,
-  iso_code      CHAR(5)              NOT NULL  COMMENT 'ISO 639',
   english_name  VARCHAR(32)          NOT NULL,
   local_name    VARCHAR(32)          CHARACTER SET utf8  COLLATE utf8_unicode_ci  NULL  DEFAULT NULL,
   PRIMARY KEY pk_language_id (language_id),
   FOREIGN KEY fk_language_id (parent_id) REFERENCES sc_languages (language_id) ON DELETE RESTRICT ON UPDATE CASCADE,
-  UNIQUE KEY uk_iso_code (iso_code),
   UNIQUE KEY uk_english_name (english_name)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Primary languages
-INSERT IGNORE INTO sc_languages (language_id, parent_id, iso_code, english_name, local_name, status) VALUES
-  (0, 0, 'en-GB', 'English - United Kingdom', 'English - United Kingdom', 1),
-  (1, 1, 'nl-NL', 'Dutch - Netherlands', 'Nederlands - Nederland', 1),
-  (2, 2, 'de-DE', 'German - Germany', 'Deutsch - Deutschland', 1),
-  (3, 3, 'fr-FR', 'French - France', 'Français - France', 1),
+INSERT IGNORE INTO sc_languages (language_id, english_name, local_name, enabled_flag) VALUES
+  ('en-GB', 'English - United Kingdom', 'English - United Kingdom', 1),
+  ('de-DE', 'German - Germany', 'Deutsch - Deutschland', 1),
+  ('fr-FR', 'French - France', 'Français - France', 1),
+  ('nl-NL', 'Dutch - Netherlands', 'Nederlands - Nederland', 1),
 
   -- World languages and languages with over 50 million native speakers
-  (4, 4, 'zh-CN', 'Chinese (simplified) - China', '汉语', 0),
-  (5, 5, 'zh-TW', 'Chinese (traditional) - Taiwan', '漢語', 0),
-  (6, 6, 'es-ES', 'Spanish - Spain', 'Español - España', 0),
-  (7, 7, 'hi-IN', 'Hindi - India', 'हिन्दी', 0),
-  (8, 8, 'ar-SA', 'Arabic - Saudi Arabia', 'العَرَبِيةُ', 0),
-  (9, 9, 'pt-PT', 'Portuguese - Portugal', 'Português - Portugal', 0),
-  (10, 10, 'bn-BD', 'Bengali - Bangladesh', 'বাংলা ', 0),
-  (11, 11, 'ru-RU', 'Russian - Russia', 'Русский - Россия', 0),
-  (12, 12, 'ja-JP', 'Japanese - Japan', '日本語', 0),
-  (13, 13, 'pa-IN', 'Punjabi - India', 'پنجابی', 0),
-  (14, 14, 'tr-TR', 'Turkish - Turkey', 'Türkçe - Türkiye', 0),
-  (15, 15, 'jv-ID', 'Javanese - Indonesia', 'ꦧꦱꦗꦮ', 0),
-  (16, 16, 'ko-KR', 'Korean - Korea', '한국어/조선말', 0),
-  (17, 17, 'vi-VN', 'Vietnamese - Vietnam', 'Tiếng Việt', 0),
-  (18, 18, 'fa-IR', 'Farsi - Iran', 'فارسی', 0),
-  (19, 19, 'ta-IN', 'Tamil - India', 'தமிழ்', 0),
-  (20, 20, 'ur-PK', 'Urdu - Pakistan', 'اردو', 0),
-  (21, 21, 'it-IT', 'Italian - Italy', 'Italiano - Italia', 0),
-  (22, 22, 'ms-MY', 'Malay - Malaysia', 'بهاس ملايو‎', 0),
-  (23, 23, 'id-ID', 'Indonesian - Indonesia', 'Bahasa Indonesia', 0),
+  ('zh-CN', 'Chinese (simplified) - China', '汉语', 0),
+  ('zh-TW', 'Chinese (traditional) - Taiwan', '漢語', 0),
+  ('es-ES', 'Spanish - Spain', 'Español - España', 0),
+  ('hi-IN', 'Hindi - India', 'हिन्दी', 0),
+  ('ar-SA', 'Arabic - Saudi Arabia', 'العَرَبِيةُ', 0),
+  ('pt-PT', 'Portuguese - Portugal', 'Português - Portugal', 0),
+  ('bn-BD', 'Bengali - Bangladesh', 'বাংলা ', 0),
+  ('ru-RU', 'Russian - Russia', 'Русский - Россия', 0),
+  ('ja-JP', 'Japanese - Japan', '日本語', 0),
+  ('pa-IN', 'Punjabi - India', 'پنجابی', 0),
+  ('tr-TR', 'Turkish - Turkey', 'Türkçe - Türkiye', 0),
+  ('jv-ID', 'Javanese - Indonesia', 'ꦧꦱꦗꦮ', 0),
+  ('ko-KR', 'Korean - Korea', '한국어/조선말', 0),
+  ('vi-VN', 'Vietnamese - Vietnam', 'Tiếng Việt', 0),
+  ('fa-IR', 'Farsi - Iran', 'فارسی', 0),
+  ('ta-IN', 'Tamil - India', 'தமிழ்', 0),
+  ('ur-PK', 'Urdu - Pakistan', 'اردو', 0),
+  ('it-IT', 'Italian - Italy', 'Italiano - Italia', 0),
+  ('ms-MY', 'Malay - Malaysia', 'بهاس ملايو‎', 0),
+  ('id-ID', 'Indonesian - Indonesia', 'Bahasa Indonesia', 0),
 
   -- Official European languages with over 10 million native speakers
-  (32, 32, 'pl-PL', 'Polish - Poland', 'Polski - Polska', 0),
-  (33, 33, 'uk-UA', 'Ukrainian - Ukraine', 'українська мова', 0),
-  (34, 34, 'az-AZ', 'Azerbaijani - Azerbaijan', 'آذربایجان دیلی', 0),
-  (35, 35, 'ro-RO', 'Romanian - Romania', 'Română - România', 0),
-  (36, 36, 'el-GR', 'Greek - Greece', 'Eλληνικά - Ελλάδα', 0),
-  (37, 37, 'hu-HU', 'Hungarian - Hungary', 'Magyar - Magyarország', 0),
-  (38, 38, 'cs-CZ', 'Czech - Czech Republic', 'Čeština - Česká republika', 0),
-  (39, 39, 'ca-AD', 'Catalan - Andorra', 'Català - Andorra', 0),
+  ('pl-PL', 'Polish - Poland', 'Polski - Polska', 0),
+  ('uk-UA', 'Ukrainian - Ukraine', 'українська мова', 0),
+  ('az-AZ', 'Azerbaijani - Azerbaijan', 'آذربایجان دیلی', 0),
+  ('ro-RO', 'Romanian - Romania', 'Română - România', 0),
+  ('el-GR', 'Greek - Greece', 'Eλληνικά - Ελλάδα', 0),
+  ('hu-HU', 'Hungarian - Hungary', 'Magyar - Magyarország', 0),
+  ('cs-CZ', 'Czech - Czech Republic', 'Čeština - Česká republika', 0),
+  ('ca-AD', 'Catalan - Andorra', 'Català - Andorra', 0),
 
   -- Official European languages with over 5 million native speakers
-  (40, 40, 'sv-SE', 'Swedish - Sweden', 'Svenska - Sverige', 0),
-  (41, 41, 'sr-SP', 'Serbian - Serbia', 'Српски - Србија', 0),
-  (42, 42, 'bg-BG', 'Bulgarian - Bulgaria', 'Български - България', 0),
-  (43, 43, 'sq-AL', 'Albanian - Albania', 'Shqip - Shqipëri', 0),
-  (44, 44, 'hy-AM', 'Armenian - Armenia', 'Հայերեն - Հայաստան', 0),
-  (45, 45, 'hr-HR', 'Croatian - Croatia', 'Hrvatski - Hrvatska', 0),
-  (46, 46, 'da-DK', 'Danish - Denmark', 'Dansk - Danmark', 0),
-  (47, 47, 'fi-FI', 'Finnish - Finland', 'Suomi - Suomi', 0),
-  (48, 48, 'kk-KZ', 'Kazakh - Kazakhstan', 'қазақ тілі - Қазақстан', 0),
-  (49, 49, 'sk-SK', 'Slovak - Slovakia', 'Slovenčina - Slovensko', 0);
+  ('bg-BG', 'Bulgarian - Bulgaria', 'Български - България', 0),
+  ('da-DK', 'Danish - Denmark', 'Dansk - Danmark', 0),
+  ('fi-FI', 'Finnish - Finland', 'Suomi - Suomi', 0),
+  ('hy-AM', 'Armenian - Armenia', 'Հայերեն - Հայաստան', 0),
+  ('hr-HR', 'Croatian - Croatia', 'Hrvatski - Hrvatska', 0),
+  ('kk-KZ', 'Kazakh - Kazakhstan', 'қазақ тілі - Қазақстан', 0),
+  ('nb-NO', 'Norwegian Bokmål - Norway', 'Bokmål - Norge', 0),
+  ('nn-NO', 'Norwegian Nynorsk - Norway', 'Nynorsk - Noreg', 0),
+  ('sk-SK', 'Slovak - Slovakia', 'Slovenčina - Slovensko', 0),
+  ('sq-AL', 'Albanian - Albania', 'Shqip - Shqipëri', 0),
+  ('sr-SP', 'Serbian - Serbia', 'Српски - Србија', 0),
+  ('sv-SE', 'Swedish - Sweden', 'Svenska - Sverige', 0),
+
+  -- Other languages
+  ('af-ZA', 'Afrikaans - South Africa', 'Afrikaans - Suid-Afrika', 0),
+  ('et-EE', 'Estonian - Estonia', 'Eesti', 0),
+  ('eu-ES', 'Basque - Basque', 'Euskara', 0),
+  ('gu-IN', 'Gujarati - India', 'ગુજરાતી', 0),
+  ('he-IL', 'Hebrew - Israel', 'עברית', 0),
+  ('is-IS', 'Icelandic - Iceland', 'Íslenska', 0),
+  ('ka-GE', 'Georgian - Georgia', 'ქართული', 0),
+  ('lb-LU', 'Luxembourgish - Luxembourg', 'Lëtzebuergesch', 0);
 
 -- Secondary languages
-INSERT IGNORE INTO sc_languages (language_id, parent_id, iso_code, english_name, local_name, status) VALUES
-  (255, 0, 'en-US', 'English - United States', 'English - United States', 0),
-  (254, 0, 'en-NZ', 'English - New Zealand', 'English - New Zealand', 0),
-  (253, 0, 'en-IE', 'English - Ireland', 'English - Ireland', 0),
-  (252, 0, 'en-CA', 'English - Canada', 'English - Canada', 0),
-  (251, 0, 'en-AU', 'English - Australia', 'English - Australia', 0),
-  (250, 1, 'nl-BE', 'Dutch - Belgium', 'Nederlands - België', 0),
-  (249, 2, 'de-CH', 'German - Switzerland', 'Deutsch - Schweiz', 0),
-  (248, 2, 'de-AT', 'German - Austria', 'Deutsch - Österreich', 0),
-  (247, 2, 'de-LU', 'German - Luxembourg', 'Deutsch - Luxemburg', 0),
-  (246, 3, 'fr-LU', 'French - Luxembourg', 'Français - Luxembourg', 0),
-  (245, 3, 'fr-CA', 'French - Canada', 'Français - Canada', 0),
-  (244, 3, 'fr-BE', 'French - Belgium', 'Français - Belgique', 0),
-  (243, 6, 'es-MX', 'Spanish - Mexico', 'Español mexicano - México', 0),
-  (242, 9, 'pt-BR', 'Portuguese - Brazil', 'Português - Brasil', 0),
-  (241, 21, 'it-CH', 'Italian - Switzerland', 'Italiano - Svizzera', 0);
+INSERT IGNORE INTO sc_languages (language_id, parent_id, english_name, local_name, enabled_flag) VALUES
+  ('de-AT', 'de-DE', 'German - Austria', 'Deutsch - Österreich', 0),
+  ('de-CH', 'de-DE', 'German - Switzerland', 'Deutsch - Schweiz', 0),
+  ('de-LI', 'de-DE', 'German - Liechtenstein', 'Deutsch - Liechtenstein', 0),
+  ('de-LU', 'de-DE', 'German - Luxembourg', 'Deutsch - Luxemburg', 0),
+  ('en-AU', 'en-GB', 'English - Australia', 'English - Australia', 0),
+  ('en-CA', 'en-GB', 'English - Canada', 'English - Canada', 0),
+  ('en-IE', 'en-GB', 'English - Ireland', 'English - Ireland', 0),
+  ('en-NZ', 'en-GB', 'English - New Zealand', 'English - New Zealand', 0),
+  ('en-US', 'en-GB', 'English - United States', 'English - United States', 1),
+  ('es-MX', 'es-ES', 'Spanish - Mexico', 'Español mexicano - México', 0),
+  ('fr-BE', 'fr-FR', 'French - Belgium', 'Français - Belgique', 0),
+  ('fr-CA', 'fr-FR', 'French - Canada', 'Français - Canada', 0),
+  ('fr-LU', 'fr-FR', 'French - Luxembourg', 'Français - Luxembourg', 0),
+  ('fr-MC', 'fr-FR', 'French - Monaco', 'Français - Monaco', 0),
+  ('it-CH', 'it-IT', 'Italian - Switzerland', 'Italiano - Svizzera', 0),
+  ('nl-BE', 'nl-NL', 'Dutch - Belgium', 'Nederlands - België', 0),
+  ('pt-BR', 'pt-BR', 'Portuguese - Brazil', 'Português - Brasil', 0),
+  ('sv-FI', 'sv-SE', 'Swedish - Finland', 'Finlandssvenska - Finland', 0);
 
 -- Translation Memory (TM)
 CREATE TABLE IF NOT EXISTS sc_translation_memory (
-  translation_id   VARCHAR(255)          CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
-  language_id      TINYINT(3) UNSIGNED   NOT NULL  DEFAULT 0,
+  translation_id   VARCHAR(128)          CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
+  language_id      CHAR(5)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  DEFAULT 'en-GB',
   admin_only_flag  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
   date_modified    TIMESTAMP             NOT NULL  DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP,
   translation      TEXT                  NULL,
-  PRIMARY KEY pk_translation_memory_id (translation_id, language_id),
+  PRIMARY KEY pk_id (translation_id, language_id),
   FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci;
 
@@ -531,7 +544,7 @@ CREATE TABLE IF NOT EXISTS sc_countries (
 -- Localized country names
 CREATE TABLE IF NOT EXISTS sc_country_names (
   country_id          SMALLINT(3) UNSIGNED  NOT NULL,
-  language_id         TINYINT(3) UNSIGNED   NOT NULL,
+  language_id         CHAR(5)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
   local_country_name  VARCHAR(128)          NOT NULL,
   PRIMARY KEY pk_id (country_id, language_id),
   FOREIGN KEY fk_country_id (country_id) REFERENCES sc_countries (country_id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -884,7 +897,7 @@ CREATE TABLE IF NOT EXISTS sc_store_hosts (
 -- Store languages
 CREATE TABLE IF NOT EXISTS sc_store_languages (
   store_id      TINYINT(3) UNSIGNED  NOT NULL,
-  language_id   TINYINT(3) UNSIGNED  NOT NULL  DEFAULT 0,
+  language_id   CHAR(5)              CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  DEFAULT 'en-GB',
   default_flag  TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
   PRIMARY KEY pk_store_language_id (store_id, language_id),
   FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -970,7 +983,7 @@ CREATE TABLE IF NOT EXISTS sc_brands (
 -- Optional localized brand names
 CREATE TABLE IF NOT EXISTS sc_brand_names (
   brand_id          SMALLINT(5) UNSIGNED  NOT NULL,
-  language_id       TINYINT(3) UNSIGNED   NOT NULL,
+  language_id       CHAR(5)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
   local_brand_name  VARCHAR(255)          NOT NULL,
   PRIMARY KEY pk_brand_name_id (brand_id, language_id),
   FOREIGN KEY fk_brand_id (brand_id) REFERENCES sc_brands (brand_id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -989,7 +1002,7 @@ CREATE TABLE IF NOT EXISTS sc_brand_names (
 --
 CREATE TABLE IF NOT EXISTS sc_product_taxonomy (
   taxonomy_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
-  language_id  TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 255,
+  language_id  CHAR(5)                CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  DEFAULT 'en-US',
   full_path    VARCHAR(255)           NOT NULL,
   PRIMARY KEY pk_id (taxonomy_id, language_id),
   FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -1009,7 +1022,7 @@ CREATE TABLE IF NOT EXISTS sc_categories (
 -- Localized category names
 CREATE TABLE IF NOT EXISTS sc_category_names (
   category_id    SMALLINT(5) UNSIGNED  NOT NULL,
-  language_id    TINYINT(3) UNSIGNED   NOT NULL,
+  language_id    CHAR(5)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
   category_name  VARCHAR(255)          NOT NULL,
   PRIMARY KEY pk_id (category_id, language_id),
   FOREIGN KEY fk_category_id (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -1089,7 +1102,7 @@ CREATE TABLE IF NOT EXISTS sc_product_identification_codes (
 -- Product names and product descriptions
 CREATE TABLE IF NOT EXISTS sc_product_descriptions (
   product_id          MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
-  language_id         TINYINT(3) UNSIGNED    NOT NULL,
+  language_id         CHAR(5)                CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
   local_product_name  VARCHAR(255)           NULL  DEFAULT NULL,
   keywords            VARCHAR(255)           NULL  DEFAULT NULL,
   summary             VARCHAR(255)           NULL  DEFAULT NULL  COMMENT 'Plain text',
@@ -1243,7 +1256,7 @@ CREATE TABLE IF NOT EXISTS sc_tags (
 
 CREATE TABLE IF NOT EXISTS sc_tag_keywords (
   tag_id       SMALLINT(5) UNSIGNED  NOT NULL,
-  language_id  TINYINT(3) UNSIGNED   NOT NULL,
+  language_id  CHAR(5)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
   keyword      VARCHAR(255)          NOT NULL,
   PRIMARY KEY pk_id (tag_id,language_id),
   FOREIGN KEY fk_tag_id (tag_id) REFERENCES sc_tags (tag_id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -1269,7 +1282,7 @@ CREATE TABLE IF NOT EXISTS sc_attributes (
 
 CREATE TABLE IF NOT EXISTS sc_attribute_descriptions (
   attribute_id  MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
-  language_id   TINYINT(3) UNSIGNED    NOT NULL,
+  language_id   CHAR(5)                CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
   description   VARCHAR(255)           NOT NULL,
   PRIMARY KEY pk_id (attribute_id,language_id),
   FOREIGN KEY fk_attribute_id (attribute_id) REFERENCES sc_attributes (attribute_id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -1327,7 +1340,7 @@ CREATE TABLE IF NOT EXISTS sc_attribute_filters (
 
 CREATE TABLE IF NOT EXISTS sc_attribute_filter_descriptions (
   attribute_group_id  SMALLINT(5) UNSIGNED  NOT NULL,
-  language_id         TINYINT(3) UNSIGNED   NOT NULL,
+  language_id         CHAR(5)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
   description         VARCHAR(255)          NOT NULL,
   PRIMARY KEY pk_id (attribute_group_id,language_id),
   FOREIGN KEY fk_attribute_group_id (attribute_group_id) REFERENCES sc_attribute_filters (attribute_group_id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -1376,7 +1389,7 @@ CREATE TABLE IF NOT EXISTS sc_shipping_carriers (
 
 CREATE TABLE IF NOT EXISTS sc_shipping_carrier_descriptions (
   carrier_id          SMALLINT(5) UNSIGNED  NOT NULL,
-  language_id         TINYINT(3) UNSIGNED   NOT NULL,
+  language_id         CHAR(5)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
   local_carrier_name  VARCHAR(255)          NOT NULL  DEFAULT '',
   description         VARCHAR(255)          NULL  DEFAULT NULL,
   PRIMARY KEY pk_id (carrier_id, language_id),
@@ -1448,10 +1461,10 @@ CREATE TABLE IF NOT EXISTS sc_payment_services (
 
 CREATE TABLE IF NOT EXISTS sc_payment_service_descriptions (
   payment_service_id  SMALLINT(5) UNSIGNED  NOT NULL,
-  language_id         TINYINT(3) UNSIGNED   NOT NULL,
+  language_id         CHAR(5)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
   local_service_name  VARCHAR(255)          NOT NULL  DEFAULT '',
   description         VARCHAR(255)          NULL  DEFAULT NULL,
-  PRIMARY KEY pk_id (payment_service_id,language_id),
+  PRIMARY KEY pk_id (payment_service_id, language_id),
   FOREIGN KEY fk_payment_service_id (payment_service_id) REFERENCES sc_payment_services (payment_service_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;

@@ -887,3 +887,44 @@ interface SetupInterface
     public function uninstall();
 }
 ```
+
+
+# Appendix A. Packages, Namespaces, Classes, and Methods
+
+## A.1. Package StoreCore\Core
+
+## A.2. Package StoreCore\I18N
+
+### Namespace StoreCore\Database
+
+```php
+class \StoreCore\Database\Languages extends \StoreCore\Database\AbstractModel {
+    public void disable ( string $language_id )
+    public void enable ( string $language_id )
+    public bool exists ( string $language_id )
+    public string filterLanguageCode ( string $language_id )
+    public array getEnabledLanguages ( void )
+    public array getLocalNames ( [ bool $include_disabled_languages = false ] )
+    public array getSupportedLanguages ( void )
+}
+
+class \StoreCore\Database\TranslationMemory extends \StoreCore\Database\AbstractModel {
+    public array|null find ( string $needle )
+    public array getTranslations ( [ string $language_code [, bool $storefront = true ]] )
+    public bool setLanguage ( string $language_code )
+}
+```
+
+### Namespace StoreCore\I18N
+
+```php
+class \StoreCore\I18N\Language {
+    public string negotiate ( array $supported [, string $default = 'en-GB' ] )
+}
+
+class \StoreCore\I18N\Locale {
+    public static string load ( [ string $default_language ] )
+}
+```
+
+## A.3. Package StoreCore\Security
