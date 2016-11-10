@@ -234,9 +234,7 @@ class Document
      */
     public function amplify($use_amp_html = true)
     {
-        if (is_bool($use_amp_html)) {
-            $this->AcceleratedMobilePage = $use_amp_html;
-        }
+        $this->AcceleratedMobilePage = (bool)$use_amp_html;
     }
 
     /**
@@ -276,22 +274,21 @@ class Document
          *
          * Load jQuery from Google CDN with a fallback for Microsoft Internet
          * Explorer (MSIE) <= 8.  If the CDN is not available, jQuery is loaded
-         * from the local /js/ assets.  Alternate CDNs are listed below.
+         * from the local /js/ assets.
          *
-         * MaxCDN:         //code.jquery.com/jquery-2.1.4.min.js
-         * Microsoft CDN:  //ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.min.js
-         * CloudFlare CDN: //cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js
-         * jsDelivr CDN:   //cdn.jsdelivr.net/jquery/2.1.4/jquery.min.js
+         * @see https://code.jquery.com/
+         * @see https://developers.google.com/speed/libraries/
+         * @see https://www.asp.net/ajax/cdn#jQuery_Releases_on_the_CDN_0
          */
          if (!$this->AcceleratedMobilePage) {
             if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/(?i)msie [4-8]/', $_SERVER['HTTP_USER_AGENT'])) {
-                $html .= '<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.3.min.js"></script>';
+                $html .= '<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>';
                 $html .= '<script>';
-                $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-1.11.3.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
+                $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-1.12.4.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
             } else {
-                $html .= '<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>';
+                $html .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>';
                 $html .= '<script>';
-                $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-2.1.4.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
+                $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-3.1.1.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
             }
 
             if ($this->ScriptsDeferred !== null) {
