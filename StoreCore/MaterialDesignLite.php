@@ -183,6 +183,12 @@ class MaterialDesignLite
         'mdl-cell--order-' => 'mco',
         'mdl-cell--'       => 'mc-',
         'mdl-cell'         => 'mc',
+        '-col-desktop'     => '-cd',
+        '-col-phone'       => '-cp',
+        '-col-tablet'      => '-ct',
+        '-offset-desktop'  => '-od',
+        '-offset-phone'    => '-op',
+        '-offset-tablet'   => '-ot',
 
         'mdl-card__actions'         => 'mcaa',
         'mdl-card--expand'          => 'mcae',
@@ -195,6 +201,9 @@ class MaterialDesignLite
         'mdl-card'                  => 'mca',
 
         'mdl-checkbox__box-outline'      => 'mcbbo',
+        'mdl-checkbox__focus-helper'     => 'mcbfh',
+        'mdl-checkbox__input'            => 'mcbi',
+        'mdl-checkbox__label'            => 'mcbl',
         'mdl-checkbox__tick-outline'     => 'mcbto',
         'mdl-checkbox__ripple-container' => 'mcbrc',
         'mdl-checkbox'                   => 'mcb',
@@ -210,7 +219,8 @@ class MaterialDesignLite
         'mdl-data-table__header--sorted-ascending'  => 'mdtha',
         'mdl-data-table__header--sorted-descending' => 'mdthd',
         'mdl-data-table__cell--non-numeric'         => 'mdtnn',
-        'mdl-data-table' => 'mdt',
+        'mdl-data-table__select'                    => 'mdts',
+        'mdl-data-table'                            => 'mdt',
 
         'mdl-dialog__actions--full-width' => 'mdgafw',
         'mdl-dialog__actions'             => 'mdga',
@@ -223,6 +233,7 @@ class MaterialDesignLite
         'mdl-grid--no-spacing' => 'mgns',
         'mdl-grid'             => 'mg',
 
+        'mdl-icon-toggle__input'            => 'miti',
         'mdl-icon-toggle__label'            => 'mitl',
         'mdl-icon-toggle__ripple-container' => 'mitrc',
         'mdl-icon-toggle'                   => 'mit',
@@ -233,9 +244,18 @@ class MaterialDesignLite
         'mdl-layout__content'                  => 'mlc',
         'mdl-layout__drawer-button'            => 'mldb',
         'mdl-layout__drawer'                   => 'mld',
-        'mdl-layout__header_row'               => 'mlh',
+        'mdl-layout__header-row'               => 'mlhr',
+        'mdl-layout__header--scroll'           => 'mlhr',
+        'mdl-layout__header--waterfall'        => 'mlhw',
+        'mdl-layout__header'                   => 'mlh',
         'mdl-layout--no-desktop-drawer-button' => 'mlnddb',
-        'mdl-layout__title'                    => 'mlt',
+        'mdl-layout__tab-bar-button'           => 'mltbb',
+        'mdl-layout__tab-bar-left-button'      => 'mltblb',
+        'mdl-layout__tab-bar-right-button'     => 'mltbrb',
+        'mdl-layout__tab-bar'                  => 'mltb',
+        'mdl-layout__tab'                      => 'mlt',
+        'mdl-layout__tab-ripple-container'     => 'mltrc',
+        'mdl-layout__title'                    => 'mlti',
         'mdl-layout'                           => 'ml',
 
         'mdl-list__item-avatar'            => 'mlii',
@@ -285,6 +305,7 @@ class MaterialDesignLite
         'mdl-progress' => 'mp',
 
         'mdl-radio__inner-circle'     => 'mric',
+        'mdl-radio__label'            => 'mrl',
         'mdl-radio__outer-circle'     => 'mroc',
         'mdl-radio__ripple-container' => 'mrrc',
         'mdl-radio' => 'mr',
@@ -309,6 +330,7 @@ class MaterialDesignLite
         'mdl-spinner'                 => 'msp',
 
         'mdl-switch__focus-helper'     => 'mswf',
+        'mdl-switch__label'            => 'mswl',
         'mdl-switch__ripple-container' => 'mswr',
         'mdl-switch__thumb'            => 'mswth',
         'mdl-switch__track'            => 'mswtr',
@@ -523,7 +545,7 @@ MDL_BADGE;
 
         if ($this->MaterialDesignComponents['mdl-button']) {
             $return .= <<<MDL_BUTTON
-.mdl-button{background:0 0;border:none;border-radius:2px;color:#000;position:relative;height:36px;margin:0;min-width:64px;padding:0 16px;display:inline-block;font-family:"Roboto","Helvetica","Arial",sans-serif;font-size:14px;font-weight:500;text-transform:uppercase;letter-spacing:0;overflow:hidden;will-change:box-shadow;transition:box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1);outline:none;cursor:pointer;text-decoration:none;text-align:center;line-height:36px;vertical-align:middle}
+.mdl-button{background:0 0;border:none;border-radius:2px;color:#000;position:relative;height:36px;margin:0;min-width:64px;padding:0 16px;display:inline-block;font-family:Roboto,"Helvetica Neue",Arial,sans-serif;font-size:14px;font-weight:500;text-transform:uppercase;letter-spacing:0;overflow:hidden;will-change:box-shadow;transition:box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1);outline:none;cursor:pointer;text-decoration:none;text-align:center;line-height:36px;vertical-align:middle}
 .mdl-button::-moz-focus-inner{border:0}
 .mdl-button:hover{background-color:rgba(158,158,158,.2)}
 .mdl-button:focus:not(:active){background-color:rgba(0,0,0,.12)}
@@ -1399,6 +1421,11 @@ MDL_GRID;
 
 MDL_APPEND;
 
+        // Add additional CSS and MDL overrides.
+        if (!empty($this->Overrides)) {
+            $return .= $this->Overrides;
+        }
+
         $return = str_replace("\r\n", "\n", $return);
         if ($this->Minify) {
             $return = str_replace(array_keys($this->MaterialDesignReplacements), array_values($this->MaterialDesignReplacements), $return);
@@ -1416,6 +1443,7 @@ MDL_APPEND;
             // Shorten the generic font stack addition `,"Helvetica Neue",Arial,sans-serif`
             if (strlen($return) > 50000) {
                 $return = str_replace(',"Helvetica Neue",Arial,sans-serif', ',sans-serif', $return);
+                $return = str_replace('Roboto,"Droid Sans",sans-serif', 'Roboto,sans-serif', $return);
             }
 
             // Drop -ms vendor prefixed CSS if the CSS still exceeds 50,000 characters.
