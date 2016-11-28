@@ -52,36 +52,67 @@ class MaterialDesignLite
         'Droid' => array('"Droid Sans","Helvetica Neue",Arial,sans-serif', '"Droid Serif",Georgia,"Times New Roman",serif'),
         'Droid Sans' => '"Droid Sans",Roboto,"Helvetica Neue",Arial,sans-serif',
         'Droid Serif' => '"Droid Serif",Georgia,"Times New Roman",serif',
+        'Fira Sans' => '"Fira Sans",Roboto,"Droid Sans","San Francisco","Helvetica Neue",Arial,sans-serif',
+        'Fira Sans Cyrillic' => '"Fira Sans",Roboto,"Droid Sans","San Francisco","Helvetica Neue",Arial,sans-serif',
+        'Fira Sans Latin Extended' => '"Fira Sans",Roboto,"Droid Sans","San Francisco","Helvetica Neue",Arial,sans-serif',
+        'Georgia' => '"Droid Serif",Georgia,Constantia,"Lucida Bright",Lucidabright,"Lucida Serif",Lucida,"DejaVu Serif","Bitstream Vera Serif","Liberation Serif",serif',
         'Helvetica' => 'Helvetica,"Helvetica Neue",Arial,sans-serif',
         'Helvetica Neue' => '"Helvetica Neue",Helvetica,Arial,sans-serif',
+        'Istok Web' => '"Istok Web",Frutiger,"Frutiger Linotype","Myriad Pro",Myriad,Calibri,sans-serif',
         'Lato' => 'Lato,"Gill Sans","Helvetica Neue",Arial,sans-serif',
         'Montserrat' => 'Montserrat,"Open Sans","Helvetica Neue",Arial,sans-serif',
         'Nunito' => 'Nunito,"Arial Rounded MT","Arial Rounded",Arial,sans-serif',
         'Open Sans' => '"Open Sans","Helvetica Neue",Arial,sans-serif',
+        'Oxygen' => 'Oxygen,Roboto,"Droid Sans",Ubuntu,"San Francisco","Helvetica Neue",Arial,sans-serif',
         'PT Sans' => '"PT Sans","Myriad Pro",Myriad,sans-serif',
         'PT Sans Cyrillic' => '"PT Sans","Myriad Pro",Myriad,sans-serif',
-        'Roboto' => 'Roboto,"Droid Sans","Helvetica Neue",Arial,sans-serif',
+        'PT Sans Latin Extended' => '"PT Sans","Myriad Pro",Myriad,sans-serif',
+        'Raleway' => 'Raleway,Verdana,"Helvetica Neue",Arial,sans-serif',
+        'Roboto' => 'Roboto,"Droid Sans","San Francisco","Helvetica Neue",Arial,sans-serif',
+        'Roboto Cyrillic' => 'Roboto,"Droid Sans","San Francisco","Helvetica Neue",Arial,sans-serif',
+        'Roboto Greek' => 'Roboto,"Droid Sans","San Francisco","Helvetica Neue",Arial,sans-serif',
+        'Roboto Latin Extended' => 'Roboto,"Droid Sans","San Francisco","Helvetica Neue",Arial,sans-serif',
         'Segoe UI' => '"Segoe UI","Segoe UI Web","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif',
         'Source Sans Pro' => '"Source Sans Pro",Roboto,"Helvetica Neue","Segoe UI",sans-serif',
         'Times New Roman' => 'TimesNewRoman,"Times New Roman",Times,serif',
+        'Ubuntu' => 'Ubuntu,Corbel,"San Francisco",sans-serif',
+        'Ubuntu Cyrillic' => 'Ubuntu,Corbel,"San Francisco",sans-serif',
+        'Ubuntu Greek' => 'Ubuntu,Corbel,"San Francisco",sans-serif',
+        'Ubuntu Latin Extended' => 'Ubuntu,Corbel,"San Francisco",sans-serif',
     );
 
     /**
      * @var array $FontLinks
-     *   Links to external web fonts CSS for font families.
+     *   Links to external web fonts CSS for font families.  Currently only
+     *   Google fonts are included due to limitations imposed on font loading
+     *   by AMP.
      */
     protected $FontLinks = array(
         'Droid' => 'https://fonts.googleapis.com/css?family=Droid+Sans:400,700|Droid+Serif',
         'Droid Sans' => 'https://fonts.googleapis.com/css?family=Droid+Sans:400,700',
         'Droid Serif' => 'https://fonts.googleapis.com/css?family=Droid+Serif:400,700',
+        'Fira Sans' => 'https://fonts.googleapis.com/css?family=Fira+Sans:300,400,500,700',
+        'Fira Sans Cyrillic' => 'https://fonts.googleapis.com/css?family=Fira+Sans:300,400,500,700&amp;subset=cyrillic,cyrillic-ext',
+        'Fira Sans Latin Extended' => 'https://fonts.googleapis.com/css?family=Fira+Sans:300,400,500,700&amp;subset=latin-ext',
+        'Istok Web' => 'https://fonts.googleapis.com/css?family=Istok+Web:400,700',
         'Lato' => 'https://fonts.googleapis.com/css?family=Lato:300,400,700,900',
         'Montserrat' => 'https://fonts.googleapis.com/css?family=Montserrat:400,700',
         'Nunito' => 'https://fonts.googleapis.com/css?family=Nunito:300,400,700',
         'Open Sans' => 'https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800',
-        'PT Sans' => 'https://fonts.googleapis.com/css?family=PT+Sans:400,700&amp;subset=latin-ext',
+        'Oxygen' => 'https://fonts.googleapis.com/css?family=Oxygen:300,400,700',
+        'PT Sans' => 'https://fonts.googleapis.com/css?family=PT+Sans:400,700',
         'PT Sans Cyrillic' => 'https://fonts.googleapis.com/css?family=PT+Sans:400,700&amp;subset=cyrillic,cyrillic-ext',
+        'PT Sans Latin Extended' => 'https://fonts.googleapis.com/css?family=PT+Sans:400,700&amp;subset=latin-ext',
+        'Raleway' => 'https://fonts.googleapis.com/css?family=Raleway:300,400,500,700',
         'Roboto' => 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700',
+        'Roboto Cyrillic' => 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;subset=cyrillic,cyrillic-ext',
+        'Roboto Greek' => 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;subset=greek,greek-ext',
+        'Roboto Latin Extended' => 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;subset=latin-ext',
         'Source Sans Pro' => 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700',
+        'Ubuntu' => 'https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700',
+        'Ubuntu Cyrillic' => 'https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700&amp;subset=cyrillic,cyrillic-ext',
+        'Ubuntu Greek' => 'https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700&amp;subset=greek,greek-ext',
+        'Ubuntu Latin Extended' => 'https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700&amp;subset=latin-ext',
     );
 
     /**
