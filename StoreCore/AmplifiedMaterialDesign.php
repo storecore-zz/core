@@ -28,10 +28,9 @@ class AmplifiedMaterialDesign extends MaterialDesignLite
      */
     public function minify($minify = true)
     {
-        $i = 97;
-        $j = 0;
-
         if ($minify !== false) {
+            $i = 97;
+            $j = 0;
             foreach ($this->MaterialDesignReplacements as $key => $value) {
                 $replacement = 'm' . chr($i);
                 if ($j !== 0) {
