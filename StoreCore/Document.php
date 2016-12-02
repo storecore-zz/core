@@ -53,7 +53,7 @@ class Document
     );
 
     /**
-     * @param string $title
+     * @param string|null $title
      * @return void
      */
     public function __construct($title = null)
@@ -85,8 +85,6 @@ class Document
      */
     public function addLink($href, $rel = null, $type = null, $media = null, $hreflang = null)
     {
-        $href = str_ireplace('https://', '//', $href);
-        $href = str_ireplace('http://', '//', $href);
         $link = array('href' => $href);
 
         if ($rel !== null) {
@@ -108,8 +106,14 @@ class Document
             $link['hreflang'] = $hreflang;
         }
 
-        $key = md5(strtolower($href));
+        // MD5 hash key of the lowercase URL, where https:// ≡ http:// ≡ //
+        $key = $href;
+        $key = str_ireplace('https://', '//', $key);
+        $key = str_ireplace('http://', '//', $key);
+        $key = mb_strtolower($key, 'UTF-8');
+        $key = md5($key);
         $this->Links[$key] = $link;
+
         return $this;
     }
 
@@ -314,13 +318,14 @@ class Document
         /*
          * In an AMP page the charset definition MUST be the first child of the
          * <head> tag and the AMP runtime MUST be loaded as the second child of
-         * the <head> tag.
+         * the <head> tag.  If this document is not an AMP page, the minified
+         * JavaScript voor Material Design Lite (MDL) is loaded but deferred.
          */
         $head .= '<meta charset="utf-8">';
         if ($this->AcceleratedMobilePage) {
             $head .= '<script async src="https://cdn.ampproject.org/v0.js"></script>';
         } else {
-            $head .= '<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>';
+            $head .= '<script defer src="/js/material.min.js"></script>';
         }
 
         if ($this->Title != null) {
@@ -328,13 +333,23 @@ class Document
         }
 
         if ($this->Links !== null) {
+            $links = (string)null;
+            $dns_prefetch = false;
             foreach ($this->Links as $link) {
-                $head .= '<link';
+                $links .= '<link';
                 foreach ($link as $attribute => $value) {
-                    $head .= ' ' . $attribute . '="' . $value . '"';
+                    $links .= ' ' . $attribute . '="' . $value . '"';
+                    if ($dns_prefetch === false && $attribute == 'rel' && $value == 'dns-prefetch') {
+                        $dns_prefetch = true;
+                    }
                 }
-                $head .= '>';
+                $links .= '>';
             }
+            if ($dns_prefetch) {
+                $head .= '<meta http-equiv="x-dns-prefetch-control" content="on">';
+            }
+            $head .= $links;
+            unset($attribute, $dns_prefetch, $link, $links, $value);
         }
 
         if (!empty($this->Style)) {

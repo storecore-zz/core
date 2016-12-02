@@ -17,29 +17,25 @@ class Document extends \StoreCore\Document
 
     /** @var array $Links */
     protected $Links = array(
-        'cf9a7ff54be9109cc67e55353fda8219' => array(
-            'href' => '//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css',
+        '6bb60c2b4cfa0d26fdf447532e52fc57' => array(
+            'href' => 'https://fonts.googleapis.com/',
+            'rel'  => 'dns-prefetch',
+        ),
+        '7ed8cc1d36d9a43dbf5600109929dfb7' => array(
+            'href' => 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700',
             'rel'  => 'stylesheet',
         ),
-        'dd3333881cfd6d7ac6c08d40315257bf' => array(
-            'href' => '//fonts.googleapis.com/css?family=Roboto:300,400,500,700,900',
+        '6a587e585353b2665a22578ba309fc08' => array(
+            'href' => 'https://fonts.googleapis.com/css?family=Roboto:900&amp;text=Store',
             'rel'  => 'stylesheet',
         ),
         'cc841a6f8ba105179e457c1c4e60a14e' => array(
-            'href' => '//fonts.googleapis.com/icon?family=Material+Icons',
+            'href' => 'https://fonts.googleapis.com/icon?family=Material+Icons',
             'rel'  => 'stylesheet',
         ),
-        '5963f6c37630f19a97ee8ca328a71656' => array(
-            'href' => '/css/mdl-v1.1.3.min.css',
+        '154e18b125be3526192ba1a4a6341294' => array(
+            'href' => '/css/material.min.css',
             'rel'  => 'stylesheet',
-        ),        
-        '945633b0695ae97d11f7ce3435b978c7' => array(
-            'href' => '/css/admin.min.css',
-            'rel'  => 'stylesheet',
-        ),
-        '337e46124a7928fe45d454c01a905414' => array(
-            'href' => '/assets/ico/localhost.ico',
-            'rel'  => 'shortcut icon',
         ),
     );
 
