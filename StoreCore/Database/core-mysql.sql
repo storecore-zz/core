@@ -8,12 +8,76 @@
 -- @version   0.1.0
 --
 
+-- Organizations
+CREATE TABLE IF NOT EXISTS sc_organizations (
+  organization_id   MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  public_name       VARCHAR(255)  NULL  DEFAULT NULL,
+  alternate_name    VARCHAR(255)  NULL  DEFAULT NULL,
+  legal_name        VARCHAR(255)  NULL  DEFAULT NULL,
+  email_address     VARCHAR(255)  NULL  DEFAULT NULL,
+  telephone_number  VARCHAR(255)  NULL  DEFAULT NULL,
+  fax_number        VARCHAR(255)  NULL  DEFAULT NULL,
+  commerce_id       VARCHAR(255)  NULL  DEFAULT NULL,
+  tax_id            VARCHAR(255)  NULL  DEFAULT NULL,
+  vat_id            VARCHAR(255)  NULL  DEFAULT NULL,
+  founding_date     DATE          NULL  DEFAULT NULL,
+  dissolution_date  DATE          NULL  DEFAULT NULL,
+  date_created      TIMESTAMP     NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  date_modified     TIMESTAMP     NULL  DEFAULT NULL,
+  date_deleted      TIMESTAMP     NULL  DEFAULT NULL,
+  PRIMARY KEY pk_organization_id (organization_id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+-- Persons
+CREATE TABLE IF NOT EXISTS sc_persons (
+  person_id             INT(10) UNSIGNED     NOT NULL  AUTO_INCREMENT,
+  gender                TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0  COMMENT 'ISO/IEC 5218',
+  honorific_prefix      VARCHAR(255)         NULL  DEFAULT NULL,
+  given_name            VARCHAR(255)         NULL  DEFAULT NULL  COMMENT 'First name',
+  additional_name       VARCHAR(255)         NULL  DEFAULT NULL  COMMENT 'Middle name',
+  family_name           VARCHAR(255)         NULL  DEFAULT NULL  COMMENT 'Last name',
+  honorific_suffix      VARCHAR(255)         NULL  DEFAULT NULL,
+  full_name             VARCHAR(255)         NULL  DEFAULT NULL,
+  given_name_initials   VARCHAR(255)         NULL  DEFAULT NULL,
+  middle_name_initials  VARCHAR(255)         NULL  DEFAULT NULL,
+  full_name_initials    VARCHAR(255)         NULL  DEFAULT NULL,
+  email_address         VARCHAR(255)         NULL  DEFAULT NULL,
+  telephone_number      VARCHAR(255)         NULL  DEFAULT NULL,
+  fax_number            VARCHAR(255)         NULL  DEFAULT NULL,
+  birth_date            DATE                 NULL  DEFAULT NULL,
+  birth_place           VARCHAR(255)         NULL  DEFAULT NULL,
+  death_date            DATE                 NULL  DEFAULT NULL,
+  death_place           VARCHAR(255)         NULL  DEFAULT NULL,
+  date_created          TIMESTAMP            NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  date_modified         TIMESTAMP            NULL  DEFAULT NULL,
+  date_anonymized       TIMESTAMP            NULL  DEFAULT NULL,
+  date_deleted          TIMESTAMP            NULL  DEFAULT NULL,
+  PRIMARY KEY pk_person_id (person_id),
+  INDEX ix_email_address (email_address)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+-- Organizations associated with a person
+CREATE TABLE IF NOT EXISTS sc_person_organizations (
+  person_id          INT(10) UNSIGNED       NOT NULL,
+  organization_id    MEDIUMINT(8) UNSIGNED  NOT NULL,
+  relation_type      ENUM('alumnus','employee','founder','funder','member','owner','sponsor')  NULL  DEFAULT NULL,
+  job_title          VARCHAR(255)           NULL  DEFAULT NULL,
+  email_address      VARCHAR(255)           NULL  DEFAULT NULL,
+  telephone_number   VARCHAR(255)           NULL  DEFAULT NULL,
+  fax_number         VARCHAR(255)           NULL  DEFAULT NULL,
+  from_date          DATE                   NULL  DEFAULT NULL,
+  thru_date          DATE                   NULL  DEFAULT NULL,
+  PRIMARY KEY pk_id (person_id, organization_id),
+  FOREIGN KEY fk_person_id (person_id) REFERENCES sc_persons (person_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_organization_id (organization_id) REFERENCES sc_organizations (organization_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
 -- User groups
 CREATE TABLE IF NOT EXISTS sc_user_groups (
   user_group_id    TINYINT(3) UNSIGNED  NOT NULL,
   user_group_name  VARCHAR(255)         NOT NULL,
   PRIMARY KEY pk_user_group_id (user_group_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 INSERT IGNORE INTO sc_user_groups (user_group_id, user_group_name) VALUES
   (  0, 'Access Denied'),
@@ -24,6 +88,7 @@ INSERT IGNORE INTO sc_user_groups (user_group_id, user_group_name) VALUES
 CREATE TABLE IF NOT EXISTS sc_users (
   user_id         SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   user_group_id   TINYINT(3) UNSIGNED   NOT NULL  DEFAULT 0,
+  person_id       INT(10) UNSIGNED      NULL  DEFAULT NULL,
   email_address   VARCHAR(255)          NOT NULL,
   password_reset  TIMESTAMP             NOT NULL  DEFAULT '0000-00-00 00:00:00',
   username        VARCHAR(255)          NOT NULL,
@@ -31,11 +96,10 @@ CREATE TABLE IF NOT EXISTS sc_users (
   hash_algo       VARCHAR(255)          NOT NULL,
   password_hash   VARCHAR(255)          NOT NULL,
   pin_code        VARCHAR(6)            NOT NULL  DEFAULT '0000',
-  first_name      VARCHAR(255)          NOT NULL  DEFAULT '',
-  last_name       VARCHAR(255)          NOT NULL  DEFAULT '',
   email_token     VARCHAR(255)          NULL  DEFAULT NULL,
   PRIMARY KEY pk_user_id (user_id),
   FOREIGN KEY fk_user_group_id (user_group_id) REFERENCES sc_user_groups (user_group_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_person_id (person_id) REFERENCES sc_persons (person_id) ON DELETE CASCADE ON UPDATE CASCADE,
   UNIQUE KEY uk_email_address (email_address),
   INDEX ix_username (username)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
@@ -921,19 +985,19 @@ CREATE TABLE IF NOT EXISTS sc_customers (
   store_id           TINYINT(3) UNSIGNED  NOT NULL,
   date_created       TIMESTAMP            NOT NULL  DEFAULT '0000-00-00 00:00:00',
   date_modified      TIMESTAMP            NULL  DEFAULT NULL,
-  email_address      VARCHAR(255)         NOT NULL  DEFAULT '',
-  gender             TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0  COMMENT 'ISO/IEC 5218',
-  date_of_birth      DATE                 NULL  DEFAULT NULL,
-  first_name         VARCHAR(255)         NULL  DEFAULT NULL,
-  last_name          VARCHAR(255)         NULL  DEFAULT NULL,
-  full_name          VARCHAR(255)         NULL  DEFAULT NULL,
-  phone_number       VARCHAR(64)          NULL  DEFAULT NULL,
-  company_name       VARCHAR(255)         NULL  DEFAULT NULL,
-  commerce_id        VARCHAR(255)         NULL  DEFAULT NULL,
-  vat_id             VARCHAR(255)         NULL  DEFAULT NULL,
+  date_deleted       TIMESTAMP            NULL  DEFAULT NULL,
   PRIMARY KEY pk_customer_id (customer_id),
   FOREIGN KEY fk_customer_group_id (customer_group_id) REFERENCES sc_customer_groups (customer_group_id) ON DELETE NO ACTION ON UPDATE CASCADE,
   FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+-- Personal customer data
+CREATE TABLE IF NOT EXISTS sc_customer_persons (
+  customer_id  INT(10) UNSIGNED  NOT NULL,
+  person_id    INT(10) UNSIGNED  NOT NULL,
+  PRIMARY KEY pk_id (customer_id, person_id),
+  FOREIGN KEY fk_customer_id (customer_id) REFERENCES sc_customers (customer_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_person_id (person_id) REFERENCES sc_persons (person_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Customer accounts
@@ -947,30 +1011,50 @@ CREATE TABLE IF NOT EXISTS sc_customer_accounts (
   password_hash  VARCHAR(255)      NOT NULL,
   reset_token    CHAR(16)          CHARACTER SET ascii  COLLATE ascii_bin  NULL  DEFAULT NULL,
   PRIMARY KEY pk_account_id (account_id),
-  FOREIGN KEY fk_customer_id (customer_id) REFERENCES sc_customers (customer_id) ON DELETE NO ACTION ON UPDATE CASCADE,
+  FOREIGN KEY fk_customer_id (customer_id) REFERENCES sc_customers (customer_id) ON DELETE CASCADE ON UPDATE CASCADE,
   INDEX ix_email_address (email_address)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Customer and shipping addresses
 CREATE TABLE IF NOT EXISTS sc_addresses (
-  address_id           INT(10) UNSIGNED      NOT NULL  AUTO_INCREMENT,
-  customer_id          INT(10) UNSIGNED      NOT NULL,
-  country_id           SMALLINT(3) UNSIGNED  NOT NULL,
-  postal_code          VARCHAR(16)           NOT NULL  DEFAULT '',
-  date_created         TIMESTAMP             NOT NULL  DEFAULT '0000-00-00 00:00:00',
-  date_modified        TIMESTAMP             NULL  DEFAULT NULL,
-  date_deleted         TIMESTAMP             NULL  DEFAULT NULL,
-  addressee            VARCHAR(255)          NULL  DEFAULT NULL,
-  extra_address_line   VARCHAR(255)          NULL  DEFAULT NULL,
-  street_name          VARCHAR(255)          NULL  DEFAULT NULL,
-  house_number         VARCHAR(16)           NULL  DEFAULT NULL,
-  house_number_suffix  VARCHAR(16)           NULL  DEFAULT NULL,
-  locality             VARCHAR(255)          NULL  DEFAULT NULL,
-  country_subdivision  VARCHAR(3)            NULL  DEFAULT NULL,
+  address_id              INT(10) UNSIGNED      NOT NULL  AUTO_INCREMENT,
+  country_id              SMALLINT(3) UNSIGNED  NOT NULL,
+  postal_code             VARCHAR(16)           NOT NULL  DEFAULT '',
+  global_location_number  CHAR(13)              NULL  DEFAULT NULL  COMMENT 'GLN',
+  date_created            TIMESTAMP             NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  date_modified           TIMESTAMP             NULL  DEFAULT NULL,
+  date_validated          TIMESTAMP             NULL  DEFAULT NULL,
+  date_deleted            TIMESTAMP             NULL  DEFAULT NULL,
+  addressee               VARCHAR(255)          NULL  DEFAULT NULL,
+  extra_address_line      VARCHAR(255)          NULL  DEFAULT NULL,
+  street_name             VARCHAR(255)          NULL  DEFAULT NULL,
+  house_number            VARCHAR(16)           NULL  DEFAULT NULL,
+  house_number_suffix     VARCHAR(16)           NULL  DEFAULT NULL,
+  locality                VARCHAR(255)          NULL  DEFAULT NULL,
+  country_subdivision     VARCHAR(3)            NULL  DEFAULT NULL,
+  latitude                DECIMAL(10, 8)        NULL  DEFAULT NULL,
+  longitude               DECIMAL(11, 8)        NULL  DEFAULT NULL,
+  formatted_address       TEXT                  NULL  DEFAULT NULL,
   PRIMARY KEY pk_address_id (address_id),
-  FOREIGN KEY fk_customer_id (customer_id) REFERENCES sc_customers (customer_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_country_id (country_id) REFERENCES sc_countries (country_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  INDEX ix_postal_code (postal_code)
+  INDEX ix_postal_code (postal_code),
+  UNIQUE KEY uk_global_location_number (global_location_number)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_organization_addresses (
+  organization_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
+  address_id       INT(10) UNSIGNED       NOT NULL,
+  PRIMARY KEY pk_id (organization_id, address_id),
+  FOREIGN KEY fk_organization_id (organization_id) REFERENCES sc_organizations (organization_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_address_id (address_id) REFERENCES sc_addresses (address_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_person_addresses (
+  person_id   INT(10) UNSIGNED  NOT NULL,
+  address_id  INT(10) UNSIGNED  NOT NULL,
+  PRIMARY KEY pk_id (person_id, address_id),
+  FOREIGN KEY fk_person_id (person_id) REFERENCES sc_persons (person_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_address_id (address_id) REFERENCES sc_addresses (address_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Brands and global brand names
