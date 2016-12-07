@@ -1041,6 +1041,18 @@ CREATE TABLE IF NOT EXISTS sc_addresses (
   UNIQUE KEY uk_global_location_number (global_location_number)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+CREATE TABLE IF NOT EXISTS sc_addresses_eav (
+  address_id            INT(10) UNSIGNED     NOT NULL,
+  vendor_prefix         VARCHAR(32)          NOT NULL,
+  attribute_name        VARCHAR(64)          NOT NULL,
+  date_modified         TIMESTAMP            NOT NULL  DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP,
+  attribute_bool_value  TINYINT(1) UNSIGNED  NULL  DEFAULT NULL,
+  attribute_int_value   INT(11) SIGNED       NULL  DEFAULT NULL,
+  attribute_str_value   VARCHAR(255)         NULL  DEFAULT NULL,
+  PRIMARY KEY pk_entity_id (address_id, vendor_prefix, attribute_name),
+  FOREIGN KEY fk_address_id (address_id) REFERENCES sc_addresses (address_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
 CREATE TABLE IF NOT EXISTS sc_organization_addresses (
   organization_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
   address_id       INT(10) UNSIGNED       NOT NULL,
