@@ -83,7 +83,7 @@ class Maintenance extends \StoreCore\AbstractModel
 
         return $files;
     }
-    
+
     /**
      * Get all StoreCore database table names.
      *
@@ -106,6 +106,37 @@ class Maintenance extends \StoreCore\AbstractModel
     }
 
     /**
+     * Strip comments and whitespace.
+     *
+     * @param string $sql
+     * @return string
+     */
+    private function minify($sql)
+    {
+        $sql = str_ireplace("\r\n", "\n", $sql);
+        $sql = str_ireplace("\n\n", "\n", $sql);
+        $sql = str_ireplace("\n  ", ' ', $sql);
+        $sql = str_ireplace("\n) ", ') ', $sql);
+        $sql = str_ireplace(' ( ', ' (', $sql);
+
+        $lines = explode("\n", $sql);
+        $sql = (string)null;
+        foreach ($lines as $line) {
+            if (substr($line, 0, 2) !== '--') {
+                $sql .= $line;
+            }
+        }
+        unset($lines, $line);
+
+        $sql = str_ireplace('     ', ' ', $sql);
+        $sql = str_ireplace('    ', ' ', $sql);
+        $sql = str_ireplace('   ', ' ', $sql);
+        $sql = str_ireplace('  ', ' ', $sql);
+
+        return $sql;
+    }
+
+    /**
      * Optimize tables.
      *
      * @param string|null $tables
@@ -114,18 +145,18 @@ class Maintenance extends \StoreCore\AbstractModel
      * @return void
      */
     public function optimize($tables = null)
-    {   
+    {
         if ($tables == null) {
             $tables = $this->getTables();
         }
-        
+
         if (is_array($tables)) {
             $tables = implode(', ', $tables);
         }
 
         $this->Connection->query('OPTIMIZE TABLE ' . $tables);
     }
-    
+
     /**
      * Restore the StoreCore database or a saved backup.
      *
@@ -140,19 +171,21 @@ class Maintenance extends \StoreCore\AbstractModel
         try {
             // Write pending changes to database files
             $this->Connection->exec('FLUSH TABLES');
-            
+
             // Update core tables using CREATE TABLE IF NOT EXISTS and INSERT IGNORE
             if (is_file(__DIR__ . DIRECTORY_SEPARATOR . 'core-mysql.sql')) {
                 $sql = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'core-mysql.sql', false);
+                $sql = $this->minify($sql);
                 $this->Connection->exec($sql);
             }
 
             // Add new translations using INSERT IGNORE
             if (is_file(__DIR__ . DIRECTORY_SEPARATOR . 'i18n-dml.sql')) {
                 $sql = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'i18n-dml.sql', false);
+                $sql = $this->minify($sql);
                 $this->Connection->exec($sql);
             }
-            
+
             // Add optional SQL to restore a backup
             if ($filename !== null && is_file($filename)) {
                 $sql = file_get_contents($filename, false);
