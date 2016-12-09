@@ -923,6 +923,10 @@ abstract class \StoreCore\Database\AbstractModel extends \StoreCore\AbstractMode
     public __construct ( \StoreCore\Registry $registry )
 }
 
+class \StoreCore\Database\Backup {
+    public static string save ( [ string|array $tables = '*' [, bool $drop_tables = false ]] )
+}
+
 class \StoreCore\Database\Maintenance extends \StoreCore\Database\AbstractModel
     public __construct ( \StoreCore\Registry $registry )
     public int emptyRecycleBin ( void )
