@@ -916,6 +916,24 @@ class \StoreCore\Document {
 }
 ```
 
+### Namespace StoreCore\Database
+
+```php
+abstract class \StoreCore\Database\AbstractModel extends \StoreCore\AbstractModel {
+    public __construct ( \StoreCore\Registry $registry )
+}
+
+class \StoreCore\Database\Maintenance extends \StoreCore\Database\AbstractModel
+    public __construct ( \StoreCore\Registry $registry )
+    public int emptyRecycleBin ( void )
+    public array getBackupFiles ( void )
+    public array getTables ( void )
+    public void optimize ( [ string|array $tables ] )
+    public bool restore ( [ string $filename ] )
+    public bool update ( void )
+}
+```
+
 ## A.2. Package StoreCore\I18N
 
 ### Namespace StoreCore\Database

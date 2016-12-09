@@ -52,6 +52,26 @@ class Maintenance extends \StoreCore\AbstractModel
     }
 
     /**
+     * Delete records marked for removal after 30 days.
+     *
+     * @param void
+     *
+     * @return int
+     *   Returns the number of deleted database table rows.
+     */
+    public function emptyRecycleBin()
+    {
+        $affected_rows = 0;
+        $tables = array('sc_customers', 'sc_persons', 'sc_organizations', 'sc_addresses');
+        foreach ($tables as $table) {
+            $affected_rows += $this->Connection->exec(
+                'DELETE FROM ' . $table . ' WHERE date_deleted < DATE_SUB(UTC_TIMESTAMP(), INTERVAL 30 DAY)'
+            );
+        }
+        return $affected_rows;
+    }
+
+    /**
      * List the available SQL backup files.
      *
      * @param void
@@ -59,7 +79,7 @@ class Maintenance extends \StoreCore\AbstractModel
      */
     public function getBackupFiles()
     {
-        $files = array(); 
+        $files = array();
 
         if ($handle = opendir(__DIR__)) {
             while (false !== ($entry = readdir($handle))) {
