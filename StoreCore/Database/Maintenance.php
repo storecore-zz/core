@@ -4,8 +4,12 @@ namespace StoreCore\Database;
 /**
  * Database Maintenance
  *
+ * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @internal
- * @version 0.1.0
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\Core
+ * @version   0.1.0
  */
 class Maintenance extends \StoreCore\AbstractModel
 {
@@ -45,10 +49,6 @@ class Maintenance extends \StoreCore\AbstractModel
         ) {
             $this->UpdateAvailable = true;
         }
-        
-        // Use a fresh connection that does not emulate prepared statements.
-        $this->Connection = new \StoreCore\Database\Connection();
-        $this->Connection->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
     }
 
     /**
@@ -139,7 +139,7 @@ class Maintenance extends \StoreCore\AbstractModel
     /**
      * Optimize tables.
      *
-     * @param string|null $tables
+     * @param string|array|null $tables
      *   Optional comma-separated list or array of table names.
      *
      * @return void
