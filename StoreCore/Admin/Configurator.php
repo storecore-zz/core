@@ -45,15 +45,26 @@ class Configurator
             }
         }
 
+        /*
+         * Parse user-defined constants and ignore constants
+         * included in $this->IgnoredSettings.
+         */
         $defined_constants = get_defined_constants(true);
         if (array_key_exists('user', $defined_constants)) {
             $defined_constants = $defined_constants['user'];
             foreach ($defined_constants as $name => $value) {
-                if (
-                    strpos($name, 'STORECORE_', 0) === 0
-                    || (strpos($name, 'StoreCore\\', 0) === 0 && strpos($name, 'StoreCore\\I18N\\', 0) !== 0)
-                ) {
-                    $this->Settings[$name] = $value;
+                if (!array_key_exists($name, $this->IgnoredSettings)) {
+                    /*
+                     * Only save constants with the STORECORE_ prefix or
+                     * constants from a \StoreCore namespace, but ignore all
+                     * language string constants from the \StoreCore\I18N namespace.
+                     */
+                    if (
+                        strpos($name, 'STORECORE_', 0) === 0
+                        || (strpos($name, 'StoreCore\\', 0) === 0 && strpos($name, 'StoreCore\\I18N\\', 0) !== 0)
+                    ) {
+                        $this->Settings[$name] = $value;
+                    }
                 }
             }
         }
@@ -68,8 +79,7 @@ class Configurator
     public function save()
     {
         $file = '<?php' . "\n";
-        foreach ($this->Settings as $name => $value)
-        {
+        foreach ($this->Settings as $name => $value) {
             /*
              * Namespace constants like \Foo\BAR_BAZ with a trailing backslash
              * must be defined without the trailing backslash in a PHP define:
@@ -112,9 +122,33 @@ class Configurator
      * @param string $name
      * @param mixed $value
      * @return void
+     *
+     * @throws \InvalidArgumentException
+     *   An SPL (Standard PHP Library) invalid argument logic exception is
+     *   thrown if the first parameter is not a string or an empty string.  The
+     *   value in the second parameter is not checked and stored "as is."
      */
     public function set($name, $value)
     {
+        if (!is_string($name)) {
+            throw new \InvalidArgumentException();
+        }
+
+        $name = trim($name);
+        if (empty($name)) {
+            throw new \InvalidArgumentException();
+        }
+
+        // Replace spaces and hyphens by underscores.
+        $name = str_replace(' ', '_', $name);
+        $name = str_replace('-', '_', $name);
+        // Replace multiple underscores by a single underscore.
+        $name = preg_replace('/_{1,}/', '_', $name);
+        // Strip a leading or trailing underscore.
+        $name = trim($name, '_');
+        // Change to uppercase for proper constant naming.
+        $name = strtoupper($name);
+
         if (!array_key_exists($name, $this->IgnoredSettings)) {
             $this->Settings[$name] = $value;
         }
