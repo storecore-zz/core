@@ -7,7 +7,6 @@
 define('STORECORE_KILL_SWITCH', false);
 define('STORECORE_MAINTENANCE_MODE', false);
 define('STORECORE_NULL_LOGGER', false);
-define('STORECORE_STATISTICS', false);
 
 /* Database */
 define('STORECORE_DATABASE_DRIVER',           'mysql');
@@ -21,3 +20,8 @@ define('STORECORE_DATABASE_DEFAULT_PASSWORD', '');
 // define('STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR', '');
 // define('STORECORE_FILESYSTEM_LOGS_DIR', '');
 define('STORECORE_FILESYSTEM_LOGS_FILENAME_FORMAT', 'YmdH');
+
+/* Business Intelligence (BI) */
+define('STORECORE_BI', false);
+define('STORECORE_BI_GOOGLE_ANALYTICS', false);
+// define('STORECORE_BI_GOOGLE_ANALYTICS_TRACKING_ID', 'UA-XXXX-Y');

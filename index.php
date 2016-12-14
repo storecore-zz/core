@@ -153,9 +153,10 @@ if ($route !== false) {
 }
 
 // Statistics and analytics
-if (STORECORE_STATISTICS) {
+if (defined('STORECORE_BI') && STORECORE_BI == true) {
     $request = $registry->get('Request');
     $user_agent = $request->getUserAgent();
-    $user_agent_mapper = new \StoreCore\Database\UserAgent($user_agent);
+    $user_agent_mapper = new \StoreCore\Database\UserAgent($registry);
+    $user_agent_mapper->setUserAgent($user_agent);
     $user_agent_mapper->update();
 }
