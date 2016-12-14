@@ -43,7 +43,6 @@ CREATE TABLE IF NOT EXISTS sc_persons (
   full_name_initials    VARCHAR(255)         NULL  DEFAULT NULL,
   email_address         VARCHAR(255)         NULL  DEFAULT NULL,
   telephone_number      VARCHAR(255)         NULL  DEFAULT NULL,
-  fax_number            VARCHAR(255)         NULL  DEFAULT NULL,
   nationality           CHAR(2)              NULL  DEFAULT NULL  COMMENT 'ISO 3166-1 alpha-2 country code',
   birth_date            DATE                 NULL  DEFAULT NULL,
   birth_place           VARCHAR(255)         NULL  DEFAULT NULL,
