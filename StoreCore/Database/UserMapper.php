@@ -46,7 +46,7 @@ class UserMapper extends AbstractDataAccessObject
      * @param array $user_data
      * @return \StoreCore\User
      */
-    private function getUser(array $user_data)
+    private function getUserObject(array $user_data)
     {
         $user = new \StoreCore\User();
         $user->setUserID($user_data['user_id']);
@@ -80,7 +80,7 @@ class UserMapper extends AbstractDataAccessObject
         if (count($result) == 1) {
             $user_data = $result[0];
             unset($result);
-            return $this->getUser($user_data);
+            return $this->getUserObject($user_data);
         } else {
             return null;
         }
@@ -104,7 +104,7 @@ class UserMapper extends AbstractDataAccessObject
         if (count($result) == 1) {
             $user_data = $result[0];
             unset($result);
-            return $this->getUser($user_data);
+            return $this->getUserObject($user_data);
         } else {
             return null;
         }
@@ -114,9 +114,11 @@ class UserMapper extends AbstractDataAccessObject
      * Save a user.
      *
      * @param \StoreCore\User $user
-     * @return void
+     *
+     * @return bool
+     *   Returns true on success or false on failure.
      */
-    public function save(\StoreCore\User $user)
+    public function save(\StoreCore\User &$user)
     {
         if ($user->getUserID() === null) {
             $user_data = array(
@@ -152,9 +154,15 @@ class UserMapper extends AbstractDataAccessObject
         }
 
         if ($user->getUserID() === null) {
-            $this->create($user_data);
+            $result = $this->create($user_data);
+            if (is_numeric($result)) {
+                $user->setUserID($result);
+                return true;
+            } else {
+                return false;
+            }
         } else {
-            $this->update($user_data);
+            return $this->update($user_data);
         }
     }
 }

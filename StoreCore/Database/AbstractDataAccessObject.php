@@ -25,31 +25,65 @@ abstract class AbstractDataAccessObject extends AbstractModel
      * Create a new database row.
      *
      * @param array $keyed_data
-     * @return int
+     *
+     * @return int|false
+     *   Returns the ID of the inserted row on success or false on failure.
      */
     public function create(array $keyed_data)
     {
-        $sql = 'INSERT INTO ' . static::TABLE_NAME
-            . ' (' . implode(',', array_keys($keyed_data)) . ') VALUES (';
-        $values = array_values($keyed_data);
-        foreach ($values as $key => $value) {
-            if (!is_numeric($value)) {
-                $values[$key] = $this->Connection->quote($value);
-            }
-        }
-        $sql .= implode(',', $values);
-        $sql .= ')';
+        // Remove all NULL values on an INSERT.
+        $keyed_data = array_filter($keyed_data, function($var){return ($var !== null);});
 
-        $affected_rows = $this->Connection->exec($sql);
-        return $affected_rows;
+        $columns = array_keys($keyed_data);
+        $sql = 'INSERT INTO ' . static::TABLE_NAME . ' (' . implode(', ', $columns) . ') VALUES (:' . implode(', :', $columns) . ')';
+
+        try {
+            $stmt = $this->Connection->prepare($sql);
+            unset($columns, $sql);
+
+            foreach ($keyed_data as $key => $value) {
+                // Store booleans as a TINYINT 1 for true or 0 for false.
+                if (is_bool($value)) {
+                    if ($value === true) {
+                        $value = 1;
+                    } else {
+                        $value = 0;
+                    }
+                }
+
+                $key = ':' . $key;
+                if (is_int($value)) {
+                    $stmt->bindValue($key, $value, \PDO::PARAM_INT);
+                } elseif (is_string($value)) {
+                    $stmt->bindValue($key, $value, \PDO::PARAM_STR);
+                } else {
+                    $stmt->bindValue($key, strval($value), \PDO::PARAM_STR);
+                }
+            }
+
+            if ($stmt->execute()) {
+                $stmt->closeCursor();
+                return $this->Connection->lastInsertId();
+            } else {
+                return false;
+            }
+
+        } catch (\PDOException $e) {
+
+            return false;
+
+        }
     }
 
     /**
      * Delete one or more database rows.
      *
      * @param mixed $value
+     *
      * @param string|int|null $key
-     * @return int
+     *
+     * @return bool
+     *   Returns true on success or false on failure.
      */
     public function delete($value, $key = null)
     {
@@ -57,21 +91,42 @@ abstract class AbstractDataAccessObject extends AbstractModel
             $key = static::PRIMARY_KEY;
         }
 
-        if (!is_numeric($value)) {
-            $value = $this->Connection->quote($value);
+        $sql = 'DELETE FROM ' . static::TABLE_NAME;
+        if ($value === null) {
+            $sql .= ' WHERE ' . $key . ' IS NULL';
+        } else {
+            $sql .= ' WHERE ' . $key . ' = :' . $key;
         }
 
-        $sql = 'DELETE FROM ' . static::TABLE_NAME . ' WHERE ' . $key . '=' . $value;
-        $affected_rows = $this->Connection->exec($sql);
-        return $affected_rows;
+        try {
+            $stmt = $this->Connection->prepare($sql);
+            if ($value !== null) {
+                $key = ':' . $key;
+                if (is_int($value)) {
+                    $stmt->bindValue($key, $value, \PDO::PARAM_INT);
+                } elseif (is_string($value)) {
+                    $stmt->bindValue($key, $value, \PDO::PARAM_STR);
+                } else {
+                    $stmt->bindValue($key, strval($value), \PDO::PARAM_STR);
+                }
+            }
+            return $stmt->execute();
+        } catch (\PDOException $e) {
+            return false;
+        }
     }
 
     /**
      * Fetch one or more rows from a single database table.
      *
      * @param mixed $value
+     *
      * @param string|int|null $key
-     * @return array
+     *
+     * @return array|false
+     *   Returns an array on success or false on failure.  The array MAY be
+     *   empty if the query was executed without any errors but no matching
+     *   database records were found.
      */
     public function read($value, $key = null)
     {
@@ -79,40 +134,92 @@ abstract class AbstractDataAccessObject extends AbstractModel
             $key = static::PRIMARY_KEY;
         }
 
-        if (!is_numeric($value)) {
-            $value = $this->Connection->quote($value);
+        $sql = 'SELECT * FROM ' . static::TABLE_NAME;
+        if ($value === null) {
+            $sql .= ' WHERE ' . $key . ' IS NULL';
+        } else {
+            $sql .= ' WHERE ' . $key . ' = :' . $key;
         }
 
-        $sql = 'SELECT * FROM ' . static::TABLE_NAME . ' WHERE ' . $key . '=' . $value;
-
-        $rows = array();
-        $stmt = $this->Connection->query($sql);
-        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $rows[] = $row;
+        try {
+            $stmt = $this->Connection->prepare($sql);
+            if ($value !== null) {
+                $key = ':' . $key;
+                if (is_int($value)) {
+                    $stmt->bindValue($key, $value, \PDO::PARAM_INT);
+                } elseif (is_string($value)) {
+                    $stmt->bindValue($key, $value, \PDO::PARAM_STR);
+                } else {
+                    $stmt->bindValue($key, strval($value), \PDO::PARAM_STR);
+                }
+            }
+            if ($stmt->execute()) {
+                $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+                $stmt->closeCursor();
+                return $result;
+            } else {
+                return false;
+            }
+        } catch (\PDOException $e) {
+            return false;
         }
-        return $rows;
     }
 
     /**
-     * Update a single database row.
+     * Update one or more database rows.
      *
      * @param array $keyed_data
-     * @return int
+     *
+     * @param string|null $where_clause
+     *   Optional SQL WHERE clause for additional conditions.  This clause
+     *   MUST NOT contain the WHERE keyword.  If this WHERE clause is omitted,
+     *   the UPDATE is limitted to a single record.
+     *
+     * @return bool
+     *   Returns true on success or false on failure.
      */
-    public function update(array $keyed_data)
+    public function update(array $keyed_data, $where_clause = null)
     {
-        $sql = 'UPDATE ' . static::TABLE_NAME . ' SET ';
-        $updates = array();
-        foreach ($keyed_data as $column => $value) {
-            if (!is_numeric($value)) {
-                $value = $this->Connection->quote($value);
-            }
-            $updates[] = $column . '=' . $value;
+        // Limit UPDATE to a single row if no WHERE clause is provided.
+        if ($where_clause === null) {
+            $where_clause = ' WHERE ' . static::PRIMARY_KEY . '=' . $keyed_data[static::PRIMARY_KEY];
+        } else {
+            $where_clause = ' WHERE ' . trim($where_clause);
         }
-        $sql .= implode(',', $updates);
-        $sql .= ' WHERE ' . static::PRIMARY_KEY . '=' . $keyed_data[static::PRIMARY_KEY];
 
-        $affected_rows = $this->Connection->exec($sql);
-        return $affected_rows;
+        // Never UPDATE the primary key.
+        unset($keyed_data[static::PRIMARY_KEY]);
+
+        $updates = array();
+        foreach ($keyed_data as $key => $value) {
+            if (is_bool($value)) {
+                if ($value === true) {
+                    $value = 1;
+                } else {
+                    $value = 0;
+                }
+            }
+            $updates[] = $key . ' = :' . $key;
+        }
+        $sql = 'UPDATE ' . static::TABLE_NAME . ' SET ' . implode(', ', $updates) . $where_clause;
+
+        try {
+            $stmt = $this->Connection->prepare($sql);
+            foreach ($keyed_data as $key => $value) {
+                $key = ':' . $key;
+                if (is_null($value)) {
+                    $stmt->bindValue($key, $value, \PDO::PARAM_NULL);
+                } elseif (is_int($value)) {
+                    $stmt->bindValue($key, $value, \PDO::PARAM_INT);
+                } elseif (is_string($value)) {
+                    $stmt->bindValue($key, $value, \PDO::PARAM_STR);
+                } else {
+                    $stmt->bindValue($key, strval($value), \PDO::PARAM_STR);
+                }
+            }
+            return $stmt->execute();
+        } catch (\PDOException $e) {
+            return false;
+        }
     }
 }
