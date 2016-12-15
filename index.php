@@ -66,6 +66,13 @@ if (\StoreCore\FileSystem\Blacklist::exists($request->getRemoteAddress())) {
     exit;
 }
 
+// Silently publish an asset, if it exists.
+$pathinfo = pathinfo($request->getRequestPath());
+if (array_key_exists('basename', $pathinfo) && array_key_exists('extension', $pathinfo)) {
+    $asset = new \StoreCore\Asset($pathinfo['basename'], $pathinfo['extension']);
+    unset($asset, $pathinfo);
+}
+
 // Add an undenied request to the registry.
 $registry->set('Request', $request);
 
@@ -107,9 +114,9 @@ $registry->set('Session', $session);
 
 // Run the installer on a missing installed version ID.
 if (!defined('STORECORE_VERSION_INSTALLED')) {
-    $route = new \StoreCore\Route('/install/', '\StoreCore\Admin\FrontController', 'install');
-    $route->dispatch();
-    exit;
+    #$route = new \StoreCore\Route('/install/', '\StoreCore\Admin\FrontController', 'install');
+    #$route->dispatch();
+    #exit;
 }
 
 // Routing
@@ -128,13 +135,6 @@ switch ($request->getRequestPath()) {
         $route = new \StoreCore\Route('/robots.txt', '\StoreCore\FileSystem\Robots');
         break;
     default:
-        // Load an asset.
-        $pathinfo = pathinfo($request->getRequestPath());
-        if (array_key_exists('basename', $pathinfo) && array_key_exists('extension', $pathinfo)) {
-            $asset = new \StoreCore\Asset($pathinfo['basename'], $pathinfo['extension']);
-            unset($asset, $pathinfo);
-        }
-
         // Execute an administration route.
         if (strpos($request->getRequestPath(), '/admin/', 0) === 0) {
             $route = new \StoreCore\Route('/admin/', '\StoreCore\Admin\FrontController');
