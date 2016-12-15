@@ -16,9 +16,7 @@ class User
 
     /**
      * @var string|null $EmailAddress
-     * @var string|null $FirstName
      * @var string|null $HashAlgorithm
-     * @var string|null $LastName
      * @var string|null $PasswordHash
      * @var string|null $PasswordSalt
      * @var string      $PinCode
@@ -27,15 +25,20 @@ class User
      * @var string|null $Username
      */
     private $EmailAddress;
-    private $FirstName;
     private $HashAlgorithm;
-    private $LastName;
     private $PasswordHash;
     private $PasswordSalt;
     private $PinCode = '0000';
     private $UserGroupID = 0;
     private $UserID;
     private $Username;
+    
+    /**
+     * @var \StoreCore\Person|null $Person
+     * @var int|null $PersonID
+     */
+    private $Person;
+    private $PersonID;
 
     /**
      * Check the user credentials.
@@ -90,28 +93,6 @@ class User
     }
 
     /**
-     * Get the user's first name.
-     *
-     * @param void
-     * @return string|null
-     */
-    public function getFirstName()
-    {
-        return $this->FirstName;
-    }
-
-    /**
-     * Get the user's full name.
-     *
-     * @param void
-     * @return string|null
-     */
-    public function getFullName()
-    {
-        return trim($this->getFirstName() . ' ' . $this->getLastName());
-    }
-
-    /**
      * Get the password hash algorithm.
      *
      * @param void
@@ -153,6 +134,17 @@ class User
     public function getPasswordSalt()
     {
         return $this->PasswordSalt;
+    }
+
+    /**
+     * Get the person identifier of this user.
+     *
+     * @param void
+     * @return int|null
+     */
+    public function getPersonID()
+    {
+        return $this->PersonID;
     }
 
     /**
@@ -211,25 +203,6 @@ class User
     }
 
     /**
-     * Set the user's first name.
-     *
-     * @param string $first_name
-     * @return void
-     */
-    public function setFirstName($first_name)
-    {
-        $first_name = trim($first_name);
-        mb_internal_encoding('UTF-8');
-        if (
-            mb_strtolower($first_name) == $first_name
-            || mb_strtoupper($first_name) == $first_name
-        ) {
-            mb_convert_case($first_name, MB_CASE_TITLE);
-        }
-        $this->FirstName = $first_name;
-    }
-
-    /**
      * Set the password hash algorithm.
      *
      * @param string $hash_algorithm
@@ -238,18 +211,6 @@ class User
     public function setHashAlgorithm($hash_algorithm)
     {
         $this->HashAlgorithm = $hash_algorithm;
-    }
-
-    /**
-     * Set the user's last name.
-     *
-     * @param string $last_name
-     * @return void
-     */
-    public function setLastName($last_name)
-    {
-        $last_name = trim($last_name);
-        $this->LastName = $last_name;
     }
 
     /**
@@ -270,6 +231,17 @@ class User
     public function setPasswordSalt($password_salt)
     {
         $this->PasswordSalt = $password_salt;
+    }
+
+    /**
+     * Set the ID of the person associated with this user.
+     *
+     * @param int $person_id
+     * @return void
+     */
+    public function setPersonID($person_id)
+    {
+        $this->PersonID = $person_id;
     }
 
     /**

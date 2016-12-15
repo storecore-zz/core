@@ -31,6 +31,11 @@ CREATE TABLE IF NOT EXISTS sc_organizations (
 -- Persons
 CREATE TABLE IF NOT EXISTS sc_persons (
   person_id             INT(10) UNSIGNED     NOT NULL  AUTO_INCREMENT,
+  anonymized_flag       TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
+  deleted_flag          TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
+  date_modified         TIMESTAMP            NOT NULL  DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP,
+  date_created          DATE                 NOT NULL,
+  email_address         VARCHAR(255)         NULL  DEFAULT NULL,
   gender                TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0  COMMENT 'ISO/IEC 5218',
   honorific_prefix      VARCHAR(255)         NULL  DEFAULT NULL,
   given_name            VARCHAR(255)         NULL  DEFAULT NULL  COMMENT 'First name',
@@ -41,18 +46,14 @@ CREATE TABLE IF NOT EXISTS sc_persons (
   given_name_initials   VARCHAR(255)         NULL  DEFAULT NULL,
   middle_name_initials  VARCHAR(255)         NULL  DEFAULT NULL,
   full_name_initials    VARCHAR(255)         NULL  DEFAULT NULL,
-  email_address         VARCHAR(255)         NULL  DEFAULT NULL,
   telephone_number      VARCHAR(255)         NULL  DEFAULT NULL,
   nationality           CHAR(2)              NULL  DEFAULT NULL  COMMENT 'ISO 3166-1 alpha-2 country code',
   birth_date            DATE                 NULL  DEFAULT NULL,
   birth_place           VARCHAR(255)         NULL  DEFAULT NULL,
   death_date            DATE                 NULL  DEFAULT NULL,
   death_place           VARCHAR(255)         NULL  DEFAULT NULL,
-  date_created          TIMESTAMP            NOT NULL  DEFAULT '0000-00-00 00:00:00',
-  date_modified         TIMESTAMP            NULL  DEFAULT NULL,
-  date_anonymized       TIMESTAMP            NULL  DEFAULT NULL,
-  date_deleted          TIMESTAMP            NULL  DEFAULT NULL,
   PRIMARY KEY pk_person_id (person_id),
+  INDEX ix_date_created (date_created DESC),
   INDEX ix_email_address (email_address)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 

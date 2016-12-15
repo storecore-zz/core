@@ -49,6 +49,7 @@ class UserMapper extends AbstractDataAccessObject
     private function getUserObject(array $user_data)
     {
         $user = new \StoreCore\User();
+
         $user->setUserID($user_data['user_id']);
         $user->setUserGroupID($user_data['user_group_id']);
         $user->setEmailAddress($user_data['email_address']);
@@ -57,8 +58,11 @@ class UserMapper extends AbstractDataAccessObject
         $user->setHashAlgorithm($user_data['hash_algo']);
         $user->setPasswordHash($user_data['password_hash']);
         $user->setPIN($user_data['pin_code']);
-        $user->setFirstName($user_data['first_name']);
-        $user->setLastName($user_data['last_name']);
+        
+        if ($user_data['person_id'] !== null) {
+            $user->setPersonID($user_data['person_id']);
+        }
+
         return $user;
     }
 
@@ -117,6 +121,9 @@ class UserMapper extends AbstractDataAccessObject
      *
      * @return bool
      *   Returns true on success or false on failure.
+     *
+     * @throws \DomainException
+     *   A domain logic exception is thrown if required user data are missing.
      */
     public function save(\StoreCore\User &$user)
     {
@@ -143,14 +150,8 @@ class UserMapper extends AbstractDataAccessObject
             throw new \DomainException();
         }
 
-        $user_data['first_name'] = $user->getFirstName();
-        if ($user->getFirstName() == null) {
-            $user_data['first_name'] = '';
-        }
-
-        $user_data['last_name'] = $user->getLastName();
-        if ($user->getLastName() == null) {
-            $user_data['last_name'] = '';
+        if ($user->getPersonID() !== null) {
+            $user_data['person_id'] = $user->getPersonID();
         }
 
         if ($user->getUserID() === null) {
