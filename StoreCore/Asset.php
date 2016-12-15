@@ -8,6 +8,7 @@ namespace StoreCore;
  * @copyright Copyright (c) 2015-2016 StoreCore
  * @internal
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\CMS
  * @version   0.1.0
  */
 class Asset
@@ -15,8 +16,8 @@ class Asset
     const VERSION = '0.1.0';
 
     /**
-     * @type string $FileName
-     * @type string $FileType
+     * @var string $FileName
+     * @var string $FileType
      */
     private $FileName;
     private $FileType;
@@ -60,7 +61,7 @@ class Asset
         }
 
         if ($this->fileExists()) {
-            $this->getFile();
+            $this->fetchFile();
         }
     }
 
@@ -68,16 +69,18 @@ class Asset
      * Check if an asset file exists.
      *
      * @param void
+     *
      * @return bool
+     *   Returns true if the asset file exists or false if the file does not
+     *   exist or the file type is not supported.
      */
     private function fileExists()
     {
-        // File type is not supported
         if ($this->FileType === null) {
             return false;
         }
 
-        return is_file(\StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . $this->FileType . DIRECTORY_SEPARATOR . $this->FileName);
+        return is_file(STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . $this->FileType . DIRECTORY_SEPARATOR . $this->FileName);
     }
 
     /**
@@ -86,7 +89,7 @@ class Asset
      * @param void
      * @return void
      */
-    private function getFile()
+    private function fetchFile()
     {
         if ($this->FileType == 'css' || $this->FileType == 'js' || $this->FileType == 'svg') {
             ob_start('ob_gzhandler');
@@ -98,7 +101,7 @@ class Asset
         header('Content-Type: ' . $this->Types[$this->FileType], true);
         header('X-Powered-By: StoreCore/' . STORECORE_VERSION, true);
 
-        $file = \StoreCore\FileSystem\STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . $this->FileType . DIRECTORY_SEPARATOR . $this->FileName;
+        $file = STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . $this->FileType . DIRECTORY_SEPARATOR . $this->FileName;
 
         $last_modified = filemtime($file);
         header('Last-Modified: ' . gmdate('D, d M Y H:i:s T', $last_modified));
@@ -147,6 +150,7 @@ class Asset
      */
     private function setFileType($filetype)
     {
+        $filetype = strtolower($filetype);
         if (array_key_exists($filetype, $this->Types)) {
             $this->FileType = $filetype;
         }
