@@ -938,6 +938,15 @@ class \StoreCore\Database\Maintenance extends \StoreCore\Database\AbstractModel
 }
 ```
 
+### Namespace StoreCore\FileSystem
+
+```php
+class \StoreCore\FileSystem\Backup {
+    public static void save ( [ bool $compress = true ] )
+}
+```
+
+
 ## A.2. Package StoreCore\I18N
 
 ### Namespace StoreCore\Database

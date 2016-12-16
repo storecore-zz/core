@@ -5,9 +5,9 @@ namespace StoreCore\FileSystem;
  * StoreCore File System Backup
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright (c) 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
- * @package   StoreCore\Database
+ * @package   StoreCore\Core
  * @version   0.1.0
  */
 class Backup
@@ -43,7 +43,7 @@ class Backup
             throw new \RuntimeException('Current working directory is not writeable.');
         }
 
-        $archive_filename = $working_directory . DIRECTORY_SEPARATOR . 'backup-' . date('Y-m-d-H-m-s') . '-UTC-' . time() . '.tar';
+        $archive_filename = $working_directory . DIRECTORY_SEPARATOR . 'backup-' . gmdate('Y-m-d-H-m-s') . '-UTC-' . time() . '.tar';
         $archive = new \PharData($archive_filename);
         $archive->buildFromDirectory($working_directory);
         $logger->notice('File system backup saved as ' . $archive_filename . '.');
