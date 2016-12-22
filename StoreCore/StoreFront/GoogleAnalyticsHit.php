@@ -362,10 +362,10 @@ class GoogleAnalyticsHit
      * Set an exception (exd) that may be fatal (exf).
      *
      * @param string $exception
-     * @param true|bool $fatal
+     * @param bool $fatal
      * @return $this
      */
-    public function setException($exception, $fatal = null)
+    public function setException($exception, $fatal = false)
     {
         $this->Data['exd'] = $exception;
         if ($fatal === true) {
