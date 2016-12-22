@@ -40,7 +40,7 @@ class GoogleAnalyticsHit
     private $AnonymizeIP = true;
 
     /** @var array $Data */
-    private $Data = array(
+    protected $Data = array(
         'v'  => 1,          // version
         't'  => 'pageview', // hit type
         'ds' => 'web',      // data source (optional)
@@ -78,7 +78,7 @@ class GoogleAnalyticsHit
         if (!empty($_SERVER['HTTP_HOST'])) {
             $this->setDocumentHostname($_SERVER['HTTP_HOST']);
         }
-        if (!empty($_SERVER['REQUEST_URI'])) {
+        if (isset($_SERVER['REQUEST_URI'])) {
             $this->setDocumentPath($_SERVER['REQUEST_URI']);
         }
 
@@ -203,6 +203,37 @@ class GoogleAnalyticsHit
     }
 
     /**
+     * Set the content group (cg)
+     *
+     * @param string $content_group
+     *   The value of a content group is hierarchichal text delimited by '/'.
+     *   Leading and trailing slashes will be removed and any repeated slashes
+     *   will be reduced to a single slash.
+     *
+     * @param int $index
+     *   Optional content group index ranging from 1 through 10.  If this
+     *   optional parameter is not set, the index is derived from the content
+     *   group hierarchy.  For example, 'news/sports' will have an index of 2,
+     *   assuming that 'news' has index 1 one level up in the hierarchy.
+     */
+    public function setContentGroup($content_group, $index = null)
+    {
+        while (false !== strpos($content_group, '//')) {
+            str_ireplace('//', '/', $content_group);
+        }
+        $content_group = trim($content_group);
+        $content_group = trim($content_group, '/');
+
+        if ($index === null) {
+            $index = 1 + substr_count($content_group, '/');
+        }
+
+        $index = 'cg' . $index;
+        $this->Data[$index] = $content_group;
+        return $this;
+    }
+
+    /**
      * Add and optionally set the currency (cu).
      *
      * @param string $currency_code.
@@ -224,6 +255,7 @@ class GoogleAnalyticsHit
         }
 
         $currency_code = strtoupper($currency_code);
+        $this->Data['cu'] = $currency_code;
         return $this;
     }
 
@@ -322,6 +354,7 @@ class GoogleAnalyticsHit
     {
         $document_path = trim($document_path);
         $document_path = '/' . ltrim($document_path, '/');
+        $this->Data['dp'] = $document_path;
         return $this;
     }
 
