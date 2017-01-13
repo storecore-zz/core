@@ -2,7 +2,7 @@
 /**
  * StoreCore Store Front Application
  *
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @copyright Copyright (c) 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @version   0.1.0-alpha.1
  *
@@ -42,26 +42,15 @@ if (!defined('STORECORE_FILESYSTEM_CACHE_DIR')) {
 if (!defined('STORECORE_FILESYSTEM_LOGS_DIR')) {
     define('STORECORE_FILESYSTEM_LOGS_DIR', STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'logs' . DIRECTORY_SEPARATOR);
 }
-if (!defined('STORECORE_NULL_LOGGER')) {
-    define('STORECORE_NULL_LOGGER', false);
-}
-if (STORECORE_NULL_LOGGER) {
-    $logger = new \Psr\Log\NullLogger();
-} else {
-    $logger = new \StoreCore\FileSystem\Logger();
-}
-
-// Load and populate the global service locator.
-$registry = \StoreCore\Registry::getInstance();
-$request = new \StoreCore\Request();
-$registry->set('Logger', $logger);
 
 // Refuse requests from a blacklisted client IP address.
+$request = $registry->get('Request');
 if (\StoreCore\FileSystem\Blacklist::exists($request->getRemoteAddress())) {
     $response = new \StoreCore\Response($registry);
     $response->setCompression(0);
     $response->addHeader('HTTP/1.1 403 Forbidden');
     $response->output();
+    $logger = $registry->get('Logger');
     $logger->info('HTTP/1.1 403 Forbidden: client IP address ' . $_SERVER['REMOTE_ADDR'] . ' is blacklisted.');
     exit;
 }
@@ -72,9 +61,6 @@ if (array_key_exists('basename', $pathinfo) && array_key_exists('extension', $pa
     $asset = new \StoreCore\Asset($pathinfo['basename'], $pathinfo['extension']);
     unset($asset, $pathinfo);
 }
-
-// Add an undenied request to the registry.
-$registry->set('Request', $request);
 
 // Start or restart and optionally destroy a session.
 $session = new \StoreCore\Session();
@@ -112,13 +98,6 @@ setcookie('Language', base64_encode($language), time() + 7776000, '/');
 $session->set('Language', $language);
 $registry->set('Session', $session);
 
-// Run the installer on a missing installed version ID.
-if (!defined('STORECORE_VERSION_INSTALLED')) {
-    #$route = new \StoreCore\Route('/install/', '\StoreCore\Admin\FrontController', 'install');
-    #$route->dispatch();
-    #exit;
-}
-
 // Routing
 $route = false;
 switch ($request->getRequestPath()) {
@@ -145,8 +124,10 @@ switch ($request->getRequestPath()) {
 }
 
 if ($route !== false) {
+    $registry->set('Route', $route);
     $route->dispatch();
 } else {
+    $logger = $registry->get('Logger');
     $logger->notice('HTTP/1.1 404 Not Found: ' . $request->getRequestPath());
     $response = new \StoreCore\Response($registry);
     $response->addHeader('HTTP/1.1 404 Not Found');
