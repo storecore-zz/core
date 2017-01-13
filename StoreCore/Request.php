@@ -4,28 +4,16 @@ namespace StoreCore;
 /**
  * Client Request
  *
+ * @api
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
- *
- * @api
- * @method void __construct ( void )
- * @method mixed|null get ( string $key )
- * @method string getAcceptEncoding ( void )
- * @method mixed|null getCookie ( string $cookie_name )
- * @method string getHostName ( void )
- * @method string getMethod ( void )
- * @method string|null getRemoteAddress ( vpid )
- * @method string getRequestPath ( void )
- * @method array getServerParams ( vpid )
- * @method string|null getUserAgent ( void )
- * @method bool hasCookie ( string $cookie_name )
- * @method bool isSecure ( void )
  */
 class Request
 {
+    /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
     /** @var string $HostName */
@@ -50,7 +38,7 @@ class Request
 
     /**
      * @param void
-     * @return void
+     * @return self
      */
     public function __construct()
     {
@@ -174,8 +162,9 @@ class Request
     {
         if (array_key_exists('HTTP_ACCEPT_ENCODING', $this->Server)) {
             return $this->Server['HTTP_ACCEPT_ENCODING'];
+        } else {
+            return '';
         }
-        return (string)null;
     }
 
     /**
@@ -190,10 +179,7 @@ class Request
     public function getCookie($cookie_name)
     {
         $cookie_name = mb_strtolower($cookie_name, 'UTF-8');
-        if ($this->hasCookie($cookie_name)) {
-            return $this->Cookies[$cookie_name];
-        }
-        return null;
+        return $this->hasCookie($cookie_name) ? $this->Cookies[$cookie_name] : null;
     }
 
     /**
@@ -204,7 +190,7 @@ class Request
      */
     public function getHostName()
     {
-        if ($this->HostName == null) {
+        if ($this->HostName === null) {
             $this->setHostName();
         }
         return $this->HostName;
@@ -225,15 +211,11 @@ class Request
      * Get the client IP address.
      *
      * @param void
-     * @return string|null
+     * @return string
      */
     public function getRemoteAddress()
     {
-        if (array_key_exists('REMOTE_ADDR', $this->Server)) {
-            return $this->Server['REMOTE_ADDR'];
-        } else {
-            return null;
-        }
+        return $this->Server['REMOTE_ADDR'];
     }
 
     /**
@@ -270,11 +252,7 @@ class Request
      */
     public function getUserAgent()
     {
-        if (array_key_exists('HTTP_USER_AGENT', $this->Server)) {
-            return $this->Server['HTTP_USER_AGENT'];
-        } else {
-            return null;
-        }
+        return array_key_exists('HTTP_USER_AGENT', $this->Server) ? $this->Server['HTTP_USER_AGENT'] : null;
     }
 
     /**
@@ -316,12 +294,11 @@ class Request
      */
     private function setHostName()
     {
-        if (isset($this->Server['HTTP_HOST']) && !empty($this->Server['HTTP_HOST'])) {
+        if (array_key_exists('HTTP_HOST', $this->Server)) {
             $host_name = $this->Server['HTTP_HOST'];
         } else {
             $host_name = gethostname();
         }
-
         $host_name = preg_replace('/:\d+$/', '', $host_name);
         $host_name = mb_strtolower($host_name, 'UTF-8');
         $this->HostName = $host_name;
