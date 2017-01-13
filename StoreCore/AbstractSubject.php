@@ -19,6 +19,8 @@ abstract class AbstractSubject implements SubjectInterface
     private $Observers = array();
 
     /**
+     * Attach an observer.
+     *
      * @param \StoreCore\ObserverInterface $observer
      * @return void
      */
@@ -29,6 +31,8 @@ abstract class AbstractSubject implements SubjectInterface
     }
 
     /**
+     * Detach an attached observer.
+     *
      * @param \StoreCore\ObserverInterface $observer
      * @return void
      */
@@ -39,8 +43,11 @@ abstract class AbstractSubject implements SubjectInterface
     }
 
     /**
+     * Notify and update all attached observers.
+     *
      * @param void
      * @return void
+     * @uses \StoreCore\SubjectInterface::update()
      */
     public function notify()
     {

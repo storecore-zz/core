@@ -5,10 +5,10 @@ namespace StoreCore;
  * Observer Design Pattern - Subject Interface
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @version   0.1.0
+ * @version   1.0.0
  */
 interface SubjectInterface
 {
@@ -29,7 +29,7 @@ interface SubjectInterface
     public function detach(\StoreCore\ObserverInterface $observer);
 
     /**
-     * Notify all attached observers.
+     * Notify and update all attached observers.
      *
      * @param void
      * @return void
