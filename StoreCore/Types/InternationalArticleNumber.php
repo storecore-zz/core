@@ -5,13 +5,14 @@ namespace StoreCore\Types;
  * International Article Number
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2016 StoreCore
+ * @copyright Copyright © 2016-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
- * @package   StoreCore\Core
+ * @package   StoreCore\OML
  * @version   0.1.0
  */
 class InternationalArticleNumber extends Varchar implements TypeInterface, ValidateInterface
 {
+    /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
     /**
