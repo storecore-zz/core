@@ -3,11 +3,16 @@
  * StoreCore Framework Bootloader
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2017 StoreCore
+ * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   1.0.0-beta.1
  */
+
+// Global script/request timer start
+if (empty($_SERVER['REQUEST_TIME_FLOAT'])) {
+    $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
+}
 
 // Set the default character set to UTF-8.
 ini_set('default_charset', 'UTF-8');
