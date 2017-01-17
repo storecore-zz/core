@@ -5,10 +5,10 @@ namespace StoreCore\Database;
  * Abstract MVC Model
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @version   0.1.0
+ * @version   1.0.0
  *
  * @uses \StoreCore\AbstractModel
  *   This abstract model class extends the core abstract model by adding a
@@ -17,14 +17,18 @@ namespace StoreCore\Database;
  */
 abstract class AbstractModel extends \StoreCore\AbstractModel
 {
-    const VERSION = '0.1.0';
+    /** @var string VERSION Semantic Version (SemVer) */
+    const VERSION = '1.0.0';
 
+    /**
+     * @param \StoreCore\Registry $registry
+     * @return void
+     */
     public function __construct(\StoreCore\Registry $registry)
     {
-        $this->Registry = $registry;
-
-        if (false === $this->Registry->has('Connection')) {
-            $this->Registry->set('Connection', new \StoreCore\Database\Connection());
+        if (false === $registry->has('Connection')) {
+            $registry->set('Connection', new \StoreCore\Database\Connection());
         }
+        $this->Registry = $registry;
     }
 }
