@@ -12,7 +12,7 @@ namespace StoreCore;
  * manual addition and deletion of redirects by users.
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2016 StoreCore
+ * @copyright Copyright © 2016-2017 StoreCore
  * @internal
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
@@ -20,28 +20,29 @@ namespace StoreCore;
  */
 class Redirector
 {
+    /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
     /**
      * Find and execute a 301 Moved Permanently redirect.
      *
-     * @param void
+     * The static find() method looks for a cacheable redirected URL like
+     * `//www.example.com/foo/bar-baz` without a protocol prefix.  It then
+     * silently executes an HTTP 301 permanent redirect if a match is found in
+     * the redirects cache pool.  The static method is completely silent: it
+     * simply either executes a permanent redirect or it does not, without any
+     * return value or exception.
+     *
+     * @param \StoreCore\Request $request
      * @return void
+     * @uses \StoreCore\Request::getHostName()
+     * @uses \StoreCore\Request::getRequestPath()
      * @uses \StoreCore\Types\CacheKey
      * @uses \StoreCore\FileSystem\Redirects
      */
-    public static function find()
+    public static function find(\StoreCore\Request $request)
     {
-        if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
-            $url = (string)$_SERVER['HTTP_HOST'];
-        } else {
-            return;
-        }
-
-        if (isset($_SERVER['REQUEST_URI']) && !empty($_SERVER['REQUEST_URI'])) {
-            $url .= (string)$_SERVER['REQUEST_URI'];
-        }
-
+        $url = $request->getHostName() . $request->getRequestPath();
         $url = '//' . ltrim($url, '/');
         $cache_key = new \StoreCore\Types\CacheKey($url);
         $cache_key = (string)$cache_key;

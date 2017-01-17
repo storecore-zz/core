@@ -2,9 +2,9 @@
 /**
  * StoreCore Store Front Application
  *
- * @copyright Copyright (c) 2015-2017 StoreCore
+ * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
- * @version   0.1.0-alpha.1
+ * @version   1.0.0-beta.1
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ if (\StoreCore\FileSystem\Blacklist::exists($request->getRemoteAddress())) {
     $response->addHeader('HTTP/1.1 403 Forbidden');
     $response->output();
     $logger = $registry->get('Logger');
-    $logger->info('HTTP/1.1 403 Forbidden: client IP address ' . $_SERVER['REMOTE_ADDR'] . ' is blacklisted.');
+    $logger->info('HTTP/1.1 403 Forbidden: client IP address ' . $request->getRemoteAddress() . ' is blacklisted.');
     exit;
 }
 
@@ -117,10 +117,11 @@ switch ($request->getRequestPath()) {
         // Execute an administration route.
         if (strpos($request->getRequestPath(), '/admin/', 0) === 0) {
             $route = new \StoreCore\Route('/admin/', '\StoreCore\Admin\FrontController');
+            break;
         }
 
         // Execute a redirect if a destination is found.
-        \StoreCore\Redirector::find();
+        \StoreCore\Redirector::find($request);
 }
 
 if ($route !== false) {
