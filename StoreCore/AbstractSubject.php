@@ -8,15 +8,15 @@ namespace StoreCore;
  * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @version   0.1.0
+ * @version   1.0.0
  */
 abstract class AbstractSubject implements SubjectInterface
 {
     /** @var string VERSION Semantic Version (SemVer) */
-    const VERSION = '0.1.0';
+    const VERSION = '1.0.0';
 
     /** @var array $Observers */
-    private $Observers = array();
+    protected $Observers = array();
 
     /**
      * Attach an observer.
@@ -47,7 +47,7 @@ abstract class AbstractSubject implements SubjectInterface
      *
      * @param void
      * @return void
-     * @uses \StoreCore\SubjectInterface::update()
+     * @uses \StoreCore\ObserverInterface::update()
      */
     public function notify()
     {

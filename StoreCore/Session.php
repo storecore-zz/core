@@ -6,13 +6,14 @@ namespace StoreCore;
  *
  * @api
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-class Session
+class Session extends AbstractSubject implements SubjectInterface
 {
+    /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
     /**
@@ -28,7 +29,7 @@ class Session
      *   15 to 30 minutes for low risk applications.  The default maximum
      *   is 30 minutes.
      *
-     * @return void
+     * @return self
      */
     public function __construct($idle_timeout = 15)
     {
@@ -92,7 +93,9 @@ class Session
      * Destroy the session.
      *
      * @param void
+     *
      * @return bool
+     *   Returns true on success or false on failure.
      */
     public function destroy()
     {
@@ -104,7 +107,9 @@ class Session
                 $cookie_params['secure'], $cookie_params['httponly']
             );
         }
-        return session_destroy();
+        $session_destroyed = session_destroy();
+        $this->notify();
+        return $session_destroyed;
     }
 
     /**
@@ -158,7 +163,9 @@ class Session
      */
     public function regenerate()
     {
-        return session_regenerate_id(true);
+        $return = session_regenerate_id(true);
+        $this->notify();
+        return $return;
     }
 
     /**
@@ -185,5 +192,7 @@ class Session
         } else {
             $_SESSION[$key] = $value;
         }
+
+        $this->notify();
     }
 }
