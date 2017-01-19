@@ -122,6 +122,13 @@ switch ($request->getRequestPath()) {
 
         // Execute a redirect if a destination is found.
         \StoreCore\Redirector::find($request);
+
+        // Find some other route.
+        $route_factory = new \StoreCore\Database\RouteFactory($registry);
+        $route = $route_factory->find();
+        if ($route === null) {
+            $route = false;
+        }
 }
 
 if ($route !== false) {

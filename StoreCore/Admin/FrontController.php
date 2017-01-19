@@ -15,18 +15,19 @@ use \StoreCore\Session as Session;
  * Administration Front Controller
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
 class FrontController extends AbstractController implements LoggerAwareInterface
 {
+    /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
     /**
      * @param \StoreCore\Registry $registry
-     * @return void
+     * @return self
      */
     public function __construct(Registry $registry)
     {
@@ -36,7 +37,7 @@ class FrontController extends AbstractController implements LoggerAwareInterface
             $this->install();
         }
 
-        // Check the whitelist
+        // Check the whitelist.
         $whitelist = new AccessControlWhitelist($this->Registry);
         $whitelist->check();
 
@@ -47,6 +48,21 @@ class FrontController extends AbstractController implements LoggerAwareInterface
             $response = new Response($registry);
             $response->redirect('/admin/sign-in/');
             exit;
+        }
+
+        // Find a matching route or route collection.
+        if ($this->Request->getRequestPath() !== '/admin/') {
+            $router = new \StoreCore\Database\RouteFactory($this->Registry);
+            $route = $router->find($this->Request->getRequestPath());
+            if ($route !== null) {
+                $this->Registry->set('Route', $route);
+                $route->dispatch();
+            } else {
+                $this->Logger->debug('Unknown admin route: ' . $this->Request->getRequestPath());
+                $response = new \StoreCore\Response($this->Registry);
+                $response->addHeader('HTTP/1.1 404 Not Found');
+                exit;
+            }
         }
     }
 

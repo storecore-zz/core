@@ -5,14 +5,15 @@ namespace StoreCore;
  * Collection of HMVC Routes
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @version   0.1.0
+ * @version   1.0.0
  */
-class RouteCollection implements \Countable
+class RouteCollection
 {
-    const VERSION = '0.1.0';
+    /** @var string VERSION Semantic Version (SemVer) */
+    const VERSION = '1.0.0';
 
     /** @type array $Routes */
     private $Routes = array();
@@ -25,19 +26,8 @@ class RouteCollection implements \Countable
      */
     public function add(\StoreCore\Route $route)
     {
-        $this->Routes[$route->getPath()] = $route;
-    }
-
-    /**
-     * Count the number of routes.
-     *
-     * @param void
-     * @return int
-     * @see http://php.net/manual/en/class.countable.php
-     */
-    public function count()
-    {
-        return count($this->Routes);
+        $id = spl_object_hash($route);
+        $this->Routes[$id] = $route;
     }
 
     /**
@@ -77,6 +67,14 @@ class RouteCollection implements \Countable
      */
     public function pathExists($path)
     {
-        return array_key_exists($path, $this->Routes);
+        if ($this->isEmpty()) {
+            return false;
+        }
+        foreach ($this->Routes as $route) {
+            if ($route->getPath() == $path) {
+                return true;
+            }
+        }
+        return false;
     }
 }

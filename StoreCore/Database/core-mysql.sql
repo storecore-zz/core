@@ -2,11 +2,24 @@
 -- MySQL Data Definition
 --
 -- @author    Ward van der Put <Ward.van.der.Put@gmail.com>
--- @copyright Copyright (c) 2014-2016 StoreCore
+-- @copyright Copyright (c) 2014-2017 StoreCore
 -- @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
 -- @package   StoreCore\Database
 -- @version   0.1.0
 --
+
+-- HMVC routing
+CREATE TABLE IF NOT EXISTS sc_routes (
+  route_id           INT(10) UNSIGNED     NOT NULL  AUTO_INCREMENT,
+  dispatch_order     TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
+  route_path         VARCHAR(255)         NOT NULL,
+  route_controller   VARCHAR(255)         NOT NULL,
+  controller_method  VARCHAR(255)         NULL  DEFAULT NULL,
+  method_parameters  VARCHAR(255)         NULL  DEFAULT NULL,
+  PRIMARY KEY pk_route_id (route_id),
+  INDEX ix_dispatch_order (dispatch_order ASC),
+  INDEX ix_route_path (route_path)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Organizations
 CREATE TABLE IF NOT EXISTS sc_organizations (
