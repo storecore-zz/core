@@ -21,6 +21,26 @@ CREATE TABLE IF NOT EXISTS sc_routes (
   INDEX ix_route_path (route_path)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+-- Observer design pattern
+CREATE TABLE IF NOT EXISTS sc_subjects (
+  subject_id     SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  subject_class  VARCHAR(255)          NOT NULL,
+  PRIMARY KEY pk_subject_id (subject_id),
+  UNIQUE KEY uk_subject_class (subject_class)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_observers (
+  observer_id     SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  subject_id      SMALLINT(5) UNSIGNED  NOT NULL,
+  observer_class  VARCHAR(255)          NOT NULL,
+  observer_name   VARCHAR(255)          NULL  DEFAULT NULL,
+  PRIMARY KEY pk_observer_id (observer_id),
+  FOREIGN KEY fk_subject_id (subject_id) REFERENCES sc_subjects (subject_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+INSERT IGNORE INTO sc_subjects (subject_class) VALUES
+  ('\\StoreCore\\Session');
+
 -- Organizations
 CREATE TABLE IF NOT EXISTS sc_organizations (
   organization_id   MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,

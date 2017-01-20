@@ -74,6 +74,9 @@ if (defined('STORECORE_KILL_SWITCH') && STORECORE_KILL_SWITCH == true) {
     exit;
 }
 
+// Attach session observers.
+\StoreCore\SubjectObservers::populate($session);
+
 // Load a language pack
 $language = $session->get('Language');
 if ($language == null) {
