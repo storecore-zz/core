@@ -5,18 +5,19 @@ namespace StoreCore\Database;
  * HTTP User-Agent Mapper
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\BI
  * @version   0.1.0
  */
 class UserAgentMapper extends \StoreCore\Database\AbstractModel
 {
+    /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
     /**
-     * @type string $UserAgent
-     * @type string $HashedPrimaryKey
+     * @var string $UserAgent
+     * @var string $HashedPrimaryKey
      */
     private $UserAgent;
     private $HashedPrimaryKey;
@@ -31,7 +32,7 @@ class UserAgentMapper extends \StoreCore\Database\AbstractModel
     {
         return $this->HashedPrimaryKey;
     }
-    
+
     /**
      * Set the HTTP User-Agent string.
      *
@@ -41,7 +42,7 @@ class UserAgentMapper extends \StoreCore\Database\AbstractModel
     public function setUserAgent($user_agent)
     {
         $user_agent = trim($user_agent);
-        
+
         // Limit TEXT string type storage to about 4096 bytes.
         mb_internal_encoding('UTF-8');
         if (mb_strlen($user_agent) > 4096) {

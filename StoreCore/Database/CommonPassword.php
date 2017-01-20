@@ -5,7 +5,7 @@ namespace StoreCore\Database;
  * Common Password
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2014-2016 StoreCore
+ * @copyright Copyright © 2014-2017 StoreCore
  * @internal
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
@@ -13,10 +13,11 @@ namespace StoreCore\Database;
  */
 class CommonPassword
 {
+    /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '1.0.0';
 
     /**
-     * @type array $CommonPasswords
+     * @var array $CommonPasswords
      *   List of frequently used passwords, based on the "Top 10,000
      *   Passwords List" by Mark Burnett (xato.net).
      *
@@ -1566,7 +1567,10 @@ class CommonPassword
      * Check for a common password.
      *
      * @param string $password
+     *
      * @return bool
+     *   Returns true if a (too) common password exists and false if it does
+     *   not.
      */
     public static function exists($password)
     {

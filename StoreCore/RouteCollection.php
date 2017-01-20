@@ -15,7 +15,7 @@ class RouteCollection
     /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '1.0.0';
 
-    /** @type array $Routes */
+    /** @var array $Routes */
     private $Routes = array();
 
     /**

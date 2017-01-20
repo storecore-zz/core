@@ -17,7 +17,7 @@ class Connection extends \PDO implements LoggerAwareInterface
 {
     /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '1.0.0';
-    
+
     /** @var \Psr\Log\LoggerInterface|null $Logger */
     protected $Logger;
 

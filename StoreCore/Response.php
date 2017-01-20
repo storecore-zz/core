@@ -16,9 +16,9 @@ class Response extends AbstractController
     const VERSION = '0.1.0';
 
     /**
-     * @type int    $CompressionLevel
-     * @type array  $Headers
-     * @type string $ResponseBody
+     * @var int    $CompressionLevel
+     * @var array  $Headers
+     * @var string $ResponseBody
      */
     protected $CompressionLevel = -1;
     protected $Headers;
@@ -26,7 +26,7 @@ class Response extends AbstractController
 
     /**
      * @param \StoreCore\Registry $registry
-     * @return void
+     * @return self
      */
     public function __construct(\StoreCore\Registry $registry)
     {

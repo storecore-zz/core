@@ -5,21 +5,22 @@ namespace StoreCore\FileSystem;
  * Log File Manager
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
- * @package   StoreCore\Admin
- * @version   0.1.0-alpha.1
+ * @package   StoreCore\BI
+ * @version   0.1.0
  */
 class LogFileManager implements \Countable
 {
-    const VERSION = '0.1.0-alpha.1';
+    /** @var string VERSION Semantic Version (SemVer) */
+    const VERSION = '0.1.0';
 
-    /** @type array|bool $LogFiles */
+    /** @var array|bool $LogFiles */
     private $LogFiles;
 
     /**
      * @param void
-     * @return void
+     * @return self
      */
     public function __construct()
     {

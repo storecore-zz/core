@@ -5,33 +5,31 @@ namespace StoreCore\Database;
  * Token to Reset Passwords
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html
- * @package   StoreCore\Database
+ * @package   StoreCore\Security
  * @version   0.0.1
  */
 class PasswordResetToken
 {
     /**
-     * @type string CHARACTER_SET
-     *      Character set for the token, currently set to ASCII digits and
-     *      uppercase letters.  The digits 0 and 1 and the letters I and O
-     *      are omitted, as these characters MAY be confusing to users in
-     *      case they have to be entered in a form.
+     * @var string CHARACTER_SET
+     *   Character set for the token, currently set to ASCII digits and
+     *   uppercase letters.  The digits 0 and 1 and the letters I and O are
+     *   omitted, as these characters MAY be confusing to users in case they
+     *   have to be entered in a form.
      */
     const CHARACTER_SET = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
 
-    /**
-     * @type string VERSION
-     */
+    /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.0.1';
 
     /**
      * Get a random token.
      *
      * @param int $length
-     *     Optional length of the token string.  Defaults to 16 characters for
-     *     a fixed-width CHAR(16) column in a MySQL database table.
+     *   Optional length of the token string.  Defaults to 16 characters for
+     *   a fixed-width CHAR(16) column in a MySQL database table.
      *
      * @return string
      */
