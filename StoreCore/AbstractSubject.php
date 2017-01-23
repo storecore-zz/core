@@ -51,6 +51,10 @@ abstract class AbstractSubject implements SubjectInterface
      */
     public function notify()
     {
+        if (empty($this->Observers)) {
+            return;
+        }
+
         foreach ($this->Observers as $observer) {
             $observer->update($this);
         }
