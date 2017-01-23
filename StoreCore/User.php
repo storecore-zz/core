@@ -5,13 +5,14 @@ namespace StoreCore;
  * StoreCore User
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
  * @version   0.1.0
  */
 class User
 {
+    /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
     /**
@@ -19,6 +20,7 @@ class User
      * @var string|null $HashAlgorithm
      * @var string|null $PasswordHash
      * @var string|null $PasswordSalt
+     * @var int|null    $PersonID
      * @var string      $PinCode
      * @var int         $UserGroupID
      * @var int|null    $UserID
@@ -28,17 +30,11 @@ class User
     private $HashAlgorithm;
     private $PasswordHash;
     private $PasswordSalt;
+    private $PersonID;
     private $PinCode = '0000';
     private $UserGroupID = 0;
     private $UserID;
     private $Username;
-    
-    /**
-     * @var \StoreCore\Person|null $Person
-     * @var int|null $PersonID
-     */
-    private $Person;
-    private $PersonID;
 
     /**
      * Check the user credentials.
@@ -101,17 +97,6 @@ class User
     public function getHashAlgorithm()
     {
         return $this->HashAlgorithm;
-    }
-
-    /**
-     * Get the user's last name.
-     *
-     * @param void
-     * @return string|null
-     */
-    public function getLastName()
-    {
-        return $this->LastName;
     }
 
     /**
