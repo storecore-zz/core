@@ -6,13 +6,14 @@ namespace StoreCore;
  *
  * @api
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @copyright Copyright © 2015-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
 class Response extends AbstractController
 {
+    /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
     /**
@@ -21,7 +22,7 @@ class Response extends AbstractController
      * @var string $ResponseBody
      */
     protected $CompressionLevel = -1;
-    protected $Headers;
+    protected $Headers = array();
     protected $ResponseBody;
 
     /**
@@ -30,11 +31,10 @@ class Response extends AbstractController
      */
     public function __construct(\StoreCore\Registry $registry)
     {
-        parent::__construct($registry);
-
         if (defined('\\StoreCore\\RESPONSE_COMPRESSION_LEVEL')) {
             $this->setCompression(\StoreCore\RESPONSE_COMPRESSION_LEVEL);
         }
+        parent::__construct($registry);
     }
 
     /**
@@ -52,6 +52,7 @@ class Response extends AbstractController
      * @param string $data
      * @param int $level
      * @return string
+     * @uses \StoreCore\Request::getAcceptEncoding()
      */
     private function compress($data, $level = -1)
     {
@@ -94,7 +95,7 @@ class Response extends AbstractController
         }
 
         if (!headers_sent()) {
-            if ($this->Headers !== null) {
+            if (!empty($this->Headers)) {
                 foreach ($this->Headers as $header) {
                     header($header, true);
                 }
