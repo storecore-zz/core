@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS sc_observers (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 INSERT IGNORE INTO sc_subjects (subject_class) VALUES
+  ('\\StoreCore\\Person'),
   ('\\StoreCore\\Session');
 
 -- Organizations
@@ -86,6 +87,7 @@ CREATE TABLE IF NOT EXISTS sc_persons (
   death_date            DATE                 NULL  DEFAULT NULL,
   death_place           VARCHAR(255)         NULL  DEFAULT NULL,
   PRIMARY KEY pk_person_id (person_id),
+  INDEX ix_date_modified (date_modified DESC),
   INDEX ix_date_created (date_created DESC),
   INDEX ix_email_address (email_address)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
