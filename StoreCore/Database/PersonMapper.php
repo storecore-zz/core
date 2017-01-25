@@ -5,25 +5,30 @@ namespace StoreCore\Database;
  * Person Mapper
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2016 StoreCore
+ * @copyright Copyright © 2016-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CRM
  * @version   0.1.0
  */
 class PersonMapper extends AbstractDataAccessObject
 {
-    const VERSION = '0.1.0';
-
-    const TABLE_NAME  = 'sc_persons';
+    /**
+     * @var string PRIMARY_KEY DAO database table primary key.
+     * @var string TABLE_NAME  DAO database table name.
+     * @var string VERSION     Semantic Version (SemVer).
+     */
     const PRIMARY_KEY = 'person_id';
+    const TABLE_NAME  = 'sc_persons';
+    const VERSION = '0.1.0';
 
     /**
      * Anonymize PII (personally identifiable information).
      *
-     * @param \StoreCore\Database\Person $person
+     * @param \StoreCore\Person $person
+     *
      * @return bool
      */
-    public function anonymize(\StoreCore\Database\Person $person)
+    public function anonymize(\StoreCore\Person &$person)
     {
         $person_id = $person->getPersonID();
 
@@ -61,30 +66,12 @@ class PersonMapper extends AbstractDataAccessObject
             ');
             $stmt->bindValue(':person_id', $person_id, \PDO::PARAM_INT);
             $stmt->execute();
+            $stmt->closeCursor();
+            unset($stmt);
 
             // Delete most personal data.
             $person->anonymize();
-            $stmt = $this->Connection->prepare('
-                UPDATE sc_persons
-                   SET honorific_prefix = NULL,
-                       additional_name = NULL,
-                       honorific_suffix = NULL,
-                       full_name = NULL,
-                       given_name_initials = NULL,
-                       middle_name_initials = NULL,
-                       full_name_initials = NULL,
-                       email_address = NULL,
-                       telephone_number = NULL,
-                       fax_number = NULL,
-                       birth_place = NULL,
-                       death_place = NULL,
-                       date_anonymized = UTC_TIMESTAMP()
-                 WHERE person_id = :person_id
-            ');
-            $stmt->bindParam(':person_id', $person_id, \PDO::PARAM_INT);
-            $stmt->execute();
-
-            $stmt->closeCursor();
+            $this->save($person);
             return true;
 
         } catch (\PDOException $e) {

@@ -5,13 +5,14 @@ namespace StoreCore;
  * Person Model
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2016 StoreCore
+ * @copyright Copyright © 2016-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CRM
  * @version   0.1.0
  */
 class Person extends AbstractSubject
 {
+    /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
     /**
@@ -106,7 +107,7 @@ class Person extends AbstractSubject
         if ($this->DeathDate !== null) {
             $this->DeathDate = substr($this->DeathDate, 0, 5) . '00-00';
         }
-        
+
         $this->AnonymizedFlag = true;
     }
 
@@ -225,7 +226,10 @@ class Person extends AbstractSubject
      *
      * @return int
      *   Returns the ISO/IEC 5218 gender code 0 for not known, 1 for male,
-     *   or 2 for female.  Defaults to 0 if the gender was not set.
+     *   or 2 for female.  Defaults to 0 if the gender was not set.  Because
+     *   the formal ISO/IEC gender codes are not always obvious, you MAY also
+     *   use the isFemale() and isMale() class methods to test for a specific
+     *   gender.
      */
     public function getGender()
     {
@@ -307,6 +311,30 @@ class Person extends AbstractSubject
     }
 
     /**
+     * Check if the person is female.
+     *
+     * @param void
+     * @return bool
+     * @uses getGender()
+     */
+    public function isFemale()
+    {
+        return ($this->getGender() == 2) ? true : false;
+    }
+
+    /**
+     * Check if the person is male.
+     *
+     * @param void
+     * @return bool
+     * @uses getGender()
+     */
+    public function isMale()
+    {
+        return ($this->getGender() == 1) ? true : false;
+    }
+
+    /**
      * @param string $additional_name
      * @return void
      */
@@ -325,16 +353,23 @@ class Person extends AbstractSubject
     }
 
     /**
-     * Set a date of birth or a year of birth.
+     * Set a partial or full date of birth.
      *
-     * @param string $birth_date
+     * @param string|int $birth_date
+     *   Date of birth in the ISO and MySQL 'YYYY-MM-DD' string format.  If the
+     *   exact date is unknown, this date may be set using 'YYYY-MM' for a year
+     *   with a month or 'YYYY' for just the year.
+     *
      * @return void
      */
     public function setBirthDate($birth_date)
     {
-        // Extend a year to the MySQL '####-00-00' date format.
+        // Extend a year to the MySQL '####-00-00' date format
+        // and a year plus month to ''####-##-00''.
         if (strlen($birth_date) == 4 && is_numeric($birth_date)) {
             $birth_date .= '-00-00';
+        } elseif (strlen($birth_date) == 7) {
+            $birth_date .= '-00';
         }
 
         $this->BirthDate = $birth_date;
@@ -359,20 +394,51 @@ class Person extends AbstractSubject
     }
 
     /**
-     * @param string $date_modified
+     * Set the date and time of the last data update.
+     *
+     * @param string|null $date_modified
+     *   UTC timestamp or null for the current date and time.
+     *
      * @return void
+     *
+     * @uses \StoreCore\AbstractSubject::notify()
+     *   Notifies observers if the new timestamp is different from a previously
+     *   set timestamp, assuming that this indicates the person's data MAY have
+     *   changed.
      */
-    public function setDateModified($date_modified)
+    public function setDateModified($date_modified = null)
     {
-        $this->DateModified = $date_modified;
+        if ($date_modified === null) {
+            $date_modified = gmdate('Y-m-d h:m:s');
+        }
+
+        if ($this->DateModified !== null && $date_modified !== $this->DateModified) {
+            $this->DateModified = $date_modified;
+            $this->notify();
+        } else {
+            $this->DateModified = $date_modified;
+        }
     }
 
     /**
-     * @param string $death_date
+     * Set the person's date, month or year of death.
+     *
+     * @param string|int $death_date
+     *   A full date 'YYYY-MM-DD' in the ISO and MySQL format, or 'YYYY-MM' or
+     *   'YYYY' for a partial date.  In many business use cases the exact death
+     *   date of a customer or other business contact may not be known.  This
+     *   method allows setting an approximate date with only a year and month
+     *   or just a year.
+     *
      * @return void
      */
     public function setDeathDate($death_date)
     {
+        if (strlen($death_date) == 4 && is_numeric($death_date)) {
+            $death_date .= '-00-00';
+        } elseif (strlen($death_date) == 7) {
+            $death_date .= '-00';
+        }
         $this->DeathDate = $death_date;
     }
 
@@ -395,12 +461,16 @@ class Person extends AbstractSubject
     }
 
     /**
+     * Set the person's e-mail address.
+     *
      * @param string $email_address
      * @return void
+     * @uses \StoreCore\AbstractSubject::notify()
      */
     public function setEmailAddress($email_address)
     {
         $this->EmailAddress = $email_address;
+        $this->notify();
     }
 
     /**
@@ -422,7 +492,7 @@ class Person extends AbstractSubject
     }
 
     /**
-     * @param string $full_name
+     * @param string $full_name_initials
      * @return void
      */
     public function setFullNameInitials($full_name_initials)
@@ -466,13 +536,19 @@ class Person extends AbstractSubject
             'inconnu' => 0,
             'm' => 1,
             'male' => 1,
+            'man' => 1,
+            'mannelijk' => 1,
             'mannlich' => 1,
             'männlich' => 1,
             'masculin' => 1,
             'masculino' => 1,
             'not known' => 0,
+            'onbekend' => 0,
             'unbekannt' => 0,
             'unknown' => 0,
+            'v' => 2,
+            'vrouw' => 2,
+            'vrouwelijk' => 2,
             'weiblich' => 2,
         );
         $gender = mb_strtolower($gender, 'UTF-8');
@@ -561,11 +637,15 @@ class Person extends AbstractSubject
     }
 
     /**
+     * Set the person's (personal) phone number.
+     *
      * @param string $telephone_number
      * @return void
+     * @uses \StoreCore\AbstractSubject::notify()
      */
     public function setTelephoneNumber($telephone_number)
     {
         $this->TelephoneNumber = $telephone_number;
+        $this->notify();
     }
 }
