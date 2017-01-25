@@ -2,18 +2,18 @@
 namespace StoreCore\Database;
 
 /**
- * User Model
+ * Users
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
- * @package   StoreCore\Core
+ * @package   StoreCore\Security
  * @version   0.1.0
  */
 class Users extends \StoreCore\Database\AbstractModel implements \Countable
 {
+    /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
-
 
     /**
      * Count the number of active users.
@@ -27,8 +27,9 @@ class Users extends \StoreCore\Database\AbstractModel implements \Countable
      */
     public function count()
     {
-        $sql = 'SELECT SQL_NO_CACHE COUNT(*) FROM sc_users WHERE user_group_id != 0';
-        $stmt = $this->Connection->query($sql);
+        $stmt = $this->Connection->query(
+            'SELECT COUNT(user_id) FROM sc_users WHERE user_group_id != 0'
+        );
         $row = $stmt->fetch(\PDO::FETCH_NUM);
         return (int)$row[0];
     }
