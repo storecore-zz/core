@@ -4,20 +4,12 @@ namespace StoreCore\Database;
 /**
  * Languages
  *
+ * @api
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\I18N
  * @version   0.1.0
- *
- * @api
- * @method void disable ( string $language_id )
- * @method void enable ( string $language_id )
- * @method bool exists ( string $language_id )
- * @method string filterLanguageCode ( string $language_id )
- * @method array getEnabledLanguages ( void )
- * @method array getLocalNames ( [ bool $include_disabled_languages = false ] )
- * @method array getSupportedLanguages ( void )
  *
  * @see https://en.wikipedia.org/wiki/World_language
  *      World language
@@ -34,12 +26,13 @@ namespace StoreCore\Database;
  * @see https://msdn.microsoft.com/en-US/library/ee825488(v=cs.20).aspx
  *      Table of Language Culture Names, Codes, and ISO Values Method
  */
-class Languages extends \StoreCore\Database\AbstractModel
+class Languages extends AbstractModel
 {
     const VERSION = '0.1.0';
 
     /**
      * @var null|array $EnabledLanguages
+     *   Array containing the currently enabled languages.
      */
     private $EnabledLanguages;
 
@@ -258,5 +251,17 @@ class Languages extends \StoreCore\Database\AbstractModel
         }
 
         return $rows;
+    }
+
+    /**
+     * Check if a language is enabled.
+     *
+     * @param string $language_id
+     * @return bool
+     * @uses getEnabledLanguages()
+     */
+    public function isEnabled($language_id)
+    {
+        return array_key_exists($language_id, $this->getEnabledLanguages());
     }
 }

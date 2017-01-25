@@ -42,6 +42,103 @@ INSERT IGNORE INTO sc_subjects (subject_class) VALUES
   ('\\StoreCore\\Person'),
   ('\\StoreCore\\Session');
 
+-- Languages
+CREATE TABLE IF NOT EXISTS sc_languages (
+  language_id   CHAR(5)              CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
+  parent_id     CHAR(5)              CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  DEFAULT 'en-GB',
+  enabled_flag  TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
+  sort_order    TINYINT(3) UNSIGNED  NOT NULL  DEFAULT 0,
+  english_name  VARCHAR(32)          NOT NULL,
+  local_name    VARCHAR(32)          CHARACTER SET utf8  COLLATE utf8_unicode_ci  NULL  DEFAULT NULL,
+  PRIMARY KEY pk_language_id (language_id),
+  FOREIGN KEY fk_language_id (parent_id) REFERENCES sc_languages (language_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+  UNIQUE KEY uk_english_name (english_name)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+-- Primary languages
+INSERT IGNORE INTO sc_languages (language_id, english_name, local_name, enabled_flag) VALUES
+  ('en-GB', 'English - United Kingdom', 'English - United Kingdom', 1),
+  ('de-DE', 'German - Germany', 'Deutsch - Deutschland', 1),
+  ('fr-FR', 'French - France', 'Français - France', 1),
+  ('nl-NL', 'Dutch - Netherlands', 'Nederlands - Nederland', 1),
+
+  -- World languages and languages with over 50 million native speakers
+  ('zh-CN', 'Chinese (simplified) - China', '汉语', 0),
+  ('zh-TW', 'Chinese (traditional) - Taiwan', '漢語', 0),
+  ('es-ES', 'Spanish - Spain', 'Español - España', 0),
+  ('hi-IN', 'Hindi - India', 'हिन्दी', 0),
+  ('ar-SA', 'Arabic - Saudi Arabia', 'العَرَبِيةُ', 0),
+  ('pt-PT', 'Portuguese - Portugal', 'Português - Portugal', 0),
+  ('bn-BD', 'Bengali - Bangladesh', 'বাংলা ', 0),
+  ('ru-RU', 'Russian - Russia', 'Русский - Россия', 0),
+  ('ja-JP', 'Japanese - Japan', '日本語', 0),
+  ('pa-IN', 'Punjabi - India', 'پنجابی', 0),
+  ('tr-TR', 'Turkish - Turkey', 'Türkçe - Türkiye', 0),
+  ('jv-ID', 'Javanese - Indonesia', 'ꦧꦱꦗꦮ', 0),
+  ('ko-KR', 'Korean - Korea', '한국어/조선말', 0),
+  ('vi-VN', 'Vietnamese - Vietnam', 'Tiếng Việt', 0),
+  ('fa-IR', 'Farsi - Iran', 'فارسی', 0),
+  ('ta-IN', 'Tamil - India', 'தமிழ்', 0),
+  ('ur-PK', 'Urdu - Pakistan', 'اردو', 0),
+  ('it-IT', 'Italian - Italy', 'Italiano - Italia', 0),
+  ('ms-MY', 'Malay - Malaysia', 'بهاس ملايو‎', 0),
+  ('id-ID', 'Indonesian - Indonesia', 'Bahasa Indonesia', 0),
+
+  -- Official European languages with over 10 million native speakers
+  ('pl-PL', 'Polish - Poland', 'Polski - Polska', 0),
+  ('uk-UA', 'Ukrainian - Ukraine', 'українська мова', 0),
+  ('az-AZ', 'Azerbaijani - Azerbaijan', 'آذربایجان دیلی', 0),
+  ('ro-RO', 'Romanian - Romania', 'Română - România', 0),
+  ('el-GR', 'Greek - Greece', 'Eλληνικά - Ελλάδα', 0),
+  ('hu-HU', 'Hungarian - Hungary', 'Magyar - Magyarország', 0),
+  ('cs-CZ', 'Czech - Czech Republic', 'Čeština - Česká republika', 0),
+  ('ca-AD', 'Catalan - Andorra', 'Català - Andorra', 0),
+
+  -- Official European languages with over 5 million native speakers
+  ('bg-BG', 'Bulgarian - Bulgaria', 'Български - България', 0),
+  ('da-DK', 'Danish - Denmark', 'Dansk - Danmark', 0),
+  ('fi-FI', 'Finnish - Finland', 'Suomi - Suomi', 0),
+  ('hy-AM', 'Armenian - Armenia', 'Հայերեն - Հայաստան', 0),
+  ('hr-HR', 'Croatian - Croatia', 'Hrvatski - Hrvatska', 0),
+  ('kk-KZ', 'Kazakh - Kazakhstan', 'қазақ тілі - Қазақстан', 0),
+  ('nb-NO', 'Norwegian Bokmål - Norway', 'Bokmål - Norge', 0),
+  ('nn-NO', 'Norwegian Nynorsk - Norway', 'Nynorsk - Noreg', 0),
+  ('sk-SK', 'Slovak - Slovakia', 'Slovenčina - Slovensko', 0),
+  ('sq-AL', 'Albanian - Albania', 'Shqip - Shqipëri', 0),
+  ('sr-SP', 'Serbian - Serbia', 'Српски - Србија', 0),
+  ('sv-SE', 'Swedish - Sweden', 'Svenska - Sverige', 0),
+
+  -- Other languages
+  ('af-ZA', 'Afrikaans - South Africa', 'Afrikaans - Suid-Afrika', 0),
+  ('et-EE', 'Estonian - Estonia', 'Eesti', 0),
+  ('eu-ES', 'Basque - Basque', 'Euskara', 0),
+  ('gu-IN', 'Gujarati - India', 'ગુજરાતી', 0),
+  ('he-IL', 'Hebrew - Israel', 'עברית', 0),
+  ('is-IS', 'Icelandic - Iceland', 'Íslenska', 0),
+  ('ka-GE', 'Georgian - Georgia', 'ქართული', 0),
+  ('lb-LU', 'Luxembourgish - Luxembourg', 'Lëtzebuergesch', 0);
+
+-- Secondary languages
+INSERT IGNORE INTO sc_languages (language_id, parent_id, english_name, local_name, enabled_flag) VALUES
+  ('de-AT', 'de-DE', 'German - Austria', 'Deutsch - Österreich', 0),
+  ('de-CH', 'de-DE', 'German - Switzerland', 'Deutsch - Schweiz', 0),
+  ('de-LI', 'de-DE', 'German - Liechtenstein', 'Deutsch - Liechtenstein', 0),
+  ('de-LU', 'de-DE', 'German - Luxembourg', 'Deutsch - Luxemburg', 0),
+  ('en-AU', 'en-GB', 'English - Australia', 'English - Australia', 0),
+  ('en-CA', 'en-GB', 'English - Canada', 'English - Canada', 0),
+  ('en-IE', 'en-GB', 'English - Ireland', 'English - Ireland', 0),
+  ('en-NZ', 'en-GB', 'English - New Zealand', 'English - New Zealand', 0),
+  ('en-US', 'en-GB', 'English - United States', 'English - United States', 1),
+  ('es-MX', 'es-ES', 'Spanish - Mexico', 'Español mexicano - México', 0),
+  ('fr-BE', 'fr-FR', 'French - Belgium', 'Français - Belgique', 0),
+  ('fr-CA', 'fr-FR', 'French - Canada', 'Français - Canada', 0),
+  ('fr-LU', 'fr-FR', 'French - Luxembourg', 'Français - Luxembourg', 0),
+  ('fr-MC', 'fr-FR', 'French - Monaco', 'Français - Monaco', 0),
+  ('it-CH', 'it-IT', 'Italian - Switzerland', 'Italiano - Svizzera', 0),
+  ('nl-BE', 'nl-NL', 'Dutch - Belgium', 'Nederlands - België', 0),
+  ('pt-BR', 'pt-BR', 'Portuguese - Brazil', 'Português - Brasil', 0),
+  ('sv-FI', 'sv-SE', 'Swedish - Finland', 'Finlandssvenska - Finland', 0);
+
 -- Organizations
 CREATE TABLE IF NOT EXISTS sc_organizations (
   organization_id   MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
@@ -124,6 +221,7 @@ INSERT IGNORE INTO sc_user_groups (user_group_id, user_group_name) VALUES
 CREATE TABLE IF NOT EXISTS sc_users (
   user_id         SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   user_group_id   TINYINT(3) UNSIGNED   NOT NULL  DEFAULT 0,
+  language_id     CHAR(5)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  DEFAULT 'en-GB',
   person_id       INT(10) UNSIGNED      NULL  DEFAULT NULL,
   email_address   VARCHAR(255)          NOT NULL,
   password_reset  TIMESTAMP             NOT NULL  DEFAULT '0000-00-00 00:00:00',
@@ -132,9 +230,11 @@ CREATE TABLE IF NOT EXISTS sc_users (
   hash_algo       VARCHAR(255)          NOT NULL,
   password_hash   VARCHAR(255)          NOT NULL,
   pin_code        VARCHAR(6)            NOT NULL  DEFAULT '0000',
+  date_time_zone  VARCHAR(255)          NOT NULL  DEFAULT 'UTC'  COMMENT 'PHP DateTimeZone identifier',
   email_token     VARCHAR(255)          NULL  DEFAULT NULL,
   PRIMARY KEY pk_user_id (user_id),
   FOREIGN KEY fk_user_group_id (user_group_id) REFERENCES sc_user_groups (user_group_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE RESTRICT ON UPDATE CASCADE,
   FOREIGN KEY fk_person_id (person_id) REFERENCES sc_persons (person_id) ON DELETE CASCADE ON UPDATE CASCADE,
   UNIQUE KEY uk_email_address (email_address),
   INDEX ix_username (username)
@@ -516,103 +616,6 @@ UPDATE sc_currencies SET currency_symbol = 'Bs' WHERE currency_code = 'VEF' AND 
 UPDATE sc_currencies SET currency_symbol = '₫' WHERE currency_code = 'VND' AND currency_symbol = '¤';
 UPDATE sc_currencies SET currency_symbol = 'R' WHERE currency_code = 'ZAR' AND currency_symbol = '¤';
 UPDATE sc_currencies SET currency_symbol = 'Z$' WHERE currency_code = 'ZWD' AND currency_symbol = '¤';
-
--- Languages
-CREATE TABLE IF NOT EXISTS sc_languages (
-  language_id   CHAR(5)              CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
-  parent_id     CHAR(5)              CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  DEFAULT 'en-GB',
-  enabled_flag  TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
-  sort_order    TINYINT(3) UNSIGNED  NOT NULL  DEFAULT 0,
-  english_name  VARCHAR(32)          NOT NULL,
-  local_name    VARCHAR(32)          CHARACTER SET utf8  COLLATE utf8_unicode_ci  NULL  DEFAULT NULL,
-  PRIMARY KEY pk_language_id (language_id),
-  FOREIGN KEY fk_language_id (parent_id) REFERENCES sc_languages (language_id) ON DELETE RESTRICT ON UPDATE CASCADE,
-  UNIQUE KEY uk_english_name (english_name)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
-
--- Primary languages
-INSERT IGNORE INTO sc_languages (language_id, english_name, local_name, enabled_flag) VALUES
-  ('en-GB', 'English - United Kingdom', 'English - United Kingdom', 1),
-  ('de-DE', 'German - Germany', 'Deutsch - Deutschland', 1),
-  ('fr-FR', 'French - France', 'Français - France', 1),
-  ('nl-NL', 'Dutch - Netherlands', 'Nederlands - Nederland', 1),
-
-  -- World languages and languages with over 50 million native speakers
-  ('zh-CN', 'Chinese (simplified) - China', '汉语', 0),
-  ('zh-TW', 'Chinese (traditional) - Taiwan', '漢語', 0),
-  ('es-ES', 'Spanish - Spain', 'Español - España', 0),
-  ('hi-IN', 'Hindi - India', 'हिन्दी', 0),
-  ('ar-SA', 'Arabic - Saudi Arabia', 'العَرَبِيةُ', 0),
-  ('pt-PT', 'Portuguese - Portugal', 'Português - Portugal', 0),
-  ('bn-BD', 'Bengali - Bangladesh', 'বাংলা ', 0),
-  ('ru-RU', 'Russian - Russia', 'Русский - Россия', 0),
-  ('ja-JP', 'Japanese - Japan', '日本語', 0),
-  ('pa-IN', 'Punjabi - India', 'پنجابی', 0),
-  ('tr-TR', 'Turkish - Turkey', 'Türkçe - Türkiye', 0),
-  ('jv-ID', 'Javanese - Indonesia', 'ꦧꦱꦗꦮ', 0),
-  ('ko-KR', 'Korean - Korea', '한국어/조선말', 0),
-  ('vi-VN', 'Vietnamese - Vietnam', 'Tiếng Việt', 0),
-  ('fa-IR', 'Farsi - Iran', 'فارسی', 0),
-  ('ta-IN', 'Tamil - India', 'தமிழ்', 0),
-  ('ur-PK', 'Urdu - Pakistan', 'اردو', 0),
-  ('it-IT', 'Italian - Italy', 'Italiano - Italia', 0),
-  ('ms-MY', 'Malay - Malaysia', 'بهاس ملايو‎', 0),
-  ('id-ID', 'Indonesian - Indonesia', 'Bahasa Indonesia', 0),
-
-  -- Official European languages with over 10 million native speakers
-  ('pl-PL', 'Polish - Poland', 'Polski - Polska', 0),
-  ('uk-UA', 'Ukrainian - Ukraine', 'українська мова', 0),
-  ('az-AZ', 'Azerbaijani - Azerbaijan', 'آذربایجان دیلی', 0),
-  ('ro-RO', 'Romanian - Romania', 'Română - România', 0),
-  ('el-GR', 'Greek - Greece', 'Eλληνικά - Ελλάδα', 0),
-  ('hu-HU', 'Hungarian - Hungary', 'Magyar - Magyarország', 0),
-  ('cs-CZ', 'Czech - Czech Republic', 'Čeština - Česká republika', 0),
-  ('ca-AD', 'Catalan - Andorra', 'Català - Andorra', 0),
-
-  -- Official European languages with over 5 million native speakers
-  ('bg-BG', 'Bulgarian - Bulgaria', 'Български - България', 0),
-  ('da-DK', 'Danish - Denmark', 'Dansk - Danmark', 0),
-  ('fi-FI', 'Finnish - Finland', 'Suomi - Suomi', 0),
-  ('hy-AM', 'Armenian - Armenia', 'Հայերեն - Հայաստան', 0),
-  ('hr-HR', 'Croatian - Croatia', 'Hrvatski - Hrvatska', 0),
-  ('kk-KZ', 'Kazakh - Kazakhstan', 'қазақ тілі - Қазақстан', 0),
-  ('nb-NO', 'Norwegian Bokmål - Norway', 'Bokmål - Norge', 0),
-  ('nn-NO', 'Norwegian Nynorsk - Norway', 'Nynorsk - Noreg', 0),
-  ('sk-SK', 'Slovak - Slovakia', 'Slovenčina - Slovensko', 0),
-  ('sq-AL', 'Albanian - Albania', 'Shqip - Shqipëri', 0),
-  ('sr-SP', 'Serbian - Serbia', 'Српски - Србија', 0),
-  ('sv-SE', 'Swedish - Sweden', 'Svenska - Sverige', 0),
-
-  -- Other languages
-  ('af-ZA', 'Afrikaans - South Africa', 'Afrikaans - Suid-Afrika', 0),
-  ('et-EE', 'Estonian - Estonia', 'Eesti', 0),
-  ('eu-ES', 'Basque - Basque', 'Euskara', 0),
-  ('gu-IN', 'Gujarati - India', 'ગુજરાતી', 0),
-  ('he-IL', 'Hebrew - Israel', 'עברית', 0),
-  ('is-IS', 'Icelandic - Iceland', 'Íslenska', 0),
-  ('ka-GE', 'Georgian - Georgia', 'ქართული', 0),
-  ('lb-LU', 'Luxembourgish - Luxembourg', 'Lëtzebuergesch', 0);
-
--- Secondary languages
-INSERT IGNORE INTO sc_languages (language_id, parent_id, english_name, local_name, enabled_flag) VALUES
-  ('de-AT', 'de-DE', 'German - Austria', 'Deutsch - Österreich', 0),
-  ('de-CH', 'de-DE', 'German - Switzerland', 'Deutsch - Schweiz', 0),
-  ('de-LI', 'de-DE', 'German - Liechtenstein', 'Deutsch - Liechtenstein', 0),
-  ('de-LU', 'de-DE', 'German - Luxembourg', 'Deutsch - Luxemburg', 0),
-  ('en-AU', 'en-GB', 'English - Australia', 'English - Australia', 0),
-  ('en-CA', 'en-GB', 'English - Canada', 'English - Canada', 0),
-  ('en-IE', 'en-GB', 'English - Ireland', 'English - Ireland', 0),
-  ('en-NZ', 'en-GB', 'English - New Zealand', 'English - New Zealand', 0),
-  ('en-US', 'en-GB', 'English - United States', 'English - United States', 1),
-  ('es-MX', 'es-ES', 'Spanish - Mexico', 'Español mexicano - México', 0),
-  ('fr-BE', 'fr-FR', 'French - Belgium', 'Français - Belgique', 0),
-  ('fr-CA', 'fr-FR', 'French - Canada', 'Français - Canada', 0),
-  ('fr-LU', 'fr-FR', 'French - Luxembourg', 'Français - Luxembourg', 0),
-  ('fr-MC', 'fr-FR', 'French - Monaco', 'Français - Monaco', 0),
-  ('it-CH', 'it-IT', 'Italian - Switzerland', 'Italiano - Svizzera', 0),
-  ('nl-BE', 'nl-NL', 'Dutch - Belgium', 'Nederlands - België', 0),
-  ('pt-BR', 'pt-BR', 'Portuguese - Brazil', 'Português - Brasil', 0),
-  ('sv-FI', 'sv-SE', 'Swedish - Finland', 'Finlandssvenska - Finland', 0);
 
 -- Translation Memory (TM)
 CREATE TABLE IF NOT EXISTS sc_translation_memory (

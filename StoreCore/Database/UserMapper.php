@@ -5,17 +5,21 @@ namespace StoreCore\Database;
  * User Mapper
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
  * @version   0.1.0
  */
 class UserMapper extends AbstractDataAccessObject
 {
-    const VERSION = '0.1.0';
-
-    const TABLE_NAME  = 'sc_users';
+    /**
+     * @var string PRIMARY_KEY DAO database table primary key.
+     * @var string TABLE_NAME  DAO database table name.
+     * @var string VERSION     Semantic Version (SemVer).
+     */
     const PRIMARY_KEY = 'user_id';
+    const TABLE_NAME  = 'sc_users';
+    const VERSION = '0.1.0';
 
     /**
      * Ban a user.
@@ -52,13 +56,15 @@ class UserMapper extends AbstractDataAccessObject
 
         $user->setUserID($user_data['user_id']);
         $user->setUserGroupID($user_data['user_group_id']);
+        $user->setLanguage($user_data['language_id']);
         $user->setEmailAddress($user_data['email_address']);
         $user->setUsername($user_data['username']);
         $user->setPasswordSalt($user_data['password_salt']);
         $user->setHashAlgorithm($user_data['hash_algo']);
         $user->setPasswordHash($user_data['password_hash']);
         $user->setPIN($user_data['pin_code']);
-        
+        $user->setDateTimeZone($user_data['date_time_zone']);
+
         if ($user_data['person_id'] !== null) {
             $user->setPersonID($user_data['person_id']);
         }
@@ -71,7 +77,7 @@ class UserMapper extends AbstractDataAccessObject
      *
      * @param string $email_address
      * @return \StoreCore\User|null
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function getUserByEmailAddress($email_address)
     {
@@ -139,12 +145,14 @@ class UserMapper extends AbstractDataAccessObject
         }
 
         $user_data['user_group_id'] = $user->getUserGroupID();
+        $user_data['language_id'] = $user->getLanguage();
         $user_data['email_address'] = $user->getEmailAddress();
         $user_data['username'] = $user->getUsername();
         $user_data['password_salt'] = $user->getPasswordSalt();
         $user_data['hash_algo'] = $user->getHashAlgorithm();
         $user_data['password_hash'] = $user->getPasswordHash();
         $user_data['pin_code'] = $user->getPIN();
+        $user_data['date_time_zone'] = $user->getDateTimeZone();
 
         if (in_array(null, $user_data, true)) {
             throw new \DomainException();
