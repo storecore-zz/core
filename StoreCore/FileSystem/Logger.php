@@ -62,18 +62,6 @@ class Logger extends AbstractLogger implements SubjectInterface
     }
 
     /**
-     * @param void
-     * @return void
-     */
-    public function __destruct()
-    {
-        $this->flush();
-        if (is_resource($this->Handle)) {
-            fclose($this->Handle);
-        }
-    }
-
-    /**
      * Attach a log or logging observer.
      *
      * Observers are notified when a LogLevel::EMERGENCY or LogLevel::ALERT
