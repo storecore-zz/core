@@ -313,6 +313,7 @@ class Request
     private function setRequestPath($path)
     {
         $path = urldecode($path);
+        $path = strtok($path, '?');
         $path = mb_strtolower($path, 'UTF-8');
         $path = str_ireplace('/index.php', '/', $path);
         $this->RequestPath = $path;

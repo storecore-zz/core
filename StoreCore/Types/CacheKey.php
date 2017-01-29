@@ -19,10 +19,16 @@ class CacheKey
 
     /**
      * @param string $str
-     *   Case-insensitive string.
+     *   Optional case-insensitive string.  If this parameter is not set,
+     *   a random unique identifier (UID) is generated.
+     *
+     * @return self
      */
-    public function __construct($str)
+    public function __construct($str = null)
     {
+        if ($str === null) {
+            $str = uniqid(mt_rand(), true);
+        }
         $this->set($str);
     }
 
@@ -36,6 +42,8 @@ class CacheKey
     }
 
     /**
+     * Get the cache key.
+     *
      * @param void
      * @return string
      */
@@ -45,27 +53,19 @@ class CacheKey
     }
 
     /**
+     * Derive the cache key from a string.
+     *
      * @param string $str
      * @return void
      * @throws \InvalidArgumentException
      */
-    private function set($str)
+    public function set($str)
     {
         if (!is_string($str) || empty($str)) {
-            throw new \InvalidArgumentException(
-                'Argument 1 passed to ' . __METHOD__ . '() must be of the type string, ' . gettype($str) . ' given'
-            );
+            throw new \InvalidArgumentException();
         }
-
         $str = mb_strtolower($str, 'UTF-8');
-
-        if (filter_var($str, FILTER_VALIDATE_URL) !== false) {
-            $str = urldecode($str);
-            $str = str_ireplace('https://', null, $str);
-            $str = str_ireplace('http://',  null, $str);
-            $str = '//' . ltrim($str, '/');
-        }
-
-        $this->Key = sha1($str);
+        $str = md5($str);
+        $this->Key = $str;
     }
 }

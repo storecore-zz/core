@@ -5,13 +5,14 @@ namespace StoreCore\Admin;
  * Configurator
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2014-2016 StoreCore
+ * @copyright Copyright © 2014-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
 class Configurator
 {
+    /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
     /**
@@ -26,6 +27,8 @@ class Configurator
         'STORECORE_MAJOR_VERSION' => true,
         'STORECORE_MINOR_VERSION' => true,
         'STORECORE_PATCH_VERSION' => true,
+
+        'STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR' => true,
     );
 
     /**

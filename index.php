@@ -62,6 +62,9 @@ if (array_key_exists('basename', $pathinfo) && array_key_exists('extension', $pa
     unset($asset, $pathinfo);
 }
 
+// Find a matching cached webpage.
+\StoreCore\FullPageCache::find($registry);
+
 // Start or restart and optionally destroy a session.
 $session = new \StoreCore\Session();
 if (defined('STORECORE_KILL_SWITCH') && STORECORE_KILL_SWITCH == true) {
@@ -133,7 +136,6 @@ switch ($request->getRequestPath()) {
             $route = false;
         }
 }
-
 if ($route !== false) {
     $registry->set('Route', $route);
     $route->dispatch();
@@ -142,6 +144,7 @@ if ($route !== false) {
     $logger->notice('HTTP/1.1 404 Not Found: ' . $request->getRequestPath());
     $response = new \StoreCore\Response($registry);
     $response->addHeader('HTTP/1.1 404 Not Found');
+    $response->output();
 }
 
 // Statistics and analytics
@@ -152,3 +155,6 @@ if (defined('STORECORE_BI') && STORECORE_BI == true) {
     $user_agent_mapper->setUserAgent($user_agent);
     $user_agent_mapper->update();
 }
+
+// Flush the logger.
+$registry->get('Logger')->flush();
