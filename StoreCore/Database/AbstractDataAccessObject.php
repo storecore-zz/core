@@ -12,22 +12,27 @@ namespace StoreCore\Database;
  * operates on and a PRIMARY_KEY for the primary key column of this table.
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @version   0.1.0
+ * @version   1.0.0
  */
 abstract class AbstractDataAccessObject extends AbstractModel
 {
-    const VERSION = '0.1.0';
+    /** @var string VERSION Semantic Version (SemVer) */
+    const VERSION = '1.0.0';
 
     /**
      * Create a new database row.
      *
      * @param array $keyed_data
+     *   Associative array with the structure of a single database record.  The
+     *   array keys MUST match column names in the database table.
      *
      * @return int|false
-     *   Returns the ID of the inserted row on success or false on failure.
+     *   Returns the primary key of the inserted row on success or false on
+     *   failure.  Usually the primary key is then used as the unique ID of an
+     *   object.
      */
     public function create(array $keyed_data)
     {
@@ -120,8 +125,12 @@ abstract class AbstractDataAccessObject extends AbstractModel
      * Fetch one or more rows from a single database table.
      *
      * @param mixed $value
+     *   Value to search for in the $key column.
      *
-     * @param string|int|null $key
+     * @param string|int $key
+     *   Optional name of a column in the static::TABLE_NAME database table.
+     *   If omitted, the column for the primary key in static::PRIMARY_KEY is
+     *   used.
      *
      * @return array|false
      *   Returns an array on success or false on failure.  The array MAY be
@@ -170,7 +179,7 @@ abstract class AbstractDataAccessObject extends AbstractModel
      *
      * @param array $keyed_data
      *
-     * @param string|null $where_clause
+     * @param string $where_clause
      *   Optional SQL WHERE clause for additional conditions.  This clause
      *   MUST NOT contain the WHERE keyword.  If this WHERE clause is omitted,
      *   the UPDATE is limitted to a single record.
