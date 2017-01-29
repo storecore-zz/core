@@ -1,0 +1,60 @@
+<div class="container">
+  <h1><i class="fa fa-database" style="color:#690"></i> <?php echo \StoreCore\I18N\HEADING_DATABASE_SETTINGS ?></h1>
+  <form action="" method="post" onsubmit="this.style.cursor='wait';document.getElementById('submit').setAttribute('disabled', 'disabled');" target="_top">
+    <table>
+      <tr>
+        <th><label for="driver"><?php echo \StoreCore\I18N\HEADING_PDO_DRIVER ?></label></th>
+        <td>
+          <select id="driver" name="driver" required>
+            <?php
+            foreach ($supported_drivers as $driver => $name) {
+                if (in_array($driver, $available_drivers)) {
+                    echo '<option value="' . $driver . '">' . $name . '</option>';
+                }
+            }
+            ?>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <label for="hostname"><?php echo \StoreCore\I18N\HEADING_HOST_NAME_OR_IP_ADDRESS ?></label>
+        </th>
+        <td>
+          <input id="hostname" name="hostname" required type="text" value="<?php echo STORECORE_DATABASE_DEFAULT_HOST ?>">
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <label for="databasename"><?php echo \StoreCore\I18N\HEADING_DATABASE_NAME ?></label>
+        </th>
+        <td>
+          <input id="databasename" maxlength="16" name="databasename" required type="text" value="<?php echo \StoreCore\Database\DEFAULT_DATABASE ?>">
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <label for="username"><?php echo \StoreCore\I18N\HEADING_USERNAME ?></label>
+        </th>
+        <td>
+          <?php // MySQL user names can be up to 16 characters long. ?>
+          <input id="username" maxlength="16" name="username" required type="text" value="<?php echo \StoreCore\Database\DEFAULT_USERNAME ?>">
+        </td>
+      </tr>
+       <tr>
+        <th>
+          <label for="password"><?php echo \StoreCore\I18N\HEADING_PASSWORD ?></label>
+          <span style="float:right">
+            <i class="fa fa-eye fa-lg" onclick="this.style.display='none';document.getElementById('password').setAttribute('type', 'text');document.getElementById('password').focus();" style="color:#1141a6;cursor:pointer"></i>
+          </span>
+        </th>
+        <td>
+          <input id="password" name="password" placeholder="(<?php echo \StoreCore\I18N\NOUN_PASSWORD ?>)" type="password" value="">
+        </td>
+      </tr>
+    </table>
+    <div>
+      <input id="submit" type="submit" value="<?php echo \StoreCore\I18N\COMMAND_SAVE ?>">
+    </div>
+  </form>
+</div>

@@ -1,0 +1,34 @@
+<div class="container">
+  <h1><i class="fa fa-sign-in"></i> <?php echo \StoreCore\I18N\COMMAND_SIGN_IN ?></h1>
+  <form action="/admin/sign-in/" autocomplete="off" method="post" onsubmit="this.style.cursor='wait';document.getElementById('submit').setAttribute('disabled', 'disabled');" target="_top">
+    <table>
+      <tr>
+        <th><label for="username"><?php echo \StoreCore\I18N\HEADING_USERNAME ?></label></th>
+        <td>
+          <?php
+          /*
+           * Google Chrome ignores the autocomplete="off" in the form and input
+           * elements.  Adding invisible fake input controls before the actual
+           * controls fixes this issue.
+           *
+           * @see http://stackoverflow.com/questions/15738259/disabling-chrome-autofill
+           */
+          ?>
+          <input name="username-fake" style="display:none" type="text">
+          <input autocomplete="off" autofocus id="username" name="username" required type="text" value="">
+        </td>
+      </tr>
+      <tr>
+        <th><label for="password"><?php echo \StoreCore\I18N\HEADING_PASSWORD ?></label></th>
+        <td>
+          <input name="password-fake" style="display:none" type="password">
+          <input autocomplete="off" id="password" name="password" pattern=".{7,}" required type="password" value="">
+        </td>
+      </tr>
+    </table>
+    <div>
+      <input name="token" type="hidden" value="<?php echo $token ?>">
+      <input id="submit" type="submit" value="<?php echo \StoreCore\I18N\COMMAND_SIGN_IN ?>">
+    </div>
+  </form>
+</div>
