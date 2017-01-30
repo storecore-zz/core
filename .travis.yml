@@ -1,0 +1,7 @@
+language: php
+php:
+- '5.6'
+script: phpunit --bootstrap tests/bootstrap.php --testdox tests --coverage-text
+notifications:
+  slack:
+    secure: gWmuVlLp8Jc7lPdm1ME7CZ9KgIlo+HoD5Dn/BqFN5rgbsDsmk4usEz7f7eknR1WAsijRwC3dMbTPm1KayfnFgtSSYQN3bmihNK6FVMH8DoCAugH4/HsZerSV1PRATPwPv06eGOARbXhzWeJJayhSWIxVfGILfhRF5vjJ7FWZ1cM=
