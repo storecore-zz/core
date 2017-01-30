@@ -378,6 +378,11 @@ class Document
             $head .= '</script>';
         }
 
+        // Add deferred JavaScript for MDL if not on AMP.
+        if ($this->AcceleratedMobilePage) {
+            $head .= '<script defer src="/js/material.min.js"></script>';
+        }
+
         $head .= '</head>';
         return $head;
     }
