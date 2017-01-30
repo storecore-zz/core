@@ -4,4 +4,4 @@ php:
 script: phpunit --bootstrap tests/bootstrap.php --testdox tests --coverage-text
 notifications:
   slack:
-    secure: VFQ18s+R5iVxsUcMdFZ8pGvTW4wDbgyo646337Ndcy1P42AL2axDAuo3gsjMf4x5u0sR67s6Nu+LFA+yh7IAlvaYmpTb6FR91BqntAuDiCyT+r1cCMJvBHxyhFHoASI+vOYV0F8AO2gzTaWApdqLiSyLcs3RVNaAw5oPOONU+uE=
+    secure: gWmuVlLp8Jc7lPdm1ME7CZ9KgIlo+HoD5Dn/BqFN5rgbsDsmk4usEz7f7eknR1WAsijRwC3dMbTPm1KayfnFgtSSYQN3bmihNK6FVMH8DoCAugH4/HsZerSV1PRATPwPv06eGOARbXhzWeJJayhSWIxVfGILfhRF5vjJ7FWZ1cM=
