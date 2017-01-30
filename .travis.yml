@@ -1,5 +1,7 @@
 language: php
 php:
-  - '5.6'
-
+- '5.6'
 script: phpunit --bootstrap tests/bootstrap.php --testdox tests --coverage-text
+notifications:
+  slack:
+    secure: VFQ18s+R5iVxsUcMdFZ8pGvTW4wDbgyo646337Ndcy1P42AL2axDAuo3gsjMf4x5u0sR67s6Nu+LFA+yh7IAlvaYmpTb6FR91BqntAuDiCyT+r1cCMJvBHxyhFHoASI+vOYV0F8AO2gzTaWApdqLiSyLcs3RVNaAw5oPOONU+uE=
