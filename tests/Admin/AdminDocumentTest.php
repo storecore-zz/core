@@ -47,21 +47,31 @@ class AdminDocumentTest extends PHPUnit_Framework_TestCase
         $this->assertContains('<meta name="robots" content="noindex,nofollow">', $document->getHead());
     }
 
-    public function testAdminDocumentUsesFontsFromCdn()
+    /**
+     * @testdox Admin document uses Roboto fonts from CDN
+     */
+    public function testAdminDocumentUsesRobotoFontsFromCdn()
     {
         $document = new \StoreCore\Admin\Document();
-        $this->assertContains('<link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet">', $document->getHead());
+        $this->assertContains('<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">', $document->getHead());
+        $this->assertContains('<link href="https://fonts.googleapis.com/css?family=Roboto:900&amp;text=Store" rel="stylesheet">', $document->getHead());
     }
 
-    public function testAdminDocumentUsesMinifiedIconsFromCdn()
+    /**
+     * @testdox Admin document uses Material Icons from CDN
+     */
+    public function testAdminDocumentUsesMaterialIconsFromCdn()
     {
         $document = new \StoreCore\Admin\Document();
-        $this->assertContains('<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">', $document->getHead());
+        $this->assertContains('<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">', $document->getHead());
     }
 
-    public function testAdminDocumentUsesMinifiedCssFromAssets()
+    /**
+     * @testdox Admin document uses minified Material CSS from assets
+     */
+    public function testAdminDocumentUsesMinifiedMaterialCssFromAssets()
     {
         $document = new \StoreCore\Admin\Document();
-        $this->assertContains('<link href="/css/admin.min.css" rel="stylesheet">', $document->getHead());
+        $this->assertContains('<link href="/css/material.min.css" rel="stylesheet">', $document->getHead());
     }
 }
