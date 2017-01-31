@@ -7,6 +7,9 @@ notifications:
     secure: gWmuVlLp8Jc7lPdm1ME7CZ9KgIlo+HoD5Dn/BqFN5rgbsDsmk4usEz7f7eknR1WAsijRwC3dMbTPm1KayfnFgtSSYQN3bmihNK6FVMH8DoCAugH4/HsZerSV1PRATPwPv06eGOARbXhzWeJJayhSWIxVfGILfhRF5vjJ7FWZ1cM=
 addons:
   sauce_connect:
-    username: "storecorebot"
-  jwt:  
-    access_key: "Ng/PbtYJJxvbf39Agdymw1z5GhecN/InR5NSDD+jMPLzEoJWHvlLGF+cLKcte5qaqGb/fkBJOvEN1YEH2vzLOd4NY8hTZ8aA3NTAjNK0+CZDLZjqm8v5ubfr0m1wfINYG2K5tj+p86Osr733ysxP5+wUeSop5Q/1BR9BucUn1oM="
+    username: storecorebot
+  jwt:
+    access_key: Ng/PbtYJJxvbf39Agdymw1z5GhecN/InR5NSDD+jMPLzEoJWHvlLGF+cLKcte5qaqGb/fkBJOvEN1YEH2vzLOd4NY8hTZ8aA3NTAjNK0+CZDLZjqm8v5ubfr0m1wfINYG2K5tj+p86Osr733ysxP5+wUeSop5Q/1BR9BucUn1oM=
+env:
+  global:
+    secure: yObFSCbKSOYH+KkJg4oytxa0S3p+oyX6xW5K9/YH2EuIA+RsV8LahJiIubZ0zEG0W5H5HXq4KqHT+lFVlrZYG/aGSXTJrmIrHScn//akB7I3bKPsUjEid+LkVTBKDCE5GNxUoaA10TJS77+G72lDW/wT5V/bAAvoekQ8+Ny7DsZJ5mpofeUPhicjEKzat6xQzB5H+gm7xdrhUtua+CKCeUoNXJgCpbYDtxgIEpNizvQEhtoixazyJvwxp3ZTsx7qWcQ/070L3nrfJVrMTWDzDb98DChN9+2H3SBP7JfmEc2BAm+4dyumNcJMP/qhJu25wXUghnAyru7gfmTmNGPk/l+VQrY6UfRPMQXtSjm/Z8BbfrlaKIU7EnGM2tj7shPFhCZJFZDHL8ovVj3xVONfWyXoklo6npK0wRU2NMP0+z37Agt2FgMrY39SaAqomq95hmaZbx6IPGrbfsX6hy4O4D0Fwz42cXm7OP5jW2K5KO6cgz5GsJOKx9SHzguU/Dm6jMAbyiChmM0bDr03H6FL0Jgz1LqMvL6axL++d9ZWVhCKR4Uz5kGl1A4FEgl7mekMMFIm4pvF5UwKX1PPnZ1U3S5xMFXz9LsDNYtA272WGazT7mTW5ZXQ3bE7i4105qMdZanfgNpHeYD672mVDQfIs7bjmExLOBmpHBWU2RFJVpY=
