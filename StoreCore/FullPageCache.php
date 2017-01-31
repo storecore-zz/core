@@ -13,7 +13,7 @@ namespace StoreCore;
 class FullPageCache
 {
     /** @var string VERSION Semantic Version (SemVer) */
-    const VERSION = '1.0.0';
+    const VERSION = '0.1.0';
 
     /**
      * Find a cached webpage.
@@ -21,6 +21,8 @@ class FullPageCache
      * @param \StoreCore\Registry $registry
      * @return void
      * @uses \StoreCore\Request::getMethod()
+     * @uses \StoreCore\Request::getHostName()
+     * @uses \StoreCore\Request::getRequestPath()
      * @uses \StoreCore\Types\CacheKey
      */
     public static function find(Registry $registry)
