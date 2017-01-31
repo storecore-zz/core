@@ -5,8 +5,11 @@ script: phpunit --bootstrap tests/bootstrap.php --testdox tests --coverage-text
 notifications:
   slack:
     secure: gWmuVlLp8Jc7lPdm1ME7CZ9KgIlo+HoD5Dn/BqFN5rgbsDsmk4usEz7f7eknR1WAsijRwC3dMbTPm1KayfnFgtSSYQN3bmihNK6FVMH8DoCAugH4/HsZerSV1PRATPwPv06eGOARbXhzWeJJayhSWIxVfGILfhRF5vjJ7FWZ1cM=
+env:
+  - SAUCE_USERNAME=storecorebot
 addons:
-  sauce_connect:
-    username: "storecorebot"
-  jwt:  
-    access_key: "Ng/PbtYJJxvbf39Agdymw1z5GhecN/InR5NSDD+jMPLzEoJWHvlLGF+cLKcte5qaqGb/fkBJOvEN1YEH2vzLOd4NY8hTZ8aA3NTAjNK0+CZDLZjqm8v5ubfr0m1wfINYG2K5tj+p86Osr733ysxP5+wUeSop5Q/1BR9BucUn1oM="
+  jwt:
+    secure: Ng/PbtYJJxvbf39Agdymw1z5GhecN/InR5NSDD+jMPLzEoJWHvlLGF+cLKcte5qaqGb/fkBJOvEN1YEH2vzLOd4NY8hTZ8aA3NTAjNK0+CZDLZjqm8v5ubfr0m1wfINYG2K5tj+p86Osr733ysxP5+wUeSop5Q/1BR9BucUn1oM=
+
+after_success:
+  - if  [ $TRAVIS_PHP_VERSION = '5.6' ] && [ $TRAVIS_BRANCH = 'develop' ] && [ $TRAVIS_PULL_REQUEST = 'false' ]; then sh generate-api.sh; fi
