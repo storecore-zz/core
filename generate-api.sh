@@ -6,8 +6,8 @@ php apigen.phar generate -s StoreCore -d ../gh-pages
 cd ../gh-pages
 
 # Set identity
-git config --global user.email "travis@travis-ci.org"
-git config --global user.name "Travis"
+git config --global user.email ${GIT_AUTHOR_NAME}
+git config --global user.name ${GIT_AUTHOR_EMAIL}
 
 # Add branch
 git init
@@ -16,5 +16,5 @@ git checkout -B gh-pages
 
 # Push generated files
 git add .
-git commit -m "API updated"
+git commit -m "API documentation updated"
 git push origin gh-pages -fq > /dev/null
