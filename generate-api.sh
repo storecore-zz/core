@@ -2,7 +2,7 @@
 wget http://www.apigen.org/apigen.phar
 
 # Generate Api
-php apigen.phar generate -s StoreCore -d ../gh-pages
+php apigen.phar generate -s StoreCore -d ../gh-pages --template-theme bootstrap
 cd ../gh-pages
 
 # Set identity
