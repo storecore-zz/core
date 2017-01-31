@@ -6,7 +6,7 @@ php apigen.phar generate -s StoreCore -d ../gh-pages
 cd ../gh-pages
 
 # Set identity
-git config --global user.email "travis@travis-ci.org"
+git config --global user.email "no-reply@storecore.io"
 git config --global user.name "storecorebot"
 
 # Add branch
