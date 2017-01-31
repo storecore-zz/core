@@ -5,10 +5,6 @@ wget http://www.apigen.org/apigen.phar
 php apigen.phar generate -s StoreCore -d ../gh-pages
 cd ../gh-pages
 
-# Set identity
-git config --global user.email "travis@travis-ci.org"
-git config --global user.name "Travis"
-
 # Add branch
 git init
 git remote add origin https://${GH_TOKEN}@github.com/storecore/api.git > /dev/null
