@@ -6,8 +6,8 @@ php apigen.phar generate -s StoreCore -d ../gh-pages
 cd ../gh-pages
 
 # Set identity
-git config --global user.email ${GIT_AUTHOR_NAME}
-git config --global user.name ${GIT_AUTHOR_EMAIL}
+git config --global user.email "travis@travis-ci.org"
+git config --global user.name "Travis"
 
 # Add branch
 git init
