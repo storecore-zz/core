@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS sc_organizations (
   vat_id            VARCHAR(255)  NULL  DEFAULT NULL,
   founding_date     DATE          NULL  DEFAULT NULL,
   dissolution_date  DATE          NULL  DEFAULT NULL,
-  date_created      TIMESTAMP     NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  date_created      TIMESTAMP     NOT NULL  DEFAULT '1970-01-01 00:00:01',
   date_modified     TIMESTAMP     NULL  DEFAULT NULL,
   date_deleted      TIMESTAMP     NULL  DEFAULT NULL,
   PRIMARY KEY pk_organization_id (organization_id)
@@ -224,7 +224,7 @@ CREATE TABLE IF NOT EXISTS sc_users (
   language_id     CHAR(5)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  DEFAULT 'en-GB',
   person_id       INT(10) UNSIGNED      NULL  DEFAULT NULL,
   email_address   VARCHAR(255)          NOT NULL,
-  password_reset  TIMESTAMP             NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  password_reset  TIMESTAMP             NOT NULL  DEFAULT '1970-01-01 00:00:01',
   username        VARCHAR(255)          NOT NULL,
   password_salt   VARCHAR(255)          NOT NULL,
   hash_algo       VARCHAR(255)          NOT NULL,
@@ -243,8 +243,8 @@ CREATE TABLE IF NOT EXISTS sc_users (
 -- User password archive
 CREATE TABLE IF NOT EXISTS sc_users_password_history (
   user_id        SMALLINT(5)          UNSIGNED  NOT NULL,
-  from_date      TIMESTAMP            NOT NULL  DEFAULT '0000-00-00 00:00:00',
-  thru_date      TIMESTAMP            NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  from_date      TIMESTAMP            NOT NULL  DEFAULT '1970-01-01 00:00:01',
+  thru_date      TIMESTAMP            NOT NULL  DEFAULT '1970-01-01 00:00:01',
   checked_flag   TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
   password_salt  VARCHAR(255)         NOT NULL,
   password_hash  VARCHAR(255)         NOT NULL,
@@ -255,9 +255,9 @@ CREATE TABLE IF NOT EXISTS sc_users_password_history (
 -- Browsers and other user agents
 CREATE TABLE IF NOT EXISTS sc_user_agents (
   user_agent_id    BINARY(20)  NOT NULL  COMMENT 'Binary SHA-1 hash',
-  first_sighting   TIMESTAMP   NOT NULL  DEFAULT '0000-00-00 00:00:00',
-  last_sighting    TIMESTAMP   NOT NULL  DEFAULT '0000-00-00 00:00:00',
-  http_user_agent  TEXT        NOT NULL  DEFAULT NULL,
+  first_sighting   TIMESTAMP   NOT NULL  DEFAULT '1970-01-01 00:00:01',
+  last_sighting    TIMESTAMP   NOT NULL  DEFAULT '1970-01-01 00:00:01',
+  http_user_agent  TEXT        NOT NULL,
   PRIMARY KEY pk_user_agent_id (user_agent_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
@@ -265,7 +265,7 @@ CREATE TABLE IF NOT EXISTS sc_user_agents (
 CREATE TABLE IF NOT EXISTS sc_login_attempts (
   attempt_id      BIGINT UNSIGNED       NOT NULL  AUTO_INCREMENT,
   successful      TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
-  attempted       TIMESTAMP             NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  attempted       TIMESTAMP             NOT NULL  DEFAULT '1970-01-01 00:00:01',
   remote_address  VARCHAR(255)          NULL  DEFAULT NULL,
   username        VARCHAR(255)          NULL  DEFAULT NULL,
   PRIMARY KEY pk_attempt_id (attempt_id),
@@ -276,7 +276,7 @@ CREATE TABLE IF NOT EXISTS sc_login_attempts (
 -- IP blacklist
 CREATE TABLE IF NOT EXISTS sc_ip_blacklist (
   ip_address  VARCHAR(255)  NOT NULL,
-  from_date   TIMESTAMP     NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  from_date   TIMESTAMP     NOT NULL  DEFAULT '1970-01-01 00:00:01',
   thru_date   TIMESTAMP     NULL  DEFAULT NULL,
   PRIMARY KEY pk_ip_address (ip_address),
   INDEX ix_from_date (from_date),
@@ -297,7 +297,7 @@ CREATE TABLE IF NOT EXISTS sc_ip_whitelist (
   ip_address  VARCHAR(255)         NOT NULL,
   admin_flag  TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
   api_flag    TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
-  from_date   TIMESTAMP            NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  from_date   TIMESTAMP            NOT NULL  DEFAULT '1970-01-01 00:00:01',
   thru_date   TIMESTAMP            NULL  DEFAULT NULL,
   PRIMARY KEY pk_ip_address (ip_address),
   INDEX ix_date_range (from_date, thru_date)
@@ -335,7 +335,7 @@ CREATE TABLE IF NOT EXISTS sc_cron_routes (
 
 CREATE TABLE IF NOT EXISTS sc_cron_events (
   route_id   BIGINT UNSIGNED  NOT NULL,
-  scheduled  TIMESTAMP        NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  scheduled  TIMESTAMP        NOT NULL  DEFAULT '1970-01-01 00:00:01',
   executed   TIMESTAMP        NULL  DEFAULT NULL,
   PRIMARY KEY pk_id (route_id, scheduled),
   FOREIGN KEY fk_route_id (route_id) REFERENCES sc_cron_routes (route_id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -1005,7 +1005,7 @@ CREATE TABLE IF NOT EXISTS sc_store_languages (
   PRIMARY KEY pk_store_language_id (store_id, language_id),
   FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci  ROW_FORMAT=FIXED;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Customer groups
 CREATE TABLE IF NOT EXISTS sc_customer_groups (
@@ -1022,7 +1022,7 @@ CREATE TABLE IF NOT EXISTS sc_customers (
   customer_id        INT(10) UNSIGNED     NOT NULL  AUTO_INCREMENT,
   customer_group_id  TINYINT(3) UNSIGNED  NOT NULL  DEFAULT 1,
   store_id           TINYINT(3) UNSIGNED  NOT NULL,
-  date_created       TIMESTAMP            NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  date_created       TIMESTAMP            NOT NULL  DEFAULT '1970-01-01 00:00:01',
   date_modified      TIMESTAMP            NULL  DEFAULT NULL,
   date_deleted       TIMESTAMP            NULL  DEFAULT NULL,
   PRIMARY KEY pk_customer_id (customer_id),
@@ -1044,7 +1044,7 @@ CREATE TABLE IF NOT EXISTS sc_customer_accounts (
   account_id     INT(10) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   customer_id    INT(10) UNSIGNED  NOT NULL,
   email_address  VARCHAR(255)      NOT NULL,
-  date_created   TIMESTAMP         NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  date_created   TIMESTAMP         NOT NULL  DEFAULT '1970-01-01 00:00:01',
   date_modified  TIMESTAMP         NULL  DEFAULT NULL,
   password_salt  VARCHAR(255)      NOT NULL,
   password_hash  VARCHAR(255)      NOT NULL,
@@ -1060,7 +1060,7 @@ CREATE TABLE IF NOT EXISTS sc_addresses (
   country_id              SMALLINT(3) UNSIGNED  NOT NULL,
   postal_code             VARCHAR(16)           NOT NULL  DEFAULT '',
   global_location_number  CHAR(13)              NULL  DEFAULT NULL  COMMENT 'GLN',
-  date_created            TIMESTAMP             NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  date_created            TIMESTAMP             NOT NULL  DEFAULT '1970-01-01 00:00:01',
   date_modified           TIMESTAMP             NULL  DEFAULT NULL,
   date_validated          TIMESTAMP             NULL  DEFAULT NULL,
   date_deleted            TIMESTAMP             NULL  DEFAULT NULL,
@@ -1196,7 +1196,7 @@ INSERT IGNORE INTO sc_product_availability_types
 CREATE TABLE IF NOT EXISTS sc_products (
   product_id                    MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   availability_id               TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 2,
-  introduction_date             TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  introduction_date             TIMESTAMP              NOT NULL  DEFAULT '1970-01-01 00:00:01',
   taxonomy_id                   MEDIUMINT(8) UNSIGNED  NULL  DEFAULT NULL,
   sales_discontinuation_date    TIMESTAMP              NULL  DEFAULT NULL,
   support_discontinuation_date  TIMESTAMP              NULL  DEFAULT NULL,
@@ -1297,7 +1297,7 @@ CREATE TABLE IF NOT EXISTS sc_product_prices (
   product_id          MEDIUMINT(8) UNSIGNED  NOT NULL,
   price_component_id  TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 0,
   currency_id         SMALLINT(3) UNSIGNED   NOT NULL  DEFAULT 978,
-  from_date           TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  from_date           TIMESTAMP              NOT NULL  DEFAULT '1970-01-01 00:00:01',
   thru_date           TIMESTAMP              NULL  DEFAULT NULL,
   store_id            TINYINT(3) UNSIGNED    NULL  DEFAULT NULL  COMMENT 'Optional filter',
   customer_group_id   TINYINT(3) UNSIGNED    NULL  DEFAULT NULL  COMMENT 'Optional filter',
@@ -1375,7 +1375,7 @@ CREATE TABLE IF NOT EXISTS sc_category_products (
   category_id   SMALLINT(5) UNSIGNED   NOT NULL,
   product_id    MEDIUMINT(8) UNSIGNED  NOT NULL,
   primary_flag  TINYINT(1) UNSIGNED    NOT NULL  DEFAULT 0,
-  from_date     TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  from_date     TIMESTAMP              NOT NULL  DEFAULT '1970-01-01 00:00:01',
   thru_date     TIMESTAMP              NULL  DEFAULT NULL,
   PRIMARY KEY pk_id (category_id,product_id),
   FOREIGN KEY fk_category_id (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -1427,7 +1427,7 @@ CREATE TABLE IF NOT EXISTS sc_attribute_descriptions (
 CREATE TABLE IF NOT EXISTS sc_product_attributes (
   product_id    MEDIUMINT(8) UNSIGNED  NOT NULL,
   attribute_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
-  from_date     TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  from_date     TIMESTAMP              NOT NULL  DEFAULT '1970-01-01 00:00:01',
   thru_date     TIMESTAMP              NULL  DEFAULT NULL,
   num_value     DECIMAL(18,9)          NULL  DEFAULT NULL,
   str_value     DECIMAL(18,9)          NULL  DEFAULT NULL,
@@ -1458,7 +1458,7 @@ CREATE TABLE IF NOT EXISTS sc_attribute_groups (
 CREATE TABLE IF NOT EXISTS sc_attribute_group_attributes (
   attribute_group_id  SMALLINT(5) UNSIGNED   NOT NULL,
   attribute_id        MEDIUMINT(8) UNSIGNED  NOT NULL,
-  from_date           TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  from_date           TIMESTAMP              NOT NULL  DEFAULT '1970-01-01 00:00:01',
   thru_date           TIMESTAMP              NULL  DEFAULT NULL,
   PRIMARY KEY pk_id (attribute_group_id,attribute_id),
   FOREIGN KEY fk_attribute_group_id (attribute_group_id) REFERENCES sc_attribute_groups (attribute_group_id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -1490,7 +1490,7 @@ CREATE TABLE IF NOT EXISTS sc_orders (
   backorder_flag  TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
   cart_uuid       CHAR(36)             NOT NULL,
   cart_rand       CHAR(192)            NOT NULL,
-  date_created    TIMESTAMP            NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  date_created    TIMESTAMP            NOT NULL  DEFAULT '1970-01-01 00:00:01',
   date_modified   TIMESTAMP            NULL  DEFAULT NULL,
   date_confirmed  TIMESTAMP            NULL  DEFAULT NULL,
   date_cancelled  TIMESTAMP            NULL  DEFAULT NULL,
@@ -1507,7 +1507,7 @@ CREATE TABLE IF NOT EXISTS sc_order_products (
   product_id     MEDIUMINT(8) UNSIGNED  NOT NULL,
   units          SMALLINT(5) UNSIGNED   NOT NULL  DEFAULT 1,
   unit_price     DECIMAL(18,9)          NOT NULL  DEFAULT 0,
-  date_added     TIMESTAMP              NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  date_added     TIMESTAMP              NOT NULL  DEFAULT '1970-01-01 00:00:01',
   date_modified  TIMESTAMP              NULL  DEFAULT NULL,
   PRIMARY KEY pk_id (order_id,product_id),
   FOREIGN KEY fk_order_id (order_id) REFERENCES sc_orders (order_id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -1517,7 +1517,7 @@ CREATE TABLE IF NOT EXISTS sc_order_products (
 CREATE TABLE IF NOT EXISTS sc_shipping_carriers (
   carrier_id           SMALLINT(5)   UNSIGNED  NOT NULL  AUTO_INCREMENT,
   global_carrier_name  VARCHAR(255)  NOT NULL  DEFAULT '',
-  from_date            TIMESTAMP     NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  from_date            TIMESTAMP     NOT NULL  DEFAULT '1970-01-01 00:00:01',
   thru_date            TIMESTAMP     NULL  DEFAULT NULL,
   PRIMARY KEY pk_carrier_id (carrier_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
@@ -1536,7 +1536,7 @@ CREATE TABLE IF NOT EXISTS sc_shipments (
   shipment_id     INT(10) UNSIGNED      NOT NULL  AUTO_INCREMENT,
   address_id      INT(10) UNSIGNED      NOT NULL,
   carrier_id      SMALLINT(5) UNSIGNED  NULL  DEFAULT NULL,
-  date_created    TIMESTAMP             NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  date_created    TIMESTAMP             NOT NULL  DEFAULT '1970-01-01 00:00:01',
   date_notified   TIMESTAMP             NULL  DEFAULT NULL,
   date_picked     TIMESTAMP             NULL  DEFAULT NULL,
   date_packed     TIMESTAMP             NULL  DEFAULT NULL,
@@ -1560,7 +1560,7 @@ CREATE TABLE IF NOT EXISTS sc_order_shipments (
 CREATE TABLE IF NOT EXISTS sc_invoices (
   invoice_id    INT(10) UNSIGNED       NOT NULL  AUTO_INCREMENT,
   currency_id   SMALLINT(3) UNSIGNED   NOT NULL  DEFAULT 978,
-  invoice_date  DATE                   NOT NULL  DEFAULT '0000-00-00',
+  invoice_date  DATE                   NOT NULL  DEFAULT '1000-01-01',
   terms_days    TINYINT(2) UNSIGNED    NOT NULL  DEFAULT 14,
   subtotal      DECIMAL(18,3)          NOT NULL,
   total         DECIMAL(18,3)          NOT NULL,
@@ -1588,7 +1588,7 @@ CREATE TABLE IF NOT EXISTS sc_payment_services (
   payment_service_id           SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   payment_service_provider_id  SMALLINT(5) UNSIGNED  NULL  DEFAULT NULL,
   global_service_name          VARCHAR(255)          NOT NULL  DEFAULT '',
-  from_date                    TIMESTAMP             NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  from_date                    TIMESTAMP             NOT NULL  DEFAULT '1970-01-01 00:00:01',
   thru_date                    TIMESTAMP             NULL  DEFAULT NULL,
   PRIMARY KEY pk_payment_service_id (payment_service_id),
   FOREIGN KEY fk_payment_service_provider_id (payment_service_provider_id) REFERENCES sc_payment_service_providers (payment_service_provider_id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -1610,7 +1610,7 @@ CREATE TABLE IF NOT EXISTS sc_payments (
   payment_service_id  SMALLINT(5) UNSIGNED  NULL  DEFAULT NULL,
   credit_flag         TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0  COMMENT 'Debit (0) or credit (1)',
   transaction_id      VARCHAR(255)          NULL  DEFAULT NULL,
-  transaction_date    DATE                  NOT NULL  DEFAULT '0000-00-00',
+  transaction_date    DATE                  NOT NULL  DEFAULT '1000-01-01',
   amount              DECIMAL(18,3)         NOT NULL,
   attributes          TEXT                  NULL  DEFAULT NULL,
   PRIMARY KEY pk_payment_id (payment_id),
