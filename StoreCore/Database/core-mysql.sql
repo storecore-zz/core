@@ -257,7 +257,7 @@ CREATE TABLE IF NOT EXISTS sc_user_agents (
   user_agent_id    BINARY(20)  NOT NULL  COMMENT 'Binary SHA-1 hash',
   first_sighting   TIMESTAMP   NOT NULL  DEFAULT '0000-00-00 00:00:00',
   last_sighting    TIMESTAMP   NOT NULL  DEFAULT '0000-00-00 00:00:00',
-  http_user_agent  TEXT        NOT NULL  DEFAULT '',
+  http_user_agent  TEXT        NOT NULL  DEFAULT NULL,
   PRIMARY KEY pk_user_agent_id (user_agent_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
