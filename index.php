@@ -56,12 +56,7 @@ if (\StoreCore\FileSystem\Blacklist::exists($request->getRemoteAddress())) {
 }
 
 // Silently publish an asset, if it exists.
-$pathinfo = pathinfo($request->getRequestPath());
-if (array_key_exists('basename', $pathinfo) && array_key_exists('extension', $pathinfo)) {
-    $asset = new \StoreCore\Asset($pathinfo['basename'], $pathinfo['extension']);
-    unset($asset, $pathinfo);
-}
-
+\StoreCore\AssetCache::find($registry);
 // Find a matching cached webpage.
 \StoreCore\FullPageCache::find($registry);
 
