@@ -1,5 +1,5 @@
 [![Slack](https://storecore-slack.herokuapp.com/badge.svg)](https://storecore-slack.herokuapp.com)
-[![Build Status](https://img.shields.io/travis/storecore/core/master.svg)](https://travis-ci.org/storecore/core)
+[![Build Status](https://app.snap-ci.com/storecore/core/branch/develop/build_image)](https://app.snap-ci.com/storecore/core/branch/develop)
 [![Sauce Test Status](https://saucelabs.com/buildstatus/storecorebot)](https://saucelabs.com/u/storecorebot)
 
 
