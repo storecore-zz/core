@@ -15,7 +15,7 @@
 -- +------------+------------+------------+-----------------------+
 --
 -- @author    Ward van der Put <Ward.van.der.Put@gmail.com>
--- @copyright Copyright (c) 2014-2016 StoreCore
+-- @copyright Copyright (c) 2014-2017 StoreCore
 -- @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
 -- @package   StoreCore\I18N
 -- @version   0.1.0
@@ -73,6 +73,7 @@ INSERT IGNORE INTO sc_translation_memory
 INSERT IGNORE INTO sc_translation_memory
     (translation_id, translation, admin_only_flag)
   VALUES
+    ('NOUN_BANCONTACT', 'Bancontact', 0),
     ('NOUN_FACEBOOK', 'Facebook', 0),
     ('NOUN_GOOGLE', 'Google', 1),
     ('NOUN_GOOGLE_PLUS', 'Google+', 0),
@@ -82,10 +83,14 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_MYSPACE', 'Myspace', 1),
     ('NOUN_MYSQL', 'MySQL', 1),
     ('NOUN_PAYPAL', 'PayPal', 0),
+    ('NOUN_PAYSAFECARD', 'paysafecard', 0),
     ('NOUN_PHP', 'PHP', 1),
     ('NOUN_PINTEREST', 'Pinterest', 0),
+    ('NOUN_SOFORT', 'SOFORT', 0),
     ('NOUN_STORECORE', 'StoreCore', 0),
     ('NOUN_SOUNDCLOUD', 'SoundCloud', 0),
+    ('NOUN_TARGETMEDIA', 'TargetMedia', 1),
+    ('NOUN_TARGETPAY', 'TargetPay', 1),
     ('NOUN_TUMBLR', 'Tumblr', 0),
     ('NOUN_TWITTER', 'Twitter', 0),
     ('NOUN_YOUTUBE', 'YouTube', 0);

@@ -6,7 +6,6 @@ namespace StoreCore\Database;
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright © 2015-2017 StoreCore
- * @internal
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\I18N
  * @version   0.1.0
@@ -32,7 +31,13 @@ class TranslationMemory extends AbstractModel
      * Find language strings in enabled languages.
      *
      * @param string $needle
+     *   Case-insensitive string to search for.  This method searches for
+     *   partial keys (the constant names) as well as partial language strings
+     *   (the constant values).
+     *
      * @return array|null
+     *   Returns an array of matching translations or null if no match was
+     *   found.
      */
     public function find($needle)
     {
@@ -71,8 +76,21 @@ class TranslationMemory extends AbstractModel
      * Load translations as name/value pairs.
      *
      * @param string $language_code
+     *   Optional language identifier.  Defaults to `en-GB` for British
+     *   English.
+     *
      * @param bool $storefront
+     *   If set to `true` (default), limits the returned translations to
+     *   public front-end applications, ignoring translations that are only
+     *   used in administration and back-end applications.
+     *
      * @return array
+     *   Returns an associative array with constant names as the keys.  If a
+     *   translation is missing for the current `$language_code`, the method
+     *   first falls back to translations from the parent language (if one
+     *   exists) and then to British English (en-GB) as the default language.
+     *   This way the method always returns a full set of language strings,
+     *   even if some still have to be translated to the given language.
      */
     public function getTranslations($language_code = null, $storefront = true)
     {
@@ -167,26 +185,40 @@ class TranslationMemory extends AbstractModel
     /**
      * Add a new translation or update an existing translation.
      *
-     * @param string $constant_name
-     * @param string $language_id
+     * @param string $constant_name,
+     *   Constant name and key of a translation.
+     *
      * @param string $translation
+     *   Value of a translation.
+     *
+     * @param string $language_id
+     *   Optional language identifier.  Defaults to `en-GB` for British English.
+     *
      * @param bool $admin_only
+     *   If set to true this flag limits the use of a translation key/value
+     *   pair to administration and back-end applications.  Defaults to false.
+     *
      * @return void
+     *
      * @throws \InvalidArgumentException
+     *   Throws an SPL (Standard PHP Library) invalid argument logic exception
+     *   if the parameter `$language_id`, `$translation` or `$language_id` is
+     *   not a string or the string is empty.
      */
-    public function setTranslation($constant_name, $language_id, $translation, $admin_only = false)
+    public function setTranslation($constant_name, $translation, $language_id = 'en-GB', $admin_only = false)
     {
-        if (!is_string($constant_name) || !is_string($language_id) || !is_string($translation) ) {
+        if (!is_string($constant_name) || !is_string($translation) || !is_string($language_id)) {
             throw new \InvalidArgumentException();
         }
 
         $constant_name = trim($constant_name);
-        $constant_name = strtoupper($constant_name);
-
         $translation = trim($translation);
-        if (empty($translation)) {
-            return;
+        $language_id = trim($language_id);
+        if (empty($constant_name) || empty($translation) || empty($language_id)) {
+            throw new \InvalidArgumentException();
         }
+
+        $constant_name = strtoupper($constant_name);
 
         if ($admin_only === true) {
             $admin_only_flag = 1;
