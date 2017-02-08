@@ -35,9 +35,6 @@ class Logger extends AbstractLogger implements SubjectInterface
     /** @var array|null $Observers */
     private $Observers;
 
-    /** @var string $OutputBuffer */
-    private $OutputBuffer = '';
-
     /**
      * @param string $filename
      *   Optional name of the log file, with or without a trailing path.  If
@@ -96,38 +93,18 @@ class Logger extends AbstractLogger implements SubjectInterface
     public function detach(ObserverInterface $observer)
     {
         $this->notice('Detaching observer class ' . get_class($observer) . '.');
-        $this->flush();
         $id = spl_object_hash($observer);
         unset($this->Observers[$id]);
         $this->notify();
     }
 
     /**
-     * Write to the log file and flush the output buffer.
-     *
-     * @param void
-     * @return void
-     */
-    public function flush()
-    {
-        if (empty($this->OutputBuffer)) {
-            return;
-        }
-
-        if (!is_resource($this->Handle)) {
-            $this->Handle = fopen($this->Filename, 'a');
-        }
-        if ($this->Handle !== false) {
-            fwrite($this->Handle, $this->OutputBuffer);
-            $this->OutputBuffer = (string)null;
-        }
-    }
-
-    /**
      * Get the filename of the log file.
      *
      * @param void
+     *
      * @return string
+     *   Returns the filename of the log file including the full path.
      */
     public function getFilename()
     {
@@ -138,11 +115,29 @@ class Logger extends AbstractLogger implements SubjectInterface
      * Get the last log message.
      *
      * @param void
+     *
      * @return string|null
+     *   Returns the last log message for the current process/request or null
+     *   if there are no messages.  The main purpose of this method is allowing
+     *   observers access to critical events.
      */
     public function getMessage()
     {
         return $this->Message;
+    }
+
+    /**
+     * Get the last log level.
+     *
+     * @param void
+     *
+     * @return \Psr\Log\LogLevel
+     *   Returns the last log level for the current process/request or null
+     *   if there are no logged events.
+     */
+    public function getLogLevel()
+    {
+        return $this->LogLevel;
     }
 
     /**
@@ -176,13 +171,17 @@ class Logger extends AbstractLogger implements SubjectInterface
         // End Of Line (EOL)
         $output .= PHP_EOL;
 
-        // Add the output to the output buffer.
-        $this->OutputBuffer .= $output;
+        // Log the message.
+        if (!is_resource($this->Handle)) {
+            $this->Handle = fopen($this->Filename, 'a');
+        }
+        if ($this->Handle !== false) {
+            fwrite($this->Handle, $output);
+        }
 
         // Notify observers.
         if ($level == LogLevel::EMERGENCY || $level == LogLevel::ALERT) {
             $this->notify();
-            $this->flush();
         }
     }
 
