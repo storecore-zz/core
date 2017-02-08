@@ -1,0 +1,52 @@
+---
+version: "2.1"
+
+services:
+  mysql:
+    container_name: mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=storecore
+      - MYSQL_USER=storecore-local-dev
+      - MYSQL_PASSWORD=storecore123
+    image: "mysql:5.7"
+    networks:
+      - db
+    restart: always
+    volumes:
+      - "mysql:/var/lib/mysql"
+      - "./StoreCore/Database/:/docker-entrypoint-initdb.d/:ro"
+  nginx:
+    container_name: nginx
+    depends_on:
+      php:
+        condition: service_started
+    image: "storecore/nginx:v0.0.6"
+    networks:
+      - storecore
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+  php:
+    container_name: php
+    environment:
+      - MYSQL_DATABASE=storecore
+      - MYSQL_USERNAME=storecore-local-dev
+      - MYSQL_PASSWORD=storecore123
+    expose:
+      - "9000"
+    image: "storecore/php:latest"
+    networks:
+      - storecore
+      - db
+    restart: always
+    volumes:
+      - ./:/app
+
+volumes:
+  mysql: ~
+  app: ~
+networks:
+  db: ~
+  storecore: ~
