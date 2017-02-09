@@ -22,13 +22,21 @@ class SubjectObservers
      * Attachs observers to a subject.
      *
      * @param \StoreCore\SubjectInterface &$subject
+     *   The subject to which the observers are attached, if any exist.
+     *
      * @return void
      */
     public static function populate(\StoreCore\SubjectInterface &$subject)
     {
         $subject_class = get_class($subject);
-        $model = new \StoreCore\Database\Observers(\StoreCore\Registry::getInstance());
-        $observers = $model->getSubjectObservers($subject_class);
+
+        try {
+            $model = new \StoreCore\Database\Observers(\StoreCore\Registry::getInstance());
+            $observers = $model->getSubjectObservers($subject_class);
+        } catch (\Exception $e) {
+            return;
+        }
+
         if ($observers === null) {
             return;
         }
