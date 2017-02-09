@@ -1,0 +1,7 @@
+.DS_Store
+.editorconfig
+.git
+docker-compose.yml
+DockerFile
+generate-api.sh
+tests/

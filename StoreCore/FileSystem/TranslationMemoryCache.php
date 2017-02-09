@@ -1,65 +1,85 @@
 <?php
 namespace StoreCore\FileSystem;
 
+use \StoreCore\Registry as Registry;
 use \StoreCore\Database\Languages as Languages;
 use \StoreCore\Database\TranslationMemory as TranslationMemory;
 use \StoreCore\FileSystem\Logger as Logger;
 
 /**
- * Translation Memory Cache
+ * Translation Memory Cache.
+ *
+ * This file system helper contains a single static `rebuild()` method to
+ * update language pack files in the `/cache/data/` directory.  Updates are
+ * limited to languages that are currently enabled.
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\I18N
  * @version   0.1.0
  */
 class TranslationMemoryCache
 {
+    /** @var string VERSION Semantic Version (SemVer). */
     const VERSION = '0.1.0';
 
     /**
      * Rebuild the cached language packs.
      *
      * @param void
+     *
      * @return bool
+     *   Returns true on success or false on failure.
      */
     public static function rebuild()
     {
-        $logger = new Logger();
-
-        if (!defined('STORECORE_FILESYSTEM_CACHE_DIR')) {
-            $logger->error('Cache directory is not defined.');
-            return false;
+        $registry = Registry::getInstance();
+        if ($registry->has('Logger')) {
+            $logger = $registry->get('Logger');
+        } else {
+            $logger = new Logger();
         }
 
-        $cache_directory = STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR;
-        if (!is_dir($cache_directory)) {
-            if (!mkdir($cache_directory, 0755)) {
-                $logger->error('Could not create cache directory ' . $cache_directory);
+        // Restore the data cache (sub)directory if it does not exist.
+        if (!defined('STORECORE_FILESYSTEM_CACHE_DATA_DIR')) {
+            if (!defined('STORECORE_FILESYSTEM_CACHE_DIR')) {
+                $logger->error('Global cache directory is not defined.');
                 return false;
+            } else {
+                $cache_directory = STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR;
+                if (!is_dir($cache_directory)) {
+                    if (!mkdir($cache_directory, 0755)) {
+                        $logger->error('Could not create data cache directory ' . $cache_directory . '.');
+                    } else {
+                        $logger->error('Data cache directory ' . $cache_directory . ' does not exist.');
+                    }
+                    return false;
+                } else {
+                    define('STORECORE_FILESYSTEM_CACHE_DATA_DIR', $cache_directory);
+                    unset($cache_directory);
+                }
             }
         }
 
-        if (!is_writable($cache_directory)) {
-            $logger->error('Cache directory ' . $cache_directory . ' is not writeable.');
+        if (!is_writable(STORECORE_FILESYSTEM_CACHE_DATA_DIR)) {
+            $logger->error('Data cache directory ' . STORECORE_FILESYSTEM_CACHE_DATA_DIR . ' is not writeable.');
             return false;
         }
 
-        $registry = \StoreCore\Registry::getInstance();
         $language_model = new Languages($registry);
         $languages = $language_model->getEnabledLanguages();
         unset($language_model);
 
         $tm = new TranslationMemory($registry);
-        foreach ($languages as $language_id => $iso_code) {
+        foreach ($languages as $language_id => $language_description) {
             $translations = $tm->getTranslations($language_id, false);
-            $file = '<?php' . PHP_EOL;
+            $file = '<?php' . "\n";
             foreach ($translations as $name => $value) {
-                $file .= "define('StoreCore\\\\I18N\\\\{$name}', '{$value}');" . PHP_EOL;
+                $file .= "define('StoreCore\\\\I18N\\\\{$name}', '{$value}');" . "\n";
             }
-            if (file_put_contents($cache_directory . $iso_code . '.php', $file) === false) {
-                $logger->error('Language cache file for ' . $iso_code . ' could not be written.');
+            if (file_put_contents(STORECORE_FILESYSTEM_CACHE_DATA_DIR . $language_id . '.php', $file) === false) {
+                $logger->error('Language cache file for ' . $language_id . '(' . $language_description . ')' . ' could not be written.');
                 return false;
             }
         }

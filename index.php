@@ -131,6 +131,8 @@ switch ($request->getRequestPath()) {
             $route = false;
         }
 }
+
+// Dispatch
 if ($route !== false) {
     $registry->set('Route', $route);
     $route->dispatch();
@@ -150,6 +152,3 @@ if (defined('STORECORE_BI') && STORECORE_BI == true) {
     $user_agent_mapper->setUserAgent($user_agent);
     $user_agent_mapper->update();
 }
-
-// Flush the logger.
-$registry->get('Logger')->flush();

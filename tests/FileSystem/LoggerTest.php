@@ -61,4 +61,57 @@ class LoggerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($class->hasConstant('INFO'));
         $this->assertTrue($class->hasConstant('DEBUG'));
     }
+
+    public function testAllLogLevelsHaveMethods()
+    {
+        $class = new \ReflectionClass('\StoreCore\FileSystem\Logger');
+        $log_levels = array('emergency', 'alert', 'critical', 'error', 'warning', 'notice', 'info', 'debug');
+        foreach ($log_levels as $log_level_method) {
+            $this->assertTrue($class->hasMethod($log_level_method));
+        }
+    }
+
+    public function testAllLogLevelMethodsArePublic()
+    {
+        $log_levels = array('emergency', 'alert', 'critical', 'error', 'warning', 'notice', 'info', 'debug');
+        foreach ($log_levels as $log_level_method) {
+            $method = new \ReflectionMethod('\StoreCore\FileSystem\Logger', $log_level_method);
+            $this->assertTrue($method->isPublic());
+        }
+    }
+
+    /**
+     * @testdox getLogLevel() method exists
+     */
+    public function testGetLogLevelMethodExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\FileSystem\Logger');
+        $this->assertTrue($class->hasMethod('getLogLevel'));
+    }
+
+    /**
+     * @testdox getMessage() method is public
+     */
+    public function testGetLogLevelMethodIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\FileSystem\Logger', 'getLogLevel');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @testdox getMessage() method exists
+     */
+    public function testGetMessageMethodExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\FileSystem\Logger');
+        $this->assertTrue($class->hasMethod('getMessage'));
+    }
+    /**
+     * @testdox getMessage() method is public
+     */
+    public function testGetMessageMethodIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\FileSystem\Logger', 'getMessage');
+        $this->assertTrue($method->isPublic());
+    }
 }

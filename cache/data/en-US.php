@@ -59,7 +59,7 @@ define('StoreCore\\I18N\\NOUN_PAYSAFECARD', 'paysafecard');
 define('StoreCore\\I18N\\NOUN_PHP', 'PHP');
 define('StoreCore\\I18N\\NOUN_PINTEREST', 'Pinterest');
 define('StoreCore\\I18N\\NOUN_PIN_CODE', 'PIN code');
-define('StoreCore\\I18N\\NOUN_POSTAL_CODE', 'postcode');
+define('StoreCore\\I18N\\NOUN_POSTAL_CODE', 'zip code');
 define('StoreCore\\I18N\\NOUN_SHOPPING_CART', 'shopping cart');
 define('StoreCore\\I18N\\NOUN_SOFORT', 'SOFORT');
 define('StoreCore\\I18N\\NOUN_SOUNDCLOUD', 'SoundCloud');
