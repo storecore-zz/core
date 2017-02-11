@@ -8,7 +8,7 @@ USERNAME="AWS CodeBuild"
 ENDPOINT="https://hooks.slack.com/services/${SLACK_TOKEN}"
 COLOR="good"
 
-TEXT="Build with commit <https://eu-west-1.console.aws.amazon.com/codebuild/home?region=${AWS_REGION}#/builds/${CODEBUILD_BUILD_ID}/view/new|${CODEBUILD_BUILD_ID}> successfully finished"
+TEXT="Finished new `cat channel.txt` release build (<https://eu-west-1.console.aws.amazon.com/codebuild/home?region=${AWS_REGION}#/builds/${CODEBUILD_BUILD_ID}/view/new|`cat gitcommit.txt`>)"
 
 JSON="{"
 JSON="$JSON  \"channel\": \"#$CHANNEL\","
