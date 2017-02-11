@@ -1,8 +1,8 @@
-FROM php:5.6.30-fpm-alpine
+FROM php:5.6-fpm-alpine
 MAINTAINER Tristan van Bokkem <tristan@storecore.org>
 
 # Install mysql extension
-RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install pdo_mysql > /dev/null 2>&1
 
 # Add additional PHP configuration files
 COPY conf/999-php.ini /usr/local/etc/php/conf.d/999-php.ini
