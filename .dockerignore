@@ -1,7 +1,10 @@
 .DS_Store
 .editorconfig
 .git
+buildspec.yml
+channel.txt
 docker-compose.yml
 DockerFile
-generate-api.sh
+gitcommit.txt
+scripts/
 tests/

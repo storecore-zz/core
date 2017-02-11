@@ -1,0 +1,30 @@
+version: 0.1
+
+phases:
+  install:
+    commands:
+      - apt-get update
+      - apt-get install -y curl lsof
+  pre_build:
+    commands:
+      - echo "============= `tr ['a-z'] ['A-Z'] < channel.txt` RELEASE ============="
+      - echo "Found git commit hash `cat gitcommit.txt`"
+      - sh scripts/slack-start.sh
+      - echo "Logging in to Docker Hub..."
+      - docker login --username="$DOCKER_HUB_USERNAME" --password="$DOCKER_HUB_PASSWORD"
+  build:
+    commands:
+      - echo "Build started on `date`"
+      - echo "Building the Docker image..."
+      - docker build -t $IMAGE_REPO_NAME/$CONTAINER_NAME-`cat channel.txt`:`cat gitcommit.txt` .
+      - docker tag $IMAGE_REPO_NAME/$CONTAINER_NAME-`cat channel.txt`:`cat gitcommit.txt` $IMAGE_REPO_NAME/$CONTAINER_NAME-`cat channel.txt`:`cat gitcommit.txt`
+      - docker tag $IMAGE_REPO_NAME/$CONTAINER_NAME-`cat channel.txt`:`cat gitcommit.txt` $IMAGE_REPO_NAME/$CONTAINER_NAME-`cat channel.txt`:latest
+      - docker run -d -p 9000:9000 $IMAGE_REPO_NAME/$CONTAINER_NAME-`cat channel.txt`:`cat gitcommit.txt`; sleep 10
+      - lsof -Pi :9000 -sTCP:LISTEN > /dev/null
+  post_build:
+    commands:
+      - echo "Build completed on `date`"
+      - echo "Pushing to Docker Hub"
+      - docker push $IMAGE_REPO_NAME/$CONTAINER_NAME-`cat channel.txt`:`cat gitcommit.txt`
+      - docker push $IMAGE_REPO_NAME/$CONTAINER_NAME-`cat channel.txt`:latest
+      - sh scripts/slack-end.sh
