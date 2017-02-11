@@ -1,0 +1,9 @@
+.DS_Store
+.editorconfig
+.git
+docker-compose.yml
+DockerFile
+scripts/
+tests/
+buildspec.yml
+gitcommit.txt

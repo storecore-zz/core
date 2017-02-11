@@ -1,0 +1,51 @@
+<div class="container">
+  <h1><i class="fa fa-calendar"></i> <?php echo \StoreCore\I18N\HEADING_LOG_FILES ?></h1>
+  <ul>
+    <?php
+    foreach ($log as $entry) {
+        $entry = ltrim($entry, '[');
+        $entry = str_ireplace('] [emergency]', ' <span class="log-emergency"><i class="fa fa-exclamation-triangle fa-fw"></i> Emergency</span><br>', $entry);
+        $entry = str_ireplace('] [alert]', ' <span class="log-warning"><i class="fa fa-exclamation-triangle fa-fw"></i> Alert</span><br>', $entry);
+        $entry = str_ireplace('] [critical]', ' <span class="log-critical"><i class="fa fa-exclamation-triangle fa-fw"></i> Critical</span><br>', $entry);
+        $entry = str_ireplace('] [error]', ' <span class="log-error"><i class="fa fa-bug fa-fw"></i> Error</span><br>', $entry);
+        $entry = str_ireplace('] [warning]', ' <span class="log-warning"><i class="fa fa-exclamation-triangle fa-fw"></i> Warning</span><br>', $entry);
+        $entry = str_ireplace('] [notice]', ' <span class="log-notice"><i class="fa fa-info-circle fa-fw"></i> Notice</span><br>', $entry);
+        $entry = str_ireplace('] [info]', ' <span class="log-info"><i class="fa fa-info fa-fw"></i> Info</span><br>', $entry);
+        $entry = str_ireplace('] [debug]', ' <span class="log-debug"><i class="fa fa-info"></i> Debug</span><br>', $entry);
+        echo '<li class="log-entry">', $entry, '</li>';
+    }
+    ?>
+  </ul>
+  <style>
+    li.log-entry {
+      list-style: none;
+      margin: 0 0 1ex 0;
+    }
+
+    li.log-entry span {
+      color: #fff;
+      padding: 2px 4px;
+      white-space: nowrap;
+    }
+
+    span.log-emergency,
+    span.log-alert,
+    span.log-critical {
+      background-color: rgb(204, 0, 0);
+    }
+
+    span.log-warning {
+      background-color: rgb(255, 138, 0);
+    }
+
+    span.log-notice,
+    span.log-info {
+      background-color: rgb(0, 153, 204);
+    }
+
+    span.log-error,
+    span.log-debug {
+      background-color: rgb(153, 51, 204);
+    }
+  </style>
+</div>

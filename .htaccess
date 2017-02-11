@@ -1,0 +1,28 @@
+Options +FollowSymlinks
+
+# Prevent directory listings
+Options -Indexes
+
+# Deny access to configuration files
+<Files "config.*">
+  Deny from all
+</Files>
+
+# Deny access to file types by extension
+<FilesMatch "\.(bak|gz|inc|ini|log|md|phps|phtml|sql|ssi|tar|tmp|tpl)$">
+  Deny from all
+</FilesMatch>
+
+# Keep connections alive
+<IfModule mod_headers.c>
+  Header set Connection keep-alive
+</IfModule>
+
+# Rewrite all non-existent directories and files to index.php
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-l
+  RewriteRule . index.php [L]
+</IfModule>

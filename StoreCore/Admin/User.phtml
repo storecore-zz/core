@@ -1,0 +1,43 @@
+<div class="container">
+  <h1><i class="fa fa-user"></i> <?php echo \StoreCore\I18N\HEADING_USER_ACCOUNT; ?></h1>
+  <?php
+  if (isset($error)) {
+      echo '<p class="warning">' . $error . '</p>';
+  }
+  ?>
+  <form action="/admin/settings/users/" autocomplete="on" method="post" onsubmit="this.style.cursor='wait';document.getElementById('submit').setAttribute('disabled', 'disabled');" target="_top">
+    <table>
+      <tr>
+        <th><label for="first_name"><?php echo \StoreCore\I18N\HEADING_FIRST_NAME ?></label></th>
+        <td><input autocomplete="given-name" id="first_name" name="first_name" required type="text" value="<?php echo $first_name ?>"></td>
+      </tr>
+      <tr>
+        <th><label for="last_name"><?php echo \StoreCore\I18N\HEADING_LAST_NAME ?></label></th>
+        <td><input autocomplete="family-name" id="last_name" name="last_name" required type="text" value="<?php echo $last_name ?>"></td>
+      </tr>
+      <tr>
+        <th><label for="email_address"><?php echo \StoreCore\I18N\HEADING_EMAIL_ADDRESS ?></label></th>
+        <td><input autocomplete="email" id="email_address" name="email_address" required type="email" value="<?php echo $email_address ?>"></td>
+      </tr>
+      <tr>
+        <th><label for="username"><?php echo \StoreCore\I18N\HEADING_USERNAME ?></label></th>
+        <td><input id="username" name="username" type="text" value="<?php echo $username ?>"></td>
+      </tr>
+      <tr>
+        <th><label for="password"><?php echo \StoreCore\I18N\HEADING_PASSWORD ?></label></th>
+        <td><input autocomplete="off" id="password" name="password" pattern=".{7,}" required type="password"></td>
+      </tr>
+      <tr>
+        <th><label for="confirm_password"><?php echo \StoreCore\I18N\HEADING_CONFIRM_PASSWORD ?></label></th>
+        <td><input autocomplete="off" id="confirm_password" name="confirm_password" pattern=".{7,}" required type="password"></td>
+      </tr>
+      <tr>
+        <th><label for="pin_code"><?php echo ucfirst(\StoreCore\I18N\NOUN_PIN_CODE); ?></label></th>
+        <td><input autocomplete="off" id="pin_code" maxlength="6" name="pin_code" pattern="[0-9]{4,6}" required size="6" type="text"></td>
+      </tr>
+    </table>
+    <div>
+      <input id="submit" type="submit" value="<?php echo \StoreCore\I18N\COMMAND_SAVE ?>">
+    </div>
+  </form>
+</div>
