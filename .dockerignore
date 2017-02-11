@@ -3,5 +3,8 @@
 .git
 docker-compose.yml
 DockerFile
-generate-api.sh
+scripts/
 tests/
+buildspec.yml
+gitcommit.txt
+channel.txt

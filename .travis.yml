@@ -1,0 +1,22 @@
+language: php
+php:
+  - 5.6
+script:
+  - phpunit --bootstrap tests/bootstrap.php --testdox tests --coverage-text
+after_success:
+  - if [[ $TRAVIS_BRANCH == 'master' ]]; then RELEASE_BRANCH="stable-release" && echo "stable" > channel.txt; elif [[ $TRAVIS_BRANCH == 'develop' ]]; then RELEASE_BRANCH="beta-release" && echo "beta" > channel.txt; else RELEASE_BRANCH="alpha-release" && echo "alpha" > channel.txt; fi
+  - echo "Currently running for ${RELEASE_BRANCH}"
+  - echo ${TRAVIS_COMMIT::8} > gitcommit.txt
+  - cat gitcommit.txt
+  - cat channel.txt
+  - rm -rf .git
+  - git config --global user.email "travis@storecore.org"
+  - git config --global user.name "storecorebot"
+  - git init > /dev/null
+  - git add .
+  - git commit --quiet -m "Build for ${TRAVIS_COMMIT::8} [skip ci]"
+  - git remote add origin https://storecorebot:$GITHUB_API_KEY@github.com/storecore/releases.git > /dev/null
+  - git push --force --quiet origin master:${RELEASE_BRANCH} > /dev/null
+env:
+  global:
+    secure: Gez5/EU3Zex9tc5PksARCHiTNthlDzRV2+3xml48EIsDHrNqF7slFDH+5tRnbTQ6iV7hQTmdO7FbaM0fQk3MR8wLcyedZgKUR39MUtZYnALOAO9gi4mK2M2vhYVtyX3IVhGD3ao+jgLH+UCEJaRRIwVXSGyNiLVM5aS7blqV+68=
