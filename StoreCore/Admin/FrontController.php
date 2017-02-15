@@ -33,8 +33,8 @@ class FrontController extends AbstractController implements LoggerAwareInterface
     {
         parent::__construct($registry);
 
-        // Run the installer on a missing installed version constant.
-        if (!defined('STORECORE_VERSION_INSTALLED')) {
+        // Run the installer on an incomplete database installation.
+        if (!defined('STORECORE_DATABASE_VERSION_INSTALLED')) {
             $this->install();
         }
 
@@ -62,22 +62,18 @@ class FrontController extends AbstractController implements LoggerAwareInterface
                 $this->Logger->debug('Unknown admin route: ' . $this->Request->getRequestPath());
                 $response = new \StoreCore\Response($this->Registry);
                 $response->addHeader('HTTP/1.1 404 Not Found');
+                exit;
             }
         }
     }
 
     /**
-     * Run the installer.
-     *
-     * This method first checks if the Installer.php controller class file
-     * exists and then executes it as a route.  This allows an administrator
-     * with file access to temporarily or permanently disable the installer by
-     * simply removing or renaming the PHP file.
+     * Run the installer if the Installer.php class file exists.
      *
      * @param void
      * @return void
      */
-    private function install()
+    public function install()
     {
         if (is_file(__DIR__ . DIRECTORY_SEPARATOR . 'Installer.php')) {
             $this->Logger->warning('Installer loaded.');
@@ -86,12 +82,15 @@ class FrontController extends AbstractController implements LoggerAwareInterface
         } else {
             $this->Logger->notice('StoreCore core class file Installer.php not found.');
         }
-        $this->Logger->flush();
         exit;
     }
 
     /**
+     * Set a logger.
+     *
      * @param \Psr\Log\LoggerInterface $logger
+     *   PSR-3 “Logger Interface” compliant logger object.
+     *
      * @return void
      */
     public function setLogger(LoggerInterface $logger)
