@@ -33,8 +33,8 @@ class FrontController extends AbstractController implements LoggerAwareInterface
     {
         parent::__construct($registry);
 
-        // Run the installer on an incomplete database installation.
-        if (!defined('STORECORE_DATABASE_VERSION_INSTALLED')) {
+        // Run the installer on an incomplete installation.
+        if (!defined('STORECORE_GUID')) {
             $this->install();
         }
 

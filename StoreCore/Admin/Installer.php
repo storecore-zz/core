@@ -52,11 +52,11 @@ class Installer extends \StoreCore\AbstractController
                     if ($this->checkDatabaseStructure()) {
                         if ($this->checkUsers()) {
                             $config = new \StoreCore\Admin\Configurator();
-                            $config->set('STORECORE_VERSION_INSTALLED', STORECORE_VERSION);
+                            $config->set('STORECORE_GUID', $this->getGUID());
                             $config->set('STORECORE_MAINTENANCE_MODE', true);
                             $config->save();
-                            $this->Logger->notice('Completed installation of StoreCore version ' . STORECORE_VERSION . '.');
 
+                            $this->Logger->notice('Completed installation of StoreCore version ' . STORECORE_VERSION . '.');
                             $this->SelfDestruct = true;
 
                             $response = new \StoreCore\Response($this->Registry);
@@ -395,7 +395,9 @@ class Installer extends \StoreCore\AbstractController
      * Data Source Name (DSN)
      *
      * @param void
+     *
      * @return string
+     *   Returns the default DSN as a string.
      */
     private function getDSN()
     {
@@ -403,5 +405,25 @@ class Installer extends \StoreCore\AbstractController
             . ':dbname=' . STORECORE_DATABASE_DEFAULT_DATABASE
             . ';host=' . STORECORE_DATABASE_DEFAULT_HOST
             . ';charset=utf8';
+    }
+
+    /**
+     * Generate a Globally Unique Identifier (GUID)
+     *
+     * @param void
+     *
+     * @return string
+     *   Returns the GUID as a string.
+     */
+    private function getGUID()
+    {
+        if (function_exists('com_create_guid')) {
+            return trim(com_create_guid(), '{}');
+        }
+
+        $data = openssl_random_pseudo_bytes(16);
+        $data[6] = chr(ord($data[6]) & 0x0f | 0x40); // Set version to 0100 for v4
+        $data[8] = chr(ord($data[8]) & 0x3f | 0x80); // Set bits 6-7 to 10
+        return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
     }
 }
