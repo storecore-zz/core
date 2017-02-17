@@ -5,7 +5,7 @@ namespace StoreCore\Admin;
  * StoreCore Installer
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @copyright Copyright © 2015-2017 StoreCore
  * @internal
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
@@ -13,15 +13,22 @@ namespace StoreCore\Admin;
  */
 class Installer extends \StoreCore\AbstractController
 {
+    /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
     /** @var \StoreCore\FileSystem\Logger $Logger */
     protected $Logger;
 
-    /** @var bool $SelfDestruct */
+    /**
+     * @var bool $SelfDestruct
+     *   If set to true (default false), the destructor will try to delete the
+     *   class file, which effectively disables a new or repeated installation.
+     */
     private $SelfDestruct = false;
 
     /**
+     * Execute chained installation procedures.
+     *
      * @param \StoreCore\Registry $registry
      * @return void
      */
@@ -30,8 +37,10 @@ class Installer extends \StoreCore\AbstractController
         parent::__construct($registry);
 
         // Log to the file system (and never to a null logger)
-        $this->Logger = new \StoreCore\FileSystem\Logger();
-        $this->Registry->set('Logger', $this->Logger);
+        if (false === $this->Registry->has('Logger')) {
+            $this->Logger = new \StoreCore\FileSystem\Logger();
+            $this->Registry->set('Logger', $this->Logger);
+        }
 
         // Set multibyte character encoding to UTF-8
         mb_internal_encoding('UTF-8');
@@ -61,6 +70,8 @@ class Installer extends \StoreCore\AbstractController
     }
 
     /**
+     * Destroy the class file if the installation was completed successfully.
+     *
      * @param void
      * @return void
      */
@@ -141,6 +152,17 @@ class Installer extends \StoreCore\AbstractController
     {
         $errors = array();
 
+        // Cache subdirectories for data, objects and pages
+        if (!defined('STORECORE_FILESYSTEM_CACHE_DATA_DIR')) {
+            define('STORECORE_FILESYSTEM_CACHE_DATA_DIR', STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR);
+        }
+        if (!defined('STORECORE_FILESYSTEM_CACHE_OBJECTS_DIR')) {
+            define('STORECORE_FILESYSTEM_CACHE_OBJECTS_DIR', STORECORE_FILESYSTEM_CACHE_DIR . 'objects' . DIRECTORY_SEPARATOR);
+        }
+        if (!defined('STORECORE_FILESYSTEM_CACHE_PAGES_DIR')) {
+            define('STORECORE_FILESYSTEM_CACHE_PAGES_DIR', STORECORE_FILESYSTEM_CACHE_DIR . 'pages' . DIRECTORY_SEPARATOR);
+        }
+
         $folders = array(
             STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'css'  => true,
             STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'ico'  => false,
@@ -148,6 +170,9 @@ class Installer extends \StoreCore\AbstractController
             STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'png'  => true,
             STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'svg'  => false,
             STORECORE_FILESYSTEM_CACHE_DIR => true,
+            STORECORE_FILESYSTEM_CACHE_DATA_DIR => true,
+            STORECORE_FILESYSTEM_CACHE_OBJECTS_DIR => true,
+            STORECORE_FILESYSTEM_CACHE_PAGES_DIR => true,
             STORECORE_FILESYSTEM_LOGS_DIR => true,
         );
         foreach ($folders as $filename => $must_be_writable) {
@@ -162,10 +187,11 @@ class Installer extends \StoreCore\AbstractController
 
         $files = array(
             STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'config.php' => true,
-            STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'de-DE.php' => true,
-            STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'en-GB.php' => true,
-            STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'fr-FR.php' => true,
-            STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'nl-NL.php' => true,
+            STORECORE_FILESYSTEM_CACHE_DATA_DIR . 'de-DE.php' => true,
+            STORECORE_FILESYSTEM_CACHE_DATA_DIR . 'en-GB.php' => true,
+            STORECORE_FILESYSTEM_CACHE_DATA_DIR . 'en-US.php' => true,
+            STORECORE_FILESYSTEM_CACHE_DATA_DIR . 'fr-FR.php' => true,
+            STORECORE_FILESYSTEM_CACHE_DATA_DIR . 'nl-NL.php' => true,
             STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Database' . DIRECTORY_SEPARATOR . 'core-mysql.sql' => false,
             STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Database' . DIRECTORY_SEPARATOR . 'i18n-dml.sql' => false,
         );
@@ -208,9 +234,7 @@ class Installer extends \StoreCore\AbstractController
 
         if (!extension_loaded('PDO')) {
             $errors[] = 'PHP extension PDO is not loaded.';
-        }
-
-        if (STORECORE_DATABASE_DRIVER === 'mysql' && !extension_loaded('pdo_mysql')) {
+        } elseif (STORECORE_DATABASE_DRIVER === 'mysql' && !extension_loaded('pdo_mysql')) {
             $errors[] = 'PHP extension PDO for MySQL (pdo_mysql) is not loaded.';
         } elseif (!in_array(STORECORE_DATABASE_DRIVER, \PDO::getAvailableDrivers(), true)) {
             $errors[] = 'PDO driver ' . STORECORE_DATABASE_DRIVER . ' is not available.';
@@ -256,16 +280,6 @@ class Installer extends \StoreCore\AbstractController
 
         if ($this->Request->getMethod() == 'POST') {
 
-            // First name and last name
-            if ($this->Request->get('first_name') !== null) {
-                $user->setFirstName($this->Request->get('first_name'));
-                $user_data['first_name'] = $user->getFirstName();
-            }
-            if ($this->Request->get('last_name') !== null) {
-                $user->setLastName($this->Request->get('last_name'));
-                $user_data['last_name'] = $user->getLastName();
-            }
-
             // E-mail address
             if ($this->Request->get('email_address') !== null) {
                 try {
@@ -298,12 +312,6 @@ class Installer extends \StoreCore\AbstractController
                     $user->setUsername($username);
                     $user_data['username'] = $user->getUsername();
                 }
-            }
-
-            // Set an omitted username to the user's first name.
-            if ($user->getUsername() === null && $user->getFirstName() !== null) {
-                $user->setUsername($user->getFirstName());
-                $user_data['username'] = $user->getUsername();
             }
 
             // Password
@@ -342,7 +350,7 @@ class Installer extends \StoreCore\AbstractController
 
         // Try to find a known administrator or general e-mail address
         if ($user_data['email_address'] === false) {
-            if (isset($_SERVER['SERVER_ADMIN']) && !empty($_SERVER['SERVER_ADMIN'])) {
+            if (!empty($_SERVER['SERVER_ADMIN'])) {
                 $email_address = filter_var($_SERVER['SERVER_ADMIN'], FILTER_SANITIZE_EMAIL);
                 if (filter_var($email_address, FILTER_VALIDATE_EMAIL) !== false) {
                     $user_data['email_address'] = $email_address;
@@ -374,7 +382,7 @@ class Installer extends \StoreCore\AbstractController
         $form = \StoreCore\Admin\Minifier::minify($form);
 
         $document = new \StoreCore\Admin\Document();
-        $document->addSection($form);
+        $document->addSection($form, 'main');
         $response = new \StoreCore\Response($this->Registry);
         $response->setResponseBody($document);
         $response->output();
