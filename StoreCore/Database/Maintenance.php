@@ -112,7 +112,11 @@ class Maintenance extends \StoreCore\AbstractModel
      * Get all StoreCore database table names.
      *
      * @param void
+     *
      * @return array
+     *   Returns an indexed array with the names of all StoreCore database
+     *   table.  Tables names for StoreCore always contain the `sc_` prefix;
+     *   tables without this prefix are not included.
      */
     public function getTables()
     {
@@ -125,7 +129,6 @@ class Maintenance extends \StoreCore\AbstractModel
                 }
             }
         }
-
         return $tables;
     }
 
@@ -192,8 +195,13 @@ class Maintenance extends \StoreCore\AbstractModel
     }
 
     /**
+     * Save a configuration setting as a key/value pair.
+     *
      * @param string $name
+     *   Name of the configuration setting.
+     *
      * @param string $value
+     *   Value of the configuration setting.
      */
     private function saveConfigurationSetting($name, $value)
     {
@@ -205,10 +213,12 @@ class Maintenance extends \StoreCore\AbstractModel
     }
 
     /**
-     * Update the database.
+     * Update the StoreCore database.
      *
      * @param void
+     *
      * @return bool
+     *   Returns true on success or false on failure.
      */
     public function update()
     {

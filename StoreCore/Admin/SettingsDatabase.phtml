@@ -1,0 +1,34 @@
+<form action="" autocomplete="new-password" method="post" target="_top">
+  <div class="mdl-card mdl-shadow--4dp">
+    <div class="mdl-card__title">
+      <h2 class="mdl-card__title-text"><?php echo \StoreCore\I18N\HEADING_DATABASE_SETTINGS ?></h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" id="hostname" name="hostname" required type="text" value="<?php echo STORECORE_DATABASE_DEFAULT_HOST ?>">
+        <label class="mdl-textfield__label" for="hostname"><?php echo \StoreCore\I18N\HEADING_HOST_NAME_OR_IP_ADDRESS ?></label>
+      </div>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" id="databasename" maxlength="16" name="databasename" required type="text" value="<?php echo \StoreCore\Database\DEFAULT_DATABASE ?>">
+        <label class="mdl-textfield__label" for="databasename"><?php echo \StoreCore\I18N\HEADING_DATABASE_NAME ?></label>
+      </div>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <?php // MySQL user names can be up to 16 characters long. ?>
+        <input class="mdl-textfield__input" id="username" maxlength="16" name="username" required type="text" value="<?php echo \StoreCore\Database\DEFAULT_USERNAME ?>">
+        <label class="mdl-textfield__label" for="username"><?php echo \StoreCore\I18N\HEADING_USERNAME ?></label>
+      </div>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" id="password" name="password" placeholder="(<?php echo \StoreCore\I18N\NOUN_PASSWORD ?>)" type="password" value="">
+        <label class="mdl-textfield__label" for="password"><?php echo \StoreCore\I18N\HEADING_PASSWORD ?></label>
+      </div>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+      <a class="mdl-button mdl-js-button mdl-js-ripple-effect" href="/admin/settings/">
+        <?php echo \StoreCore\I18N\COMMAND_CANCEL ?>
+      </a>
+      <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="submit" type="submit">
+        <?php echo \StoreCore\I18N\COMMAND_SAVE ?>
+      </button>
+    </div>
+  </div>
+</div>

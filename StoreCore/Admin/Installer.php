@@ -16,9 +16,6 @@ class Installer extends \StoreCore\AbstractController
     /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
-    /** @var \StoreCore\FileSystem\Logger $Logger */
-    protected $Logger;
-
     /**
      * @var bool $SelfDestruct
      *   If set to true (default false), the destructor will try to delete the
@@ -96,26 +93,27 @@ class Installer extends \StoreCore\AbstractController
     {
         try {
             $dbh = new \PDO($this->getDSN(), STORECORE_DATABASE_DEFAULT_USERNAME, STORECORE_DATABASE_DEFAULT_PASSWORD, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
+            $this->Registry->set('Connection', $dbh);
         } catch (\PDOException $e) {
             $this->Logger->critical($e->getMessage());
-            if ($this->Request->getRequestPath() !== '/admin/settings/database/') {
+            if ($this->Request->getRequestPath() !== '/admin/settings/database/account/') {
                 $response = new \StoreCore\Response($this->Registry);
-                $response->redirect('/admin/settings/database/');
+                $response->redirect('/admin/settings/database/account/');
             } else {
-                $route = new \StoreCore\Route('/admin/settings/database/', '\StoreCore\Admin\SettingsDatabase');
+                $route = new \StoreCore\Route('/admin/settings/database/account/', '\StoreCore\Admin\SettingsDatabaseAccount');
                 $route->dispatch();
             }
             return false;
         }
-        $dbh = null;
         $this->Logger->info('Database connection is set up correctly.');
         return true;
     }
 
     /**
-     * Check the database structure.
+     * Check the database structure and optionally install the database.
      *
      * @param void
+     *
      * @return bool
      */
     private function checkDatabaseStructure()
