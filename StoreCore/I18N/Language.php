@@ -5,7 +5,7 @@ namespace StoreCore\I18N;
  * Content Language Negotiation
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2014-2016 StoreCore
+ * @copyright Copyright © 2014-2017 StoreCore
  * @internal
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\I18N
@@ -13,6 +13,7 @@ namespace StoreCore\I18N;
  */
 class Language
 {
+    /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
     /**
