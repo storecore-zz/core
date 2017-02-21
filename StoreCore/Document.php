@@ -15,8 +15,17 @@ class Document
     /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
-    /** @var bool $AcceleratedMobilePage */
+    /**
+      * @var bool $AcceleratedMobilePage
+      *   Create an AMP HTML document (true) or not (default false).
+      */
     protected $AcceleratedMobilePage = false;
+
+    /**
+     * @var bool $jQuery
+     *   Include the jQuery JavaScript library (true) or not (default false).
+     */
+    protected $jQuery = false;
 
     /**
      * @var string $Direction
@@ -50,7 +59,11 @@ class Document
     );
 
     /**
+     * Create an HTML document.
+     *
      * @param string|null $title
+     *   Title of the document to include in the HTML `<title>...</title>` tag.
+     *
      * @return self
      */
     public function __construct($title = null)
@@ -63,6 +76,7 @@ class Document
     /**
      * @param void
      * @return string
+     * @uses getDocument()
      */
     public function __toString()
     {
@@ -239,10 +253,12 @@ class Document
     }
 
     /**
-     * Get the document <body>...</body> container.
+     * Get the document <body> container.
      *
      * @param void
+     *
      * @return string
+     *   Returns the `<body>...</body>` container as a string.
      */
     public function getBody()
     {
@@ -253,9 +269,14 @@ class Document
      * Get the full HTML document.
      *
      * @param void
+     *
      * @return string
-     * @uses \StoreCore\Document::getBody()
-     * @uses \StoreCore\Document::getHead()
+     *   Returns the full `<html>...</html>` container with a `DOCTYPE`
+     *   declaration as a string.
+     *
+     * @uses getBody()
+     *
+     * @uses getHead()
      */
     public function getDocument()
     {
@@ -281,21 +302,26 @@ class Document
          * @see https://developers.google.com/speed/libraries/
          * @see https://www.asp.net/ajax/cdn#jQuery_Releases_on_the_CDN_0
          */
-         if (!$this->AcceleratedMobilePage) {
-            if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/(?i)msie [4-8]/', $_SERVER['HTTP_USER_AGENT'])) {
-                $html .= '<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>';
-                $html .= '<script>';
-                $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-1.12.4.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
-            } else {
-                $html .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>';
-                $html .= '<script>';
-                $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-3.1.1.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
+        if (!$this->AcceleratedMobilePage) {
+            if ($this->jQuery) {
+                if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/(?i)msie [4-8]/', $_SERVER['HTTP_USER_AGENT'])) {
+                    $html .= '<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>';
+                    $html .= '<script>';
+                    $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-1.12.4.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
+                    $html .= '</script>';
+                } else {
+                    $html .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>';
+                    $html .= '<script>';
+                    $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-3.1.1.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
+                    $html .= '</script>';
+                }
             }
 
             if ($this->ScriptsDeferred !== null) {
+                $html .= '<script>';
                 $html .= implode($this->ScriptsDeferred);
+                $html .= '</script>';
             }
-            $html .= '</script>';
         }
 
         $html .= '</html>';
@@ -303,10 +329,12 @@ class Document
     }
 
     /**
-     * Get the document <head>...</head> container.
+     * Get the document <head> container.
      *
      * @param void
+     *
      * @return string
+     *   Returns the `<head>...</head>` container as a string.
      */
     public function getHead()
     {
@@ -385,6 +413,22 @@ class Document
 
         $head .= '</head>';
         return $head;
+    }
+
+    /**
+     * Enable or disable jQuery.
+     *
+     * @param bool $use_jquery
+     *   Use the jQuery JavaScript library (default true) or not (false).
+     *   By default jQuery is not included, so you must explicitly call
+     *   `jquerify()` or `jquerify(true)` if a document needs to support
+     *   jQuery JavaScript.
+     *
+     * @return void
+     */
+    public function jquerify($use_jquery = true)
+    {
+        $this->jQuery = (bool)$use_jquery;
     }
 
     /**
