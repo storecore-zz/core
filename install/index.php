@@ -80,6 +80,19 @@ if (!defined('STORECORE_FILESYSTEM_LOGS_DIR')) {
     }
 }
 
+// Load a language pack if not in CLI mode.
+if (php_sapi_name() !== 'cli') {
+    if (!defined('STORECORE_FILESYSTEM_CACHE_DATA_DIR')) {
+        if (is_dir(realpath(STORECORE_FILESYSTEM_CACHE_DIR . 'data'))) {
+            define('STORECORE_FILESYSTEM_CACHE_DATA_DIR', STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR);
+        } else {
+            echo 'StoreCore data cache directory /cache/data/ not found.';
+            exit(1);
+        }
+    }
+    \StoreCore\I18N\Locale::load();
+}
+
 // Run the installer through the administration front controller’s
 // `install()` method as a single point of entry.
 $route = new \StoreCore\Route('/install/', '\StoreCore\Admin\FrontController');
