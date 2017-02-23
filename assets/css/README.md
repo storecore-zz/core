@@ -1,19 +1,32 @@
 StoreCore Amplified Material Design (AMD)
 =========================================
 
-The default MDL (Material Design Lite) CSS template included in StoreCore uses
-blue as the primary color and orange as the accent color.  The minified CSS
-file is hosted on the Google MDL CDN at:
+The default [Material Design Lite (MDL)](https://getmdl.io/index.html) CSS
+template included in StoreCore uses blue as the primary color and orange as the
+accent color.  The minified CSS file is hosted on the Google MDL CDN at:
 
-https://code.getmdl.io/1.1.3/material.blue-orange.min.css
+https://code.getmdl.io/1.3.0/material.blue-orange.min.css
+
+The StoreCore administration CSS in the
+[admin.css file](https://github.com/storecore/core/blob/develop/assets/css/admin.css)
+and the minified admin.min.css file uses light green as the primary color and
+ligth blue as the accent color.  This file was derived from the minified file
+located at:
+
+https://code.getmdl.io/1.3.0/material.light_green-light_blue.min.css
+
+To allow for tracking changes, the admin.css file is partially minified.  The
+minified lines are unchanged CSS declarations from MDL.  The unminified CSS
+declarations contain changes or additions for StoreCore.
 
 
 ## Changelog for StoreCore AMP MDL
 
+- Add fallback color `#212121` for `rgba(0,0,0,.87)`.
 - Drop h5 and h6 headings.
 - Merge the opacity .54 and .87 selectors.
-- Upgrade `Helvetica` to `'Helvetica Neue'`.
-- Add missing Roboto to the font stacks.
+- Add missing Roboto to some font stacks.
+- Upgrade `Helvetica` to `"Helvetica Neue"`.
 - Strip double quotes from `"Roboto"` and `"Arial"`.
 - Move color definitions out to separate files.
 - Merge font stack into a single font-family declaration.
@@ -21,12 +34,14 @@ https://code.getmdl.io/1.1.3/material.blue-orange.min.css
 - Drop the `-force-` classes.
 - Drop the `--` duplicates of class names with `__`.
 - Drop extreme font weights 100, 200, and 900.
-- Drop italic.
+- Drop italic for the blockquote element.
 
 
-## Overwrites Not Supported
+## Forcing Preferred Fonts Not Supported
 
-The following MDL `-force-` class names are not supported in StoreCore CSS:
+The following MDL `force-preferred-font` class names are not supported in
+StoreCore CSS.  In StoreCore the preferred font is used for all elements, so
+there is no need to force it anywhere.
 
 - .mdl-typography--body-1-force-preferred-font
 - .mdl-typography--body-1-force-preferred-font-color-contrast
