@@ -16,11 +16,19 @@ class Document extends \StoreCore\Document
     /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
-    /** @var array $Links */
+    /**
+     * @var array $Links
+     *   Associative array for `<link href="..." rel="...">` elements in the
+     *   `<head>...</head>` container of the HTML document.
+     */
     protected $Links = array(
         '6bb60c2b4cfa0d26fdf447532e52fc57' => array(
             'href' => 'https://fonts.googleapis.com/',
             'rel'  => 'dns-prefetch',
+        ),
+        '106719df5730b22f08dfb83570eee34a' => array(
+            'href' => '/admin/StoreCore.webmanifest',
+            'rel'  => 'manifest',
         ),
         '7ed8cc1d36d9a43dbf5600109929dfb7' => array(
             'href' => 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700',
