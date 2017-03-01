@@ -9,6 +9,7 @@ use \StoreCore\Admin\AccessControlWhitelist as AccessControlWhitelist;
 use \StoreCore\Registry as Registry;
 use \StoreCore\Response as Response;
 use \StoreCore\Route as Route;
+use \StoreCore\Database\RouteFactory as RouteFactory;
 use \StoreCore\Session as Session;
 
 /**
@@ -52,18 +53,37 @@ class FrontController extends AbstractController implements LoggerAwareInterface
         }
 
         // Find a matching route or route collection.
-        if ($this->Request->getRequestPath() !== '/admin/') {
-            $router = new \StoreCore\Database\RouteFactory($this->Registry);
-            $route = $router->find($this->Request->getRequestPath());
-            if ($route !== null) {
-                $this->Registry->set('Route', $route);
-                $route->dispatch();
-            } else {
-                $this->Logger->debug('Unknown admin route: ' . $this->Request->getRequestPath());
-                $response = new \StoreCore\Response($this->Registry);
-                $response->addHeader('HTTP/1.1 404 Not Found');
-                exit;
-            }
+        $route = false;
+        switch ($this->Request->getRequestPath()) {
+            case '/admin/lock/':
+                $route = new Route('/admin/lock/', '\StoreCore\Admin\LockScreen');
+                break;
+            case '/admin/sign-in/':
+                break;
+            case '/admin/sign-out/':
+                $route = new Route('/admin/sign-out/', '\StoreCore\Admin\User', 'signOut');
+                break;
+            case '/admin/StoreCore.webmanifest':
+                $route = new Route('/admin/StoreCore.webmanifest', 'ManifestController');
+                break;
+            default:
+                $router = new RouteFactory($this->Registry);
+                $route = $router->find($this->Request->getRequestPath());
+                if ($route === null) {
+                    $route = false;
+                }
+                break;
+        }
+
+        if ($route !== false) {
+            $this->Registry->set('Route', $route);
+            $route->dispatch();
+        } else {
+            $this->Logger->debug('Unknown admin route: ' . $this->Request->getRequestPath());
+            $response = new Response($this->Registry);
+            $response->addHeader('HTTP/1.1 404 Not Found');
+            $response->output();
+            exit;
         }
     }
 

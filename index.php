@@ -102,15 +102,6 @@ $registry->set('Session', $session);
 // Routing
 $route = false;
 switch ($request->getRequestPath()) {
-    case '/admin/lock/':
-        $route = new \StoreCore\Route('/admin/lock/', '\StoreCore\Admin\LockScreen');
-        break;
-    case '/admin/sign-in/':
-        $route = new \StoreCore\Route('/admin/sign-in/', '\StoreCore\Admin\SignIn');
-        break;
-    case '/admin/sign-out/':
-        $route = new \StoreCore\Route('/admin/sign-out/', '\StoreCore\Admin\User', 'signOut');
-        break;
     case '/robots.txt':
         $route = new \StoreCore\Route('/robots.txt', '\StoreCore\FileSystem\Robots');
         break;
