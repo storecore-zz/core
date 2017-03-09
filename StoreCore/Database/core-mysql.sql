@@ -994,7 +994,8 @@ CREATE TABLE IF NOT EXISTS sc_store_hosts (
   host_name      VARCHAR(255)          NULL  DEFAULT NULL,
   redirect_to    VARCHAR(255)          NULL  DEFAULT NULL,
   PRIMARY KEY pk_host_id (host_id),
-  FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  UNIQUE KEY uk_host_name (host_name)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Store languages
