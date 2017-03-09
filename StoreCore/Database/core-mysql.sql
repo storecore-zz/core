@@ -631,7 +631,7 @@ CREATE TABLE IF NOT EXISTS sc_translation_memory (
 -- Countries and ISO country codes
 CREATE TABLE IF NOT EXISTS sc_countries (
   country_id            SMALLINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
-  status                TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 1,
+  enabled_flag          TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 1,
   postal_code_required  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
   subdivision_required  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
   iso_alpha_two         CHAR(2)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  COMMENT 'ISO 3166-1 alpha-2 code',
