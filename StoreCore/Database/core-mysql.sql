@@ -665,7 +665,7 @@ CREATE TABLE IF NOT EXISTS sc_country_subdivisions (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci;
 
 -- ISO country data
-INSERT IGNORE INTO sc_countries (iso_number, global_country_name, iso_alpha_two, iso_alpha_three, postal_code_required, status) VALUES
+INSERT IGNORE INTO sc_countries (iso_number, global_country_name, iso_alpha_two, iso_alpha_three, postal_code_required, enabled_flag) VALUES
   (  4, 'Afghanistan', 'AF', 'AFG',  0, 1),
   (248, 'Åland Islands', 'AX', 'ALA',  0, 1),
   (  8, 'Albania', 'AL', 'ALB',  0, 1),
