@@ -1009,6 +1009,15 @@ CREATE TABLE IF NOT EXISTS sc_store_languages (
   FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+-- Store organization
+CREATE TABLE IF NOT EXISTS sc_store_organization (
+  store_id         TINYINT(3) UNSIGNED    NOT NULL,
+  organization_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
+  PRIMARY KEY pk_store_organization_id (store_id, organization_id),
+  FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_organization_id (organization_id) REFERENCES sc_organizations (organization_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
 -- Customer groups
 CREATE TABLE IF NOT EXISTS sc_customer_groups (
   customer_group_id    TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
