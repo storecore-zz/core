@@ -984,7 +984,17 @@ CREATE TABLE IF NOT EXISTS sc_stores (
   ssl_mode      TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
   store_name    VARCHAR(64)          NOT NULL,
   PRIMARY KEY pk_store_id (store_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+-- Store currencies
+CREATE TABLE IF NOT EXISTS sc_store_currencies (
+  store_id      TINYINT(3) UNSIGNED   NOT NULL,
+  currency_id   SMALLINT(3) UNSIGNED  NOT NULL  DEFAULT 978,
+  default_flag  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
+  PRIMARY KEY pk_store_currency_id (store_id, currency_id),
+  FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_currency_id (currency_id) REFERENCES sc_currencies (currency_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Store hosts
 CREATE TABLE IF NOT EXISTS sc_store_hosts (
