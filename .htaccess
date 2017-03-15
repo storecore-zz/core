@@ -3,6 +3,9 @@ Options +FollowSymlinks
 # Prevent directory listings
 Options -Indexes
 
+# Error documents
+ErrorDocument 503 /503.html
+
 # Deny access to configuration files
 <Files "config.*">
   Deny from all
