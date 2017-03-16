@@ -136,9 +136,9 @@ abstract class AbstractDataAccessObject extends AbstractModel
      *   used.
      *
      * @return array|false
-     *   Returns an array on success or false on failure.  The array MAY be
-     *   empty if the query was executed without any errors but no matching
-     *   database records were found.
+     *   Returns an array on success or false on failure.  This method also
+     *   returns false if the read operation fails because no matching database
+     *   records were found.
      */
     public function read($value, $key = null)
     {
@@ -168,7 +168,11 @@ abstract class AbstractDataAccessObject extends AbstractModel
             if ($stmt->execute()) {
                 $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
                 $stmt->closeCursor();
-                return $result;
+                if ($result === false || empty($result)) {
+                    return false;
+                } else {
+                    return $result;
+                }
             } else {
                 return false;
             }
