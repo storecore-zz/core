@@ -29,6 +29,14 @@ class Store extends AbstractModel
     private $StoreID;
 
     /**
+     * @var array $StoreLanguages
+     *   Languages used for this store's storefront.
+     */
+    private $StoreLanguages = array(
+        'en-GB' => true,
+    );
+
+    /**
      * @var string $StoreName
      *   Generic short name of the store.
      */
@@ -43,6 +51,17 @@ class Store extends AbstractModel
     public function close()
     {
         $this->EnabledFlag = false;
+    }
+
+    /**
+     * Get the store's storefront languages.
+     *
+     * @param void
+     * @return array
+     */
+    public function getStoreLanguages()
+    {
+        return $this->StoreLanguages;
     }
 
     /**
@@ -111,6 +130,17 @@ class Store extends AbstractModel
         } else {
             throw new \InvalidArgumentException();
         }
+    }
+
+    /**
+     * Set the store's storefront languages.
+     *
+     * @param array $store_languages
+     * @return void
+     */
+    public function setStoreLanguages(array $store_languages)
+    {
+        $this->StoreLanguages = $store_languages;
     }
 
     /**

@@ -177,12 +177,18 @@ class StoreMapper extends AbstractDataAccessObject
      */
     private function getStoreObject(array $store_data)
     {
+        $store_id = new \StoreCore\Types\StoreID($store_data['store_id']);
+
         $store = new \StoreCore\Store($this->Registry);
-        $store->setStoreID($store_data['store_id']);
+        $store->setStoreID($store_id);
         $store->setStoreName($store_data['store_name']);
         if ($store_data['enabled_flag'] === 1) {
             $store->open();
         }
+
+        $languages = new \StoreCore\Database\Languages($this->Registry);
+        $store->setStoreLanguages($languages->getStoreLanguages($store_id));
+
         return $store;
     }
 }
