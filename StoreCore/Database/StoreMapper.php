@@ -186,8 +186,11 @@ class StoreMapper extends AbstractDataAccessObject
             $store->open();
         }
 
-        $languages = new \StoreCore\Database\Languages($this->Registry);
-        $store->setStoreLanguages($languages->getStoreLanguages($store_id));
+        $model = new \StoreCore\Database\Languages($this->Registry);
+        $store->setStoreLanguages($model->getStoreLanguages($store_id));
+
+        $model = new \StoreCore\Database\Currencies($this->Registry);
+        $store->setStoreCurrencies($model->getStoreCurrencies($store_id));
 
         return $store;
     }

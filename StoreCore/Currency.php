@@ -10,7 +10,7 @@ namespace StoreCore;
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-class Currency extends AbstractModel
+class Currency
 {
     /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
@@ -97,7 +97,7 @@ class Currency extends AbstractModel
      * @return $this
      *
      * @throws \InvalidArgumentException
-     *   Throws an Standard PHP Library (SPL) invalid argument logic exception
+     *   Throws a Standard PHP Library (SPL) invalid argument logic exception
      *   if the currency code is not a string consisting of three characters.
      */
     public function setCurrencyCode($iso_currency_code)

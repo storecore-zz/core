@@ -23,6 +23,12 @@ class Store extends AbstractModel
     private $EnabledFlag = false;
 
     /**
+     * @var array $StoreCurrencies
+     *   Array with \StoreCore\Currency objects for the store’s currencies.
+     */
+    private $StoreCurrencies;
+
+    /**
      * @var \StoreCore\Types\StoreID $StoreID
      *   Unique store identifier.
      */
@@ -30,7 +36,7 @@ class Store extends AbstractModel
 
     /**
      * @var array $StoreLanguages
-     *   Languages used for this store's storefront.
+     *   Languages used for this store’s storefront.
      */
     private $StoreLanguages = array(
         'en-GB' => true,
@@ -54,10 +60,29 @@ class Store extends AbstractModel
     }
 
     /**
-     * Get the store's storefront languages.
+     * Get the store’s currencies.
      *
      * @param void
+     *
      * @return array
+     *   Returns an indexed array with the store’s currencies with ISO currency
+     *   numbers as the keys and \StoreCore\Currency objects as the values.
+     */
+    public function getStoreCurrencies()
+    {
+        return $this->StoreCurrencies;
+    }
+
+    /**
+     * Get the store’s storefront languages.
+     *
+     * @param void
+     *
+     * @return array
+     *   Returns an associative array with language IDs as the keys and a
+     *   boolean as the values.  The boolean value is set to true if the
+     *   language is currently enabled for the storefront.  The first array
+     *   element is the store’s default language.
      */
     public function getStoreLanguages()
     {
@@ -113,6 +138,17 @@ class Store extends AbstractModel
     }
 
     /**
+     * Set the store’s currencies.
+     *
+     * @param array $store_currencies
+     * @return void
+     */
+    public function setStoreCurrencies(array $store_currencies)
+    {
+        $this->StoreCurrencies = $store_currencies;
+    }
+
+    /**
      * Set the store identifier.
      *
      * @param \StoreCore\Types\StoreID|int $store_id
@@ -133,7 +169,7 @@ class Store extends AbstractModel
     }
 
     /**
-     * Set the store's storefront languages.
+     * Set the store’s storefront languages.
      *
      * @param array $store_languages
      * @return void
