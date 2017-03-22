@@ -16,8 +16,10 @@ class User
     const VERSION = '0.1.0';
 
     /**
+     * @var string      $DateTimeZone
      * @var string|null $EmailAddress
      * @var string|null $HashAlgorithm
+     * @var string      $LanguageID
      * @var string|null $PasswordHash
      * @var string|null $PasswordSalt
      * @var int|null    $PersonID
@@ -26,8 +28,10 @@ class User
      * @var int|null    $UserID
      * @var string|null $Username
      */
+    private $DateTimeZone = 'UTC';
     private $EmailAddress;
     private $HashAlgorithm;
+    private $LanguageID = 'en-GB';
     private $PasswordHash;
     private $PasswordSalt;
     private $PersonID;
@@ -78,6 +82,20 @@ class User
     }
 
     /**
+     * Get the user’s timezone.
+     *
+     * @param void
+     *
+     * @return string
+     *   Returns a DateTimeZone identifier as a string.  The default for all
+     *   StoreCore dates, times, and datetimes is 'UTC'.
+     */
+    public function getDateTimeZone()
+    {
+        return $this->DateTimeZone;
+    }
+
+    /**
      * Get the e-mail address.
      *
      * @param void
@@ -97,6 +115,19 @@ class User
     public function getHashAlgorithm()
     {
         return $this->HashAlgorithm;
+    }
+
+    /**
+     * Get the user’s language identifier.
+     *
+     * @param void
+     *
+     * @return string
+     *   Returns a string like 'en-GB' (default) for the language ID.
+     */
+    public function getLanguageID()
+    {
+        return $this->LanguageID;
     }
 
     /**
@@ -177,6 +208,24 @@ class User
     }
 
     /**
+     * Set the user’s timezone.
+     *
+     * @param string $timezone_identifier
+     *   DateTimeZone identifier for the user’s current date and time zone.
+     *
+     * @return string
+     *   Returns the currently set timezone identifier.
+     */
+    public function setDateTimeZone($timezone_identifier)
+    {
+        $timezone_identifiers = \DateTimeZone::listIdentifiers();
+        if (in_array($timezone_identifier, $timezone_identifiers, true)) {
+            $this->DateTimeZone = $timezone_identifier;
+        }
+        return $this->getDateTimeZone();
+    }
+
+    /**
      * Set the e-mail address.
      *
      * @param string $email_address
@@ -196,6 +245,52 @@ class User
     public function setHashAlgorithm($hash_algorithm)
     {
         $this->HashAlgorithm = $hash_algorithm;
+    }
+
+    /**
+     * Set the user’s language identifier.
+     *
+     * @param string $language_id
+     *   Alphanumeric language identifier like 'en-GB' for British English
+     *   or 'en-US' for American English.  If the current timezone is set
+     *   to the generic 'UTC' (default) and a single timezone exists for the
+     *   country code, the country code is also used to set the timezone.
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     *   Throws an invalid argument logic exception if the `$language_id`
+     *   parameter is not a string consisting of 5 characters with the `aa-AA`
+     *   format of an alphanumeric StoreCore language code.  This method
+     *   does not validate if the language ID actually exists nor if the
+     *   language is currently in use.
+     */
+    public function setLanguageID($language_id)
+    {
+        if (!is_string($language_id) || strlen($language_id) !== 5) {
+            throw new \InvalidArgumentException();
+        }
+
+        $language_id = str_ireplace('_', '-', $language_id);
+        $language_id = explode('-', $language_id);
+        if (count($language_id) !== 2) {
+            throw new \InvalidArgumentException();
+        }
+
+        $language_id[0] = strtolower($language_id[0]);
+        $language_id[1] = strtoupper($language_id[1]);
+        if (!ctype_lower($language_id[0]) || !ctype_upper($language_id[1])) {
+            throw new \InvalidArgumentException();
+        }
+
+        if ($this->DateTimeZone === 'UTC') {
+            $timezone_identifiers = \DateTimeZone::listIdentifiers(\DateTimeZone::PER_COUNTRY, $language_id[1]);
+            if (count($timezone_identifiers) === 1) {
+                $this->setDateTimeZone($timezone_identifiers[0]);
+            }
+        }
+
+        $this->LanguageID = implode('-', $language_id);
     }
 
     /**
@@ -233,15 +328,17 @@ class User
      * Set the personal identification number (PIN).
      *
      * @param string $pin_code
+     *
      * @return void
+     *
      * @throws \UnexpectedValueException
+     *   Throws an unexpected value runtime exception if the `$pin_code`
+     *   parameter is not a number consisting of 4, 5 or 6 digits.
      */
     public function setPIN($pin_code)
     {
-        if (!is_numeric($pin_code)) {
-            throw new \UnexpectedValueException(__METHOD__ . ' expects parameter 1 to be an integer or numeric string.');
-        } elseif (strlen($pin_code) < 4 || strlen($pin_code) > 6) {
-            throw new \UnexpectedValueException(__METHOD__ . ' expects parameter 1 to be a number consisting of 4 up to 6 digits.');
+        if (!ctype_digit($pin_code) || strlen($pin_code) < 4 || strlen($pin_code) > 6) {
+            throw new \UnexpectedValueException();
         }
         $this->PinCode = $pin_code;
     }

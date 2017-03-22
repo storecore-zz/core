@@ -28,24 +28,27 @@ class UserMapper extends AbstractDataAccessObject
      * however, for example in historic data of user activity in order
      * processing and payment handling, it is RECOMMENDED to maintain the last
      * known user data.  Users that are no longer granted access, like former
-     * employees, may therefore be "banned" by assigning them the special user
+     * employees, may therefore be “banned” by assigning them the special user
      * group ID 0 (zero).
      *
      * @param \StoreCore\User $user
-     * @return void
+     * @return \StoreCore\User $user
      * @uses \StoreCore\User::getUserID()
+     * @uses \StoreCore\User::setUserGroupID()
      */
     public function ban(\StoreCore\User $user)
     {
+        $user->setUserGroupID(0);
         $data = array(
             self::PRIMARY_KEY => $user->getUserID(),
             'user_group_id' => 0,
         );
         $this->update($data);
+        return $user;
     }
 
     /**
-     * Map the user's data to a user object.
+     * Map the user’s data to a user object.
      *
      * @param array $user_data
      * @return \StoreCore\User
@@ -56,7 +59,8 @@ class UserMapper extends AbstractDataAccessObject
 
         $user->setUserID($user_data['user_id']);
         $user->setUserGroupID($user_data['user_group_id']);
-        $user->setLanguage($user_data['language_id']);
+        $user->setLanguageID($user_data['language_id']);
+
         $user->setEmailAddress($user_data['email_address']);
         $user->setUsername($user_data['username']);
         $user->setPasswordSalt($user_data['password_salt']);
@@ -73,7 +77,7 @@ class UserMapper extends AbstractDataAccessObject
     }
 
     /**
-     * Fetch a user by the user's e-mail address.
+     * Fetch a user by the user’s e-mail address.
      *
      * @param string $email_address
      * @return \StoreCore\User|null
@@ -97,7 +101,7 @@ class UserMapper extends AbstractDataAccessObject
     }
 
     /**
-     * Fetch a user by the user's username.
+     * Fetch a user by the user’s username.
      *
      * @param string $username
      * @return \StoreCore\User|null
@@ -145,7 +149,7 @@ class UserMapper extends AbstractDataAccessObject
         }
 
         $user_data['user_group_id'] = $user->getUserGroupID();
-        $user_data['language_id'] = $user->getLanguage();
+        $user_data['language_id'] = $user->getLanguageID();
         $user_data['email_address'] = $user->getEmailAddress();
         $user_data['username'] = $user->getUsername();
         $user_data['password_salt'] = $user->getPasswordSalt();
