@@ -18,15 +18,13 @@ class AdminDocumentTest extends PHPUnit_Framework_TestCase
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Admin/Document.php');
     }
 
+    /**
+     * @group distro
+     */
     public function testVersionConstantIsDefined()
     {
         $class = new \ReflectionClass('\StoreCore\Admin\Document');
         $this->assertTrue($class->hasConstant('VERSION'));
-    }
-
-    public function testVersionMatchesDevelopmentBranch()
-    {
-        $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Admin\Document::VERSION);
     }
 
     /**
@@ -67,11 +65,11 @@ class AdminDocumentTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @testdox Admin document uses minified Material CSS from assets
+     * @testdox Admin document uses minified Material admin CSS from assets
      */
-    public function testAdminDocumentUsesMinifiedMaterialCssFromAssets()
+    public function testAdminDocumentUsesMinifiedMaterialAdminCssFromAssets()
     {
         $document = new \StoreCore\Admin\Document();
-        $this->assertContains('<link href="/css/material.min.css" rel="stylesheet">', $document->getHead());
+        $this->assertContains('<link href="/css/admin.min.css" rel="stylesheet">', $document->getHead());
     }
 }
