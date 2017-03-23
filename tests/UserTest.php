@@ -452,6 +452,26 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @expectedException \DomainException
+     * @testdox Public setUserGroupID() method throws \DomainException on tinyint less than 0
+     */
+    public function testPublicSetUserGroupIDMethodThrowsDomainExceptionOnTinyintLessThanZero()
+    {
+        $object = new \StoreCore\User();
+        $object->setUserGroupID(-1);
+    }
+
+    /**
+     * @expectedException \DomainException
+     * @testdox Public setUserGroupID() method throws \DomainException on tinyint greater than 255
+     */
+    public function testPublicSetUserGroupIDMethodThrowsDomainExceptionOnTinyintGreaterThan255()
+    {
+        $object = new \StoreCore\User();
+        $object->setUserGroupID(256);
+    }
+
+    /**
      * @testdox Public setUserID() method exists
      */
     public function testPublicSetUserIDExists()

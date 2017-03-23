@@ -347,11 +347,30 @@ class User
      * Set the user group identifier.
      *
      * @param int $user_group_id
+     *   Unique user group identifier.
+     *
      * @return void
+     *
+     * @throws \InvalidArgumentException
+     *   Throws an invalid argument logic exception if the `$user_group_id`
+     *   parameter is not an integer.
+     *
+     * @throws \DomainException
+     *   Throws a domain logic exception if the `$user_group_id` integer value
+     *   is less than 0 or greater than 255, the default unsigned range of a
+     *   `TINYINT` in MySQL.
      */
     public function setUserGroupID($user_group_id)
     {
-        $this->UserGroupID = (int)$user_group_id;
+        if (!is_int($user_group_id)) {
+            throw new \InvalidArgumentException();
+        }
+
+        if ($user_group_id < 0 || $user_group_id > 255) {
+            throw new \DomainException();
+        }
+
+        $this->UserGroupID = $user_group_id;
     }
 
     /**
