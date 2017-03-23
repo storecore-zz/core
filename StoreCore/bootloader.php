@@ -20,6 +20,17 @@ ini_set('default_charset', 'UTF-8');
 // Coordinated Universal Time (UTC)
 date_default_timezone_set('UTC');
 
+// Multibyte uppercase first character
+if (!function_exists('mb_ucfirst')) {
+    function mb_ucfirst($str)
+    {
+        $str = explode(' ', $str, 2);
+        $str[0] = mb_convert_case($str[0], MB_CASE_TITLE, 'UTF-8');
+        $str = implode(' ', $str);
+        return $str;
+    }
+}
+
 // Set the framework library root directory in case it was not set
 // (for example, if the bootloader was included/required directly).
 if (!defined('STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR')) {
