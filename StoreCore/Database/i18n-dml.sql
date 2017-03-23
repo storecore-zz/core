@@ -1,29 +1,30 @@
---
--- Translation Memory (TM)
---
---              +------------+------------+-----------------------+
---              | Prefix     | en         | nl                    |
--- +------------+------------+------------+-----------------------+
--- |            | ADJECTIVE  | Adjective  | Bijvoeglijk naamwoord |
--- | Plain text | NOUN       | Noun       | Zelfstandig naamwoord |
--- |            | VERB       | Verb       | Werkwoord             |
--- +------------+------------+------------+-----------------------+
--- |            | COMMAND    | Command    | Opdracht              |
--- | Formatted  | ERROR      | Error      | Fout                  |
--- | HTML5      | HEADING    | Heading    | Kop                   |
--- |            | TEXT       | Text       | Tekst                 |
--- +------------+------------+------------+-----------------------+
---
--- @author    Ward van der Put <Ward.van.der.Put@gmail.com>
--- @copyright Copyright (c) 2014-2017 StoreCore
--- @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
--- @package   StoreCore\I18N
--- @version   0.1.0
---
+ /*
+    Translation Memory (TM)
 
---
+    The StoreCore translation memory, or TM, consists of seven types of
+    language strings, divided in two groups.
+
+                 +------------+------------+-----------------------+
+                 | Prefix     | en         | nl                    |
+    +------------+------------+------------+-----------------------+
+    |            | ADJECTIVE  | Adjective  | Bijvoeglijk naamwoord |
+    | Plain text | NOUN       | Noun       | Zelfstandig naamwoord |
+    |            | VERB       | Verb       | Werkwoord             |
+    +------------+------------+------------+-----------------------+
+    |            | COMMAND    | Command    | Opdracht              |
+    | Formatted  | ERROR      | Error      | Fout                  |
+    | HTML5      | HEADING    | Heading    | Kop                   |
+    |            | TEXT       | Text       | Tekst                 |
+    +------------+------------+------------+-----------------------+
+
+    @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+    @copyright Copyright (c) 2014-2017 StoreCore
+    @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+    @package   StoreCore\I18N
+    @version   0.1.0
+ */
+
 -- Adjectives
---
 INSERT IGNORE INTO sc_translation_memory
     (translation_id, language_id, translation)
   VALUES
@@ -67,15 +68,14 @@ INSERT IGNORE INTO sc_translation_memory
     ('ADJECTIVE_UNKNOWN', 'nl-NL', 'onbekend'),
     ('ADJECTIVE_UNKNOWN', 'pt-PT', 'não sabe');
 
---
 -- Nouns that are not translated, usually proper nouns and proper names
---
 INSERT IGNORE INTO sc_translation_memory
     (translation_id, translation, admin_only_flag)
   VALUES
     ('NOUN_BANCONTACT', 'Bancontact', 0),
     ('NOUN_FACEBOOK', 'Facebook', 0),
     ('NOUN_GOOGLE', 'Google', 1),
+    ('NOUN_GOOGLE_ANALYTICS', 'Google Analytics', 1),
     ('NOUN_GOOGLE_PLUS', 'Google+', 0),
     ('NOUN_IDEAL', 'iDEAL', 0),
     ('NOUN_INSTAGRAM', 'Instagram', 0),
@@ -95,12 +95,26 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_TWITTER', 'Twitter', 0),
     ('NOUN_YOUTUBE', 'YouTube', 0);
 
---
 -- Nouns
---
 INSERT IGNORE INTO sc_translation_memory
     (translation_id, language_id, translation, admin_only_flag)
   VALUES
+    ('NOUN_BRANDS', 'de-DE', 'Marken', 0),
+    ('NOUN_BRANDS', 'en-GB', 'brands', 0),
+    ('NOUN_BRANDS', 'es-ES', 'marcas', 0),
+    ('NOUN_BRANDS', 'fr-FR', 'marques', 0),
+    ('NOUN_BRANDS', 'nl-NL', 'merken', 0),
+    ('NOUN_BRANDS', 'it-IT', 'marchi', 0),
+    ('NOUN_BRANDS', 'pt-PT', 'marcas', 0),
+
+    ('NOUN_CATEGORIES', 'de-DE', 'Kategorien', 1),
+    ('NOUN_CATEGORIES', 'en-GB', 'categories', 1),
+    ('NOUN_CATEGORIES', 'es-ES', 'categorías', 1),
+    ('NOUN_CATEGORIES', 'fr-FR', 'catégories', 1),
+    ('NOUN_CATEGORIES', 'it-IT', 'categorie', 1),
+    ('NOUN_CATEGORIES', 'nl-NL', 'categorieën', 1),
+    ('NOUN_CATEGORIES', 'pt-PT', 'categorias', 1),
+
     ('NOUN_DATABASE', 'de-DE', 'Datenbank', 1),
     ('NOUN_DATABASE', 'en-GB', 'database', 1),
     ('NOUN_DATABASE', 'es-ES', 'base de datos', 1),
@@ -161,6 +175,14 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_GOOGLE_PRODUCT_TAXONOMY', 'fr-FR', 'classification des produits Google', 1),
     ('NOUN_GOOGLE_PRODUCT_TAXONOMY', 'nl-NL', 'Google-producttaxonomie', 1),
 
+    ('NOUN_IMPRESSUM', 'de-DE', 'Impressum', 0),
+    ('NOUN_IMPRESSUM', 'en-GB', 'legal disclosure', 0),
+    ('NOUN_IMPRESSUM', 'es-ES', 'aviso legal', 0),
+    ('NOUN_IMPRESSUM', 'fr-FR', 'impressum', 0),
+    ('NOUN_IMPRESSUM', 'it-IT', 'impressum', 0),
+    ('NOUN_IMPRESSUM', 'nl-NL', 'colofon', 0),
+    ('NOUN_IMPRESSUM', 'pt-PT', 'ficha técnica', 0),
+
     ('NOUN_LATITUDE', 'de-DE', 'Breitengrad', 0),
     ('NOUN_LATITUDE', 'en-GB', 'latitude', 0),
     ('NOUN_LATITUDE', 'es-ES', 'latitud', 0),
@@ -177,6 +199,16 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_LONGITUDE', 'nl-NL', 'lengtegraad', 0),
     ('NOUN_LONGITUDE', 'pt-PT', 'longitude', 0),
 
+    ('NOUN_PACKING_SLIP', 'de-DE', 'Lieferschein', 0),
+    ('NOUN_PACKING_SLIP', 'en-GB', 'packing slip', 0),
+    ('NOUN_PACKING_SLIP', 'es-ES', 'albarán', 0),
+    ('NOUN_PACKING_SLIP', 'es-MX', 'remisión', 0),
+    ('NOUN_PACKING_SLIP', 'fr-FR', 'bon de livraison', 0),
+    ('NOUN_PACKING_SLIP', 'it-IT', 'documento di trasporto', 0),
+    ('NOUN_PACKING_SLIP', 'nl-NL', 'pakbon', 0),
+    ('NOUN_PACKING_SLIP', 'pt-BR', 'guia de remessa', 0),
+    ('NOUN_PACKING_SLIP', 'pt-PT', 'guia de remessa', 0),
+
     ('NOUN_PASSWORD', 'de-DE', 'Kennwort', 0),
     ('NOUN_PASSWORD', 'en-GB', 'password', 0),
     ('NOUN_PASSWORD', 'es-ES', 'contraseña', 0),
@@ -185,6 +217,15 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_PASSWORD', 'nl-NL', 'wachtwoord', 0),
     ('NOUN_PASSWORD', 'pt-BR', 'senha', 0),
     ('NOUN_PASSWORD', 'pt-PT', 'palavra-passe', 0),
+
+    ('NOUN_PRIVACY_STATEMENT', 'de-DE', 'Datenschutzerklärung', 0),
+    ('NOUN_PRIVACY_STATEMENT', 'en-GB', 'privacy statement', 0),
+    ('NOUN_PRIVACY_STATEMENT', 'es-ES', 'declaración de privacidad', 0),
+    ('NOUN_PRIVACY_STATEMENT', 'fr-CA', 'énoncé de confidentialité', 0),
+    ('NOUN_PRIVACY_STATEMENT', 'fr-FR', 'déclaration de confidentialité', 0),
+    ('NOUN_PRIVACY_STATEMENT', 'it-IT', 'informativa sulla privacy', 0),
+    ('NOUN_PRIVACY_STATEMENT', 'nl-NL', 'privacyverklaring', 0),
+    ('NOUN_PRIVACY_STATEMENT', 'pt-PT', 'declaração de privacidade', 0),
 
     ('NOUN_PIN_CODE', 'de-DE', 'PIN-Code', 1),
     ('NOUN_PIN_CODE', 'en-GB', 'PIN code', 1),
@@ -210,6 +251,15 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_SHOPPING_CART', 'it-IT', 'carrello', 0),
     ('NOUN_SHOPPING_CART', 'nl-NL', 'winkelwagen', 0),
     ('NOUN_SHOPPING_CART', 'pt-PT', 'carrinho de compras', 0),
+
+    ('NOUN_TERMS_AND_CONDITIONS', 'de-DE', 'Geschäftsbedingungen', 0),
+    ('NOUN_TERMS_AND_CONDITIONS', 'en-GB', 'terms and conditions', 0),
+    ('NOUN_TERMS_AND_CONDITIONS', 'es-ES', 'términos y condiciones', 0),
+    ('NOUN_TERMS_AND_CONDITIONS', 'fr-FR', 'conditions générales', 0),
+    ('NOUN_TERMS_AND_CONDITIONS', 'it-IT', 'termini e condizioni', 0),
+    ('NOUN_TERMS_AND_CONDITIONS', 'nl-BE', 'verkoopsvoorwaarden', 0),
+    ('NOUN_TERMS_AND_CONDITIONS', 'nl-NL', 'algemene voorwaarden', 0),
+    ('NOUN_TERMS_AND_CONDITIONS', 'pt-PT', 'termos e condições', 0),
 
     ('NOUN_TIMEZONE', 'de-DE', 'Zeitzone', 1),
     ('NOUN_TIMEZONE', 'en-GB', 'timezone', 1),
@@ -243,9 +293,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_USERS', 'nl-NL', 'gebruikers', 0),
     ('NOUN_USERS', 'pt-PT', 'utilizadores', 0);
 
---
 -- Verbs
---
 INSERT IGNORE INTO sc_translation_memory
     (translation_id, language_id, translation)
   VALUES
@@ -274,14 +322,19 @@ INSERT IGNORE INTO sc_translation_memory
     ('VERB_SAVE', 'pt-PT', 'guardar');
 
 
---
--- User Interface (UI)
---
+ /*
+    User Interface (UI)
 
---
--- Commands, used for command buttons and menu commands,
--- usually derived from verbs with the VERB_ prefix.
---
+    The StoreCore user interface uses three specific prefixes for distinct
+    controls: `COMMAND_` for menu commands and command buttons, `ERROR_` for
+    error messages, and `HEADING_` for headlines, table headings, and labels
+    that accompany input controls.  The fourth prefix `TEXT_` may be used for
+    any other text.  The user interface language strings MAY contains
+    placeholders (for example for counters) and formatted HTML5 (for icons,
+    CSS classes, et cetera).
+  */
+
+-- Commands
 INSERT IGNORE INTO sc_translation_memory
     (translation_id, language_id, translation)
   VALUES
@@ -350,9 +403,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('COMMAND_UNLOCK', 'nl-NL', 'Ontgrendelen…'),
     ('COMMAND_UNLOCK', 'pt-PT', 'Desbloquear…');
 
---
 -- Errors
---
 INSERT IGNORE INTO sc_translation_memory
     (translation_id, language_id, translation)
   VALUES
@@ -373,9 +424,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('ERROR_PASSWORD_TOO_COMMON', 'fr-FR', 'Le mot de passe est trop commun.'),
     ('ERROR_PASSWORD_TOO_COMMON', 'nl-NL', 'Het wachtwoord komt te vaak voor.');
 
---
 -- Headings
---
 INSERT IGNORE INTO sc_translation_memory
     (translation_id, language_id, translation)
   VALUES
@@ -494,6 +543,11 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_DATABASE_SETTINGS', 'nl-NL', 'Database-instellingen', 1),
     ('HEADING_DATABASE_SETTINGS', 'pt-PT', 'Definições da base de dados', 1),
 
+    ('HEADING_KEY_PERFORMANCE_INDICATORS', 'de-DE', 'Leistungskennzahlen (KPIs)', 1),
+    ('HEADING_KEY_PERFORMANCE_INDICATORS', 'en-GB', 'Key performance indicators (KPIs)', 1),
+    ('HEADING_KEY_PERFORMANCE_INDICATORS', 'fr-FR', 'Indicateurs clés de performance (ICP)', 1),
+    ('HEADING_KEY_PERFORMANCE_INDICATORS', 'nl-NL', 'Kritieke prestatie-indicatoren (KPI’s)', 1),
+
     ('HEADING_LANGUAGES', 'de-DE', 'Sprachen', 1),
     ('HEADING_LANGUAGES', 'en-GB', 'Languages', 1),
     ('HEADING_LANGUAGES', 'es-ES', 'Idiomas', 1),
@@ -526,13 +580,13 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_SETTINGS', 'nl-NL', 'Instellingen', 1),
     ('HEADING_SETTINGS', 'pt-PT', 'Definições', 1);
 
---
--- Google Product Taxonomy
---
--- Google_Product_Taxonomy_Version: 2015-02-19
--- @see https://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt
--- @see http://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.xls
---
+/*
+    Google Product Taxonomy
+
+    Google_Product_Taxonomy_Version: 2015-02-19
+    @see https://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt
+    @see http://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.xls
+ */
 INSERT IGNORE INTO sc_product_taxonomy
     (taxonomy_id, full_path)
   VALUES
@@ -881,8 +935,6 @@ INSERT IGNORE INTO sc_product_taxonomy
     (1856, 'Apparel & Accessories > Shoe Accessories > Shoelaces'),
     (2427, 'Apparel & Accessories > Shoe Accessories > Spurs'),
     (187, 'Apparel & Accessories > Shoes');
-
-
 
 INSERT IGNORE INTO sc_product_taxonomy
     (taxonomy_id, full_path)
@@ -2542,7 +2594,6 @@ INSERT IGNORE INTO sc_product_taxonomy
     (3741, 'Food, Beverages & Tobacco > Tobacco Products > Loose Tobacco'),
     (499963, 'Food, Beverages & Tobacco > Tobacco Products > Smoking Pipes'),
     (4091, 'Food, Beverages & Tobacco > Tobacco Products > Vaporizers & Electronic Cigarettes');
-
 
 INSERT IGNORE INTO sc_product_taxonomy
     (taxonomy_id, full_path)
