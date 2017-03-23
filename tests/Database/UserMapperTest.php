@@ -40,6 +40,24 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @testdox Public getUser() method is public
+     */
+    public function testPublicGetUserMethodIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\UserMapper', 'getUser');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @testdox Public getUser() method exists
+     */
+    public function testPublicGetUserMethodExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\UserMapper');
+        $this->assertTrue($class->hasMethod('getUser'));
+    }
+
+    /**
      * @testdox Public getUserByEmailAddress() method exists
      */
     public function testPublicGetUserByEmailAddressMethodExists()
@@ -57,7 +75,6 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($method->isPublic());
     }
 
-    
     /**
      * @testdox Public getUserByUsername() method exists
      */

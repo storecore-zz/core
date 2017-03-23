@@ -48,6 +48,44 @@ class UserMapper extends AbstractDataAccessObject
     }
 
     /**
+     * Fetch a user by the user ID.
+     *
+     * @param int $user_id
+     *   Unique user identifier.
+     *
+     * @return \StoreCore\User
+     *   Returns a `\StoreCore\User` user model object on success or null if
+     *   if the user does not exist.
+     *
+     * @throws \InvalidArgumentException
+     *   Throws an invalid argument logic exception if the `$user_id` parameter
+     *   is not an integer.
+     *
+     * @throws \DomainException
+     *   Throws a domain logic exception if the `$user_id` integer value is
+     *   less than 1 or greater than 65535, the default range of an unsigned
+     *   `SMALLINT` with an `AUTO_INCREMENT` in MySQL.
+     */
+    public function getUser($user_id)
+    {
+        if (!is_int($user_id)) {
+            throw new \InvalidArgumentException();
+        }
+
+        if ($user_id < 1 || $user_id > 65535) {
+            throw new \DomainException();
+        }
+
+        $user_data = $this->read($user_id);
+        if ($user_data !== false) {
+            $user_data = $user_data[0];
+            return $this->getUserObject($user_data);
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Map the user’s data to a user object.
      *
      * @param array $user_data
@@ -144,7 +182,6 @@ class UserMapper extends AbstractDataAccessObject
         } else {
             $user_data = array(
                 self::PRIMARY_KEY => $user->getUserID(),
-                'user_group_id' => 0,
             );
         }
 
