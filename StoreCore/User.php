@@ -167,7 +167,10 @@ class User
      * Get the personal identification number (PIN).
      *
      * @param void
-     * @return string|null
+     *
+     * @return string
+     *   Returns a numeric string with 4, 5 or 6 digits.  Defaults to '0000' if
+     *   no other PIN code was set.
      */
     public function getPIN()
     {
