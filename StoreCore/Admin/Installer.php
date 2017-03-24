@@ -113,7 +113,6 @@ class Installer extends \StoreCore\AbstractController
      * Check the database structure and optionally install the database.
      *
      * @param void
-     *
      * @return bool
      */
     private function checkDatabaseStructure()
@@ -269,11 +268,9 @@ class Installer extends \StoreCore\AbstractController
         $user = new \StoreCore\User();
         $user->setUserGroupID(254);
         $user_data = array(
-            'first_name' => false,
-            'last_name' => false,
             'email_address' => false,
             'username' => false,
-            'pin_code' => '0000',
+            'pin_code' => $user->getPIN(),
         );
 
         if ($this->Request->getMethod() == 'POST') {
@@ -289,18 +286,16 @@ class Installer extends \StoreCore\AbstractController
                 }
             }
 
-            // Personal identification number (optional, defaults to '0000')
+            // Optional personal identification number (PIN number or PIN code)
             if ($this->Request->get('pin_code') !== null) {
-                $pin_code = trim($this->Request->get('pin_code'));
-                if (
-                    is_numeric($pin_code)
-                    && strlen($pin_code) >= 4
-                    && strlen($pin_code) <= 6
-                ) {
+                try {
+                    $pin_code = trim($this->Request->get('pin_code'));
                     $user->setPIN($pin_code);
                     $user_data['pin_code'] = $user->getPIN();
+                    unset($pin_code);
+                } catch (\Exception $e) {
+                    $this->Logger->notice('Invalid PIN number: ' . $this->Request->get('pin_code'));
                 }
-                unset($pin_code);
             }
 
             // Username
@@ -338,7 +333,11 @@ class Installer extends \StoreCore\AbstractController
                 try {
                     $user_mapper = new \StoreCore\Database\UserMapper($this->Registry);
                     $user_mapper->save($user);
-                    $this->Logger->notice('User account created for: ' . $user->getFullName());
+                    $this->Logger->notice(
+                        'User account created for: '
+                        . $user->getUsername() . ' (#' . $user->getUserID() . ')'
+                        . ' at ' . $user->getEmailAddress()
+                    );
                     return true;
                 } catch (\Exception $e) {
                     $this->Logger->critical($e->getMessage());
