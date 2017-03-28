@@ -15,7 +15,7 @@ use \StoreCore\Session as Session;
 /**
  * Administration Front Controller
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @author    Ward van der Put <ward.vanderput@storecore.org>
  * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
@@ -59,6 +59,7 @@ class FrontController extends AbstractController implements LoggerAwareInterface
                 $route = new Route('/admin/lock/', '\StoreCore\Admin\LockScreen');
                 break;
             case '/admin/sign-in/':
+                $route = new Route('/admin/sign-in/', '\StoreCore\Admin\SignIn');
                 break;
             case '/admin/sign-out/':
                 $route = new Route('/admin/sign-out/', '\StoreCore\Admin\User', 'signOut');
