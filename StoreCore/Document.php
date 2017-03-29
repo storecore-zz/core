@@ -2,9 +2,9 @@
 namespace StoreCore;
 
 /**
- * HTML5 Document
+ * HTML5 Document with AMP Support
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @author    Ward van der Put <ward.vanderput@storecore.org>
  * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
@@ -349,8 +349,6 @@ class Document
         $head .= '<meta charset="utf-8">';
         if ($this->AcceleratedMobilePage) {
             $head .= '<script async src="https://cdn.ampproject.org/v0.js"></script>';
-        } else {
-            $head .= '<script defer src="/js/material.min.js"></script>';
         }
 
         if ($this->Title != null) {
