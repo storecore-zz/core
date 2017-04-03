@@ -55,6 +55,9 @@ class Document extends \StoreCore\Document
         'viewport' => 'width=device-width,initial-scale=1,minimum-scale=1',
         'apple-mobile-web-app-capable' => 'yes',
         'apple-mobile-web-app-status-bar-style' => 'black-translucent',
+        'msapplication-TileColor' => '#8bc34a',
+        'msapplication-TileImage' => '/images/StoreCore-icon-144x144.png',
+        'theme-color' => '#689f38',
     );
 
     /** @var string $Title */
