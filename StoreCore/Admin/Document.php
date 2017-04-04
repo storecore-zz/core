@@ -42,8 +42,8 @@ class Document extends \StoreCore\Document
             'href' => 'https://fonts.googleapis.com/icon?family=Material+Icons',
             'rel'  => 'stylesheet',
         ),
-        '945633b0695ae97d11f7ce3435b978c7' => array(
-            'href' => '/css/admin.min.css',
+        'fca76663bda87f7b798a60664a2114da' => array(
+            'href' => '/styles/admin.min.css',
             'rel'  => 'stylesheet',
         ),
     );

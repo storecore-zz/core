@@ -58,6 +58,10 @@ class FrontController extends AbstractController implements LoggerAwareInterface
             case '/admin/lock/':
                 $route = new Route('/admin/lock/', '\StoreCore\Admin\LockScreen');
                 break;
+            case '/admin/ServiceWorker.js':
+            case '/admin/sw.js':
+                $route = new Route('/admin/ServiceWorker.js', '\StoreCore\Admin\ServiceWorker');
+                break;
             case '/admin/sign-in/':
                 $route = new Route('/admin/sign-in/', '\StoreCore\Admin\SignIn');
                 break;

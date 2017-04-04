@@ -70,6 +70,6 @@ class AdminDocumentTest extends PHPUnit_Framework_TestCase
     public function testAdminDocumentUsesMinifiedMaterialAdminCssFromAssets()
     {
         $document = new \StoreCore\Admin\Document();
-        $this->assertContains('<link href="/css/admin.min.css" rel="stylesheet">', $document->getHead());
+        $this->assertContains('<link href="/styles/admin.min.css" rel="stylesheet">', $document->getHead());
     }
 }
