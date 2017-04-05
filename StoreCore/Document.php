@@ -32,6 +32,7 @@ class Document
      * @var string $Language
      * @var null|array $Links
      * @var null|array $MetaProperties
+     * @var null|array $ScriptLinks
      * @var null|array $Scripts
      * @var null|array $ScriptsDeferred
      * @var array $Sections
@@ -42,6 +43,7 @@ class Document
     protected $Language = 'en-GB';
     protected $Links;
     protected $MetaProperties;
+    protected $ScriptLinks;
     protected $Scripts;
     protected $ScriptsDeferred;
     protected $Sections = array();
@@ -178,6 +180,43 @@ class Document
         } else {
             $this->Scripts[] = $script;
         }
+        return $this;
+    }
+
+    /**
+     * Add a link to an external client-side script.
+     *
+     * @param string $src
+     *   Absolute or relative URL of the script source file for the `src`
+     *   attribute in a `<script src="...">` tag.
+     *
+     * @param bool $defer
+     *   Adds the `defer` attribute (default true) or omits it (false).
+     *
+     * @param bool $async
+     *   Adds the `async` attribute (true) or omits it (default false).
+     *   If the `$defer` and `$async` parameters are both set to true, the
+     *   `$async` parameter is ignored (and the `async` attribute is reset
+     *   to the default value false).
+     *
+     * @return $this
+     */
+    public function addScriptLink($src, $defer = true, $async = false)
+    {
+        $src = trim($src);
+        $key = mb_strtolower($src, 'UTF-8');
+        $key = md5($key);
+
+        if ($defer == true) {
+            $async = false;
+        }
+
+        $this->ScriptLinks[$key] = array(
+            'src'   => $src,
+            'defer' => $defer,
+            'async' => $async,
+        );
+
         return $this;
     }
 
@@ -349,6 +388,8 @@ class Document
         $head .= '<meta charset="utf-8">';
         if ($this->AcceleratedMobilePage) {
             $head .= '<script async src="https://cdn.ampproject.org/v0.js"></script>';
+        } else {
+            $head .= '<script defer src="/scripts/material.min.js"></script>';
         }
 
         if ($this->Title != null) {
@@ -373,6 +414,19 @@ class Document
             }
             $head .= $links;
             unset($attribute, $dns_prefetch, $link, $links, $value);
+        }
+
+        if ($this->ScriptLinks !== null) {
+            foreach ($this->ScriptLinks as $link) {
+                if ($link['async'] === true) {
+                    $head .= '<script async';
+                } elseif ($link['defer'] === false) {
+                    $head .= '<script';
+                } else {
+                    $head .= '<script defer';
+                }
+                $head .= ' src="' . $link['src'] . '"></script>';
+            }
         }
 
         if (!empty($this->Style)) {
@@ -402,11 +456,6 @@ class Document
             $head .= '<script>';
             $head .= implode($this->Scripts);
             $head .= '</script>';
-        }
-
-        // Add deferred JavaScript for MDL if not on AMP.
-        if ($this->AcceleratedMobilePage) {
-            $head .= '<script defer src="/js/material.min.js"></script>';
         }
 
         $head .= '</head>';
