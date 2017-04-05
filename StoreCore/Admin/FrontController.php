@@ -55,21 +55,8 @@ class FrontController extends AbstractController implements LoggerAwareInterface
         // Find a matching route or route collection.
         $route = false;
         switch ($this->Request->getRequestPath()) {
-            case '/admin/lock/':
-                $route = new Route('/admin/lock/', '\StoreCore\Admin\LockScreen');
-                break;
-            case '/admin/ServiceWorker.js':
-            case '/admin/sw.js':
-                $route = new Route('/admin/ServiceWorker.js', '\StoreCore\Admin\ServiceWorker');
-                break;
-            case '/admin/sign-in/':
-                $route = new Route('/admin/sign-in/', '\StoreCore\Admin\SignIn');
-                break;
             case '/admin/sign-out/':
                 $route = new Route('/admin/sign-out/', '\StoreCore\Admin\User', 'signOut');
-                break;
-            case '/admin/StoreCore.webmanifest':
-                $route = new Route('/admin/StoreCore.webmanifest', 'ManifestController');
                 break;
             default:
                 $router = new RouteFactory($this->Registry);
