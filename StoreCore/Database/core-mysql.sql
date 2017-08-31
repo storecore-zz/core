@@ -1430,7 +1430,7 @@ CREATE TABLE IF NOT EXISTS sc_product_attributes (
   from_date     TIMESTAMP              NOT NULL  DEFAULT '1970-01-01 00:00:01',
   thru_date     TIMESTAMP              NULL  DEFAULT NULL,
   num_value     DECIMAL(18,9)          NULL  DEFAULT NULL,
-  str_value     DECIMAL(18,9)          NULL  DEFAULT NULL,
+  str_value     VARCHAR(255)           NULL  DEFAULT NULL,
   PRIMARY KEY pk_id (product_id, attribute_id),
   FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_attribute_id (attribute_id) REFERENCES sc_attributes (attribute_id) ON DELETE CASCADE ON UPDATE CASCADE
