@@ -10,7 +10,7 @@ namespace StoreCore\Admin;
  * @package   StoreCore\Core
  * @version   1.0.0
  */
-class SettingsDatabase extends \StoreCore\AbstractController
+class SettingsDatabaseAccount extends \StoreCore\AbstractController
 {
     /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '1.0.0';
@@ -28,7 +28,7 @@ class SettingsDatabase extends \StoreCore\AbstractController
             $save_config = false;
 
             // PDO database driver: currently skipped because only `mysql` is supported.
-            /*
+/*
             $driver = $this->Request->get('driver');
             if (
                 $driver !== null
@@ -38,7 +38,7 @@ class SettingsDatabase extends \StoreCore\AbstractController
                 $config->set('STORECORE_DATABASE_DRIVER', $driver);
                 $save_config = true;
             }
-            */
+ */
 
             // Database server host name or IP address
             $hostname = $this->Request->get('hostname');
@@ -81,18 +81,21 @@ class SettingsDatabase extends \StoreCore\AbstractController
             }
 
             $response = new \StoreCore\Response($this->Registry);
-            $response->redirect('/admin/settings/database/', 303);
+            $response->redirect('/admin/settings/database/account/', 303);
         } else {
             $this->View = new \StoreCore\View();
             $this->View->setTemplate(__DIR__ . DIRECTORY_SEPARATOR . 'SettingsDatabaseAccount.phtml');
 
             // Only select PDO drivers that are available in PHP as well as
-            // supported by the StoreCore\Database.
+            // supported by the StoreCore database.  Currently skipped because
+            // only MySQL is supported.
+/*
             $supported_drivers = array(
                 'mysql' => 'MySQL (' . \StoreCore\I18N\ADJECTIVE_DEFAULT . ')',
             );
             $this->View->setValues(array('available_drivers' => \PDO::getAvailableDrivers()));
             $this->View->setValues(array('supported_drivers' => $supported_drivers));
+ */
 
             $view = $this->View->render();
             $view = Minifier::minify($view);

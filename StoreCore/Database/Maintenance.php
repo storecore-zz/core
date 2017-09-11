@@ -5,7 +5,7 @@ namespace StoreCore\Database;
  * Database Maintenance
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @copyright Copyright © 2015-2017 StoreCore
  * @internal
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
@@ -13,10 +13,14 @@ namespace StoreCore\Database;
  */
 class Maintenance extends \StoreCore\AbstractModel
 {
+    /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
     /**
      * @var \StoreCore\Admin\Configurator|null $Configurator
+     *   The admin configurator is used in the saveConfigurationSetting()
+     *   method to write configuration settings to the global config.php
+     *   configuration file.
      */
     private $Configurator;
 
@@ -108,7 +112,11 @@ class Maintenance extends \StoreCore\AbstractModel
      * Get all StoreCore database table names.
      *
      * @param void
+     *
      * @return array
+     *   Returns an indexed array with the names of all StoreCore database
+     *   table.  Tables names for StoreCore always contain the `sc_` prefix;
+     *   tables without this prefix are not included.
      */
     public function getTables()
     {
@@ -121,39 +129,7 @@ class Maintenance extends \StoreCore\AbstractModel
                 }
             }
         }
-
         return $tables;
-    }
-
-    /**
-     * Strip comments and whitespace.
-     *
-     * @param string $sql
-     * @return string
-     */
-    private function minify($sql)
-    {
-        $sql = str_ireplace("\r\n", "\n", $sql);
-        $sql = str_ireplace("\n\n", "\n", $sql);
-        $sql = str_ireplace("\n  ", ' ', $sql);
-        $sql = str_ireplace("\n) ", ') ', $sql);
-        $sql = str_ireplace(' ( ', ' (', $sql);
-
-        $lines = explode("\n", $sql);
-        $sql = (string)null;
-        foreach ($lines as $line) {
-            if (substr($line, 0, 2) !== '--') {
-                $sql .= $line;
-            }
-        }
-        unset($lines, $line);
-
-        $sql = str_ireplace('     ', ' ', $sql);
-        $sql = str_ireplace('    ', ' ', $sql);
-        $sql = str_ireplace('   ', ' ', $sql);
-        $sql = str_ireplace('  ', ' ', $sql);
-
-        return $sql;
     }
 
     /**
@@ -195,14 +171,12 @@ class Maintenance extends \StoreCore\AbstractModel
             // Update core tables using CREATE TABLE IF NOT EXISTS and INSERT IGNORE
             if (is_file(__DIR__ . DIRECTORY_SEPARATOR . 'core-mysql.sql')) {
                 $sql = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'core-mysql.sql', false);
-                $sql = $this->minify($sql);
                 $this->Connection->exec($sql);
             }
 
             // Add new translations using INSERT IGNORE
             if (is_file(__DIR__ . DIRECTORY_SEPARATOR . 'i18n-dml.sql')) {
                 $sql = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'i18n-dml.sql', false);
-                $sql = $this->minify($sql);
                 $this->Connection->exec($sql);
             }
 
@@ -221,8 +195,13 @@ class Maintenance extends \StoreCore\AbstractModel
     }
 
     /**
+     * Save a configuration setting as a key/value pair.
+     *
      * @param string $name
+     *   Name of the configuration setting.
+     *
      * @param string $value
+     *   Value of the configuration setting.
      */
     private function saveConfigurationSetting($name, $value)
     {
@@ -234,10 +213,12 @@ class Maintenance extends \StoreCore\AbstractModel
     }
 
     /**
-     * Update the database.
+     * Update the StoreCore database.
      *
      * @param void
+     *
      * @return bool
+     *   Returns true on success or false on failure.
      */
     public function update()
     {

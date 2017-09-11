@@ -16,11 +16,19 @@ class Document extends \StoreCore\Document
     /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
-    /** @var array $Links */
+    /**
+     * @var array $Links
+     *   Associative array for `<link href="..." rel="...">` elements in the
+     *   `<head>...</head>` container of the HTML document.
+     */
     protected $Links = array(
         '6bb60c2b4cfa0d26fdf447532e52fc57' => array(
             'href' => 'https://fonts.googleapis.com/',
             'rel'  => 'dns-prefetch',
+        ),
+        '106719df5730b22f08dfb83570eee34a' => array(
+            'href' => '/admin/StoreCore.webmanifest',
+            'rel'  => 'manifest',
         ),
         '7ed8cc1d36d9a43dbf5600109929dfb7' => array(
             'href' => 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700',
@@ -34,8 +42,8 @@ class Document extends \StoreCore\Document
             'href' => 'https://fonts.googleapis.com/icon?family=Material+Icons',
             'rel'  => 'stylesheet',
         ),
-        '154e18b125be3526192ba1a4a6341294' => array(
-            'href' => '/css/material.min.css',
+        'fca76663bda87f7b798a60664a2114da' => array(
+            'href' => '/styles/admin.min.css',
             'rel'  => 'stylesheet',
         ),
     );
@@ -47,6 +55,9 @@ class Document extends \StoreCore\Document
         'viewport' => 'width=device-width,initial-scale=1,minimum-scale=1',
         'apple-mobile-web-app-capable' => 'yes',
         'apple-mobile-web-app-status-bar-style' => 'black-translucent',
+        'msapplication-TileColor' => '#8bc34a',
+        'msapplication-TileImage' => '/images/StoreCore-icon-144x144.png',
+        'theme-color' => '#689f38',
     );
 
     /** @var string $Title */
