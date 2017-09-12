@@ -6,10 +6,10 @@ namespace StoreCore\Database;
  *
  * The StoreCore abstract DAO provides a CRUD interface to Create, Read,
  * Update, and Delete database records.   It executes the four basic SQL data
- * manipulation operations: INSERT, SELECT, UPDATE, and DELETE.  Model classes
- * that extend the abstract DAO MUST provide two class constants for late
- * static bindings: a TABLE_NAME with the database table name the model
- * operates on and a PRIMARY_KEY for the primary key column of this table.
+ * manipulation operations: `INSERT`, `SELECT`, `UPDATE`, and `DELETE`.  Model
+ * classes that extend the abstract DAO MUST provide two class constants for
+ * late static bindings: a `TABLE_NAME` with the database table name the model
+ * operates on and a `PRIMARY_KEY` for the primary key column of this table.
  *
  * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
  * @copyright Copyright © 2015-2017 StoreCore
@@ -84,8 +84,11 @@ abstract class AbstractDataAccessObject extends AbstractModel
      * Delete one or more database rows.
      *
      * @param mixed $value
+     *   Value for the `WHERE $key = $value` SQL clause.
      *
      * @param string|int|null $key
+     *   Optional key for the `WHERE $key = $value` clause.  If omitted, the
+     *   primary key column in `static::PRIMARY_KEY` is used.
      *
      * @return bool
      *   Returns true on success or false on failure.
@@ -127,15 +130,15 @@ abstract class AbstractDataAccessObject extends AbstractModel
      * @param mixed $value
      *   Value to search for in the $key column.
      *
-     * @param string|int $key
-     *   Optional name of a column in the static::TABLE_NAME database table.
-     *   If omitted, the column for the primary key in static::PRIMARY_KEY is
+     * @param string|int|null $key
+     *   Optional name of a column in the `static::TABLE_NAME` database table.
+     *   If omitted, the column for the primary key in `static::PRIMARY_KEY` is
      *   used.
      *
      * @return array|false
-     *   Returns an array on success or false on failure.  The array MAY be
-     *   empty if the query was executed without any errors but no matching
-     *   database records were found.
+     *   Returns an array on success or false on failure.  This method also
+     *   returns false if the read operation fails because no matching database
+     *   records were found.
      */
     public function read($value, $key = null)
     {
@@ -165,7 +168,11 @@ abstract class AbstractDataAccessObject extends AbstractModel
             if ($stmt->execute()) {
                 $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
                 $stmt->closeCursor();
-                return $result;
+                if ($result === false || empty($result)) {
+                    return false;
+                } else {
+                    return $result;
+                }
             } else {
                 return false;
             }
@@ -180,9 +187,9 @@ abstract class AbstractDataAccessObject extends AbstractModel
      * @param array $keyed_data
      *
      * @param string $where_clause
-     *   Optional SQL WHERE clause for additional conditions.  This clause
-     *   MUST NOT contain the WHERE keyword.  If this WHERE clause is omitted,
-     *   the UPDATE is limitted to a single record.
+     *   Optional SQL `WHERE` clause for additional conditions.  This clause
+     *   MUST NOT contain the `WHERE` keyword.  If this `WHERE` clause is
+     *   omitted, the `UPDATE` is limited to a single record.
      *
      * @return bool
      *   Returns true on success or false on failure.

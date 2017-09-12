@@ -9,12 +9,12 @@
         <label class="mdl-textfield__label" for="hostname"><?php echo \StoreCore\I18N\HEADING_HOST_NAME_OR_IP_ADDRESS ?></label>
       </div>
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" id="databasename" maxlength="16" name="databasename" required type="text" value="<?php echo \StoreCore\Database\DEFAULT_DATABASE ?>">
+        <input class="mdl-textfield__input" id="databasename" maxlength="16" name="databasename" required type="text" value="<?php echo STORECORE_DATABASE_DEFAULT_DATABASE ?>">
         <label class="mdl-textfield__label" for="databasename"><?php echo \StoreCore\I18N\HEADING_DATABASE_NAME ?></label>
       </div>
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
         <?php // MySQL user names can be up to 16 characters long. ?>
-        <input class="mdl-textfield__input" id="username" maxlength="16" name="username" required type="text" value="<?php echo \StoreCore\Database\DEFAULT_USERNAME ?>">
+        <input class="mdl-textfield__input" id="username" maxlength="16" name="username" required type="text" value="<?php echo STORECORE_DATABASE_DEFAULT_USERNAME ?>">
         <label class="mdl-textfield__label" for="username"><?php echo \StoreCore\I18N\HEADING_USERNAME ?></label>
       </div>
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">

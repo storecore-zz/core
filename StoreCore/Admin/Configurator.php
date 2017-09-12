@@ -77,7 +77,9 @@ class Configurator
      * Save the config.php configuration file.
      *
      * @param void
+     *
      * @return bool
+     *   Returns true on success or false on failure.
      */
     public function save()
     {
@@ -109,7 +111,7 @@ class Configurator
             $file .= "\n";
         }
 
-        // Save config.php in the root or its parent directory.
+        // Save config.php in the root directory.
         $filename = STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'config.php';
         $return = file_put_contents($filename, $file, LOCK_EX);
         if ($return === false) {
@@ -123,7 +125,14 @@ class Configurator
      * Set a setting as a name/value pair.
      *
      * @param string $name
+     *   Case-insensitive constant name of the setting.  Lowercase is converted
+     *   to uppercase.  Spaces and hyphens are replaced by a single underscore.
+     *
      * @param mixed $value
+     *   Scalar value of the setting.  In PHP 5, `$value` must be an integer,
+     *   float, string, boolean, or null.  In PHP 7, array values are also
+     *   accepted.
+     *
      * @return void
      *
      * @throws \InvalidArgumentException
@@ -161,7 +170,11 @@ class Configurator
      * Write a single setting to the config.php configuration file.
      *
      * @param string $name
+     *   Constant name of the setting.
+     *
      * @param mixed $value
+     *   Value of the setting.
+     *
      * @return bool
      */
     public static function write($name, $value)

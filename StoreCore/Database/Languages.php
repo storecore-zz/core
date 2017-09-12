@@ -176,9 +176,68 @@ class Languages extends AbstractModel
     }
 
     /**
+     * Get the languages for a store.
+     *
+     * @param \StoreCore\Types\StoreID $store_id
+     *   Unique store identifier.
+     *
+     * @return array
+     *   Returns an associative array with the language identifier as the key
+     *   and a boolean as the value.  The first array element is the store's
+     *   default language.  If no languages are linked to the store, this
+     *   method will first attempt to return all enabled languages and finally
+     *   return the default master language British English (en-GB);
+     */
+    public function getStoreLanguages(\StoreCore\Types\StoreID $store_id)
+    {
+        $store_id = (string)$store_id;
+        $stmt = $this->Connection->prepare('
+                SELECT s.language_id, l.enabled_flag
+                  FROM sc_store_languages AS s
+            INNER JOIN sc_languages AS l
+                    ON s.language_id = l.language_id
+                 WHERE s.store_id = :store_id
+              ORDER BY l.enabled_flag DESC,
+                       s.default_flag DESC
+        ');
+        $stmt->bindValue(':store_id', $store_id, \PDO::PARAM_STR);
+        if ($stmt->execute() !== false) {
+            if ($stmt->rowCount() !== 0) {
+                $store_languages = array();
+                while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+                    $k = $row['language_id'];
+                    $v = $row['enabled_flag'] === 1 ? true : false;
+                    $store_languages[$k] = $v;
+                }
+                return $store_languages;
+            } else {
+                $stmt = $this->Connection->prepare('
+                    SELECT language_id
+                      FROM sc_languages
+                     WHERE enabled_flag = 1
+                ');
+                if ($stmt->execute() !== false && $stmt->rowCount() !== 0) {
+                    $enabled_languages = array();
+                    while ($row = $stmt->fetch(\PDO::FETCH_NUM)) {
+                        $enabled_languages[$row[0]] = true;
+                    }
+                    return $enabled_languages;
+                }
+            }
+
+        }
+
+        // Return British English if no languages were found.
+        return array('en-GB' => true);
+    }
+
+    /**
      * Get local language names.
      *
      * @param bool $include_disabled_languages
+     *   If set to true, localized names of disabled languages are returned.
+     *   Defaults to false for local names of enabled languages only.
+     *
      * @return array
      */
     public function getLocalNames($include_disabled_languages = false)
@@ -257,7 +316,11 @@ class Languages extends AbstractModel
      * Check if a language is enabled.
      *
      * @param string $language_id
+     *   Unique language identifier.
+     *
      * @return bool
+     *   Returns true if the language exists and false if it does not.
+     *
      * @uses getEnabledLanguages()
      */
     public function isEnabled($language_id)

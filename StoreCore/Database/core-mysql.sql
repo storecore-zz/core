@@ -631,7 +631,7 @@ CREATE TABLE IF NOT EXISTS sc_translation_memory (
 -- Countries and ISO country codes
 CREATE TABLE IF NOT EXISTS sc_countries (
   country_id            SMALLINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
-  status                TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 1,
+  enabled_flag          TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 1,
   postal_code_required  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
   subdivision_required  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
   iso_alpha_two         CHAR(2)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  COMMENT 'ISO 3166-1 alpha-2 code',
@@ -665,7 +665,7 @@ CREATE TABLE IF NOT EXISTS sc_country_subdivisions (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci;
 
 -- ISO country data
-INSERT IGNORE INTO sc_countries (iso_number, global_country_name, iso_alpha_two, iso_alpha_three, postal_code_required, status) VALUES
+INSERT IGNORE INTO sc_countries (iso_number, global_country_name, iso_alpha_two, iso_alpha_three, postal_code_required, enabled_flag) VALUES
   (  4, 'Afghanistan', 'AF', 'AFG',  0, 1),
   (248, 'Åland Islands', 'AX', 'ALA',  0, 1),
   (  8, 'Albania', 'AL', 'ALB',  0, 1),
@@ -979,11 +979,22 @@ UPDATE sc_countries SET subdivision_required = 1 WHERE iso_alpha_two = 'US';
 
 -- Stores
 CREATE TABLE IF NOT EXISTS sc_stores (
-  store_id    TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
-  ssl_mode    TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
-  store_name  VARCHAR(64)          NOT NULL,
+  store_id      TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  enabled_flag  TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
+  ssl_mode      TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
+  store_name    VARCHAR(64)          NOT NULL,
   PRIMARY KEY pk_store_id (store_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+-- Store currencies
+CREATE TABLE IF NOT EXISTS sc_store_currencies (
+  store_id      TINYINT(3) UNSIGNED   NOT NULL,
+  currency_id   SMALLINT(3) UNSIGNED  NOT NULL  DEFAULT 978,
+  default_flag  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
+  PRIMARY KEY pk_store_currency_id (store_id, currency_id),
+  FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_currency_id (currency_id) REFERENCES sc_currencies (currency_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Store hosts
 CREATE TABLE IF NOT EXISTS sc_store_hosts (
@@ -994,7 +1005,8 @@ CREATE TABLE IF NOT EXISTS sc_store_hosts (
   host_name      VARCHAR(255)          NULL  DEFAULT NULL,
   redirect_to    VARCHAR(255)          NULL  DEFAULT NULL,
   PRIMARY KEY pk_host_id (host_id),
-  FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  UNIQUE KEY uk_host_name (host_name)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Store languages
@@ -1005,6 +1017,15 @@ CREATE TABLE IF NOT EXISTS sc_store_languages (
   PRIMARY KEY pk_store_language_id (store_id, language_id),
   FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+-- Store organization
+CREATE TABLE IF NOT EXISTS sc_store_organization (
+  store_id         TINYINT(3) UNSIGNED    NOT NULL,
+  organization_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
+  PRIMARY KEY pk_store_organization_id (store_id, organization_id),
+  FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_organization_id (organization_id) REFERENCES sc_organizations (organization_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Customer groups
