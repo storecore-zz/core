@@ -102,18 +102,30 @@ $registry->set('Session', $session);
 // Routing
 $route = false;
 switch ($request->getRequestPath()) {
+    // Admin web app manifest:
+    case '/admin/manifest.json':
+    case '/admin/StoreCore.webmanifest':
+        $route = new Route('/admin/StoreCore.webmanifest', '\StoreCore\Admin\ManifestController');
+        break;
+    // Admin service worker JavaScript, requires /admin/ in the URL:
+    case '/admin/ServiceWorker.js':
+    case '/admin/sw.js':
+        $route = new \StoreCore\Route('/admin/ServiceWorker.js', '\StoreCore\Admin\ServiceWorker');
+        break;
+    // Admin lock screen:
+    case '/admin/lock':
     case '/admin/lock/':
         $route = new \StoreCore\Route('/admin/lock/', '\StoreCore\Admin\LockScreen');
         break;
+    // Admin sign-in:
     case '/admin/sign-in/':
         $route = new \StoreCore\Route('/admin/sign-in/', '\StoreCore\Admin\SignIn');
         break;
-    case '/admin/sign-out/':
-        $route = new \StoreCore\Route('/admin/sign-out/', '\StoreCore\Admin\User', 'signOut');
-        break;
+    // robots.txt:
     case '/robots.txt':
         $route = new \StoreCore\Route('/robots.txt', '\StoreCore\FileSystem\Robots');
         break;
+    // Fallback to some other (admin) route or a fixed redirect:
     default:
         // Execute an administration route.
         if (strpos($request->getRequestPath(), '/admin/', 0) === 0) {

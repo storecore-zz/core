@@ -1,8 +1,8 @@
 <?php
 namespace StoreCore\Database;
 
-use \Psr\Log\LoggerAwareInterface as LoggerAwareInterface;
-use \Psr\Log\LoggerInterface as LoggerInterface;
+use \StoreCore\FileSystem\Logger as Logger;
+use \StoreCore\Registry as Registry;
 
 /**
  * Database Connection
@@ -13,15 +13,14 @@ use \Psr\Log\LoggerInterface as LoggerInterface;
  * @package   StoreCore\Core
  * @version   1.0.0
  */
-class Connection extends \PDO implements LoggerAwareInterface
+class Connection extends \PDO
 {
     /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '1.0.0';
 
-    /** @var \Psr\Log\LoggerInterface|null $Logger */
-    protected $Logger;
-
     /**
+     * Create a PDO instance for a connection to a database.
+     *
      * @param string $dsn
      *   Optional data source name (DSN).  If the DNS is not supplied, it
      *   defaults to the global StoreCore database configuration.  Using
@@ -29,12 +28,19 @@ class Connection extends \PDO implements LoggerAwareInterface
      *   database servers, and other data sources.
      *
      * @param string $username
+     *   Optional user name for the DSN string.  If not set, the global
+     *   constant `STORECORE_DATABASE_DEFAULT_USERNAME` is used.
      *
      * @param string $password
+     *   Optional password for the DSN string.  If the `$username` is not set,
+     *   the global constant `STORECORE_DATABASE_DEFAULT_PASSWORD` is used.
      *
      * @return self
      *
      * @throws \PDOException
+     *   A catchable \PDOException is (re)thrown if the database connection
+     *   fails.  The constructor will try to connect several times, after a
+     *   random pause, before finally giving up.
      */
     public function __construct($dsn = null, $username = null, $password = null)
     {
@@ -58,7 +64,7 @@ class Connection extends \PDO implements LoggerAwareInterface
 
         // Try to connect.
         $retry = true;
-        while ($retry === true) {
+        do {
             try {
                 parent::__construct($dsn, $username, $password, $options);
                 $retry = false;
@@ -76,47 +82,25 @@ class Connection extends \PDO implements LoggerAwareInterface
                     }
                 }
 
-                // Add a registered logger.
-                if (!isset($this->Logger)) {
-                    $registry = \StoreCore\Registry::getInstance();
-                    if (false === $registry->has('Logger')) {
-                        $registry->set('Logger', new \StoreCore\FileSystem\Logger());
+                // Use a registered or new logger.
+                if (!isset($logger)) {
+                    $registry = Registry::getInstance();
+                    if ($registry->has('Logger')) {
+                        $logger = $registry->get('Logger');
+                    } else {
+                        $logger = new Logger();
                     }
-                    $this->setLogger($registry->get('Logger'));
                 }
 
                 if (microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'] > $max_execution_time) {
-                    $logger->critical('Database connection failed: ' . trim($e->getMessage()));
+                    $logger->critical('Database connection failed on error ' . $e->getCode() . ': ' . $e->getMessage());
                     $retry = false;
-                    if (!headers_sent()) {
-                        header('HTTP/1.1 503 Service Unavailable', true);
-                        header('Retry-After: 60');
-                    }
                     throw $e;
                 } else {
-                    $logger->error('Database connection error ' . $e->getCode() . ': ' . trim($e->getMessage()));
+                    $logger->error('Database connection error ' . $e->getCode() . ': ' . $e->getMessage());
                     $retry = true;
                 }
             }
-        }
-
-        // Options for MySQL only
-        if ($this->getAttribute(\PDO::ATTR_DRIVER_NAME) == 'mysql') {
-            if (version_compare(PHP_VERSION, '5.3.6', '<')) {
-                $this->exec('SET NAMES utf8 COLLATE utf8_general_ci');
-            }
-            $this->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
-        }
-    }
-
-    /**
-     * Add a logger.
-     *
-     * @param \Psr\Log\LoggerInterface $logger
-     * @return void
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->Logger = $logger;
+        } while ($retry === true);
     }
 }

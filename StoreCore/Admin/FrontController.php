@@ -9,12 +9,13 @@ use \StoreCore\Admin\AccessControlWhitelist as AccessControlWhitelist;
 use \StoreCore\Registry as Registry;
 use \StoreCore\Response as Response;
 use \StoreCore\Route as Route;
+use \StoreCore\Database\RouteFactory as RouteFactory;
 use \StoreCore\Session as Session;
 
 /**
  * Administration Front Controller
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @author    Ward van der Put <ward.vanderput@storecore.org>
  * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
@@ -33,7 +34,8 @@ class FrontController extends AbstractController implements LoggerAwareInterface
     {
         parent::__construct($registry);
 
-        if (!defined('STORECORE_VERSION_INSTALLED')) {
+        // Run the installer on an incomplete installation.
+        if (!defined('STORECORE_GUID')) {
             $this->install();
         }
 
@@ -51,22 +53,35 @@ class FrontController extends AbstractController implements LoggerAwareInterface
         }
 
         // Find a matching route or route collection.
-        if ($this->Request->getRequestPath() !== '/admin/') {
-            $router = new \StoreCore\Database\RouteFactory($this->Registry);
-            $route = $router->find($this->Request->getRequestPath());
-            if ($route !== null) {
-                $this->Registry->set('Route', $route);
-                $route->dispatch();
-            } else {
-                $this->Logger->debug('Unknown admin route: ' . $this->Request->getRequestPath());
-                $response = new \StoreCore\Response($this->Registry);
-                $response->addHeader('HTTP/1.1 404 Not Found');
-                exit;
-            }
+        $route = false;
+        switch ($this->Request->getRequestPath()) {
+            case '/admin/sign-out/':
+                $route = new Route('/admin/sign-out/', '\StoreCore\Admin\User', 'signOut');
+                break;
+            default:
+                $router = new RouteFactory($this->Registry);
+                $route = $router->find($this->Request->getRequestPath());
+                if ($route === null) {
+                    $route = false;
+                }
+                break;
+        }
+
+        if ($route !== false) {
+            $this->Registry->set('Route', $route);
+            $route->dispatch();
+        } else {
+            $this->Logger->debug('Unknown admin route: ' . $this->Request->getRequestPath());
+            $response = new Response($this->Registry);
+            $response->addHeader('HTTP/1.1 404 Not Found');
+            $response->output();
+            exit;
         }
     }
 
     /**
+     * Run the installer if the Installer.php class file exists.
+     *
      * @param void
      * @return void
      */
@@ -83,7 +98,11 @@ class FrontController extends AbstractController implements LoggerAwareInterface
     }
 
     /**
+     * Set a logger.
+     *
      * @param \Psr\Log\LoggerInterface $logger
+     *   PSR-3 “Logger Interface” compliant logger object.
+     *
      * @return void
      */
     public function setLogger(LoggerInterface $logger)

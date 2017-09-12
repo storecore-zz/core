@@ -2,9 +2,9 @@
 namespace StoreCore;
 
 /**
- * HTML5 Document
+ * HTML5 Document with AMP Support
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @author    Ward van der Put <ward.vanderput@storecore.org>
  * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
@@ -15,14 +15,24 @@ class Document
     /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
-    /** @var bool $AcceleratedMobilePage */
+    /**
+      * @var bool $AcceleratedMobilePage
+      *   Create an AMP HTML document (true) or not (default false).
+      */
     protected $AcceleratedMobilePage = false;
+
+    /**
+     * @var bool $jQuery
+     *   Include the jQuery JavaScript library (true) or not (default false).
+     */
+    protected $jQuery = false;
 
     /**
      * @var string $Direction
      * @var string $Language
      * @var null|array $Links
      * @var null|array $MetaProperties
+     * @var null|array $ScriptLinks
      * @var null|array $Scripts
      * @var null|array $ScriptsDeferred
      * @var array $Sections
@@ -33,6 +43,7 @@ class Document
     protected $Language = 'en-GB';
     protected $Links;
     protected $MetaProperties;
+    protected $ScriptLinks;
     protected $Scripts;
     protected $ScriptsDeferred;
     protected $Sections = array();
@@ -50,7 +61,11 @@ class Document
     );
 
     /**
+     * Create an HTML document.
+     *
      * @param string|null $title
+     *   Title of the document to include in the HTML `<title>...</title>` tag.
+     *
      * @return self
      */
     public function __construct($title = null)
@@ -63,6 +78,7 @@ class Document
     /**
      * @param void
      * @return string
+     * @uses getDocument()
      */
     public function __toString()
     {
@@ -168,6 +184,43 @@ class Document
     }
 
     /**
+     * Add a link to an external client-side script.
+     *
+     * @param string $src
+     *   Absolute or relative URL of the script source file for the `src`
+     *   attribute in a `<script src="...">` tag.
+     *
+     * @param bool $defer
+     *   Adds the `defer` attribute (default true) or omits it (false).
+     *
+     * @param bool $async
+     *   Adds the `async` attribute (true) or omits it (default false).
+     *   If the `$defer` and `$async` parameters are both set to true, the
+     *   `$async` parameter is ignored (and the `async` attribute is reset
+     *   to the default value false).
+     *
+     * @return $this
+     */
+    public function addScriptLink($src, $defer = true, $async = false)
+    {
+        $src = trim($src);
+        $key = mb_strtolower($src, 'UTF-8');
+        $key = md5($key);
+
+        if ($defer == true) {
+            $async = false;
+        }
+
+        $this->ScriptLinks[$key] = array(
+            'src'   => $src,
+            'defer' => $defer,
+            'async' => $async,
+        );
+
+        return $this;
+    }
+
+    /**
      * Add a section to the document body.
      *
      * @param string $content
@@ -239,10 +292,12 @@ class Document
     }
 
     /**
-     * Get the document <body>...</body> container.
+     * Get the document <body> container.
      *
      * @param void
+     *
      * @return string
+     *   Returns the `<body>...</body>` container as a string.
      */
     public function getBody()
     {
@@ -253,9 +308,14 @@ class Document
      * Get the full HTML document.
      *
      * @param void
+     *
      * @return string
-     * @uses \StoreCore\Document::getBody()
-     * @uses \StoreCore\Document::getHead()
+     *   Returns the full `<html>...</html>` container with a `DOCTYPE`
+     *   declaration as a string.
+     *
+     * @uses getBody()
+     *
+     * @uses getHead()
      */
     public function getDocument()
     {
@@ -281,21 +341,26 @@ class Document
          * @see https://developers.google.com/speed/libraries/
          * @see https://www.asp.net/ajax/cdn#jQuery_Releases_on_the_CDN_0
          */
-         if (!$this->AcceleratedMobilePage) {
-            if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/(?i)msie [4-8]/', $_SERVER['HTTP_USER_AGENT'])) {
-                $html .= '<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>';
-                $html .= '<script>';
-                $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-1.12.4.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
-            } else {
-                $html .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>';
-                $html .= '<script>';
-                $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-3.1.1.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
+        if (!$this->AcceleratedMobilePage) {
+            if ($this->jQuery) {
+                if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/(?i)msie [4-8]/', $_SERVER['HTTP_USER_AGENT'])) {
+                    $html .= '<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>';
+                    $html .= '<script>';
+                    $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-1.12.4.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
+                    $html .= '</script>';
+                } else {
+                    $html .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>';
+                    $html .= '<script>';
+                    $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-3.1.1.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
+                    $html .= '</script>';
+                }
             }
 
             if ($this->ScriptsDeferred !== null) {
+                $html .= '<script>';
                 $html .= implode($this->ScriptsDeferred);
+                $html .= '</script>';
             }
-            $html .= '</script>';
         }
 
         $html .= '</html>';
@@ -303,10 +368,12 @@ class Document
     }
 
     /**
-     * Get the document <head>...</head> container.
+     * Get the document <head> container.
      *
      * @param void
+     *
      * @return string
+     *   Returns the `<head>...</head>` container as a string.
      */
     public function getHead()
     {
@@ -322,7 +389,7 @@ class Document
         if ($this->AcceleratedMobilePage) {
             $head .= '<script async src="https://cdn.ampproject.org/v0.js"></script>';
         } else {
-            $head .= '<script defer src="/js/material.min.js"></script>';
+            $head .= '<script defer src="/scripts/material.min.js"></script>';
         }
 
         if ($this->Title != null) {
@@ -347,6 +414,19 @@ class Document
             }
             $head .= $links;
             unset($attribute, $dns_prefetch, $link, $links, $value);
+        }
+
+        if ($this->ScriptLinks !== null) {
+            foreach ($this->ScriptLinks as $link) {
+                if ($link['async'] === true) {
+                    $head .= '<script async';
+                } elseif ($link['defer'] === false) {
+                    $head .= '<script';
+                } else {
+                    $head .= '<script defer';
+                }
+                $head .= ' src="' . $link['src'] . '"></script>';
+            }
         }
 
         if (!empty($this->Style)) {
@@ -380,6 +460,22 @@ class Document
 
         $head .= '</head>';
         return $head;
+    }
+
+    /**
+     * Enable or disable jQuery.
+     *
+     * @param bool $use_jquery
+     *   Use the jQuery JavaScript library (default true) or not (false).
+     *   By default jQuery is not included, so you must explicitly call
+     *   `jquerify()` or `jquerify(true)` if a document needs to support
+     *   jQuery JavaScript.
+     *
+     * @return void
+     */
+    public function jquerify($use_jquery = true)
+    {
+        $this->jQuery = (bool)$use_jquery;
     }
 
     /**

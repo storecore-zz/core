@@ -49,8 +49,10 @@
    production server (or delete it afterwards): this folder contains PHP unit
    tests for development purposes.
 
-7. Run the StoreCore installation by accessing the URL in a web browser.  If
-   StoreCore was not previously installed, you will be guided through the
+7. Run the StoreCore installation by accessing the `/install/` folder in a web
+   browser.  For example, if StoreCore was uploaded for the `www.example.com`
+   host name, then point your browser to the URL `https://www.example.com/install/`.
+   If StoreCore was not previously installed, you will be guided through the
    necessary steps to complete the installation.
 
 ### Installation Logs
@@ -59,6 +61,16 @@ All installation and configuration activities are logged to `.log` text files
 in the `/logs/` directory.  If the StoreCore installation fails for any reason,
 please first check these log files for possible errors, warnings or other
 critical messages.
+
+The location of the `/logs/` directory is defined in the global constant
+`STORECORE_FILESYSTEM_LOGS_DIR` in the [`config.php` configuration file].  If
+this global constant is undefined (or the `config.php` file was not loaded),
+log files MAY be saved in different directories.  This usually is the current
+working directory for the main PHP application, for example the `/install/`
+directory when you are executing the `/install/index.php` application.
+
+[`config.php` configuration file]: https://github.com/storecore/core/blob/develop/config.php
+
 
 
 ## Contributing
