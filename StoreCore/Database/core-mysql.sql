@@ -2,7 +2,7 @@
 -- MySQL Data Definition
 --
 -- @author    Ward van der Put <Ward.van.der.Put@gmail.com>
--- @copyright Copyright (c) 2014-2017 StoreCore
+-- @copyright Copyright © 2014-2017 StoreCore
 -- @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
 -- @package   StoreCore\Database
 -- @version   0.1.0
@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS sc_observers (
 INSERT IGNORE INTO sc_subjects (subject_class) VALUES
   ('\\StoreCore\\Person'),
   ('\\StoreCore\\Session');
+
 
 -- Languages
 CREATE TABLE IF NOT EXISTS sc_languages (
@@ -139,6 +140,7 @@ INSERT IGNORE INTO sc_languages (language_id, parent_id, english_name, local_nam
   ('pt-BR', 'pt-BR', 'Portuguese - Brazil', 'Português - Brasil', 0),
   ('sv-FI', 'sv-SE', 'Swedish - Finland', 'Finlandssvenska - Finland', 0);
 
+
 -- Organizations
 CREATE TABLE IF NOT EXISTS sc_organizations (
   organization_id   MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
@@ -204,6 +206,7 @@ CREATE TABLE IF NOT EXISTS sc_person_organizations (
   FOREIGN KEY fk_person_id (person_id) REFERENCES sc_persons (person_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_organization_id (organization_id) REFERENCES sc_organizations (organization_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
 
 -- User groups
 CREATE TABLE IF NOT EXISTS sc_user_groups (
@@ -303,12 +306,13 @@ CREATE TABLE IF NOT EXISTS sc_ip_whitelist (
   INDEX ix_date_range (from_date, thru_date)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+
 -- Robots exclusion robots.txt
 CREATE TABLE IF NOT EXISTS sc_robots (
   robot_id    SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   user_agent  VARCHAR(255)          NOT NULL,
   PRIMARY KEY pk_robot_id (robot_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_robot_disallows (
   path_id   SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
@@ -316,13 +320,14 @@ CREATE TABLE IF NOT EXISTS sc_robot_disallows (
   disallow  VARCHAR(255)          NOT NULL  DEFAULT '',
   PRIMARY KEY pk_path_id (path_id),
   FOREIGN KEY fk_robot_id (robot_id) REFERENCES sc_robots (robot_id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 INSERT IGNORE INTO sc_robots (robot_id, user_agent) VALUES
   (1, '*');
 
 INSERT IGNORE INTO sc_robot_disallows (robot_id, disallow) VALUES
   (1, '/cgi-bin/');
+
 
 -- Cronjobs
 CREATE TABLE IF NOT EXISTS sc_cron_routes (
@@ -341,6 +346,7 @@ CREATE TABLE IF NOT EXISTS sc_cron_events (
   FOREIGN KEY fk_route_id (route_id) REFERENCES sc_cron_routes (route_id) ON DELETE CASCADE ON UPDATE CASCADE,
   INDEX ix_executed (executed)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
 
 -- Currencies
 CREATE TABLE IF NOT EXISTS sc_currencies (
@@ -616,6 +622,7 @@ UPDATE sc_currencies SET currency_symbol = 'Bs' WHERE currency_code = 'VEF' AND 
 UPDATE sc_currencies SET currency_symbol = '₫' WHERE currency_code = 'VND' AND currency_symbol = '¤';
 UPDATE sc_currencies SET currency_symbol = 'R' WHERE currency_code = 'ZAR' AND currency_symbol = '¤';
 UPDATE sc_currencies SET currency_symbol = 'Z$' WHERE currency_code = 'ZWD' AND currency_symbol = '¤';
+
 
 -- Translation Memory (TM)
 CREATE TABLE IF NOT EXISTS sc_translation_memory (
@@ -977,6 +984,7 @@ INSERT IGNORE INTO sc_country_subdivisions VALUES
 
 UPDATE sc_countries SET subdivision_required = 1 WHERE iso_alpha_two = 'US';
 
+
 -- Stores
 CREATE TABLE IF NOT EXISTS sc_stores (
   store_id      TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
@@ -1027,6 +1035,7 @@ CREATE TABLE IF NOT EXISTS sc_store_organization (
   FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_organization_id (organization_id) REFERENCES sc_organizations (organization_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
 
 -- Customer groups
 CREATE TABLE IF NOT EXISTS sc_customer_groups (
@@ -1129,6 +1138,7 @@ CREATE TABLE IF NOT EXISTS sc_person_addresses (
   FOREIGN KEY fk_address_id (address_id) REFERENCES sc_addresses (address_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+
 -- Brands and global brand names
 CREATE TABLE IF NOT EXISTS sc_brands (
   brand_id           SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
@@ -1194,6 +1204,7 @@ CREATE TABLE IF NOT EXISTS sc_store_categories (
   FOREIGN KEY fk_category_id (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+
 -- Schema.org item availability attributes
 CREATE TABLE IF NOT EXISTS sc_product_availability_types (
   availability_id    TINYINT(3) UNSIGNED  NOT NULL,
@@ -1212,6 +1223,7 @@ INSERT IGNORE INTO sc_product_availability_types
     (6, 'OutOfStock'),
     (7, 'PreOrder'),
     (8, 'SoldOut');
+
 
 -- Products
 CREATE TABLE IF NOT EXISTS sc_products (
@@ -1331,6 +1343,7 @@ CREATE TABLE IF NOT EXISTS sc_product_prices (
   FOREIGN KEY fk_customer_group_id (customer_group_id) REFERENCES sc_customer_groups (customer_group_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+
 -- Units of measure (UOM)
 CREATE TABLE IF NOT EXISTS sc_units_of_measure (
   uom_id        TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
@@ -1403,6 +1416,7 @@ CREATE TABLE IF NOT EXISTS sc_category_products (
   FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+
 -- Tags or labels
 CREATE TABLE IF NOT EXISTS sc_tags (
   tag_id        SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
@@ -1426,6 +1440,7 @@ CREATE TABLE IF NOT EXISTS sc_product_tags (
   FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_tag_id (tag_id) REFERENCES sc_tags (tag_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
 
 -- Product attributes
 CREATE TABLE IF NOT EXISTS sc_attributes (
@@ -1503,6 +1518,7 @@ CREATE TABLE IF NOT EXISTS sc_attribute_filter_descriptions (
   FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+
 -- Product bundles for cross-selling
 CREATE TABLE IF NOT EXISTS sc_product_bundles (
   product_bundle_id  MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
@@ -1533,6 +1549,7 @@ CREATE TABLE IF NOT EXISTS sc_product_bundle_products (
   FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
   INDEX ix_display_position (display_position ASC)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
 
 -- Order Management
 CREATE TABLE IF NOT EXISTS sc_orders (
@@ -1629,6 +1646,7 @@ CREATE TABLE IF NOT EXISTS sc_invoice_orders (
   FOREIGN KEY fk_invoice_id (invoice_id) REFERENCES sc_invoices (invoice_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_order_id (order_id) REFERENCES sc_orders (order_id) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
 
 CREATE TABLE IF NOT EXISTS sc_payment_service_providers (
   payment_service_provider_id  SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
