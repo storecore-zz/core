@@ -1629,7 +1629,7 @@ CREATE TABLE IF NOT EXISTS sc_order_shipments (
 CREATE TABLE IF NOT EXISTS sc_invoices (
   invoice_id    INT(10) UNSIGNED       NOT NULL  AUTO_INCREMENT,
   currency_id   SMALLINT(3) UNSIGNED   NOT NULL  DEFAULT 978,
-  invoice_date  DATE                   NOT NULL  DEFAULT '1000-01-01',
+  invoice_date  DATE                   NOT NULL,
   terms_days    TINYINT(2) UNSIGNED    NOT NULL  DEFAULT 14,
   subtotal      DECIMAL(18,3)          NOT NULL,
   total         DECIMAL(18,3)          NOT NULL,
@@ -1680,7 +1680,7 @@ CREATE TABLE IF NOT EXISTS sc_payments (
   payment_service_id  SMALLINT(5) UNSIGNED  NULL  DEFAULT NULL,
   credit_flag         TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0  COMMENT 'Debit (0) or credit (1)',
   transaction_id      VARCHAR(255)          NULL  DEFAULT NULL,
-  transaction_date    DATE                  NOT NULL  DEFAULT '1000-01-01',
+  transaction_date    DATE                  NOT NULL,
   amount              DECIMAL(18,3)         NOT NULL,
   attributes          TEXT                  NULL  DEFAULT NULL,
   PRIMARY KEY pk_payment_id (payment_id),
