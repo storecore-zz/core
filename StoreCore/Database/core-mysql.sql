@@ -1648,6 +1648,13 @@ CREATE TABLE IF NOT EXISTS sc_invoice_orders (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 
+--
+-- Payments
+--
+-- Financial transactions are handled as payments through payments services
+-- provided by payment service providers (PSP’s).  Payments may be linked to
+-- orders as well as invoices.
+--
 CREATE TABLE IF NOT EXISTS sc_payment_service_providers (
   payment_service_provider_id  SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   global_provider_name         VARCHAR(255)          NOT NULL  DEFAULT '',
