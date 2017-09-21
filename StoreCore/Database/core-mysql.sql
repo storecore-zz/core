@@ -1687,7 +1687,7 @@ CREATE TABLE IF NOT EXISTS sc_payments (
   payment_service_id  SMALLINT(5) UNSIGNED  NULL  DEFAULT NULL,
   credit_flag         TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0  COMMENT 'Debit (0) or credit (1)',
   transaction_id      VARCHAR(255)          NULL  DEFAULT NULL,
-  transaction_date    DATE                  NOT NULL,
+  transaction_date    TIMESTAMP             NOT NULL,
   amount              DECIMAL(18,3)         NOT NULL,
   attributes          TEXT                  NULL  DEFAULT NULL,
   PRIMARY KEY pk_payment_id (payment_id),
