@@ -1353,6 +1353,24 @@ CREATE TABLE IF NOT EXISTS sc_product_prices (
   FOREIGN KEY fk_customer_group_id (customer_group_id) REFERENCES sc_customer_groups (customer_group_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+-- Product associations
+CREATE TABLE IF NOT EXISTS sc_product_association_types (
+  product_association_type_id  TINYINT(3) UNSIGNED  NOT NULL,
+  PRIMARY KEY pk_product_association_type_id (product_association_type_id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_product_associations (
+  product_id                   MEDIUMINT(8) UNSIGNED  NOT NULL,
+  associated_product_id        MEDIUMINT(8) UNSIGNED  NOT NULL,
+  product_association_type_id  TINYINT(3) UNSIGNED    NOT NULL,
+  from_date                    TIMESTAMP              NOT NULL,
+  thru_date                    TIMESTAMP              NULL  DEFAULT NULL,
+  PRIMARY KEY pk_id (product_id, associated_product_id, product_association_type_id),
+  FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_associated_product_id (associated_product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_product_association_type_id (product_association_type_id) REFERENCES sc_product_association_types (product_association_type_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
 
 -- Units of measure (UOM)
 CREATE TABLE IF NOT EXISTS sc_units_of_measure (
