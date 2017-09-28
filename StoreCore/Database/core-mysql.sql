@@ -1229,6 +1229,7 @@ INSERT IGNORE INTO sc_product_availability_types
 CREATE TABLE IF NOT EXISTS sc_products (
   product_id                    MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   availability_id               TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 2,
+  service_flag                  TINYINT(1) UNSIGNED    NOT NULL  DEFAULT 0  COMMENT 'Good (0) or service (1)',
   introduction_date             TIMESTAMP              NOT NULL,
   taxonomy_id                   MEDIUMINT(8) UNSIGNED  NULL  DEFAULT NULL,
   sales_discontinuation_date    TIMESTAMP              NULL  DEFAULT NULL,
