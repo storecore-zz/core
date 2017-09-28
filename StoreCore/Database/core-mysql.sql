@@ -1269,13 +1269,14 @@ CREATE TABLE IF NOT EXISTS sc_product_identification_codes (
 
 -- Product names and product descriptions
 CREATE TABLE IF NOT EXISTS sc_product_descriptions (
-  product_id          MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
-  language_id         CHAR(5)                CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
-  local_product_name  VARCHAR(255)           NULL  DEFAULT NULL,
-  keywords            VARCHAR(255)           NULL  DEFAULT NULL,
-  summary             VARCHAR(255)           NULL  DEFAULT NULL  COMMENT 'Plain text',
-  description         TEXT                   NULL  DEFAULT NULL  COMMENT 'Formatted HTML',
-  PRIMARY KEY pk_product_description_id (product_id, language_id),
+  product_description_id  INT(10) UNSIGNED       NOT NULL  AUTO_INCREMENT,
+  product_id              MEDIUMINT(8) UNSIGNED  NOT NULL,
+  language_id             CHAR(5)                CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
+  local_product_name      VARCHAR(255)           NULL  DEFAULT NULL,
+  keywords                VARCHAR(255)           NULL  DEFAULT NULL,
+  summary                 VARCHAR(255)           NULL  DEFAULT NULL  COMMENT 'Plain text',
+  description             TEXT                   NULL  DEFAULT NULL  COMMENT 'Formatted HTML',
+  PRIMARY KEY pk_product_description_id (product_description_id),
   FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
