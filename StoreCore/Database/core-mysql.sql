@@ -1281,6 +1281,14 @@ CREATE TABLE IF NOT EXISTS sc_product_descriptions (
   FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+CREATE TABLE sc_store_product_descriptions (
+  store_id                TINYINT(3) UNSIGNED  NOT NULL,
+  product_description_id  INT(10) UNSIGNED     NOT NULL,
+  PRIMARY KEY pk_id (store_id, product_description_id),
+  FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_sc_product_descriptions (product_description_id) REFERENCES sc_product_descriptions (product_description_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
 -- Product pricing
 CREATE TABLE IF NOT EXISTS sc_product_price_components (
   price_component_id  TINYINT(3) UNSIGNED  NOT NULL,
