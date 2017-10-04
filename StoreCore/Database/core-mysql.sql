@@ -1359,6 +1359,30 @@ CREATE TABLE IF NOT EXISTS sc_product_association_types (
   PRIMARY KEY pk_product_association_type_id (product_association_type_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+CREATE TABLE IF NOT EXISTS sc_product_association_type_descriptions (
+  product_association_type_id    TINYINT(3) UNSIGNED  NOT NULL,
+  language_id                    CHAR(5)              CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
+  product_association_type_name  VARCHAR(255),
+  PRIMARY KEY pk_id (product_association_type_id, language_id),
+  FOREIGN KEY fk_product_association_type_id (product_association_type_id) REFERENCES sc_product_association_types (product_association_type_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+INSERT IGNORE INTO sc_product_association_types (product_association_type_id)
+  VALUES (0);
+
+INSERT IGNORE
+  INTO
+    sc_product_association_type_descriptions (product_association_type_id, language_id, product_association_type_name)
+  VALUES
+    ('0', 'de-DE', 'Verwandte Produkte'),
+    ('0', 'en-GB', 'Related products'),
+    ('0', 'es-ES', 'productos relacionados'),
+    ('0', 'fr-FR', 'produits associés'),
+    ('0', 'it-IT', 'prodotti correlati'),
+    ('0', 'nl-NL', 'gerelateerde producten'),
+    ('0', 'pt-PT', 'produtos relacionados');
+
 CREATE TABLE IF NOT EXISTS sc_product_associations (
   product_association_id       INT(10) UNSIGNED       NOT NULL  AUTO_INCREMENT,
   product_id                   MEDIUMINT(8) UNSIGNED  NOT NULL,
