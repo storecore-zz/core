@@ -1360,12 +1360,13 @@ CREATE TABLE IF NOT EXISTS sc_product_association_types (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_product_associations (
+  product_association_id       INT(10) UNSIGNED       NOT NULL  AUTO_INCREMENT,
   product_id                   MEDIUMINT(8) UNSIGNED  NOT NULL,
   associated_product_id        MEDIUMINT(8) UNSIGNED  NOT NULL,
   product_association_type_id  TINYINT(3) UNSIGNED    NOT NULL,
   from_date                    TIMESTAMP              NOT NULL,
   thru_date                    TIMESTAMP              NULL  DEFAULT NULL,
-  PRIMARY KEY pk_id (product_id, associated_product_id, product_association_type_id),
+  PRIMARY KEY pk_product_association_id (product_association_id),
   FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_associated_product_id (associated_product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_product_association_type_id (product_association_type_id) REFERENCES sc_product_association_types (product_association_type_id) ON DELETE CASCADE ON UPDATE CASCADE
