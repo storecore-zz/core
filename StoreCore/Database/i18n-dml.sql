@@ -244,6 +244,14 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_POSTAL_CODE', 'nl-NL', 'postcode', 0),
     ('NOUN_POSTAL_CODE', 'pt-PT', 'código postal', 0),
 
+    ('NOUN_RELATED_PRODUCTS', 'de-DE', 'verwandte Produkte', 0),
+    ('NOUN_RELATED_PRODUCTS', 'en-GB', 'related products', 0),
+    ('NOUN_RELATED_PRODUCTS', 'es-ES', 'productos relacionados', 0),
+    ('NOUN_RELATED_PRODUCTS', 'fr-FR', 'produits associés', 0),
+    ('NOUN_RELATED_PRODUCTS', 'it-IT', 'prodotti correlati', 0),
+    ('NOUN_RELATED_PRODUCTS', 'nl-NL', 'gerelateerde producten', 0),
+    ('NOUN_RELATED_PRODUCTS', 'pt-PT', 'produtos relacionados', 0),
+
     ('NOUN_SHOPPING_CART', 'de-DE', 'Einkaufswagen', 0),
     ('NOUN_SHOPPING_CART', 'en-GB', 'shopping cart', 0),
     ('NOUN_SHOPPING_CART', 'es-ES', 'carro de la compra', 0),
