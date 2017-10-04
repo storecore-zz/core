@@ -1396,6 +1396,14 @@ CREATE TABLE IF NOT EXISTS sc_product_associations (
   FOREIGN KEY fk_product_association_type_id (product_association_type_id) REFERENCES sc_product_association_types (product_association_type_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+CREATE TABLE IF NOT EXISTS sc_product_association_descriptions (
+  product_association_id  INT(10) UNSIGNED  NOT NULL,
+  language_id             CHAR(5)           CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
+  description             VARCHAR(255)      NOT NULL,
+  PRIMARY KEY pk_id (product_association_id, language_id),
+  FOREIGN KEY fk_product_association_id (product_association_id) REFERENCES sc_product_associations (product_association_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Units of measure (UOM)
 CREATE TABLE IF NOT EXISTS sc_units_of_measure (
