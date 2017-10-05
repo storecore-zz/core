@@ -1562,7 +1562,7 @@ CREATE TABLE IF NOT EXISTS sc_product_associations (
   product_association_id       INT(10) UNSIGNED       NOT NULL  AUTO_INCREMENT,
   product_id                   MEDIUMINT(8) UNSIGNED  NOT NULL,
   associated_product_id        MEDIUMINT(8) UNSIGNED  NOT NULL,
-  product_association_type_id  TINYINT(3) UNSIGNED    NOT NULL,
+  product_association_type_id  TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 0,
   attribute_id                 MEDIUMINT(8) UNSIGNED  NULL  DEFAULT NULL,
   from_date                    TIMESTAMP              NOT NULL,
   thru_date                    TIMESTAMP              NULL  DEFAULT NULL,
