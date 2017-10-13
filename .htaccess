@@ -4,6 +4,8 @@ Options +FollowSymlinks
 Options -Indexes
 
 # Error documents
+ErrorDocument 500 /500.html
+ErrorDocument 500 /502.html
 ErrorDocument 503 /503.html
 
 # Deny access to configuration files
