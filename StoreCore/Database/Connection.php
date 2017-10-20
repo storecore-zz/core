@@ -69,6 +69,26 @@ class Connection extends \PDO
                 parent::__construct($dsn, $username, $password, $options);
                 $retry = false;
             } catch (\PDOException $e) {
+                // Use a registered or new logger.
+                if (!isset($logger)) {
+                    $registry = Registry::getInstance();
+                    if ($registry->has('Logger')) {
+                        $logger = $registry->get('Logger');
+                    } else {
+                        $logger = new Logger();
+                    }
+                }
+
+                /* Error: 1049 SQLSTATE: 42000 (ER_BAD_DB_ERROR)
+                 * Message: Unknown database '%s'
+                 * @see https://dev.mysql.com/doc/refman/5.7/en/error-messages-server.html
+                 */
+                if ($e->getCode() == 1049) {
+                    $logger->alert('Unknown database (fatal error ' . $e->getCode() . '): ' . $e->getMessage());
+                    header('HTTP/1.1 502 Bad Gateway', true, 502);
+                    exit;
+                }
+
                 // Retry to connect in 0.5 to 3.5 seconds.
                 usleep(mt_rand(500000, 3500000));
 
@@ -79,16 +99,6 @@ class Connection extends \PDO
                         $max_execution_time = 26;
                     } else {
                         $max_execution_time = $max_execution_time - 4;
-                    }
-                }
-
-                // Use a registered or new logger.
-                if (!isset($logger)) {
-                    $registry = Registry::getInstance();
-                    if ($registry->has('Logger')) {
-                        $logger = $registry->get('Logger');
-                    } else {
-                        $logger = new Logger();
                     }
                 }
 
