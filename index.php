@@ -38,11 +38,6 @@ if (!defined('STORECORE_FILESYSTEM_CACHE_DIR')) {
     define('STORECORE_FILESYSTEM_CACHE_DIR', STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'cache' . DIRECTORY_SEPARATOR);
 }
 
-// Logging
-if (!defined('STORECORE_FILESYSTEM_LOGS_DIR')) {
-    define('STORECORE_FILESYSTEM_LOGS_DIR', STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'logs' . DIRECTORY_SEPARATOR);
-}
-
 // Refuse requests from a blacklisted client IP address.
 $request = $registry->get('Request');
 if (\StoreCore\FileSystem\Blacklist::exists($request->getRemoteAddress())) {
