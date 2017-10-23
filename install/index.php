@@ -71,6 +71,15 @@ if (!defined('STORECORE_FILESYSTEM_CACHE_DIR')) {
     }
 }
 
+if (!defined('STORECORE_FILESYSTEM_CACHE_DATA_DIR')) {
+    if (is_dir(STORECORE_FILESYSTEM_CACHE_DIR . 'data')) {
+        define('STORECORE_FILESYSTEM_CACHE_DATA_DIR', STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR);
+    } else {
+        echo 'StoreCore global data cache directory /cache/data/ not found.';
+        exit(1);
+    }
+}
+
 if (!defined('STORECORE_FILESYSTEM_LOGS_DIR')) {
     if (is_dir(realpath(__DIR__ . '/../logs'))) {
         define('STORECORE_FILESYSTEM_LOGS_DIR', realpath(__DIR__ . '/../logs') . DIRECTORY_SEPARATOR);
