@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS sc_routes (
   route_controller   VARCHAR(255)         NOT NULL,
   controller_method  VARCHAR(255)         NULL  DEFAULT NULL,
   method_parameters  VARCHAR(255)         NULL  DEFAULT NULL,
-  PRIMARY KEY pk_route_id (route_id),
+  PRIMARY KEY pk_routes_route_id (route_id),
   INDEX ix_dispatch_order (dispatch_order ASC),
   INDEX ix_route_path (route_path)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS sc_observers (
   observer_class  VARCHAR(255)          NOT NULL,
   observer_name   VARCHAR(255)          NULL  DEFAULT NULL,
   PRIMARY KEY pk_observer_id (observer_id),
-  FOREIGN KEY fk_subject_id (subject_id) REFERENCES sc_subjects (subject_id) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY fk_observers_subjects (subject_id) REFERENCES sc_subjects (subject_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 INSERT IGNORE INTO sc_subjects (subject_class) VALUES
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS sc_languages (
   english_name  VARCHAR(32)          NOT NULL,
   local_name    VARCHAR(32)          CHARACTER SET utf8  COLLATE utf8_unicode_ci  NULL  DEFAULT NULL,
   PRIMARY KEY pk_language_id (language_id),
-  FOREIGN KEY fk_language_id (parent_id) REFERENCES sc_languages (language_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+  FOREIGN KEY fk_languages_languages (parent_id) REFERENCES sc_languages (language_id) ON DELETE RESTRICT ON UPDATE CASCADE,
   UNIQUE KEY uk_english_name (english_name)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
@@ -203,8 +203,8 @@ CREATE TABLE IF NOT EXISTS sc_person_organizations (
   from_date          DATE                   NULL  DEFAULT NULL,
   thru_date          DATE                   NULL  DEFAULT NULL,
   PRIMARY KEY pk_id (person_id, organization_id),
-  FOREIGN KEY fk_person_id (person_id) REFERENCES sc_persons (person_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_organization_id (organization_id) REFERENCES sc_organizations (organization_id) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY fk_person_organizations_persons (person_id) REFERENCES sc_persons (person_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_person_organizations_organizations (organization_id) REFERENCES sc_organizations (organization_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 
@@ -236,9 +236,9 @@ CREATE TABLE IF NOT EXISTS sc_users (
   date_time_zone  VARCHAR(255)          NOT NULL  DEFAULT 'UTC'  COMMENT 'PHP DateTimeZone identifier',
   email_token     VARCHAR(255)          NULL  DEFAULT NULL,
   PRIMARY KEY pk_user_id (user_id),
-  FOREIGN KEY fk_user_group_id (user_group_id) REFERENCES sc_user_groups (user_group_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE RESTRICT ON UPDATE CASCADE,
-  FOREIGN KEY fk_person_id (person_id) REFERENCES sc_persons (person_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_users_user_groups (user_group_id) REFERENCES sc_user_groups (user_group_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_users_languages (language_id) REFERENCES sc_languages (language_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+  FOREIGN KEY fk_users_persons (person_id) REFERENCES sc_persons (person_id) ON DELETE CASCADE ON UPDATE CASCADE,
   UNIQUE KEY uk_email_address (email_address),
   INDEX ix_username (username)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
@@ -251,8 +251,8 @@ CREATE TABLE IF NOT EXISTS sc_users_password_history (
   checked_flag   TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
   password_salt  VARCHAR(255)         NOT NULL,
   password_hash  VARCHAR(255)         NOT NULL,
-  PRIMARY KEY pk_id (user_id, from_date),
-  FOREIGN KEY fk_user_id (user_id) REFERENCES sc_users (user_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_users_password_history_id (user_id, from_date),
+  FOREIGN KEY fk_users_password_history_users (user_id) REFERENCES sc_users (user_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Browsers and other user agents
@@ -319,7 +319,7 @@ CREATE TABLE IF NOT EXISTS sc_robot_disallows (
   robot_id  SMALLINT(5) UNSIGNED  NOT NULL,
   disallow  VARCHAR(255)          NOT NULL  DEFAULT '',
   PRIMARY KEY pk_path_id (path_id),
-  FOREIGN KEY fk_robot_id (robot_id) REFERENCES sc_robots (robot_id) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY fk_robot_disallows_robots (robot_id) REFERENCES sc_robots (robot_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 INSERT IGNORE INTO sc_robots (robot_id, user_agent) VALUES
@@ -335,15 +335,15 @@ CREATE TABLE IF NOT EXISTS sc_cron_routes (
   description  VARCHAR(255)     NOT NULL,
   schedule     VARCHAR(255)     NOT NULL  DEFAULT '* * * * *',
   route        TEXT             NOT NULL,
-  PRIMARY KEY pk_route_id (route_id)
+  PRIMARY KEY pk_cron_routes_route_id (route_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_cron_events (
   route_id   BIGINT UNSIGNED  NOT NULL,
   scheduled  TIMESTAMP        NOT NULL,
   executed   TIMESTAMP        NULL  DEFAULT NULL,
-  PRIMARY KEY pk_id (route_id, scheduled),
-  FOREIGN KEY fk_route_id (route_id) REFERENCES sc_cron_routes (route_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  PRIMARY KEY pk_cron_events_id (route_id, scheduled),
+  FOREIGN KEY fk_cron_events_cron_routes (route_id) REFERENCES sc_cron_routes (route_id) ON DELETE CASCADE ON UPDATE CASCADE,
   INDEX ix_executed (executed)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
@@ -631,8 +631,8 @@ CREATE TABLE IF NOT EXISTS sc_translation_memory (
   admin_only_flag  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
   date_modified    TIMESTAMP             NOT NULL  DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP,
   translation      TEXT                  NULL,
-  PRIMARY KEY pk_id (translation_id, language_id),
-  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_translation_memory_id (translation_id, language_id),
+  FOREIGN KEY fk_translation_memory_languages (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci;
 
 -- Countries and ISO country codes
@@ -656,9 +656,9 @@ CREATE TABLE IF NOT EXISTS sc_country_names (
   country_id          SMALLINT(3) UNSIGNED  NOT NULL,
   language_id         CHAR(5)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
   local_country_name  VARCHAR(128)          NOT NULL,
-  PRIMARY KEY pk_id (country_id, language_id),
-  FOREIGN KEY fk_country_id (country_id) REFERENCES sc_countries (country_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_country_names_id (country_id, language_id),
+  FOREIGN KEY fk_country_names_countries (country_id) REFERENCES sc_countries (country_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_country_names_languages (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci;
 
 -- Country states, provinces, regions, and other subdivisions
@@ -666,8 +666,8 @@ CREATE TABLE IF NOT EXISTS sc_country_subdivisions (
   iso_alpha_two     CHAR(2)       CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  COMMENT 'ISO 3166-1',
   iso_suffix        VARCHAR(3)    CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  COMMENT 'ISO 3166-2 add-on',
   subdivision_name  VARCHAR(255)  NOT NULL,
-  PRIMARY KEY pk_id (iso_alpha_two, iso_suffix),
-  FOREIGN KEY fk_iso_alpha_two (iso_alpha_two) REFERENCES sc_countries (iso_alpha_two) ON DELETE CASCADE ON UPDATE CASCADE,
+  PRIMARY KEY pk_country_subdivisions_id (iso_alpha_two, iso_suffix),
+  FOREIGN KEY fk_country_subdivisions_countries (iso_alpha_two) REFERENCES sc_countries (iso_alpha_two) ON DELETE CASCADE ON UPDATE CASCADE,
   INDEX ix_subdivision_name (subdivision_name)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci;
 
@@ -999,9 +999,9 @@ CREATE TABLE IF NOT EXISTS sc_store_currencies (
   store_id      TINYINT(3) UNSIGNED   NOT NULL,
   currency_id   SMALLINT(3) UNSIGNED  NOT NULL  DEFAULT 978,
   default_flag  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
-  PRIMARY KEY pk_store_currency_id (store_id, currency_id),
-  FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_currency_id (currency_id) REFERENCES sc_currencies (currency_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_store_currencies_id (store_id, currency_id),
+  FOREIGN KEY fk_store_currencies_stores (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_store_currencies_currencies (currency_id) REFERENCES sc_currencies (currency_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Store hosts
@@ -1013,7 +1013,7 @@ CREATE TABLE IF NOT EXISTS sc_store_hosts (
   host_name      VARCHAR(255)          NULL  DEFAULT NULL,
   redirect_to    VARCHAR(255)          NULL  DEFAULT NULL,
   PRIMARY KEY pk_host_id (host_id),
-  FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_store_hosts_stores (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
   UNIQUE KEY uk_host_name (host_name)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
@@ -1023,8 +1023,8 @@ CREATE TABLE IF NOT EXISTS sc_store_languages (
   language_id   CHAR(5)              CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  DEFAULT 'en-GB',
   default_flag  TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
   PRIMARY KEY pk_store_language_id (store_id, language_id),
-  FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY fk_store_languages_stores (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_store_languages_languages (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Store organization
@@ -1032,8 +1032,8 @@ CREATE TABLE IF NOT EXISTS sc_store_organization (
   store_id         TINYINT(3) UNSIGNED    NOT NULL,
   organization_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
   PRIMARY KEY pk_store_organization_id (store_id, organization_id),
-  FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_organization_id (organization_id) REFERENCES sc_organizations (organization_id) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY fk_store_organization_stores (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_store_organization_organizations (organization_id) REFERENCES sc_organizations (organization_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 
@@ -1056,17 +1056,17 @@ CREATE TABLE IF NOT EXISTS sc_customers (
   date_modified      TIMESTAMP            NULL  DEFAULT NULL,
   date_deleted       TIMESTAMP            NULL  DEFAULT NULL,
   PRIMARY KEY pk_customer_id (customer_id),
-  FOREIGN KEY fk_customer_group_id (customer_group_id) REFERENCES sc_customer_groups (customer_group_id) ON DELETE NO ACTION ON UPDATE CASCADE,
-  FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE NO ACTION ON UPDATE CASCADE
+  FOREIGN KEY fk_customers_customer_groups (customer_group_id) REFERENCES sc_customer_groups (customer_group_id) ON DELETE NO ACTION ON UPDATE CASCADE,
+  FOREIGN KEY fk_customers_stores (store_id) REFERENCES sc_stores (store_id) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Personal customer data
 CREATE TABLE IF NOT EXISTS sc_customer_persons (
   customer_id  INT(10) UNSIGNED  NOT NULL,
   person_id    INT(10) UNSIGNED  NOT NULL,
-  PRIMARY KEY pk_id (customer_id, person_id),
-  FOREIGN KEY fk_customer_id (customer_id) REFERENCES sc_customers (customer_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_person_id (person_id) REFERENCES sc_persons (person_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_customer_persons_id (customer_id, person_id),
+  FOREIGN KEY fk_customer_persons_customers (customer_id) REFERENCES sc_customers (customer_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_customer_persons_persons (person_id) REFERENCES sc_persons (person_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Customer accounts
@@ -1080,7 +1080,7 @@ CREATE TABLE IF NOT EXISTS sc_customer_accounts (
   password_hash  VARCHAR(255)      NOT NULL,
   reset_token    CHAR(16)          CHARACTER SET ascii  COLLATE ascii_bin  NULL  DEFAULT NULL,
   PRIMARY KEY pk_account_id (account_id),
-  FOREIGN KEY fk_customer_id (customer_id) REFERENCES sc_customers (customer_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_customer_accounts_customers (customer_id) REFERENCES sc_customers (customer_id) ON DELETE CASCADE ON UPDATE CASCADE,
   INDEX ix_email_address (email_address)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
@@ -1105,7 +1105,7 @@ CREATE TABLE IF NOT EXISTS sc_addresses (
   longitude               DECIMAL(11, 8)        NULL  DEFAULT NULL,
   formatted_address       TEXT                  NULL  DEFAULT NULL,
   PRIMARY KEY pk_address_id (address_id),
-  FOREIGN KEY fk_country_id (country_id) REFERENCES sc_countries (country_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_addresses_countries (country_id) REFERENCES sc_countries (country_id) ON DELETE CASCADE ON UPDATE CASCADE,
   INDEX ix_postal_code (postal_code),
   UNIQUE KEY uk_global_location_number (global_location_number)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
@@ -1119,23 +1119,23 @@ CREATE TABLE IF NOT EXISTS sc_addresses_eav (
   attribute_int_value   INT(11) SIGNED       NULL  DEFAULT NULL,
   attribute_str_value   VARCHAR(255)         NULL  DEFAULT NULL,
   PRIMARY KEY pk_entity_id (address_id, vendor_prefix, attribute_name),
-  FOREIGN KEY fk_address_id (address_id) REFERENCES sc_addresses (address_id) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY fk_addresses_eav_addresses (address_id) REFERENCES sc_addresses (address_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_organization_addresses (
   organization_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
   address_id       INT(10) UNSIGNED       NOT NULL,
-  PRIMARY KEY pk_id (organization_id, address_id),
-  FOREIGN KEY fk_organization_id (organization_id) REFERENCES sc_organizations (organization_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_address_id (address_id) REFERENCES sc_addresses (address_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_organization_addresses_id (organization_id, address_id),
+  FOREIGN KEY fk_organization_addresses_organizations (organization_id) REFERENCES sc_organizations (organization_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_organization_addresses_addresses (address_id) REFERENCES sc_addresses (address_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_person_addresses (
   person_id   INT(10) UNSIGNED  NOT NULL,
   address_id  INT(10) UNSIGNED  NOT NULL,
-  PRIMARY KEY pk_id (person_id, address_id),
-  FOREIGN KEY fk_person_id (person_id) REFERENCES sc_persons (person_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_address_id (address_id) REFERENCES sc_addresses (address_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_person_addresses_id (person_id, address_id),
+  FOREIGN KEY fk_person_addresses_persons (person_id) REFERENCES sc_persons (person_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_person_addresses_addresses (address_id) REFERENCES sc_addresses (address_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 
@@ -1151,9 +1151,9 @@ CREATE TABLE IF NOT EXISTS sc_brand_names (
   brand_id          SMALLINT(5) UNSIGNED  NOT NULL,
   language_id       CHAR(5)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
   local_brand_name  VARCHAR(255)          NOT NULL,
-  PRIMARY KEY pk_brand_name_id (brand_id, language_id),
-  FOREIGN KEY fk_brand_id (brand_id) REFERENCES sc_brands (brand_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_brand_names_id (brand_id, language_id),
+  FOREIGN KEY fk_brand_names_brands (brand_id) REFERENCES sc_brands (brand_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_brand_names_languages (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 
@@ -1170,8 +1170,8 @@ CREATE TABLE IF NOT EXISTS sc_product_taxonomy (
   taxonomy_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
   language_id  CHAR(5)                CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL  DEFAULT 'en-US',
   full_path    VARCHAR(255)           NOT NULL,
-  PRIMARY KEY pk_id (taxonomy_id, language_id),
-  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  PRIMARY KEY pk_product_taxonomy_id (taxonomy_id, language_id),
+  FOREIGN KEY fk_product_taxonomy_languages (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE,
   INDEX ix_full_path (full_path ASC)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
@@ -1182,7 +1182,7 @@ CREATE TABLE IF NOT EXISTS sc_categories (
   parent_id    SMALLINT(5) UNSIGNED   NULL  DEFAULT NULL,
   taxonomy_id  MEDIUMINT(8) UNSIGNED  NULL  DEFAULT NULL,
   PRIMARY KEY pk_category_id (category_id),
-  FOREIGN KEY fk_parent_id (parent_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY fk_categories_categories (parent_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Localized category names
@@ -1190,18 +1190,18 @@ CREATE TABLE IF NOT EXISTS sc_category_names (
   category_id    SMALLINT(5) UNSIGNED  NOT NULL,
   language_id    CHAR(5)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
   category_name  VARCHAR(255)          NOT NULL,
-  PRIMARY KEY pk_id (category_id, language_id),
-  FOREIGN KEY fk_category_id (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_category_names_id (category_id, language_id),
+  FOREIGN KEY fk_category_names_categories (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_category_names_languages (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Categories per store
 CREATE TABLE IF NOT EXISTS sc_store_categories (
   store_id     TINYINT(3) UNSIGNED   NOT NULL,
   category_id  SMALLINT(5) UNSIGNED  NOT NULL,
-  PRIMARY KEY pk_id (store_id,category_id),
-  FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_category_id (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_store_categories_id (store_id,category_id),
+  FOREIGN KEY fk_store_categories_stores (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_store_categories_categories (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 
@@ -1236,12 +1236,12 @@ CREATE TABLE IF NOT EXISTS sc_products (
   support_discontinuation_date  TIMESTAMP              NULL  DEFAULT NULL,
   global_product_name           VARCHAR(255)           NULL  DEFAULT NULL,
   PRIMARY KEY pk_product_id (product_id),
-  FOREIGN KEY fk_availability_id (availability_id) REFERENCES sc_product_availability_types (availability_id) ON DELETE NO ACTION ON UPDATE CASCADE,
+  FOREIGN KEY fk_products_product_availability_types (availability_id) REFERENCES sc_product_availability_types (availability_id) ON DELETE NO ACTION ON UPDATE CASCADE,
   INDEX ix_introduction_date (introduction_date DESC)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Product barcodes and other product IDs
-CREATE TABLE IF NOT EXISTS sc_product_identification_types (
+CREATE TABLE IF NOT EXISTS sc_product_id_types (
   identification_type_id  TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   abbreviation            VARCHAR(5)           NOT NULL,
   description             VARCHAR(255)         NOT NULL,
@@ -1249,7 +1249,7 @@ CREATE TABLE IF NOT EXISTS sc_product_identification_types (
   UNIQUE KEY uk_abbreviation (abbreviation)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-INSERT IGNORE INTO sc_product_identification_types
+INSERT IGNORE INTO sc_product_id_types
     (abbreviation, description)
   VALUES
     ('EAN', 'International Article Number'),
@@ -1258,36 +1258,37 @@ INSERT IGNORE INTO sc_product_identification_types
     ('MPN', 'Manufacturer Part Number'),
     ('SKU', 'Stock Keeping Unit');
 
-CREATE TABLE IF NOT EXISTS sc_product_identification_codes (
+CREATE TABLE IF NOT EXISTS sc_product_id_codes (
   product_id              MEDIUMINT(8) UNSIGNED  NOT NULL,
   identification_type_id  TINYINT(3) UNSIGNED    NOT NULL,
   identification_code     VARCHAR(255)           NOT NULL,
-  PRIMARY KEY pk_id (product_id,identification_type_id),
-  FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_identification_type_id (identification_type_id) REFERENCES sc_product_identification_types (identification_type_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  PRIMARY KEY pk_product_id_codes_id (product_id, identification_type_id),
+  FOREIGN KEY fk_product_id_codes_codes_products (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_product_id_codes_product_id_types (identification_type_id) REFERENCES sc_product_id_types (identification_type_id) ON DELETE CASCADE ON UPDATE CASCADE,
   UNIQUE KEY uk_identification_code (identification_code)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Product names and product descriptions
-CREATE TABLE IF NOT EXISTS sc_product_descriptions (
-  product_description_id  INT(10) UNSIGNED       NOT NULL  AUTO_INCREMENT,
-  product_id              MEDIUMINT(8) UNSIGNED  NOT NULL,
-  language_id             CHAR(5)                CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
-  local_product_name      VARCHAR(255)           NULL  DEFAULT NULL,
-  keywords                VARCHAR(255)           NULL  DEFAULT NULL,
-  summary                 VARCHAR(255)           NULL  DEFAULT NULL  COMMENT 'Plain text',
-  description             TEXT                   NULL  DEFAULT NULL  COMMENT 'Formatted HTML',
-  PRIMARY KEY pk_product_description_id (product_description_id),
-  FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+CREATE TABLE IF NOT EXISTS sc_product_texts (
+  description_id      INT(10) UNSIGNED       NOT NULL  AUTO_INCREMENT,
+  product_id          MEDIUMINT(8) UNSIGNED  NOT NULL,
+  language_id         CHAR(5)                CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
+  local_product_name  VARCHAR(255)           NULL  DEFAULT NULL,
+  keywords            VARCHAR(255)           NULL  DEFAULT NULL,
+  summary             VARCHAR(255)           NULL  DEFAULT NULL  COMMENT 'Plain text',
+  description         TEXT                   NULL  DEFAULT NULL  COMMENT 'Formatted HTML',
+  PRIMARY KEY pk_description_id (description_id),
+  FOREIGN KEY fk_product_texts_products (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_product_texts_languages (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-CREATE TABLE sc_store_product_descriptions (
-  store_id                TINYINT(3) UNSIGNED  NOT NULL,
-  product_description_id  INT(10) UNSIGNED     NOT NULL,
-  PRIMARY KEY pk_id (store_id, product_description_id),
-  FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_sc_product_descriptions (product_description_id) REFERENCES sc_product_descriptions (product_description_id) ON DELETE CASCADE ON UPDATE CASCADE
+-- Link product descriptions to specific stores
+CREATE TABLE IF NOT EXISTS sc_store_product_texts (
+  store_id        TINYINT(3) UNSIGNED  NOT NULL,
+  description_id  INT(10) UNSIGNED     NOT NULL,
+  PRIMARY KEY pk_store_product_texts_id (store_id, description_id),
+  FOREIGN KEY fk_store_product_texts_stores (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_store_product_texts_product_texts (description_id) REFERENCES sc_product_texts (description_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Product pricing
@@ -1346,11 +1347,11 @@ CREATE TABLE IF NOT EXISTS sc_product_prices (
   customer_group_id   TINYINT(3) UNSIGNED    NULL  DEFAULT NULL  COMMENT 'Optional filter',
   price_or_factor     DECIMAL(15,4)          NOT NULL,
   comments            VARCHAR(255)           NULL  DEFAULT NULL,
-  PRIMARY KEY pk_id (product_id,price_component_id,currency_id,from_date),
-  FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_currency_id (currency_id) REFERENCES sc_currencies (currency_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_customer_group_id (customer_group_id) REFERENCES sc_customer_groups (customer_group_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_product_prices_id (product_id, price_component_id, currency_id, from_date),
+  FOREIGN KEY fk_product_prices_products (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_product_prices_currencies (currency_id) REFERENCES sc_currencies (currency_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_product_prices_stores (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_product_prices_customer_groups (customer_group_id) REFERENCES sc_customer_groups (customer_group_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 
@@ -1367,9 +1368,9 @@ CREATE TABLE IF NOT EXISTS sc_units_of_measure_conversion (
   from_uom_id        TINYINT(3) UNSIGNED  NOT NULL,
   to_uom_id          TINYINT(3) UNSIGNED  NOT NULL,
   conversion_factor  DECIMAL(18,9)        NOT NULL  COMMENT 'Multiplier',
-  PRIMARY KEY pk_uom_conversion_id (from_uom_id, to_uom_id),
-  FOREIGN KEY fk_from_uom_id (from_uom_id) REFERENCES sc_units_of_measure (uom_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_to_uom_id (to_uom_id) REFERENCES sc_units_of_measure (uom_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_units_of_measure_conversion_id (from_uom_id, to_uom_id),
+  FOREIGN KEY fk_units_of_measure_conversion_units_of_measure_from_uom_id (from_uom_id) REFERENCES sc_units_of_measure (uom_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_units_of_measure_conversion_units_of_measure_to_uom_id (to_uom_id) REFERENCES sc_units_of_measure (uom_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 INSERT IGNORE INTO sc_units_of_measure
@@ -1401,17 +1402,17 @@ CREATE TABLE IF NOT EXISTS sc_product_weights (
   product_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
   uom_id      TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 3,
   weight      DECIMAL(18,9)          NOT NULL,
-  FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_uom_id (uom_id) REFERENCES sc_units_of_measure (uom_id) ON DELETE RESTRICT ON UPDATE CASCADE
+  FOREIGN KEY fk_product_weights_products_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_product_weights_units_of_measure (uom_id) REFERENCES sc_units_of_measure (uom_id) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Products per brand
 CREATE TABLE IF NOT EXISTS sc_brand_products (
   brand_id    SMALLINT(5) UNSIGNED   NOT NULL,
   product_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
-  PRIMARY KEY pk_id (brand_id,product_id),
-  FOREIGN KEY fk_brand_id (brand_id) REFERENCES sc_brands (brand_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_brand_products_id (brand_id, product_id),
+  FOREIGN KEY fk_brand_products_brands (brand_id) REFERENCES sc_brands (brand_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_brand_products_products (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Products to categories
@@ -1421,9 +1422,9 @@ CREATE TABLE IF NOT EXISTS sc_category_products (
   primary_flag  TINYINT(1) UNSIGNED    NOT NULL  DEFAULT 0,
   from_date     TIMESTAMP              NOT NULL,
   thru_date     TIMESTAMP              NULL  DEFAULT NULL,
-  PRIMARY KEY pk_id (category_id,product_id),
-  FOREIGN KEY fk_category_id (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_category_products_id (category_id, product_id),
+  FOREIGN KEY fk_category_products_categories (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_category_products_products (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 
@@ -1438,17 +1439,17 @@ CREATE TABLE IF NOT EXISTS sc_tag_keywords (
   tag_id       SMALLINT(5) UNSIGNED  NOT NULL,
   language_id  CHAR(5)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
   keyword      VARCHAR(255)          NOT NULL,
-  PRIMARY KEY pk_id (tag_id,language_id),
-  FOREIGN KEY fk_tag_id (tag_id) REFERENCES sc_tags (tag_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_tag_keywords_id (tag_id, language_id),
+  FOREIGN KEY fk_tag_keywords_tags (tag_id) REFERENCES sc_tags (tag_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_tag_keywords_languages (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_product_tags (
   product_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
   tag_id      SMALLINT(5) UNSIGNED   NOT NULL,
-  PRIMARY KEY pk_id (product_id, tag_id),
-  FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_tag_id (tag_id) REFERENCES sc_tags (tag_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_product_tags_id (product_id, tag_id),
+  FOREIGN KEY fk_product_tags_products (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_product_tags_tags (tag_id) REFERENCES sc_tags (tag_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 
@@ -1458,16 +1459,16 @@ CREATE TABLE IF NOT EXISTS sc_attributes (
   uom_id        TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 1,
   enabled_flag  TINYINT(1) UNSIGNED    NOT NULL  DEFAULT 1,
   PRIMARY KEY pk_attribute_id (attribute_id),
-  FOREIGN KEY fk_uom_id (uom_id) REFERENCES sc_units_of_measure (uom_id) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY fk_attributes_units_of_measure (uom_id) REFERENCES sc_units_of_measure (uom_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_attribute_descriptions (
   attribute_id  MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   language_id   CHAR(5)                CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
   description   VARCHAR(255)           NOT NULL,
-  PRIMARY KEY pk_id (attribute_id,language_id),
-  FOREIGN KEY fk_attribute_id (attribute_id) REFERENCES sc_attributes (attribute_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_attribute_descriptions_id (attribute_id, language_id),
+  FOREIGN KEY fk_attribute_descriptions_attributes (attribute_id) REFERENCES sc_attributes (attribute_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_attribute_descriptions_languages (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_product_attributes (
@@ -1477,9 +1478,9 @@ CREATE TABLE IF NOT EXISTS sc_product_attributes (
   thru_date     TIMESTAMP              NULL  DEFAULT NULL,
   num_value     DECIMAL(18,9)          NULL  DEFAULT NULL,
   str_value     VARCHAR(255)           NULL  DEFAULT NULL,
-  PRIMARY KEY pk_id (product_id, attribute_id),
-  FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_attribute_id (attribute_id) REFERENCES sc_attributes (attribute_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_product_attributes_id (product_id, attribute_id),
+  FOREIGN KEY fk_product_attributes_products (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_product_attributes_attributes (attribute_id) REFERENCES sc_attributes (attribute_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_category_attributes (
@@ -1488,67 +1489,67 @@ CREATE TABLE IF NOT EXISTS sc_category_attributes (
   shared_flag     TINYINT(1)  UNSIGNED   NOT NULL  DEFAULT 0,
   mandatory_flag  TINYINT(1)  UNSIGNED   NOT NULL  DEFAULT 0,
   common_flag     TINYINT(1)  UNSIGNED   NOT NULL  DEFAULT 0,
-  PRIMARY KEY pk_id (category_id, attribute_id),
-  FOREIGN KEY fk_category_id (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_attribute_id (attribute_id) REFERENCES sc_attributes (attribute_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_category_attributes_id (category_id, attribute_id),
+  FOREIGN KEY fk_category_attributes_categories (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_category_attributes_attributes (attribute_id) REFERENCES sc_attributes (attribute_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Attribute groups and attribute filters
 CREATE TABLE IF NOT EXISTS sc_attribute_groups (
-  attribute_group_id  SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
-  group_name          VARCHAR(255)          NOT NULL,
-  group_description   VARCHAR(255)          NULL  DEFAULT NULL,
-  PRIMARY KEY pk_attribute_group_id (attribute_group_id)
+  group_id           SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  group_name         VARCHAR(255)          NOT NULL,
+  group_description  VARCHAR(255)          NULL  DEFAULT NULL,
+  PRIMARY KEY pk_group_id (group_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_attribute_group_attributes (
-  attribute_group_id  SMALLINT(5) UNSIGNED   NOT NULL,
-  attribute_id        MEDIUMINT(8) UNSIGNED  NOT NULL,
-  from_date           TIMESTAMP              NOT NULL,
-  thru_date           TIMESTAMP              NULL  DEFAULT NULL,
-  PRIMARY KEY pk_id (attribute_group_id,attribute_id),
-  FOREIGN KEY fk_attribute_group_id (attribute_group_id) REFERENCES sc_attribute_groups (attribute_group_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_attribute_id (attribute_id) REFERENCES sc_attributes (attribute_id) ON DELETE CASCADE ON UPDATE CASCADE
+  group_id      SMALLINT(5) UNSIGNED   NOT NULL,
+  attribute_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
+  from_date     TIMESTAMP              NOT NULL,
+  thru_date     TIMESTAMP              NULL  DEFAULT NULL,
+  PRIMARY KEY pk_attribute_group_attributes_id (group_id, attribute_id),
+  FOREIGN KEY fk_attribute_group_attributes_attribute_groups (group_id) REFERENCES sc_attribute_groups (group_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_attribute_group_attributes_attributes (attribute_id) REFERENCES sc_attributes (attribute_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_attribute_filters (
-  attribute_group_id  SMALLINT(5) UNSIGNED  NOT NULL,
-  enabled_flag        TINYINT(1) UNSIGNED   DEFAULT 1,
-  filter_position     TINYINT(3) UNSIGNED   DEFAULT 0,
-  PRIMARY KEY pk_attribute_group_id (attribute_group_id),
-  FOREIGN KEY fk_attribute_group_id (attribute_group_id) REFERENCES sc_attribute_groups (attribute_group_id) ON DELETE CASCADE ON UPDATE CASCADE
+  group_id         SMALLINT(5) UNSIGNED  NOT NULL,
+  enabled_flag     TINYINT(1) UNSIGNED   DEFAULT 1,
+  filter_position  TINYINT(3) UNSIGNED   DEFAULT 0,
+  PRIMARY KEY pk_attribute_filters_id (group_id),
+  FOREIGN KEY fk_attribute_filters_attribute_groups (group_id) REFERENCES sc_attribute_groups (group_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_attribute_filter_descriptions (
-  attribute_group_id  SMALLINT(5) UNSIGNED  NOT NULL,
-  language_id         CHAR(5)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
-  description         VARCHAR(255)          NOT NULL,
-  PRIMARY KEY pk_id (attribute_group_id,language_id),
-  FOREIGN KEY fk_attribute_group_id (attribute_group_id) REFERENCES sc_attribute_filters (attribute_group_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+  group_id     SMALLINT(5) UNSIGNED  NOT NULL,
+  language_id  CHAR(5)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
+  description  VARCHAR(255)          NOT NULL,
+  PRIMARY KEY pk_attribute_filter_descriptions_id (group_id, language_id),
+  FOREIGN KEY fk_attribute_filter_descriptions_attribute_filters (group_id) REFERENCES sc_attribute_filters (group_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_attribute_filter_descriptions_languages (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Product associations
 CREATE TABLE IF NOT EXISTS sc_product_association_types (
-  product_association_type_id  TINYINT(3) UNSIGNED  NOT NULL,
-  PRIMARY KEY pk_product_association_type_id (product_association_type_id)
+  association_type_id  TINYINT(3) UNSIGNED  NOT NULL,
+  PRIMARY KEY pk_association_type_id (association_type_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-CREATE TABLE IF NOT EXISTS sc_product_association_type_descriptions (
-  product_association_type_id    TINYINT(3) UNSIGNED  NOT NULL,
-  language_id                    CHAR(5)              CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
-  product_association_type_name  VARCHAR(255),
-  PRIMARY KEY pk_id (product_association_type_id, language_id),
-  FOREIGN KEY fk_product_association_type_id (product_association_type_id) REFERENCES sc_product_association_types (product_association_type_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+CREATE TABLE IF NOT EXISTS sc_product_association_type_names (
+  association_type_id    TINYINT(3) UNSIGNED  NOT NULL,
+  language_id            CHAR(5)              CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
+  association_type_name  VARCHAR(255),
+  PRIMARY KEY pk_product_association_type_names_id (association_type_id, language_id),
+  FOREIGN KEY fk_product_association_type_names_product_association_types (association_type_id) REFERENCES sc_product_association_types (association_type_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_product_association_type_names_languages (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
-INSERT IGNORE INTO sc_product_association_types (product_association_type_id)
+INSERT IGNORE INTO sc_product_association_types (association_type_id)
   VALUES (0);
 
 INSERT IGNORE
   INTO
-    sc_product_association_type_descriptions (product_association_type_id, language_id, product_association_type_name)
+    sc_product_association_type_names (association_type_id, language_id, association_type_name)
   VALUES
     ('0', 'de-DE', 'Verwandte Produkte'),
     ('0', 'en-GB', 'Related products'),
@@ -1559,57 +1560,57 @@ INSERT IGNORE
     ('0', 'pt-PT', 'produtos relacionados');
 
 CREATE TABLE IF NOT EXISTS sc_product_associations (
-  product_association_id       INT(10) UNSIGNED       NOT NULL  AUTO_INCREMENT,
-  product_id                   MEDIUMINT(8) UNSIGNED  NOT NULL,
-  associated_product_id        MEDIUMINT(8) UNSIGNED  NOT NULL,
-  product_association_type_id  TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 0,
-  attribute_id                 MEDIUMINT(8) UNSIGNED  NULL  DEFAULT NULL,
-  from_date                    TIMESTAMP              NOT NULL,
-  thru_date                    TIMESTAMP              NULL  DEFAULT NULL,
-  PRIMARY KEY pk_product_association_id (product_association_id),
-  FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_associated_product_id (associated_product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_product_association_type_id (product_association_type_id) REFERENCES sc_product_association_types (product_association_type_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_attribute_id (attribute_id) REFERENCES sc_product_attributes (attribute_id) ON DELETE CASCADE ON UPDATE CASCADE
+  association_id         INT(10) UNSIGNED       NOT NULL  AUTO_INCREMENT,
+  product_id             MEDIUMINT(8) UNSIGNED  NOT NULL,
+  associated_product_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
+  association_type_id    TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 0,
+  attribute_id           MEDIUMINT(8) UNSIGNED  NULL  DEFAULT NULL,
+  from_date              TIMESTAMP              NOT NULL,
+  thru_date              TIMESTAMP              NULL  DEFAULT NULL,
+  PRIMARY KEY pk_association_id (association_id),
+  FOREIGN KEY fk_product_associations_products_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_product_associations_products_associated_product_id (associated_product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_product_associations_product_association_types (association_type_id) REFERENCES sc_product_association_types (association_type_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_product_associations_product_attributes (attribute_id) REFERENCES sc_product_attributes (attribute_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_product_association_descriptions (
-  product_association_id  INT(10) UNSIGNED  NOT NULL,
-  language_id             CHAR(5)           CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
-  description             VARCHAR(255)      NOT NULL,
-  PRIMARY KEY pk_id (product_association_id, language_id),
-  FOREIGN KEY fk_product_association_id (product_association_id) REFERENCES sc_product_associations (product_association_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+  association_id  INT(10) UNSIGNED  NOT NULL,
+  language_id     CHAR(5)           CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
+  description     VARCHAR(255)      NOT NULL,
+  PRIMARY KEY pk_product_association_descriptions_id (association_id, language_id),
+  FOREIGN KEY fk_product_association_descriptions_product_associations (association_id) REFERENCES sc_product_associations (association_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_product_association_descriptions_languages (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 -- Product bundles for cross-selling
 CREATE TABLE IF NOT EXISTS sc_product_bundles (
-  product_bundle_id  MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
-  bundle_discount    DECIMAL(4,3)           NULL  DEFAULT NULL,
-  PRIMARY KEY pk_product_bundle_id (product_bundle_id)
+  bundle_id        MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  bundle_discount  DECIMAL(4,3)           NULL  DEFAULT NULL,
+  PRIMARY KEY pk_product_bundles_id (bundle_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_product_bundle_stores (
-  product_bundle_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
-  store_id           TINYINT(3) UNSIGNED    NOT NULL,
-  from_date          DATE                   NULL  DEFAULT NULL,
-  thru_date          DATE                   NULL  DEFAULT NULL,
-  bundle_discount    DECIMAL(4,3)           NULL  DEFAULT NULL,
-  PRIMARY KEY pk_id (product_bundle_id,store_id),
-  FOREIGN KEY fk_product_bundle_id (product_bundle_id) REFERENCES sc_product_bundles (product_bundle_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE
+  bundle_id        MEDIUMINT(8) UNSIGNED  NOT NULL,
+  store_id         TINYINT(3) UNSIGNED    NOT NULL,
+  from_date        DATE                   NULL  DEFAULT NULL,
+  thru_date        DATE                   NULL  DEFAULT NULL,
+  bundle_discount  DECIMAL(4,3)           NULL  DEFAULT NULL,
+  PRIMARY KEY pk_product_bundle_stores_id (bundle_id, store_id),
+  FOREIGN KEY fk_product_bundle_stores_product_bundles (bundle_id) REFERENCES sc_product_bundles (bundle_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_product_bundle_stores_stores (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_product_bundle_products (
-  product_bundle_id  MEDIUMINT(8) UNSIGNED  NOT NULL,
-  product_id         MEDIUMINT(8) UNSIGNED  NOT NULL,
-  display_position   TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 0,
-  total_quantity     SMALLINT(5) UNSIGNED   NOT NULL  DEFAULT 1,
-  free_quantity      SMALLINT(5) UNSIGNED   NOT NULL  DEFAULT 0,
-  product_discount   DECIMAL(4,3)           NULL  DEFAULT NULL,
-  PRIMARY KEY pk_id (product_bundle_id,product_id),
-  FOREIGN KEY fk_product_bundle_id (product_bundle_id) REFERENCES sc_product_bundles (product_bundle_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  bundle_id         MEDIUMINT(8) UNSIGNED  NOT NULL,
+  product_id        MEDIUMINT(8) UNSIGNED  NOT NULL,
+  display_position  TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 0,
+  total_quantity    SMALLINT(5) UNSIGNED   NOT NULL  DEFAULT 1,
+  free_quantity     SMALLINT(5) UNSIGNED   NOT NULL  DEFAULT 0,
+  product_discount  DECIMAL(4,3)           NULL  DEFAULT NULL,
+  PRIMARY KEY pk_product_bundle_products_id (bundle_id, product_id),
+  FOREIGN KEY fk_product_bundle_products_product_bundles (bundle_id) REFERENCES sc_product_bundles (bundle_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_product_bundle_products_products (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
   INDEX ix_display_position (display_position ASC)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
@@ -1627,8 +1628,8 @@ CREATE TABLE IF NOT EXISTS sc_orders (
   date_confirmed  TIMESTAMP            NULL  DEFAULT NULL,
   date_cancelled  TIMESTAMP            NULL  DEFAULT NULL,
   PRIMARY KEY pk_order_id (order_id),
-  FOREIGN KEY fk_store_id (store_id) REFERENCES sc_stores (store_id) ON DELETE NO ACTION ON UPDATE CASCADE,
-  FOREIGN KEY fk_customer_id (customer_id) REFERENCES sc_customers (customer_id) ON DELETE NO ACTION ON UPDATE CASCADE,
+  FOREIGN KEY fk_orders_stores (store_id) REFERENCES sc_stores (store_id) ON DELETE NO ACTION ON UPDATE CASCADE,
+  FOREIGN KEY fk_orders_customers (customer_id) REFERENCES sc_customers (customer_id) ON DELETE NO ACTION ON UPDATE CASCADE,
   INDEX ix_cart (cart_uuid, cart_rand),
   INDEX ix_date_confirmed (date_confirmed DESC),
   INDEX ix_date_created (date_created ASC)
@@ -1641,9 +1642,9 @@ CREATE TABLE IF NOT EXISTS sc_order_products (
   unit_price     DECIMAL(18,9)          NOT NULL  DEFAULT 0,
   date_added     TIMESTAMP              NOT NULL,
   date_modified  TIMESTAMP              NULL  DEFAULT NULL,
-  PRIMARY KEY pk_id (order_id,product_id),
-  FOREIGN KEY fk_order_id (order_id) REFERENCES sc_orders (order_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_product_id (product_id) REFERENCES sc_products (product_id) ON DELETE NO ACTION ON UPDATE CASCADE
+  PRIMARY KEY pk_order_products_id (order_id, product_id),
+  FOREIGN KEY fk_order_products_orders (order_id) REFERENCES sc_orders (order_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_order_products_products (product_id) REFERENCES sc_products (product_id) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=ascii  COLLATE=ascii_bin;
 
 CREATE TABLE IF NOT EXISTS sc_shipping_carriers (
@@ -1659,9 +1660,9 @@ CREATE TABLE IF NOT EXISTS sc_shipping_carrier_descriptions (
   language_id         CHAR(5)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
   local_carrier_name  VARCHAR(255)          NOT NULL  DEFAULT '',
   description         VARCHAR(255)          NULL  DEFAULT NULL,
-  PRIMARY KEY pk_id (carrier_id, language_id),
-  FOREIGN KEY fk_carrier_id (carrier_id) REFERENCES sc_shipping_carriers (carrier_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_shipping_carrier_descriptions_id (carrier_id, language_id),
+  FOREIGN KEY fk_shipping_carrier_descriptions_shipping_carriers (carrier_id) REFERENCES sc_shipping_carriers (carrier_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_shipping_carrier_descriptions_languages (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_shipments (
@@ -1677,16 +1678,16 @@ CREATE TABLE IF NOT EXISTS sc_shipments (
   tracking_code   VARCHAR(255)          NULL  DEFAULT NULL,
   tracking_uri    VARCHAR(255)          NULL  DEFAULT NULL,
   PRIMARY KEY pk_shipment_id (shipment_id),
-  FOREIGN KEY fk_address_id (address_id) REFERENCES sc_addresses (address_id) ON DELETE NO ACTION ON UPDATE CASCADE,
-  FOREIGN KEY fk_carrier_id (carrier_id) REFERENCES sc_shipping_carriers (carrier_id) ON DELETE NO ACTION ON UPDATE CASCADE
+  FOREIGN KEY fk_shipments_addresses (address_id) REFERENCES sc_addresses (address_id) ON DELETE NO ACTION ON UPDATE CASCADE,
+  FOREIGN KEY fk_shipments_shipping_carriers (carrier_id) REFERENCES sc_shipping_carriers (carrier_id) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_order_shipments (
-  order_id       INT(10) UNSIGNED  NOT NULL,
-  shipment_id    INT(10) UNSIGNED  NOT NULL,
-  PRIMARY KEY pk_id (order_id, shipment_id),
-  FOREIGN KEY fk_order_id (order_id) REFERENCES sc_orders (order_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_shipment_id (shipment_id) REFERENCES sc_shipments (shipment_id) ON DELETE NO ACTION ON UPDATE CASCADE
+  order_id     INT(10) UNSIGNED  NOT NULL,
+  shipment_id  INT(10) UNSIGNED  NOT NULL,
+  PRIMARY KEY pk_order_shipments_id (order_id, shipment_id),
+  FOREIGN KEY fk_order_shipments_orders (order_id) REFERENCES sc_orders (order_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_order_shipments_shipments (shipment_id) REFERENCES sc_shipments (shipment_id) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_invoices (
@@ -1698,16 +1699,16 @@ CREATE TABLE IF NOT EXISTS sc_invoices (
   total         DECIMAL(18,3)          NOT NULL,
   amount_due    DECIMAL(18,3)          NOT NULL,
   PRIMARY KEY pk_invoice_id (invoice_id),
-  FOREIGN KEY fk_currency_id (currency_id) REFERENCES sc_currencies (currency_id) ON DELETE NO ACTION ON UPDATE CASCADE,
+  FOREIGN KEY fk_invoices_currencies (currency_id) REFERENCES sc_currencies (currency_id) ON DELETE NO ACTION ON UPDATE CASCADE,
   INDEX ix_invoice_date (invoice_date DESC)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_invoice_orders (
   invoice_id  INT(10) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   order_id    INT(10) UNSIGNED  NOT NULL,
-  PRIMARY KEY pk_invoice_order_id (invoice_id, order_id),
-  FOREIGN KEY fk_invoice_id (invoice_id) REFERENCES sc_invoices (invoice_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_order_id (order_id) REFERENCES sc_orders (order_id) ON DELETE NO ACTION ON UPDATE CASCADE
+  PRIMARY KEY pk_invoice_orders_id (invoice_id, order_id),
+  FOREIGN KEY fk_invoice_orders_invoices (invoice_id) REFERENCES sc_invoices (invoice_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_invoice_orders_orders (order_id) REFERENCES sc_orders (order_id) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 
@@ -1731,7 +1732,7 @@ CREATE TABLE IF NOT EXISTS sc_payment_services (
   from_date                    TIMESTAMP             NOT NULL,
   thru_date                    TIMESTAMP             NULL  DEFAULT NULL,
   PRIMARY KEY pk_payment_service_id (payment_service_id),
-  FOREIGN KEY fk_payment_service_provider_id (payment_service_provider_id) REFERENCES sc_payment_service_providers (payment_service_provider_id) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY fk_payment_services_payment_service_providers (payment_service_provider_id) REFERENCES sc_payment_service_providers (payment_service_provider_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_payment_service_descriptions (
@@ -1739,9 +1740,9 @@ CREATE TABLE IF NOT EXISTS sc_payment_service_descriptions (
   language_id         CHAR(5)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
   local_service_name  VARCHAR(255)          NOT NULL  DEFAULT '',
   description         VARCHAR(255)          NULL  DEFAULT NULL,
-  PRIMARY KEY pk_id (payment_service_id, language_id),
-  FOREIGN KEY fk_payment_service_id (payment_service_id) REFERENCES sc_payment_services (payment_service_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_language_id (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY pk_payment_service_descriptions_id (payment_service_id, language_id),
+  FOREIGN KEY fk_payment_service_descriptions_payment_services (payment_service_id) REFERENCES sc_payment_services (payment_service_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_payment_service_descriptions_languages (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_payments (
@@ -1754,23 +1755,23 @@ CREATE TABLE IF NOT EXISTS sc_payments (
   amount              DECIMAL(18,3)         NOT NULL,
   attributes          TEXT                  NULL  DEFAULT NULL,
   PRIMARY KEY pk_payment_id (payment_id),
-  FOREIGN KEY fk_currency_id (currency_id) REFERENCES sc_currencies (currency_id) ON DELETE NO ACTION ON UPDATE CASCADE,
-  FOREIGN KEY fk_payment_service_id (payment_service_id) REFERENCES sc_payment_services (payment_service_id) ON DELETE NO ACTION ON UPDATE CASCADE,
+  FOREIGN KEY fk_payments_currencies (currency_id) REFERENCES sc_currencies (currency_id) ON DELETE NO ACTION ON UPDATE CASCADE,
+  FOREIGN KEY fk_payments_payment_services (payment_service_id) REFERENCES sc_payment_services (payment_service_id) ON DELETE NO ACTION ON UPDATE CASCADE,
   INDEX ix_transaction_id (transaction_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_order_payments (
   order_id    INT(10) UNSIGNED  NOT NULL,
   payment_id  INT(10) UNSIGNED  NOT NULL,
-  PRIMARY KEY pk_order_payment_id (order_id, payment_id),
-  FOREIGN KEY fk_order_id (order_id) REFERENCES sc_orders (order_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_payment_id (payment_id) REFERENCES sc_payments (payment_id) ON DELETE NO ACTION ON UPDATE CASCADE
+  PRIMARY KEY pk_order_payments_id (order_id, payment_id),
+  FOREIGN KEY fk_order_payments_orders_order_id (order_id) REFERENCES sc_orders (order_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_order_payments_payments_payment_id (payment_id) REFERENCES sc_payments (payment_id) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_invoice_payments (
   invoice_id  INT(10) UNSIGNED  NOT NULL,
   payment_id  INT(10) UNSIGNED  NOT NULL,
-  PRIMARY KEY pk_invoice_payment_id (invoice_id, payment_id),
-  FOREIGN KEY fk_invoice_id (invoice_id) REFERENCES sc_invoices (invoice_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_payment_id (payment_id) REFERENCES sc_payments (payment_id) ON DELETE NO ACTION ON UPDATE CASCADE
+  PRIMARY KEY pk_invoice_payments_id (invoice_id, payment_id),
+  FOREIGN KEY fk_invoice_payments_invoices (invoice_id) REFERENCES sc_invoices (invoice_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_invoice_payments_payments (payment_id) REFERENCES sc_payments (payment_id) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
