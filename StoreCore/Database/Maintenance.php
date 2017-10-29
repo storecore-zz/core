@@ -187,7 +187,7 @@ class Maintenance extends \StoreCore\AbstractModel
             }
 
         } catch (\PDOException $e) {
-            $logger->error($e->getMessage());
+            $this->Logger->error($e->getMessage());
             return false;
         }
 
@@ -222,9 +222,6 @@ class Maintenance extends \StoreCore\AbstractModel
      */
     public function update()
     {
-        // Ignore a null logger
-        $logger = new \StoreCore\FileSystem\Logger();
-
         try {
             // First restore the StoreCore default database
             $this->restore();
@@ -237,10 +234,10 @@ class Maintenance extends \StoreCore\AbstractModel
             }
 
             $this->saveConfigurationSetting('STORECORE_DATABASE_VERSION_INSTALLED', $version);
-            $logger->notice('StoreCore database version ' . self::VERSION . ' was installed.');
+            $this->Logger->notice('StoreCore database version ' . self::VERSION . ' was installed.');
 
         } catch (\PDOException $e) {
-            $logger->error($e->getMessage());
+            $this->Logger->error($e->getMessage());
             return false;
         }
 
