@@ -40,6 +40,7 @@ class Asset
         'svg'   => 'image/svg+xml',
         'ttc'   => 'application/font-sfnt',
         'ttf'   => 'application/font-sfnt',
+        'webp'  => 'image/webp',
         'woff'  => 'application/font-woff',
         'woff2' => 'font/woff2',
     );
@@ -48,8 +49,14 @@ class Asset
      * Silently publish a cacheable asset file.
      *
      * @param string $filename
+     *   Name of the cached asset file.
+     *
      * @param null|string $filetype
-     * @return void
+     *   Optional file extension for the cached asset.  If the file type is not
+     *   provided, the constructor will try to derive the file type from the
+     *   extension in the filename.
+     *
+     * @return self
      */
     public function __construct($filename, $filetype = null)
     {
@@ -135,6 +142,8 @@ class Asset
      * Set the asset filename.
      *
      * @param string $filename
+     *   Filename of the cacheable asset file.
+     *
      * @return void
      */
     private function setFileName($filename)
@@ -147,6 +156,8 @@ class Asset
      * Set the asset filetype.
      *
      * @param string $filetype
+     *   Filename extension without the leading dot.
+     *
      * @return void
      */
     private function setFileType($filetype)

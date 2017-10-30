@@ -166,6 +166,7 @@ class Installer extends \StoreCore\AbstractController
             STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'jpeg' => true,
             STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'png'  => true,
             STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'svg'  => false,
+            STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . 'webp' => true,
             STORECORE_FILESYSTEM_CACHE_DIR => true,
             STORECORE_FILESYSTEM_CACHE_DATA_DIR => true,
             STORECORE_FILESYSTEM_CACHE_OBJECTS_DIR => true,
