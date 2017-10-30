@@ -14,4 +14,33 @@ class Image
 {
     /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
+    
+    /**
+     * @var string $Alt
+     *   Alternative text for the `alt` attribute of an `<img>` tag.
+     *   Defaults to an empty string.
+     */
+    private $Alt = '';
+
+    /**
+     * Set the image alt attribute.
+     *
+     * @param string $alternative_text
+     *   Alternative text for the `alt` attribute.
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     *   Throws a Standard PHP Library (SPL) invalid argument logic exception
+     *   if the alternative text is not a string.
+     */
+    public function setAlt($alternative_text)
+    {
+        if (!is_string($alternative_text)) {
+            throw new \InvalidArgumentException();
+        }
+
+        $alternative_text = trim($alternative_text);
+        $this->Alt = $alternative_text;
+    }
 }
