@@ -40,6 +40,7 @@ class Asset
         'svg'   => 'image/svg+xml',
         'ttc'   => 'application/font-sfnt',
         'ttf'   => 'application/font-sfnt',
+        'webp'  => 'image/webp',
         'woff'  => 'application/font-woff',
         'woff2' => 'font/woff2',
     );
