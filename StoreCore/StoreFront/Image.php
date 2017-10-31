@@ -14,13 +14,42 @@ class Image
 {
     /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
-    
+
     /**
      * @var string $Alt
      *   Alternative text for the `alt` attribute of an `<img>` tag.
      *   Defaults to an empty string.
      */
     private $Alt = '';
+
+    /**
+     * Convert the image object to an image HTML tag.
+     *
+     * @param void
+     *
+     * @return string
+     *   Returns the image as a string with an HTML5 `<img>` tag.
+     */
+    public function __toString()
+    {
+        $str  = '<img';
+        $str .= ' alt="'. htmlentities($this->getAlt()) . '"';
+        $str .= '>';
+        return $str;
+    }
+
+    /**
+     * Get the image alt attribute.
+     *
+     * @param void
+     *
+     * @return string
+     *   Returns the alternative text from the `alt` attribute of an image.
+     */
+    public function getAlt()
+    {
+        return $this->Alt;
+    }
 
     /**
      * Set the image alt attribute.
@@ -40,6 +69,7 @@ class Image
             throw new \InvalidArgumentException();
         }
 
+        $alternative_text = strip_tags($alternative_text);
         $alternative_text = trim($alternative_text);
         $this->Alt = $alternative_text;
     }
