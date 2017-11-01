@@ -33,7 +33,7 @@ class Image
      *   Image file URL for the `src` attribute of the `<img>`.  Defaults to
      *   a data URI for a 1×1 transparent pixel.
      */
-    private $Source = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+    protected $Source = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
 
     /**
      * @var int|null $Width
@@ -211,7 +211,7 @@ class Image
         if ($width_in_pixels < 1 || $width_in_pixels > 3840) {
             throw new \DomainException();
         }
-        
+
         $this->Width = $width_in_pixels;
     }
 }
