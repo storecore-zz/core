@@ -182,7 +182,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
      * @expectedException \DomainException
      * @testdox Public setWidth() method throws \DomainException on 0 (zero)
      */
-    public function testPublicSetHeightMethodThrowsDomainExceptionOnWidth()
+    public function testPublicSetWidthMethodThrowsDomainExceptionOnZero()
     {
         $image = new \StoreCore\StoreFront\Image();
         $image->setWidth(0);
