@@ -29,6 +29,13 @@ class Image
     private $Height;
 
     /**
+     * @var string $Source
+     *   Image file URL for the `src` attribute of the `<img>`.  Defaults to
+     *   a data URI for a 1×1 transparent pixel.
+     */
+    private $Source = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+
+    /**
      * @var int|null $Width
      *   Image width in pixels.
      */
@@ -46,9 +53,13 @@ class Image
     {
         $str  = '<img';
         $str .= ' alt="'. htmlentities($this->getAlt()) . '"';
-        
+
         if ($this->getHeight() !== null) {
             $str .= ' height="' . $this->getHeight() . '"';
+        }
+
+        if ($this->Source !== null) {
+            $str .= ' src="' . $this->Source . '"';
         }
 
         if ($this->getWidth() !== null) {
@@ -156,6 +167,24 @@ class Image
         $this->Height = $height_in_pixels;
     }
 
+    /**
+     * Set the image URL.
+     *
+     * @param $image_url
+     *   URL of the image file for the `src` attribute.
+     *
+     * @return void
+     */
+    public function setSource($image_url)
+    {
+        if (!is_string($image_url)) {
+            throw new \InvalidArgumentException();
+        }
+
+        $image_url = filter_var($image_url, FILTER_SANITIZE_URL);
+        $this->Source = $image_url;
+    }
+    
     /**
      * Set the image width.
      *

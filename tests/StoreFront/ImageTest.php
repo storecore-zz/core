@@ -113,7 +113,6 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($method->isPublic());
     }
 
-
     /**
      * @testdox Public setAlt() method exists
      */
@@ -158,6 +157,24 @@ class ImageTest extends PHPUnit_Framework_TestCase
     {
         $image = new \StoreCore\StoreFront\Image();
         $image->setHeight(0);
+    }
+
+    /**
+     * @testdox Public setSource() method exists
+     */
+    public function testPublicSetSourceMethodExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\StoreFront\Image');
+        $this->assertTrue($class->hasMethod('setSource'));
+    }
+
+    /**
+     * @testdox Public setSource() method is public
+     */
+    public function testPublicSetSourceMethodIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\StoreFront\Image', 'setSource');
+        $this->assertTrue($method->isPublic());
     }
 
     /**
