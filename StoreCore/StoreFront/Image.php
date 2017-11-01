@@ -58,9 +58,7 @@ class Image
             $str .= ' height="' . $this->getHeight() . '"';
         }
 
-        if ($this->Source !== null) {
-            $str .= ' src="' . $this->Source . '"';
-        }
+        $str .= ' src="' . $this->Source . '"';
 
         if ($this->getWidth() !== null) {
             $str .= ' width="' . $this->getWidth() . '"';
