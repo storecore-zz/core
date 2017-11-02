@@ -44,7 +44,7 @@ class Image extends \StoreCore\StoreFront\Image
     {
         $str = '<amp-img alt="' . $this->getAlt() . '" layout="'. $this->Layout
             . '" height="' . $this->getHeight() . '" src="' . $this->Source . '" width="'
-            . $this->getWidth() . '">';
+            . $this->getWidth() . '"></amp-img>';
         return $str;
     }
 
