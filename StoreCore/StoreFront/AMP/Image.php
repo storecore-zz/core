@@ -17,6 +17,12 @@ class Image extends \StoreCore\StoreFront\Image
     const VERSION = '0.1.0';
 
     /**
+     * @var \StoreCore\StoreFront\AMP\FallbackImage|null $Fallback
+     *   Optional AMP fallback image.
+     */
+    private $Fallback;
+    
+    /**
      * @var string $Layout
      *   The `layout` attribute of the `<amp-img>` element.
      */
@@ -44,8 +50,27 @@ class Image extends \StoreCore\StoreFront\Image
     {
         $str = '<amp-img alt="' . $this->getAlt() . '" layout="'. $this->Layout
             . '" height="' . $this->getHeight() . '" src="' . $this->Source . '" width="'
-            . $this->getWidth() . '"></amp-img>';
+            . $this->getWidth() . '">';
+
+        if ($this->Fallback !== null) {
+            $str .= (string)$this->Fallback;
+        }
+
+        $str .= '</amp-img>';
         return $str;
+    }
+
+    /**
+     * Add a fallback image.
+     *
+     * @param \StoreCore\StoreFront\AMP\FallbackImage $amp_fallback_image
+     *   AMP fallback image.
+     *
+     * @return void
+     */
+    public function setFallback(FallbackImage $amp_fallback_image)
+    {
+        $this->Fallback = $amp_fallback_image;
     }
 
     /**

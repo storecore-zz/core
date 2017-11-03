@@ -56,4 +56,22 @@ class AMPImageTest extends PHPUnit_Framework_TestCase
         $img = new \StoreCore\StoreFront\AMP\Image();
         $this->assertContains(' layout="responsive"', (string)$img);
     }
+
+    /**
+     * @testdox Public setFallback() method exists
+     */
+    public function testPublicSetFallbackMethodExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\StoreFront\AMP\Image');
+        $this->assertTrue($class->hasMethod('setFallback'));
+    }
+
+    /**
+     * @testdox Public setFallback() method is public
+     */
+    public function testPublicSetFallbackMethodIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\StoreFront\AMP\Image', 'setFallback');
+        $this->assertTrue($method->isPublic());
+    }
 }
