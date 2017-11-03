@@ -45,7 +45,7 @@ class AMPImageTest extends PHPUnit_Framework_TestCase
     public function testPublicToStringMethodIsPublicReturnsAmpImgTag()
     {
         $img = new \StoreCore\StoreFront\AMP\Image();
-        $this->assertContains('<amp-img ', (string)$img);
+        $this->assertStringStartsWith('<amp-img ', (string)$img);
     }
 
     /**
@@ -54,6 +54,6 @@ class AMPImageTest extends PHPUnit_Framework_TestCase
     public function testPublicToStringMethodIsPublicReturnsLayoutIsResponsiveAttributeByDefault()
     {
         $img = new \StoreCore\StoreFront\AMP\Image();
-        $this->assertContains('layout="responsive"', (string)$img);
+        $this->assertContains(' layout="responsive"', (string)$img);
     }
 }
