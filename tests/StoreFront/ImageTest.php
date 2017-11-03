@@ -50,6 +50,16 @@ class ImageTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @testdox Public __toString() method returns <img> tag
+     */
+    public function testPublicToStringMethodReturnsImgTag()
+    {
+        $image = new \StoreCore\StoreFront\Image();
+        $this->assertStringStartsWith('<img ', (string)$image);
+        $this->assertEmpty(strip_tags((string)$image));
+    }
+
+    /**
      * @testdox Public getAlt() method exists
      */
     public function testPublicGetAltMethodExists()
@@ -68,7 +78,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @testdox Public getAlt() returns empty string by default
+     * @testdox Public getAlt() method returns empty string by default
      */
     public function testPublicGetAltMethodReturnsEmptyStringByDefault()
     {
