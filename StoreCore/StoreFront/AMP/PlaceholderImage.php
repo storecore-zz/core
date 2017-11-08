@@ -20,15 +20,15 @@ class PlaceholderImage extends Image
      * @var string $Layout
      *   The `layout` attribute of a placeholder image in AMP always is `fill`.
      */
-    private $Layout = 'fill';
+    protected $Layout = LayoutInterface::LAYOUT_FILL;
 
     /**
      * @var array $SupportedLayouts
      *   An AMP placeholder image always fills the parent, so the only supported
      *   layout is `fill`.
      */
-    private $SupportedLayouts = array(
-        'fill',
+    protected $SupportedLayouts = array(
+        LayoutInterface::LAYOUT_FILL,
     );
 
     /**
@@ -45,6 +45,6 @@ class PlaceholderImage extends Image
     {
         return
             '<amp-img placeholder src="' . $this->Source 
-            . '" layout="' . $this->Layout . '"></amp-img>';
+            . '" layout="' . $this->getLayout() . '"></amp-img>';
     }
 }
