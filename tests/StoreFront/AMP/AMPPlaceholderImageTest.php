@@ -5,10 +5,21 @@ class AMPPlaceholderImageTest extends PHPUnit_Framework_TestCase
      * @group distro
      * @testdox Store front AMP placeholder image class file exists
      */
-    public function testStoreFrontAMPImageClassFileExists()
+    public function testStoreFrontAMPPlaceholderImageClassFileExists()
     {
         $this->assertFileExists(
             STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'StoreFront' . DIRECTORY_SEPARATOR . 'AMP' . DIRECTORY_SEPARATOR . 'PlaceholderImage.php'
+        );
+    }
+
+    /**
+     * @group distro
+     * @testdox Extended AMP image class file exists
+     */
+    public function testExtendedAMPImageClassFileExists()
+    {
+        $this->assertFileExists(
+            STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'StoreFront' . DIRECTORY_SEPARATOR . 'AMP' . DIRECTORY_SEPARATOR . 'Image.php'
         );
     }
 
@@ -44,8 +55,8 @@ class AMPPlaceholderImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicToStringMethodIsPublicReturnsAmpImgTag()
     {
-        $img = new \StoreCore\StoreFront\AMP\Image();
-        $this->assertContains('<amp-img ', (string)$img);
+        $placeholder_image = new \StoreCore\StoreFront\AMP\PlaceholderImage();
+        $this->assertContains('<amp-img ', (string)$placeholder_image);
     }
 
     /**
@@ -53,8 +64,8 @@ class AMPPlaceholderImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicToStringMethodIsPublicReturnsPlaceholderAttribute()
     {
-        $img = new \StoreCore\StoreFront\AMP\PlaceholderImage();
-        $this->assertContains(' placeholder', (string)$img);
+        $placeholder_image = new \StoreCore\StoreFront\AMP\PlaceholderImage();
+        $this->assertContains(' placeholder', (string)$placeholder_image);
     }
 
     /**
@@ -62,7 +73,43 @@ class AMPPlaceholderImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicToStringMethodIsPublicReturnsLayoutIsFillAttribute()
     {
-        $img = new \StoreCore\StoreFront\AMP\PlaceholderImage();
-        $this->assertContains(' layout="fill"', (string)$img);
+        $placeholder_image = new \StoreCore\StoreFront\AMP\PlaceholderImage();
+        $this->assertContains(' layout="fill"', (string)$placeholder_image);
+    }
+
+    /**
+     * @testdox Public __toString() method does not return alt attribute
+     */
+    public function testPublicToStringMethodDoesNotReturnAltAttribute()
+    {
+        $placeholder_image = new \StoreCore\StoreFront\AMP\PlaceholderImage();
+        $this->assertNotContains(' alt=', (string)$placeholder_image);
+    }
+
+    /**
+     * @testdox Public __toString() method does not return height attribute
+     */
+    public function testPublicToStringMethodDoesNotReturnHeightAttribute()
+    {
+        $placeholder_image = new \StoreCore\StoreFront\AMP\PlaceholderImage();
+        $this->assertNotContains(' height=', (string)$placeholder_image);
+    }
+
+    /**
+     * @testdox Public __toString() method does not return width attribute
+     */
+    public function testPublicToStringMethodDoesNotReturnWidthAttribute()
+    {
+        $placeholder_image = new \StoreCore\StoreFront\AMP\PlaceholderImage();
+        $this->assertNotContains(' width=', (string)$placeholder_image);
+    }
+
+    /**
+     * @testdox Public getLayout() method returns 'fill' by default
+     */
+    public function testPublicGetLayoutMethodReturnsFillByDefault()
+    {
+        $placeholder_image = new \StoreCore\StoreFront\AMP\PlaceholderImage();
+        $this->assertEquals('fill', $placeholder_image->getLayout());
     }
 }

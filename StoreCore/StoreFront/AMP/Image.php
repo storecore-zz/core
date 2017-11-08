@@ -11,7 +11,7 @@ namespace StoreCore\StoreFront\AMP;
  * @see       https://www.ampproject.org/docs/reference/components/amp-img
  * @version   0.1.0
  */
-class Image extends \StoreCore\StoreFront\Image
+class Image extends \StoreCore\StoreFront\Image implements LayoutInterface
 {
     /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
@@ -26,18 +26,19 @@ class Image extends \StoreCore\StoreFront\Image
      * @var string $Layout
      *   The `layout` attribute of the `<amp-img>` element.
      */
-    private $Layout = 'responsive';
+    protected $Layout = LayoutInterface::LAYOUT_RESPONSIVE;
 
     /**
      * @var array $SupportedLayouts
+     *   Layouts supported by the `<amp-img>` element.
      */
-    private $SupportedLayouts = array(
-        'fill',
-        'fixed',
-        'fixed-height',
-        'flex-item',
-        'nodisplay',
-        'responsive',
+    protected $SupportedLayouts = array(
+        LayoutInterface::LAYOUT_FILL,
+        LayoutInterface::LAYOUT_FIXED,
+        LayoutInterface::LAYOUT_FIXED_HEIGHT,
+        LayoutInterface::LAYOUT_FLEX_ITEM,
+        LayoutInterface::LAYOUT_NODISPLAY,
+        LayoutInterface::LAYOUT_RESPONSIVE,
     );
 
     /**
@@ -48,7 +49,7 @@ class Image extends \StoreCore\StoreFront\Image
      */
     public function __toString()
     {
-        $str = '<amp-img alt="' . $this->getAlt() . '" layout="'. $this->Layout
+        $str = '<amp-img alt="' . $this->getAlt() . '" layout="'. $this->getLayout()
             . '" height="' . $this->getHeight() . '" src="' . $this->Source . '" width="'
             . $this->getWidth() . '">';
 
@@ -58,6 +59,21 @@ class Image extends \StoreCore\StoreFront\Image
 
         $str .= '</amp-img>';
         return $str;
+    }
+
+    /**
+     * Get the layout attribute.
+     *
+     * @param void
+     *
+     * @return string
+     *   Returns the string value of the AMP `layout` attribute.  Defaults to
+     *   `responsive`: photos and other images are set to `layout="responsive"`
+     *   in AMP by default for responsive web design (RWD).
+     */
+    public function getLayout()
+    {
+        return $this->Layout;
     }
 
     /**

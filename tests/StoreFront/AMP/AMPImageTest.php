@@ -14,6 +14,17 @@ class AMPImageTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group distro
+     * @testdox Implemented LayoutInterface interface file exists
+     */
+    public function testImplementedLayoutInterfaceInterfaceFileExists()
+    {
+        $this->assertFileExists(
+            STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'StoreFront' . DIRECTORY_SEPARATOR . 'AMP' . DIRECTORY_SEPARATOR . 'LayoutInterface.php'
+        );
+    }
+
+    /**
+     * @group distro
      */
     public function testVersionConstantIsDefined()
     {
@@ -55,6 +66,33 @@ class AMPImageTest extends PHPUnit_Framework_TestCase
     {
         $img = new \StoreCore\StoreFront\AMP\Image();
         $this->assertContains(' layout="responsive"', (string)$img);
+    }
+
+    /**
+     * @testdox Public getLayout() method exists
+     */
+    public function testPublicGetLayoutMethodExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\StoreFront\AMP\Image');
+        $this->assertTrue($class->hasMethod('getLayout'));
+    }
+
+    /**
+     * @testdox Public getLayout() method is public
+     */
+    public function testPublicGetLayoutMethodIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\StoreFront\AMP\Image', 'getLayout');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @testdox Public getLayout() method returns 'responsive' by default
+     */
+    public function testPublicGetLayoutMethodReturnsResponsiveByDefault()
+    {
+        $image = new \StoreCore\StoreFront\AMP\Image();
+        $this->assertEquals('responsive', $image->getLayout());
     }
 
     /**
