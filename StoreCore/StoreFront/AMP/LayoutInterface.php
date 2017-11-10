@@ -36,7 +36,7 @@ interface LayoutInterface
     const LAYOUT_RESPONSIVE   = 'responsive';
 
     /**
-     * Set the AMP layout attribute.
+     * Get the AMP layout attribute.
      *
      * @param void
      *

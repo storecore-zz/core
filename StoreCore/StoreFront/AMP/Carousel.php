@@ -12,7 +12,7 @@ namespace StoreCore\StoreFront\AMP;
  * @see       https://ampbyexample.com/components/amp-carousel/
  * @version   0.1.0
  */
-class Carousel
+class Carousel implements LayoutInterface
 {
     /**
      * @var string VERSION
@@ -68,6 +68,12 @@ class Carousel
     private $Height;
 
     /**
+     * @var string|null $Layout
+     *   Optional `layout` attribute of the `<amp-carousel>` element.
+     */
+    protected $Layout;
+
+    /**
      * @var string $Type
      *   AMP carousel `type` HTML attribute, defaults to `carousel`.
      */
@@ -108,7 +114,20 @@ class Carousel
     {
         return array_push($this->Children, (string)$node);
     }
-    
+
+    /**
+     * Get the AMP layout attribute.
+     *
+     * @param void
+     *
+     * @return string
+     *   Returns the currently set AMP layout attribute as a string.
+     */
+    public function getLayout()
+    {
+        return $this->Layout;
+    }
+
     /**
      * Enable autoplay on sliders.
      *
@@ -175,6 +194,19 @@ class Carousel
             throw new \DomainException();
         }
         $this->Height = $height_in_pixels;
+    }
+
+    /**
+     * Set the AMP layout attribute.
+     *
+     * @param string $layout
+     *   String value for the AMP layout attribute.
+     *
+     * @return void
+     */
+    public function setLayout($layout)
+    {
+        $this->Layout = $layout;
     }
 
     /**
