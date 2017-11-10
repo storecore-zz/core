@@ -47,6 +47,12 @@ class Carousel
     private $Autoplay = false;
 
     /**
+     * @var array $Children
+     *   Images, slides, and other child nodes of the carousel or slider.
+     */
+    private $Children = array();
+
+    /**
      * @var bool $Delay
      *   Delay of autoplaying sliders in milliseconds.  Defaults to 5000.
      *   This delay is only used if the `type="slides"` and `autoplaying`
@@ -89,6 +95,20 @@ class Carousel
         $this->setType($amp_carousel_type);
     }
 
+    /**
+     * Add a photo, image, slide, or other node.
+     *
+     * @param string $node
+     *   HTML node to add to the children of the AMP carousel.
+     *
+     * @return int
+     *   Returns the number of nodes in the carousel.
+     */
+    public function appendChild($node)
+    {
+        return array_push($this->Children, (string)$node);
+    }
+    
     /**
      * Enable autoplay on sliders.
      *

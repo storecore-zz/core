@@ -58,6 +58,44 @@ class AMPCarouselTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @testdox Class has Children property
+     */
+    public function testClassHasChildrenProperty()
+    {
+        $this->assertClassHasAttribute('Children', '\StoreCore\StoreFront\AMP\Carousel');
+    }
+
+    /**
+     * @testdox Public appendChild() method exists
+     */
+    public function testPublicAppendChildMethodExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\StoreFront\AMP\Carousel');
+        $this->assertTrue($class->hasMethod('appendChild'));
+    }
+
+    /**
+     * @testdox Public appendChild() method is public
+     */
+    public function testPublicAppendChildMethodIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\StoreFront\AMP\Carousel', 'appendChild');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @testdox Public appendChild() method returns node count
+     */
+    public function testPublicAppendChildMethodReturnsNodeCount()
+    {
+        $child_node = '<div>...</div>';
+        $carousel = new \StoreCore\StoreFront\AMP\Carousel();
+        $this->assertEquals(1, $carousel->appendChild($child_node));
+        $this->assertEquals(2, $carousel->appendChild($child_node));
+        $this->assertEquals(3, $carousel->appendChild($child_node));
+    }
+
+    /**
      * @testdox Class has Delay property
      */
     public function testClassHasDelayProperty()
