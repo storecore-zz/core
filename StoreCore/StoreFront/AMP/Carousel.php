@@ -39,10 +39,25 @@ class Carousel
     const TYPE_SLIDES = 'slides';
 
     /**
+     * @var int $Height
+     *   Required AMP carousel `height` attribute, specifies the carousel
+     *   height in pixels.
+     */
+    private $Height;
+
+    /**
      * @var string $Type
      *   AMP carousel `type` HTML attribute, defaults to `carousel`.
      */
     private $Type = self::TYPE_CAROUSEL;
+
+    /**
+     * @var int|null $Width
+     *   Optional carousel `width` attribute for a fixed width in pixels.
+     *   If the width is not specified, the carousel fills the full width
+     *   of the parent container.
+     */
+    private $Width;
 
     /**
      * Create a carousel or slider.
@@ -57,7 +72,37 @@ class Carousel
     {
         $this->setType($amp_carousel_type);
     }
-    
+
+    /**
+     * Set the carousel height.
+     *
+     * @param int $height_in_pixels
+     *   Carousel height in pixels (px).
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     *   Throws an invalid argument exception if the height is not a number.
+     *
+     * @throws \DomainException
+     *   Throws a domain exception if the height is smaller than 1.
+     */
+    public function setHeight($height_in_pixels)
+    {
+        if (!is_int($height_in_pixels)) {
+            if (is_numeric($height_in_pixels)) {
+                $height_in_pixels = (int)$height_in_pixels;
+            } else {
+                throw new \InvalidArgumentException();
+            }
+        }
+
+        if ($height_in_pixels < 1) {
+            throw new \DomainException();
+        }
+        $this->Height = $height_in_pixels;
+    }
+
     /**
      * Set the carousel type.
      *
@@ -82,5 +127,36 @@ class Carousel
         } else {
             throw new \InvalidArgumentException();
         }
+    }
+
+    /**
+     * Set the carousel width.
+     *
+     * @param int $width_in_pixels
+     *   Carousel width in pixels (px).
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     *   Throws an invalid argument exception if the width is not a number.
+     *
+     * @throws \DomainException
+     *   Throws a domain exception if the width is smaller than 1.
+     */
+    public function setWidth($width_in_pixels)
+    {
+        if (!is_int($width_in_pixels)) {
+            if (is_numeric($width_in_pixels)) {
+                $width_in_pixels = (int)$width_in_pixels;
+            } else {
+                throw new \InvalidArgumentException();
+            }
+        }
+
+        if ($width_in_pixels < 1) {
+            throw new \DomainException();
+        }
+
+        $this->Width = $width_in_pixels;
     }
 }
