@@ -39,6 +39,22 @@ class Carousel
     const TYPE_SLIDES = 'slides';
 
     /**
+     * @var bool $Autoplay
+     *   Optional `autoplay` attribute for `type="slides"` sliders only.
+     *   If set to true, this advances the slide to the next slide without
+     *   user interaction.
+     */
+    private $Autoplay = false;
+
+    /**
+     * @var bool $Delay
+     *   Delay of autoplaying sliders in milliseconds.  Defaults to 5000.
+     *   This delay is only used if the `type="slides"` and `autoplaying`
+     *   are both set.
+     */
+    private $Delay = 5000;
+
+    /**
      * @var int $Height
      *   Required AMP carousel `height` attribute, specifies the carousel
      *   height in pixels.
@@ -64,13 +80,51 @@ class Carousel
      *
      * @param string $amp_carousel_type
      *   Optional parameter to create a slider instead of a carousel (default).
-     *   If set to 'slides' a slider is created, otherwise a 'carousel'.  
+     *   If set to 'slides' a slider is created, otherwise a 'carousel'.
      *
      * @return self
      */
     public function __construct($amp_carousel_type = self::TYPE_CAROUSEL)
     {
         $this->setType($amp_carousel_type);
+    }
+
+    /**
+     * Enable autoplay on sliders.
+     *
+     * @param int|null $delay
+     *   Optional delay in milliseconds.  Defaults to 5000 for a 5 seconds delay.
+     *
+     * @return void
+     */
+    public function setAutoplay($delay_in_milliseconds = 5000)
+    {
+        $this->Autoplay = true;
+        $this->setDelay($delay);
+    }
+
+    /**
+     * Change the slider delay.
+     *
+     * @param int $delay_in_milliseconds
+     *   Slider delay in milliseconds.
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     *   Throws an invalid argument exception if the delay is not a number.
+     */
+    public function setDelay($delay_in_milliseconds)
+    {
+        if (!is_int($delay_in_milliseconds)) {
+            if (is_numeric($delay_in_milliseconds)) {
+                $delay_in_milliseconds = (int)$delay_in_milliseconds;
+            } else {
+                throw new \InvalidArgumentException();
+            }
+        }
+
+        $this->Delay = $delay_in_milliseconds;
     }
 
     /**

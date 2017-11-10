@@ -32,6 +32,58 @@ class AMPCarouselTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @testdox Class has Autoplay property
+     */
+    public function testClassHasAutoplayProperty()
+    {
+        $this->assertClassHasAttribute('Autoplay', '\StoreCore\StoreFront\AMP\Carousel');
+    }
+
+    /**
+     * @testdox Public setAutoplay() method exists
+     */
+    public function testPublicSetAutoplayMethodExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\StoreFront\AMP\Carousel');
+        $this->assertTrue($class->hasMethod('setAutoplay'));
+    }
+
+    /**
+     * @testdox Public setAutoplay() method is public
+     */
+    public function testPublicSetAutoplayMethodIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\StoreFront\AMP\Carousel', 'setAutoplay');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @testdox Class has Delay property
+     */
+    public function testClassHasDelayProperty()
+    {
+        $this->assertClassHasAttribute('Delay', '\StoreCore\StoreFront\AMP\Carousel');
+    }
+
+    /**
+     * @testdox Public setDelay() method exists
+     */
+    public function testPublicSetDelayMethodExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\StoreFront\AMP\Carousel');
+        $this->assertTrue($class->hasMethod('setDelay'));
+    }
+
+    /**
+     * @testdox Public setDelay() method is public
+     */
+    public function testPublicSetDelayMethodIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\StoreFront\AMP\Carousel', 'setDelay');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
      * @testdox Class has Height property
      */
     public function testClassHasHeightProperty()
@@ -94,7 +146,6 @@ class AMPCarouselTest extends PHPUnit_Framework_TestCase
         $this->assertEmpty($empty_string);
         $carousel->setType($empty_string);
     }
-
 
     /**
      * @testdox Class has Width property
