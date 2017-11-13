@@ -21,7 +21,7 @@ class Image extends \StoreCore\StoreFront\Image implements LayoutInterface
      *   Optional AMP fallback image.
      */
     private $Fallback;
-    
+
     /**
      * @var string $Layout
      *   The `layout` attribute of the `<amp-img>` element.
@@ -45,7 +45,9 @@ class Image extends \StoreCore\StoreFront\Image implements LayoutInterface
      * Get the <amp-img> AMP image element.
      *
      * @param void
+     *
      * @return string
+     *   Returns the AMP tag `<amp-img …>…</amp-img>` as a string.
      */
     public function __toString()
     {
@@ -93,6 +95,8 @@ class Image extends \StoreCore\StoreFront\Image implements LayoutInterface
      * Set the layout attribute.
      *
      * @param string $layout
+     *   String value for the AMP `layout` attribute.  Must be one of the values
+     *   in the `$SupportedLayouts` array.
      *
      * @return void
      *
