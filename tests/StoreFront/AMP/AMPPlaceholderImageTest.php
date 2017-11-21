@@ -42,6 +42,7 @@ class AMPPlaceholderImageTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @depends testPublicToStringMethodExists
      * @testdox Public __toString() method is public
      */
     public function testPublicToStringMethodIsPublic()
@@ -56,7 +57,16 @@ class AMPPlaceholderImageTest extends PHPUnit_Framework_TestCase
     public function testPublicToStringMethodIsPublicReturnsAmpImgTag()
     {
         $placeholder_image = new \StoreCore\StoreFront\AMP\PlaceholderImage();
-        $this->assertContains('<amp-img ', (string)$placeholder_image);
+        $this->assertStringStartsWith('<amp-img ', (string)$placeholder_image);
+    }
+
+    /**
+     * @testdox Public __toString() method returns </amp-img> closing tag
+     */
+    public function testPublicToStringMethodIsPublicReturnsAmpImgClosingTag()
+    {
+        $placeholder_image = new \StoreCore\StoreFront\AMP\PlaceholderImage();
+        $this->assertContains('</amp-img>', (string)$placeholder_image);
     }
 
     /**
