@@ -2,6 +2,14 @@ codecov:
   max_report_age: off
   notify:
     require_ci_to_pass: yes
+    slack:
+      default:
+        url: "https://hooks.slack.com/services/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"
+        threshold: 1%
+        only_pulls: false
+        branches: null
+        flags: null
+        paths: null
 
 coverage:
   precision: 2
