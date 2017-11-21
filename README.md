@@ -1,5 +1,5 @@
 [![Slack](https://storecore-slack.herokuapp.com/badge.svg)](https://storecore-slack.herokuapp.com)
-[![Build Status](https://travis-ci.org/storecore/core.svg?branch=feature%2Ftravis-ci)](https://travis-ci.org/storecore/core)
+[![Build Status](https://travis-ci.org/storecore/core.svg?branch=develop)](https://travis-ci.org/storecore/core)
 [![codecov](https://codecov.io/gh/storecore/core/branch/develop/graph/badge.svg)](https://codecov.io/gh/storecore/core)
 [![StyleCI](https://styleci.io/repos/32453510/shield?branch=develop)](https://styleci.io/repos/32453510)
 
