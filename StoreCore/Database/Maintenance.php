@@ -2,9 +2,9 @@
 namespace StoreCore\Database;
 
 /**
- * Database Maintenance
+ * Database Maintenance Module
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @author    Ward van der Put <ward@storecore.org>
  * @copyright Copyright © 2015-2017 StoreCore
  * @internal
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
@@ -36,17 +36,23 @@ class Maintenance extends \StoreCore\AbstractModel
     );
 
     /**
+     * Database maintenance module constructor.
+     *
+     * The database maintenance module checks for updates as soon as it is
+     * called (on construction) in two ways.  If the currently installed
+     * database version is older than the version of this maintenance model,
+     * an update is available.  If the database version is unknown, we assume
+     * the database was never installed.
+     *
      * @param \StoreCore\Registry $registry
-     * @return void
+     *   Single instance of the StoreCore registry.
+     *
+     * @return self
      */
     public function __construct(\StoreCore\Registry $registry)
     {
         parent::__construct($registry);
 
-        /*
-         * If the currently installed database version is older than this
-         * maintenance module, an update is available.
-         */
         if (
             !defined('STORECORE_DATABASE_VERSION_INSTALLED')
             || version_compare(STORECORE_DATABASE_VERSION_INSTALLED, self::VERSION, '<')
