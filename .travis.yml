@@ -1,9 +1,12 @@
+notifications:
+  email: false
 language: php
 php:
   - 5.6
 script:
-  - phpunit --bootstrap tests/bootstrap.php --testdox tests --coverage-text
+  - phpunit --bootstrap tests/bootstrap.php --testdox tests --coverage-text --coverage-clover=coverage.xml
 after_success:
+  - bash <(curl -s https://codecov.io/bash) || echo 'Codecov failed to upload'
   - if [[ $TRAVIS_BRANCH == 'master' ]]; then RELEASE_BRANCH="stable-release" && echo "stable" > channel.txt; elif [[ $TRAVIS_BRANCH == 'develop' ]]; then RELEASE_BRANCH="beta-release" && echo "beta" > channel.txt; else RELEASE_BRANCH="alpha-release" && echo "alpha" > channel.txt; fi
   - echo "Currently running for ${RELEASE_BRANCH}"
   - echo ${TRAVIS_COMMIT::8} > gitcommit.txt

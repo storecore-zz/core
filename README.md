@@ -1,9 +1,7 @@
 [![Slack](https://storecore-slack.herokuapp.com/badge.svg)](https://storecore-slack.herokuapp.com)
-[![Build Status](https://app.snap-ci.com/storecore/core/branch/develop/build_image)](https://app.snap-ci.com/storecore/core/branch/develop)
-[![Sauce Test Status](https://saucelabs.com/buildstatus/storecorebot)](https://saucelabs.com/u/storecorebot)
-
-
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/storecorebot.svg)](https://saucelabs.com/u/storecorebot)
+[![Build Status](https://travis-ci.org/storecore/core.svg?branch=develop)](https://travis-ci.org/storecore/core)
+[![codecov](https://codecov.io/gh/storecore/core/branch/develop/graph/badge.svg)](https://codecov.io/gh/storecore/core)
+[![StyleCI](https://styleci.io/repos/32453510/shield?branch=develop)](https://styleci.io/repos/32453510)
 
 
 # [StoreCore](http://storecore.io)
