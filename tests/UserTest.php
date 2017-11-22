@@ -1,5 +1,6 @@
 <?php
 /**
+ * @coversDefaultClass \StoreCore\User
  * @group security
  */
 class UserTest extends PHPUnit_Framework_TestCase
@@ -14,6 +15,7 @@ class UserTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group distro
+     * @testdox VERSION constant is defined
      */
     public function testVersionConstantIsDefined()
     {
@@ -260,6 +262,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::getUserID
      * @testdox Public getUserID() method exists
      */
     public function testPublicGetUserIDMethodExists()
@@ -269,6 +272,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::getUserID
      * @testdox Public getUserID() method is public
      */
     public function testPublicGetUserIDMethodIsPublic()
@@ -278,6 +282,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::getUserID
      * @testdox Public getUserID() method returns null by default
      */
     public function testPublicGetUserIDMethodReturnsNullByDefault()

@@ -6,14 +6,15 @@ use \StoreCore\Response as Response;
 /**
  * Administration Sign-In
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @author    Ward van der Put <ward@storecore.org>
+ * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
  * @version   0.1.0
  */
 class SignIn extends \StoreCore\AbstractController
 {
+    /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
     /**
@@ -106,7 +107,7 @@ class SignIn extends \StoreCore\AbstractController
         }
 
         // Finally, store the user and open up the administration.
-        $this->Logger->notice('User "' . $user->getUsername() . '" (#' . getUserID() . ') signed in.');
+        $this->Logger->notice('User "' . $user->getUsername() . '" (#' . $user->getUserID() . ') signed in.');
         $login_audit->storeAttempt($this->Request->get('username'), null, true);
         $this->Session->set('User', $user);
         $response->redirect('/admin/', 303);
