@@ -22,7 +22,7 @@ class MaintenanceTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
-     * @testdox VERSION constant matches development dranch
+     * @testdox VERSION constant matches development branch
      */
     public function testVersionConstantMatchesDevelopmentBranch()
     {
@@ -48,6 +48,14 @@ class MaintenanceTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($method->isPublic());
     }
 
+    /**
+     * @testdox Class has UpdateAvailable property
+     */
+    public function testClassHasUpdateAvailableProperty()
+    {
+        $this->assertClassHasAttribute('UpdateAvailable', \StoreCore\Database\Maintenance::class);
+    }
+    
     /**
      * @testdox Public emptyRecycleBin() method exists
      */
