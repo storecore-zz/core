@@ -36,6 +36,13 @@ class Maintenance extends \StoreCore\AbstractModel
     );
 
     /**
+     * @var bool $UpdateAvailable
+     *   Boolean flag that indicates if a database update is available (true)
+     *   or not (default false).
+     */
+    private $UpdateAvailable = false;
+
+    /**
      * Database maintenance module constructor.
      *
      * The database maintenance module checks for updates as soon as it is
