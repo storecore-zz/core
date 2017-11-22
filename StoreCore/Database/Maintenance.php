@@ -181,10 +181,14 @@ class Maintenance extends \StoreCore\AbstractModel
      */
     public function restore($filename = null)
     {
+        // Write pending changes to database files
         try {
-            // Write pending changes to database files
             $this->Connection->exec('FLUSH TABLES');
+        } catch (\PDOException $e) {
+            $this->Logger->notice($e->getMessage());
+        }
 
+        try {
             // Update core tables using CREATE TABLE IF NOT EXISTS and INSERT IGNORE
             if (is_file(__DIR__ . DIRECTORY_SEPARATOR . 'core-mysql.sql')) {
                 $sql = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'core-mysql.sql', false);
