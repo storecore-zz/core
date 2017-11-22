@@ -163,7 +163,11 @@ class Maintenance extends \StoreCore\AbstractModel
             $tables = implode(', ', $tables);
         }
 
-        $this->Connection->query('OPTIMIZE TABLE ' . $tables);
+        try {
+            $this->Connection->query('OPTIMIZE TABLE ' . $tables);
+        } catch (\PDOException $e) {
+            $this->Logger->notice($e->getMessage());
+        }
     }
 
     /**
