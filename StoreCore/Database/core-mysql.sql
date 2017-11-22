@@ -1,7 +1,7 @@
 --
 -- MySQL Data Definition
 --
--- @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+-- @author    Ward van der Put <ward@storecore.org>
 -- @copyright Copyright © 2014-2017 StoreCore
 -- @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
 -- @package   StoreCore\Database
@@ -144,20 +144,20 @@ INSERT IGNORE INTO sc_languages (language_id, parent_id, english_name, local_nam
 -- Organizations
 CREATE TABLE IF NOT EXISTS sc_organizations (
   organization_id   MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
-  public_name       VARCHAR(255)  NULL  DEFAULT NULL,
-  alternate_name    VARCHAR(255)  NULL  DEFAULT NULL,
-  legal_name        VARCHAR(255)  NULL  DEFAULT NULL,
-  email_address     VARCHAR(255)  NULL  DEFAULT NULL,
-  telephone_number  VARCHAR(255)  NULL  DEFAULT NULL,
-  fax_number        VARCHAR(255)  NULL  DEFAULT NULL,
-  commerce_id       VARCHAR(255)  NULL  DEFAULT NULL,
-  tax_id            VARCHAR(255)  NULL  DEFAULT NULL,
-  vat_id            VARCHAR(255)  NULL  DEFAULT NULL,
-  founding_date     DATE          NULL  DEFAULT NULL,
-  dissolution_date  DATE          NULL  DEFAULT NULL,
-  date_created      TIMESTAMP     NULL  DEFAULT NULL,
-  date_modified     TIMESTAMP     NULL  DEFAULT NULL,
-  date_deleted      TIMESTAMP     NULL  DEFAULT NULL,
+  public_name       VARCHAR(255)           NULL  DEFAULT NULL,
+  alternate_name    VARCHAR(255)           NULL  DEFAULT NULL,
+  legal_name        VARCHAR(255)           NULL  DEFAULT NULL,
+  email_address     VARCHAR(255)           NULL  DEFAULT NULL,
+  telephone_number  VARCHAR(255)           NULL  DEFAULT NULL,
+  fax_number        VARCHAR(255)           NULL  DEFAULT NULL,
+  commerce_id       VARCHAR(255)           NULL  DEFAULT NULL,
+  tax_id            VARCHAR(255)           NULL  DEFAULT NULL,
+  vat_id            VARCHAR(255)           NULL  DEFAULT NULL,
+  founding_date     DATE                   NULL  DEFAULT NULL,
+  dissolution_date  DATE                   NULL  DEFAULT NULL,
+  date_created      TIMESTAMP              NULL  DEFAULT NULL,
+  date_modified     TIMESTAMP              NULL  DEFAULT NULL,
+  date_deleted      TIMESTAMP              NULL  DEFAULT NULL,
   PRIMARY KEY pk_organization_id (organization_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
@@ -1199,7 +1199,7 @@ CREATE TABLE IF NOT EXISTS sc_category_names (
 CREATE TABLE IF NOT EXISTS sc_store_categories (
   store_id     TINYINT(3) UNSIGNED   NOT NULL,
   category_id  SMALLINT(5) UNSIGNED  NOT NULL,
-  PRIMARY KEY pk_store_categories_id (store_id,category_id),
+  PRIMARY KEY pk_store_categories_id (store_id, category_id),
   FOREIGN KEY fk_store_categories_stores (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_store_categories_categories (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
