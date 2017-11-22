@@ -340,7 +340,7 @@ CREATE TABLE IF NOT EXISTS sc_cron_routes (
 
 CREATE TABLE IF NOT EXISTS sc_cron_events (
   route_id   BIGINT UNSIGNED  NOT NULL,
-  scheduled  DATETIME         NULL  DEFAULT NULL,
+  scheduled  DATETIME         NOT NULL,
   executed   DATETIME         NULL  DEFAULT NULL,
   PRIMARY KEY pk_cron_events_id (route_id, scheduled),
   FOREIGN KEY fk_cron_events_cron_routes (route_id) REFERENCES sc_cron_routes (route_id) ON DELETE CASCADE ON UPDATE CASCADE,
