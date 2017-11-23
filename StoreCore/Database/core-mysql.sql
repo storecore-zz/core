@@ -165,9 +165,9 @@ CREATE TABLE IF NOT EXISTS sc_organizations (
 CREATE TABLE IF NOT EXISTS sc_persons (
   person_id             INT(10) UNSIGNED     NOT NULL  AUTO_INCREMENT,
   anonymized_flag       TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
-  deleted_flag          TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
   date_created          DATETIME             NOT NULL  DEFAULT CURRENT_TIMESTAMP,
   date_modified         DATETIME             NULL  DEFAULT NULL  ON UPDATE CURRENT_TIMESTAMP,
+  date_deleted          DATETIME             NULL  DEFAULT NULL,
   email_address         VARCHAR(255)         NULL  DEFAULT NULL,
   gender                TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0  COMMENT 'ISO/IEC 5218',
   honorific_prefix      VARCHAR(255)         NULL  DEFAULT NULL,
