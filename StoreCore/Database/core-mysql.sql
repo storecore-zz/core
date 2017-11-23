@@ -1627,6 +1627,7 @@ CREATE TABLE IF NOT EXISTS sc_orders (
   date_modified   DATETIME             NULL  DEFAULT NULL  ON UPDATE CURRENT_TIMESTAMP,
   date_confirmed  DATETIME             NULL  DEFAULT NULL,
   date_cancelled  DATETIME             NULL  DEFAULT NULL,
+  date_deleted    DATETIME             NULL  DEFAULT NULL,
   PRIMARY KEY pk_order_id (order_id),
   FOREIGN KEY fk_orders_stores (store_id) REFERENCES sc_stores (store_id) ON DELETE NO ACTION ON UPDATE CASCADE,
   FOREIGN KEY fk_orders_customers (customer_id) REFERENCES sc_customers (customer_id) ON DELETE NO ACTION ON UPDATE CASCADE,

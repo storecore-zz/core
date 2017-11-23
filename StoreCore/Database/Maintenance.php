@@ -93,7 +93,7 @@ class Maintenance extends \StoreCore\AbstractModel
         }
 
         $affected_rows = 0;
-        $tables = array('sc_customers', 'sc_persons', 'sc_organizations', 'sc_addresses');
+        $tables = array('sc_orders', 'sc_customers', 'sc_persons', 'sc_organizations', 'sc_addresses');
         foreach ($tables as $table) {
             $sql = 'DELETE FROM ' . $table . ' WHERE date_deleted IS NOT NULL';
             if ($interval_in_days !== 0) {
