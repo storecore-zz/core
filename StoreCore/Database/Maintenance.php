@@ -6,7 +6,6 @@ namespace StoreCore\Database;
  *
  * @author    Ward van der Put <ward@storecore.org>
  * @copyright Copyright © 2015-2017 StoreCore
- * @internal
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
@@ -71,19 +70,36 @@ class Maintenance extends \StoreCore\AbstractModel
     /**
      * Delete records marked for removal after 30 days.
      *
-     * @param void
+     * @param int $interval_in_days
+     *   Optional number of days records marked for deletion are kept in the
+     *   recycle bin.  Defaults to 30 days.  The interval can be set to 0 (zero)
+     *   to fully empty the recycle bin.
      *
      * @return int
      *   Returns the number of deleted database table rows.
+     *
+     * @throws \InvalidArgumentException
+     *   Throws an invalid argument exception if the `$interval_in_days`
+     *   parameter is not an integer.
      */
-    public function emptyRecycleBin()
+    public function emptyRecycleBin($interval_in_days = 30)
     {
+        if (!is_int($interval_in_days)) {
+            throw new \InvalidArgumentException();
+        }
+
+        if ($interval_in_days < 0) {
+            $interval_in_days = 0;
+        }
+
         $affected_rows = 0;
         $tables = array('sc_customers', 'sc_persons', 'sc_organizations', 'sc_addresses');
         foreach ($tables as $table) {
-            $affected_rows += $this->Connection->exec(
-                'DELETE FROM ' . $table . ' WHERE date_deleted < DATE_SUB(UTC_TIMESTAMP(), INTERVAL 30 DAY)'
-            );
+            $sql = 'DELETE FROM ' . $table . ' WHERE date_deleted IS NOT NULL';
+            if ($interval_in_days !== 0) {
+                $sql .= ' AND date_deleted < DATE_SUB(UTC_TIMESTAMP(), INTERVAL ' . $interval_in_days . ' DAY)';
+            }
+            $affected_rows += $this->Connection->exec($sql);
         }
         return $affected_rows;
     }
@@ -92,6 +108,7 @@ class Maintenance extends \StoreCore\AbstractModel
      * List the available SQL backup files.
      *
      * @param void
+     *
      * @return array
      */
     public function getBackupFiles()
