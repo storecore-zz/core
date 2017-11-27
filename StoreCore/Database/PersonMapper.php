@@ -4,7 +4,7 @@ namespace StoreCore\Database;
 /**
  * Person Mapper
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @author    Ward van der Put <ward@storecore.org>
  * @copyright Copyright © 2016-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CRM
@@ -102,7 +102,11 @@ class PersonMapper extends AbstractDataAccessObject
      * Map the person's data to a person object.
      *
      * @param array $keyed_data
+     *   Array consisting of key/value pairs for a single row in the
+     *   `sc_persons` database table.
+     *
      * @return \StoreCore\Person
+     *   Returns a core object representing a person.
      */
     private function getPersonObject(array $keyed_data)
     {
@@ -116,9 +120,15 @@ class PersonMapper extends AbstractDataAccessObject
         $person->setEmailAddress($keyed_data['email_address']);
 
         $person->setAnonymizedFlag($keyed_data['anonymized_flag']);
-        $person->setDeletedFlag($keyed_data['deleted_flag']);
         $person->setDateCreated($keyed_data['date_created']);
-        $person->setDateModified($keyed_data['date_modified']);
+
+        if ($keyed_data['date_modified'] !== null) {
+            $person->setDateModified($keyed_data['date_modified']);
+        }
+
+        if ($keyed_data['date_deleted'] !== null) {
+            $person->setDateDeleted($keyed_data['date_deleted']);
+        }
 
         $person->setGender($keyed_data['gender']);
         $person->setHonorificPrefix($keyed_data['honorific_prefix']);
@@ -156,8 +166,7 @@ class PersonMapper extends AbstractDataAccessObject
         $person_data = array();
 
         $person_data['anonymized_flag'] = $person->getAnonymizedFlag();
-        $person_data['deleted_flag'] = $person->getDeletedFlag();
-
+        $person_data['date_deleted'] = $person->getDateDeleted();
         $person_data['email_address'] = $person->getEmailAddress();
         $person_data['gender'] = $person->getGender();
         $person_data['honorific_prefix'] = $person->getHonorificPrefix();
@@ -178,9 +187,9 @@ class PersonMapper extends AbstractDataAccessObject
         $person_data['death_place'] = $person->getDeathPlace();
 
         if ($person->getPersonID() === null) {
-            $current_date = gmdate('Y-m-d');
-            $person_data['date_created'] = $current_date;
-            $person->setDateCreated($current_date);
+            $now = gmdate('Y-m-d H:i:s');
+            $person_data['date_created'] = $now;
+            $person->setDateCreated($now);
             $return = $this->create($person_data);
             if (is_numeric($return)) {
                 $person->setPersonID($return);
