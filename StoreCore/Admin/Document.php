@@ -5,7 +5,7 @@ namespace StoreCore\Admin;
  * Admin GUI Document
  *
  * @api
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @author    Ward van der Put <ward@storecore.org>
  * @copyright Copyright © 2015-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
@@ -30,12 +30,8 @@ class Document extends \StoreCore\Document
             'href' => '/admin/StoreCore.webmanifest',
             'rel'  => 'manifest',
         ),
-        '7ed8cc1d36d9a43dbf5600109929dfb7' => array(
-            'href' => 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700',
-            'rel'  => 'stylesheet',
-        ),
-        '6a587e585353b2665a22578ba309fc08' => array(
-            'href' => 'https://fonts.googleapis.com/css?family=Roboto:900&amp;text=Store',
+        'dd3333881cfd6d7ac6c08d40315257bf' => array(
+            'href' => 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900',
             'rel'  => 'stylesheet',
         ),
         'cc841a6f8ba105179e457c1c4e60a14e' => array(

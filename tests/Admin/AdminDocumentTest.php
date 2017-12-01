@@ -46,19 +46,18 @@ class AdminDocumentTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @testdox Admin document uses Roboto fonts from CDN
+     * @testdox Admin document uses Roboto fonts from Google CDN
      */
-    public function testAdminDocumentUsesRobotoFontsFromCdn()
+    public function testAdminDocumentUsesRobotoFontsFromGoogleCdn()
     {
         $document = new \StoreCore\Admin\Document();
-        $this->assertContains('<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">', $document->getHead());
-        $this->assertContains('<link href="https://fonts.googleapis.com/css?family=Roboto:900&amp;text=Store" rel="stylesheet">', $document->getHead());
+        $this->assertContains('<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet">', $document->getHead());
     }
 
     /**
-     * @testdox Admin document uses Material Icons from CDN
+     * @testdox Admin document uses Material Icons from Google CDN
      */
-    public function testAdminDocumentUsesMaterialIconsFromCdn()
+    public function testAdminDocumentUsesMaterialIconsFromGoogleCdn()
     {
         $document = new \StoreCore\Admin\Document();
         $this->assertContains('<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">', $document->getHead());
