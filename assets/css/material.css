@@ -7398,8 +7398,7 @@ input.mdl-button[type="submit"] {
   width: 100%;
   height: 100%; }
 
-.mdl-layout__title,
-.mdl-layout-title {
+.mdl-layout__title {
   display: block;
   position: relative;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
@@ -7458,13 +7457,11 @@ input.mdl-button[type="submit"] {
     -webkit-flex-shrink: 0;
         -ms-flex-negative: 0;
             flex-shrink: 0; }
-  .mdl-layout__drawer > .mdl-layout__title,
-  .mdl-layout__drawer > .mdl-layout-title {
+  .mdl-layout__drawer > .mdl-layout__title {
     line-height: 64px;
     padding-left: 40px; }
     @media screen and (max-width: 1024px) {
-      .mdl-layout__drawer > .mdl-layout__title,
-      .mdl-layout__drawer > .mdl-layout-title {
+      .mdl-layout__drawer > .mdl-layout__title {
         line-height: 56px;
         padding-left: 16px; } }
   .mdl-layout__drawer .mdl-navigation {

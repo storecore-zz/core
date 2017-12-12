@@ -639,8 +639,7 @@ fieldset[disabled] .mdl-checkbox .mdl-checkbox__ripple-container .mdl-ripple,.md
 .mdl-layout:not(.is-small-screen) .mdl-layout--small-screen-only{display:none}
 .mdl-layout__container{position:absolute;width:100%;height:100%}
 
-.mdl-layout__title,
-.mdl-layout-title {
+.mdl-layout__title {
   display: block;
   font: 400 20px/1 Roboto, sans-serif;
   position: relative;
@@ -688,8 +687,17 @@ fieldset[disabled] .mdl-checkbox .mdl-checkbox__ripple-container .mdl-ripple,.md
   flex-shrink: 0;
 }
 
-.mdl-layout__drawer>.mdl-layout__title,.mdl-layout__drawer>.mdl-layout-title{line-height:64px;padding-left:40px}
-@media screen and (max-width:1024px){.mdl-layout__drawer>.mdl-layout__title,.mdl-layout__drawer>.mdl-layout-title{line-height:56px;padding-left:16px}}
+.mdl-layout__drawer > .mdl-layout__title {
+  line-height: 64px;
+  padding-left: 40px;
+}
+
+@media screen and (max-width:1024px) {
+  .mdl-layout__drawer > .mdl-layout__title {
+    line-height: 56px;
+    padding-left: 16px;
+  }
+}
 
 .mdl-layout__drawer .mdl-navigation {
   align-items: stretch;
