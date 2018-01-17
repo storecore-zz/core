@@ -1,5 +1,3 @@
-.mdl-color-text--red{color:#f44336}
-.mdl-color--red{background-color:#f44336}
 .mdl-color-text--red-50{color:#ffebee}
 .mdl-color--red-50{background-color:#ffebee}
 .mdl-color-text--red-100{color:#ffcdd2}
@@ -10,8 +8,8 @@
 .mdl-color--red-300{background-color:#e57373}
 .mdl-color-text--red-400{color:#ef5350}
 .mdl-color--red-400{background-color:#ef5350}
-.mdl-color-text--red-500{color:#f44336}
-.mdl-color--red-500{background-color:#f44336}
+.mdl-color-text--red-500,.mdl-color-text--red{color:#f44336}
+.mdl-color--red-500,.mdl-color--red{background-color:#f44336}
 .mdl-color-text--red-600{color:#e53935}
 .mdl-color--red-600{background-color:#e53935}
 .mdl-color-text--red-700{color:#d32f2f}

@@ -1,5 +1,3 @@
-.mdl-color-text--deep-orange{color:#ff5722}
-.mdl-color--deep-orange{background-color:#ff5722}
 .mdl-color-text--deep-orange-50{color:#fbe9e7}
 .mdl-color--deep-orange-50{background-color:#fbe9e7}
 .mdl-color-text--deep-orange-100{color:#ffccbc}
@@ -10,8 +8,8 @@
 .mdl-color--deep-orange-300{background-color:#ff8a65}
 .mdl-color-text--deep-orange-400{color:#ff7043}
 .mdl-color--deep-orange-400{background-color:#ff7043}
-.mdl-color-text--deep-orange-500{color:#ff5722}
-.mdl-color--deep-orange-500{background-color:#ff5722}
+.mdl-color-text--deep-orange-500,.mdl-color-text--deep-orange{color:#ff5722}
+.mdl-color--deep-orange-500,.mdl-color--deep-orange{background-color:#ff5722}
 .mdl-color-text--deep-orange-600{color:#f4511e}
 .mdl-color--deep-orange-600{background-color:#f4511e}
 .mdl-color-text--deep-orange-700{color:#e64a19}
