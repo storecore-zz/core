@@ -23,11 +23,11 @@ class DocumentTest extends PHPUnit_Framework_TestCase
     /**
      * @group seo
      */
-    public function testDocumentHasNoTitleIfNoneWasSet()
+    public function testDocumentAlwaysHasATitle()
     {
         $document = new \StoreCore\Document();
-        $this->assertNotContains('<title>', $document->getHead());
-        $this->assertNotContains('</title>', $document->getHead());
+        $this->assertContains('<title>', $document->getHead());
+        $this->assertContains('</title>', $document->getHead());
     }
 
     /**
