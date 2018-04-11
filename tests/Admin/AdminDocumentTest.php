@@ -51,7 +51,7 @@ class AdminDocumentTest extends PHPUnit_Framework_TestCase
     public function testAdminDocumentUsesRobotoFontsFromGoogleCdn()
     {
         $document = new \StoreCore\Admin\Document();
-        $this->assertContains('<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet">', $document->getHead());
+        $this->assertContains('<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">', $document->getHead());
     }
 
     /**
