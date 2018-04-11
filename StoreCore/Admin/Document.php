@@ -26,6 +26,14 @@ class Document extends \StoreCore\Document
             'href' => 'https://fonts.googleapis.com/',
             'rel'  => 'dns-prefetch',
         ),
+        '007b84ee146c36a3d6682bcb4398c3c0' => array(
+            'href' => 'https://fonts.gstatic.com/',
+            'rel'  => 'dns-prefetch',
+        ),
+        '6addc71c23165ea369ed9fb98e10aea8' => array(
+            'href' => 'https://unpkg.com/',
+            'rel'  => 'dns-prefetch',
+        ),
         '106719df5730b22f08dfb83570eee34a' => array(
             'href' => '/admin/StoreCore.webmanifest',
             'rel'  => 'manifest',
