@@ -1,8 +1,8 @@
 --
 -- MySQL Data Definition
 --
--- @author    Ward van der Put <ward@storecore.org>
--- @copyright Copyright © 2014-2017 StoreCore
+-- @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+-- @copyright Copyright © 2014-2018 StoreCore™
 -- @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
 -- @package   StoreCore\Database
 -- @version   0.1.0
@@ -1103,23 +1103,12 @@ CREATE TABLE IF NOT EXISTS sc_addresses (
   country_subdivision     VARCHAR(3)            NULL  DEFAULT NULL,
   latitude                DECIMAL(10, 8)        NULL  DEFAULT NULL,
   longitude               DECIMAL(11, 8)        NULL  DEFAULT NULL,
+  address_eav             TEXT                  NULL  DEFAULT NULL,
   formatted_address       TEXT                  NULL  DEFAULT NULL,
   PRIMARY KEY pk_address_id (address_id),
   FOREIGN KEY fk_addresses_countries (country_id) REFERENCES sc_countries (country_id) ON DELETE CASCADE ON UPDATE CASCADE,
   INDEX ix_postal_code (postal_code),
   UNIQUE KEY uk_global_location_number (global_location_number)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
-
-CREATE TABLE IF NOT EXISTS sc_addresses_eav (
-  address_id            INT(10) UNSIGNED     NOT NULL,
-  vendor_prefix         VARCHAR(32)          NOT NULL,
-  attribute_name        VARCHAR(64)          NOT NULL,
-  date_modified         TIMESTAMP            NOT NULL  DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP,
-  attribute_bool_value  TINYINT(1) UNSIGNED  NULL  DEFAULT NULL,
-  attribute_int_value   INT(11) SIGNED       NULL  DEFAULT NULL,
-  attribute_str_value   VARCHAR(255)         NULL  DEFAULT NULL,
-  PRIMARY KEY pk_entity_id (address_id, vendor_prefix, attribute_name),
-  FOREIGN KEY fk_addresses_eav_addresses (address_id) REFERENCES sc_addresses (address_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_organization_addresses (
@@ -1553,11 +1542,11 @@ INSERT IGNORE
   VALUES
     ('0', 'de-DE', 'Verwandte Produkte'),
     ('0', 'en-GB', 'Related products'),
-    ('0', 'es-ES', 'productos relacionados'),
-    ('0', 'fr-FR', 'produits associés'),
-    ('0', 'it-IT', 'prodotti correlati'),
-    ('0', 'nl-NL', 'gerelateerde producten'),
-    ('0', 'pt-PT', 'produtos relacionados');
+    ('0', 'es-ES', 'Productos relacionados'),
+    ('0', 'fr-FR', 'Produits associés'),
+    ('0', 'it-IT', 'Prodotti correlati'),
+    ('0', 'nl-NL', 'Gerelateerde producten'),
+    ('0', 'pt-PT', 'Produtos relacionados');
 
 CREATE TABLE IF NOT EXISTS sc_product_associations (
   association_id         INT(10) UNSIGNED       NOT NULL  AUTO_INCREMENT,
