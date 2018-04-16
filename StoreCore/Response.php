@@ -46,8 +46,8 @@ class Response extends AbstractController
      */
     public function __construct(\StoreCore\Registry $registry)
     {
-        if (defined('\\StoreCore\\RESPONSE_COMPRESSION_LEVEL')) {
-            $this->setCompression(\StoreCore\RESPONSE_COMPRESSION_LEVEL);
+        if (defined('STORECORE_RESPONSE_COMPRESSION_LEVEL')) {
+            $this->setCompression(STORECORE_RESPONSE_COMPRESSION_LEVEL);
         }
         parent::__construct($registry);
     }
