@@ -1540,6 +1540,7 @@ INSERT IGNORE
   INTO
     sc_product_association_type_names (association_type_id, language_id, association_type_name)
   VALUES
+    ('0', 'ca-AD', 'Productes relacionats'),
     ('0', 'de-DE', 'Verwandte Produkte'),
     ('0', 'en-GB', 'Related products'),
     ('0', 'es-ES', 'Productos relacionados'),
