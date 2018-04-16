@@ -6,7 +6,7 @@ namespace StoreCore;
  *
  * @api
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015-2018 StoreCore
+ * @copyright Copyright © 2015-2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
@@ -17,16 +17,31 @@ class Response extends AbstractController
     const VERSION = '0.1.0';
 
     /**
-     * @var int    $CompressionLevel
-     * @var array  $Headers
-     * @var string $ResponseBody
+     * @var int $CompressionLevel
+     *   Zlib response compression level.  By default this property is set to
+     *   -1 for the default compression provided by the PHP zlib extension.
      */
     protected $CompressionLevel = -1;
+
+    /**
+     * @var array $Headers
+     *   HTTP response headers.
+     */
     protected $Headers = array();
+
+
+    /**
+     * @var string $ResponseBody
+     *   Contents body of the HTTP response.
+     */
     protected $ResponseBody;
 
     /**
+     * HTTP response constructor.
+     *
      * @param \StoreCore\Registry $registry
+     *   Central registry (service locator).
+     *
      * @return self
      */
     public function __construct(\StoreCore\Registry $registry)
@@ -38,7 +53,11 @@ class Response extends AbstractController
     }
 
     /**
+     * Add an HTTP response header.
+     *
      * @param string $header
+     *   HTTP header to add to the response.
+     *
      * @return void
      */
     public function addHeader($header)
@@ -50,8 +69,18 @@ class Response extends AbstractController
      * Create a gzip compressed string.
      *
      * @param string $data
+     *   Response output data to compress.
+     *
      * @param int $level
+     *   Optional zlib output compression level.  Defaults to -1 for the
+     *   default compression of the zlib library.
+     *
      * @return string
+     *   Compressed version of the `$data` input string.  If the PHP zlib
+     *   extension is not installed or compression is disabled, the returned
+     *   output is not compressed and the output string is equal to the input
+     *   string.
+     *
      * @uses \StoreCore\Request::getAcceptEncoding()
      */
     private function compress($data, $level = -1)
@@ -116,8 +145,14 @@ class Response extends AbstractController
     }
 
     /**
+     * Redirect the HTTP client.
+     *
      * @param string $url
+     *   URL of the destination location.
+     *
      * @param int $status
+     *   HTTP response status code.  Defaults to 302 for a permanent redirect.
+     *
      * @return void
      */
     public function redirect($url, $status = 302)
@@ -133,7 +168,7 @@ class Response extends AbstractController
      *
      * @param int|bool $level
      *   The level of output compression, ranging from 0 for no compression up
-     *   to 9 for maximum compression.   If not given, the default compression
+     *   to 9 for maximum compression.  If not given, the default compression
      *   level will be the default compression level of the zlib library.
      *   Compression may also be enabled/disabled with a true/false.
      *
