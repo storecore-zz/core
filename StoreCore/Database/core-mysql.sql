@@ -1488,7 +1488,7 @@ CREATE TABLE IF NOT EXISTS sc_attribute_groups (
   group_id           SMALLINT(5) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   group_name         VARCHAR(255)          NOT NULL,
   group_description  VARCHAR(255)          NULL  DEFAULT NULL,
-  PRIMARY KEY pk_group_id (group_id)
+  PRIMARY KEY pk_attribute_group_id (group_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS sc_attribute_group_attributes (
