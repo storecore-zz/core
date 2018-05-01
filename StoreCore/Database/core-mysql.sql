@@ -1606,7 +1606,58 @@ CREATE TABLE IF NOT EXISTS sc_product_bundle_products (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
 
+--
+-- Images and other media files
+--
+CREATE TABLE IF NOT EXISTS sc_media (
+  media_id   INT(10) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  parent_id  INT(10) UNSIGNED  NULL      DEFAULT NULL,
+  PRIMARY KEY pk_media_id (media_id),
+  FOREIGN KEY fk_media_media (parent_id) REFERENCES sc_media (media_id) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_media_files (
+  media_file_id    BIGINT(20) UNSIGNED   NOT NULL  AUTO_INCREMENT,
+  media_id         INT(10) UNSIGNED      NOT NULL,
+  media_type       ENUM('application/json','application/pdf','image/gif','image/jpeg','image/png','image/webp','image/svg+xml','video/mpeg','video/webm')  NULL  DEFAULT NULL,
+  width            SMALLINT(4) UNSIGNED  NULL  DEFAULT NULL,
+  height           SMALLINT(4) UNSIGNED  NULL  DEFAULT NULL,
+  upload_date      DATETIME              NULL  DEFAULT NULL,
+  upload_filename  VARCHAR(255)          NULL  DEFAULT NULL,
+  PRIMARY KEY pk_media_file_id (media_file_id),
+  FOREIGN KEY fk_media_files_media (media_id) REFERENCES sc_media (media_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  INDEX ix_width (width)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_product_media (
+  product_media_id  BIGINT(20) UNSIGNED    NOT NULL  AUTO_INCREMENT,
+  store_id          TINYINT(3) UNSIGNED    NOT NULL,
+  product_id        MEDIUMINT(8) UNSIGNED  NOT NULL,
+  media_id          INT(10) UNSIGNED       NOT NULL,
+  display_position  TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 0,
+  PRIMARY KEY pk_product_media_id (product_media_id),
+  FOREIGN KEY fk_product_media_stores (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_product_media_products (product_id) REFERENCES sc_products (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_media_files_media (media_id) REFERENCES sc_media (media_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  INDEX ix_display_position (display_position, media_id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_product_media_texts (
+  product_media_id    BIGINT(20) UNSIGNED  NOT NULL,
+  language_id         CHAR(5)              CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
+  uri_key             BINARY(16)           NULL  DEFAULT NULL  COMMENT 'Binary MD5 hash',
+  uri_string          VARCHAR(255)         NULL  DEFAULT NULL,
+  alternative_text    VARCHAR(255)         NULL  DEFAULT NULL  COMMENT 'HTML img alt attribute',
+  figure_caption      VARCHAR(255)         NULL  DEFAULT NULL  COMMENT 'HTML figcaption element',
+  FOREIGN KEY fk_product_media_texts_product_media (product_media_id) REFERENCES sc_product_media (product_media_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_product_media_texts_languages (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  UNIQUE KEY uk_uri_key (uri_key)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+
+--
 -- Order Management
+--
 CREATE TABLE IF NOT EXISTS sc_orders (
   order_id        INT(10) UNSIGNED     NOT NULL,
   store_id        TINYINT(3) UNSIGNED  NOT NULL  DEFAULT 1,
