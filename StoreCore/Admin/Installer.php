@@ -4,9 +4,8 @@ namespace StoreCore\Admin;
 /**
  * StoreCore Installer
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright © 2015-2017 StoreCore
- * @internal
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
@@ -93,7 +92,7 @@ class Installer extends \StoreCore\AbstractController
     {
         try {
             $dbh = new \PDO($this->getDSN(), STORECORE_DATABASE_DEFAULT_USERNAME, STORECORE_DATABASE_DEFAULT_PASSWORD, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
-            $this->Registry->set('Connection', $dbh);
+            $this->Registry->set('Database', $dbh);
         } catch (\PDOException $e) {
             $this->Logger->critical($e->getMessage());
             if ($this->Request->getRequestPath() !== '/admin/settings/database/account/') {
