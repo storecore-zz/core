@@ -10,7 +10,7 @@ namespace StoreCore\Database;
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-class Maintenance extends \StoreCore\AbstractModel
+class Maintenance extends AbstractModel
 {
     /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
