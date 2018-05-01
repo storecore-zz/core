@@ -5,8 +5,8 @@ namespace StoreCore\Database;
  * Languages
  *
  * @api
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright © 2015-2017 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\I18N
  * @version   0.1.0
@@ -28,6 +28,7 @@ namespace StoreCore\Database;
  */
 class Languages extends AbstractModel
 {
+    /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
     /**
@@ -45,7 +46,7 @@ class Languages extends AbstractModel
     public function disable($language_id)
     {
         $language_id = $this->filterLanguageCode($language_id);
-        $stmt = $this->Connection->prepare('UPDATE sc_languages SET enabled_flag = 0, sort_order = 0 WHERE language_id = :language_id');
+        $stmt = $this->Database->prepare('UPDATE sc_languages SET enabled_flag = 0, sort_order = 0 WHERE language_id = :language_id');
         $stmt->bindParam(':language_id', $language_id, \PDO::PARAM_STR);
         $stmt->execute();
         $this->EnabledLanguages = null;
@@ -60,7 +61,7 @@ class Languages extends AbstractModel
     public function enable($language_id)
     {
         $language_id = $this->filterLanguageCode($language_id);
-        $stmt = $this->Connection->prepare('UPDATE sc_languages SET enabled_flag = 1 WHERE language_id = :language_id');
+        $stmt = $this->Database->prepare('UPDATE sc_languages SET enabled_flag = 1 WHERE language_id = :language_id');
         $stmt->bindParam(':language_id', $language_id, \PDO::PARAM_STR);
         $stmt->execute();
         $this->EnabledLanguages = null;
@@ -75,7 +76,7 @@ class Languages extends AbstractModel
     public function exists($language_id)
     {
         $language_id = $this->filterLanguageCode($language_id);
-        $stmt = $this->Connection->prepare('SELECT COUNT(language_id) FROM sc_languages WHERE language_id = :language_id');
+        $stmt = $this->Database->prepare('SELECT COUNT(language_id) FROM sc_languages WHERE language_id = :language_id');
         $stmt->bindParam(':language_id', $language_id, \PDO::PARAM_STR);
         $stmt->execute();
         $count = $stmt->fetchColumn(0);
@@ -113,7 +114,7 @@ class Languages extends AbstractModel
                    LIMIT 1
              */
             $language_id = strtolower($language_id);
-            $stmt = $this->Connection->prepare('SELECT language_id FROM sc_languages WHERE SUBSTRING(language_id, 1, 2) = :language_id ORDER BY enabled_flag DESC, language_id = parent_id DESC LIMIT 1');
+            $stmt = $this->Database->prepare('SELECT language_id FROM sc_languages WHERE SUBSTRING(language_id, 1, 2) = :language_id ORDER BY enabled_flag DESC, language_id = parent_id DESC LIMIT 1');
             $stmt->bindParam(':language_id', $language_id, \PDO::PARAM_STR);
             $stmt->execute();
             $row = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -164,7 +165,7 @@ class Languages extends AbstractModel
         }
 
         $languages = array();
-        $stmt = $this->Connection->prepare('SELECT language_id, english_name FROM sc_languages WHERE enabled_flag = 1 ORDER BY sort_order ASC, english_name ASC');
+        $stmt = $this->Database->prepare('SELECT language_id, english_name FROM sc_languages WHERE enabled_flag = 1 ORDER BY sort_order ASC, english_name ASC');
         $stmt->execute();
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $languages[$row['language_id']] = $row['english_name'];
@@ -191,7 +192,7 @@ class Languages extends AbstractModel
     public function getStoreLanguages(\StoreCore\Types\StoreID $store_id)
     {
         $store_id = (string)$store_id;
-        $stmt = $this->Connection->prepare('
+        $stmt = $this->Database->prepare('
                 SELECT s.language_id, l.enabled_flag
                   FROM sc_store_languages AS s
             INNER JOIN sc_languages AS l
@@ -211,7 +212,7 @@ class Languages extends AbstractModel
                 }
                 return $store_languages;
             } else {
-                $stmt = $this->Connection->prepare('
+                $stmt = $this->Database->prepare('
                     SELECT language_id
                       FROM sc_languages
                      WHERE enabled_flag = 1
@@ -249,7 +250,7 @@ class Languages extends AbstractModel
         $sql .= 'ORDER BY sort_order ASC, local_name ASC';
 
         $rows = array();
-        $stmt = $this->Connection->prepare($sql);
+        $stmt = $this->Database->prepare($sql);
         $stmt->execute();
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $rows[$row['language_id']] = $row['local_name'];
@@ -277,7 +278,7 @@ class Languages extends AbstractModel
             ORDER BY sort_order ASC, language_name ASC
          */
         $rows = array();
-        $stmt = $this->Connection->prepare('SELECT language_id, IFNULL(local_name, english_name) AS language_name FROM sc_languages WHERE language_id IN (SELECT DISTINCT language_id FROM sc_translation_memory) ORDER BY sort_order ASC, language_name ASC');
+        $stmt = $this->Database->prepare('SELECT language_id, IFNULL(local_name, english_name) AS language_name FROM sc_languages WHERE language_id IN (SELECT DISTINCT language_id FROM sc_translation_memory) ORDER BY sort_order ASC, language_name ASC');
         $stmt->execute();
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $rows[$row['language_id']] = $row['language_name'];

@@ -4,8 +4,8 @@ namespace StoreCore\Database;
 /**
  * Person Mapper
  *
- * @author    Ward van der Put <ward@storecore.org>
- * @copyright Copyright © 2016-2017 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2016–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CRM
  * @version   0.1.0
@@ -39,7 +39,7 @@ class PersonMapper extends AbstractDataAccessObject
 
         try {
             // Revoke an API or admin user account for an anonymized user.
-            $stmt = $this->Connection->prepare('
+            $stmt = $this->Database->prepare('
                 UPDATE sc_users
                    SET user_group_id = 0,
                        person_id = NULL,
@@ -50,7 +50,7 @@ class PersonMapper extends AbstractDataAccessObject
             $stmt->execute();
 
             // Delete associations with organizations.
-            $stmt = $this->Connection->prepare('
+            $stmt = $this->Database->prepare('
                 DELETE
                   FROM sc_person_organizations
                  WHERE person_id = :person_id
@@ -59,7 +59,7 @@ class PersonMapper extends AbstractDataAccessObject
             $stmt->execute();
 
             // Delete associations with addresses.
-            $stmt = $this->Connection->prepare('
+            $stmt = $this->Database->prepare('
                 DELETE
                   FROM sc_person_addresses
                  WHERE person_id = :person_id

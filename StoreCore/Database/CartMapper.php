@@ -8,8 +8,8 @@ namespace StoreCore\Database;
  * mechanism allows for persistent carts.  A unique key, that is shared between
  * clients and servers, unlocks a previously saved order.
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2015-2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
@@ -40,7 +40,7 @@ class CartMapper extends \StoreCore\Database\AbstractModel
             return false;
         }
 
-        $stmt = $this->Connection->prepare('SELECT order_id, store_id, customer_id FROM sc_orders WHERE cart_uuid = :cart_uuid AND cart_rand = :cart_rand');
+        $stmt = $this->Database->prepare('SELECT order_id, store_id, customer_id FROM sc_orders WHERE cart_uuid = :cart_uuid AND cart_rand = :cart_rand');
         $stmt->bindParam(':cart_uuid', $cart_id->getUUID(), \PDO::PARAM_STR);
         $stmt->bindParam(':cart_rand', $cart_id->getToken(), \PDO::PARAM_STR);
         if ($stmt->execute() == false) {

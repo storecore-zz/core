@@ -4,8 +4,8 @@ namespace StoreCore\Database;
 /**
  * Login Audit Maintenance & Management
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
  * @version   0.1.0
@@ -27,7 +27,7 @@ class LoginAuditManager extends AbstractModel
     {
         $minutes = (int)abs($minutes);
         $sql = 'SELECT COUNT(*) FROM sc_login_attempts WHERE successful = 0 AND attempted > DATE_SUB(UTC_TIMESTAMP(), INTERVAL ' . $minutes . ' MINUTE)';
-        $result = $this->Connection->query($sql);
+        $result = $this->Database->query($sql);
         $row = $result->fetch(\PDO::FETCH_NUM);
         return $row[0];
     }
@@ -44,14 +44,14 @@ class LoginAuditManager extends AbstractModel
     {
         // Delete all attempts after 7 years
         $sql = 'DELETE FROM sc_login_attempts WHERE attempted < DATE_SUB(UTC_TIMESTAMP(), INTERVAL 7 YEAR)';
-        $affected_rows = $this->Connection->exec($sql);
+        $affected_rows = $this->Database->exec($sql);
 
         // Delete successful attempts after 90 days
         $sql = 'DELETE FROM sc_login_attempts WHERE successful = 1 AND attempted < DATE_SUB(UTC_TIMESTAMP(), INTERVAL 90 DAY)';
-        $affected_rows += $this->Connection->exec($sql);
+        $affected_rows += $this->Database->exec($sql);
 
         // Optimize the database table
-        $this->Connection->exec('OPTIMIZE TABLE sc_login_attempts');
+        $this->Database->exec('OPTIMIZE TABLE sc_login_attempts');
 
         return $affected_rows;
     }

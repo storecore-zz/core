@@ -4,8 +4,8 @@ namespace StoreCore\Database;
 /**
  * HTTP User-Agent Mapper
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright © 2015-2017 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\BI
  * @version   0.1.0
@@ -61,7 +61,7 @@ class UserAgentMapper extends \StoreCore\Database\AbstractModel
      */
     public function update()
     {
-        $stmt = $this->Connection->prepare('
+        $stmt = $this->Database->prepare('
             INSERT INTO sc_user_agents (user_agent_id, first_sighting, http_user_agent)
             VALUES (UNHEX(:user_agent_id), UTC_TIMESTAMP(), :http_user_agent)
             ON DUPLICATE KEY UPDATE last_sighting = UTC_TIMESTAMP()

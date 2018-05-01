@@ -59,7 +59,7 @@ class AccessControlWhitelist extends AbstractModel
                AND (thru_date IS NULL OR thru_date > UTC_TIMESTAMP())
          */
         $sql = 'SELECT COUNT(*) FROM sc_ip_whitelist WHERE from_date < UTC_TIMESTAMP() AND (thru_date IS NULL OR thru_date > UTC_TIMESTAMP())';
-        $stmt = $this->Connection->query($sql);
+        $stmt = $this->Database->query($sql);
         $row = $stmt->fetch(\PDO::FETCH_NUM);
         $stmt = null;
         $this->Count = (int)$row[0];
@@ -82,7 +82,7 @@ class AccessControlWhitelist extends AbstractModel
                AND (thru_date IS NULL OR thru_date > UTC_TIMESTAMP())
          */
         $sql = 'SELECT COUNT(*) FROM sc_ip_whitelist WHERE admin_flag = 1 AND from_date < UTC_TIMESTAMP() AND (thru_date IS NULL OR thru_date > UTC_TIMESTAMP())';
-        $stmt = $this->Connection->query($sql);
+        $stmt = $this->Database->query($sql);
         $row = $stmt->fetch(\PDO::FETCH_NUM);
         $stmt = null;
         return (int)$row[0];
@@ -104,7 +104,7 @@ class AccessControlWhitelist extends AbstractModel
                AND (thru_date IS NULL OR thru_date > UTC_TIMESTAMP())
          */
         $sql = 'SELECT COUNT(*) FROM sc_ip_whitelist WHERE api_flag = 1 AND from_date < UTC_TIMESTAMP() AND (thru_date IS NULL OR thru_date > UTC_TIMESTAMP())';
-        $stmt = $this->Connection->query($sql);
+        $stmt = $this->Database->query($sql);
         $row = $stmt->fetch(\PDO::FETCH_NUM);
         $stmt = null;
         return (int)$row[0];
@@ -152,7 +152,7 @@ class AccessControlWhitelist extends AbstractModel
         }
         $sql .= 'from_date < UTC_TIMESTAMP() AND (thru_date IS NULL OR thru_date > UTC_TIMESTAMP()) AND ip_address = :remote_address';
 
-        $stmt = $this->Connection->prepare($sql);
+        $stmt = $this->Database->prepare($sql);
         $stmt->bindParam(':remote_address', $remote_address, \PDO::PARAM_STR);
         if ($stmt->execute()) {
             $number_of_rows = $stmt->fetchColumn();

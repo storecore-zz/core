@@ -4,8 +4,8 @@ namespace StoreCore\Database;
 /**
  * Database Maintenance Module
  *
- * @author    Ward van der Put <ward@storecore.org>
- * @copyright Copyright © 2015-2017 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
@@ -99,7 +99,7 @@ class Maintenance extends \StoreCore\AbstractModel
             if ($interval_in_days !== 0) {
                 $sql .= ' AND date_deleted < DATE_SUB(UTC_TIMESTAMP(), INTERVAL ' . $interval_in_days . ' DAY)';
             }
-            $affected_rows += $this->Connection->exec($sql);
+            $affected_rows += $this->Database->exec($sql);
         }
         return $affected_rows;
     }
@@ -151,7 +151,7 @@ class Maintenance extends \StoreCore\AbstractModel
     public function getTables()
     {
         $tables = array();
-        $stmt = $this->Connection->prepare('SHOW TABLES');
+        $stmt = $this->Database->prepare('SHOW TABLES');
         if ($stmt->execute()) {
             while ($row = $stmt->fetch(\PDO::FETCH_NUM)) {
                 if (strpos($row[0], 'sc_', 0) === 0) {
@@ -181,7 +181,7 @@ class Maintenance extends \StoreCore\AbstractModel
         }
 
         try {
-            $this->Connection->query('OPTIMIZE TABLE ' . $tables);
+            $this->Database->query('OPTIMIZE TABLE ' . $tables);
         } catch (\PDOException $e) {
             $this->Logger->notice($e->getMessage());
         }
@@ -200,7 +200,7 @@ class Maintenance extends \StoreCore\AbstractModel
     {
         // Write pending changes to database files
         try {
-            $this->Connection->exec('FLUSH TABLES');
+            $this->Database->exec('FLUSH TABLES');
         } catch (\PDOException $e) {
             $this->Logger->notice($e->getMessage());
         }
@@ -209,19 +209,19 @@ class Maintenance extends \StoreCore\AbstractModel
             // Update core tables using CREATE TABLE IF NOT EXISTS and INSERT IGNORE
             if (is_file(__DIR__ . DIRECTORY_SEPARATOR . 'core-mysql.sql')) {
                 $sql = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'core-mysql.sql', false);
-                $this->Connection->exec($sql);
+                $this->Database->exec($sql);
             }
 
             // Add new translations using INSERT IGNORE
             if (is_file(__DIR__ . DIRECTORY_SEPARATOR . 'i18n-dml.sql')) {
                 $sql = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'i18n-dml.sql', false);
-                $this->Connection->exec($sql);
+                $this->Database->exec($sql);
             }
 
             // Add optional SQL to restore a backup
             if ($filename !== null && is_file($filename)) {
                 $sql = file_get_contents($filename, false);
-                $this->Connection->exec($sql);
+                $this->Database->exec($sql);
             }
 
         } catch (\PDOException $e) {
@@ -267,7 +267,7 @@ class Maintenance extends \StoreCore\AbstractModel
             // Execute other SQL statements
             foreach ($this->ChangeLog as $version => $sql) {
                 if (version_compare($version, self::VERSION, '<=') == true) {
-                    $this->Connection->exec($sql);
+                    $this->Database->exec($sql);
                 }
             }
 

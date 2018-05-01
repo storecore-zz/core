@@ -4,8 +4,8 @@ namespace StoreCore\Database;
 /**
  * Abstract MVC Model
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright © 2015-2017 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   1.0.0
@@ -37,7 +37,7 @@ abstract class AbstractModel extends \StoreCore\AbstractModel
      */
     public function __construct(\StoreCore\Registry $registry)
     {
-        if (false === $registry->has('Connection')) {
+        if (false === $registry->has('Database')) {
             try {
                 $dbh = new \StoreCore\Database\Connection();
                 if ($dbh === null) {
@@ -53,7 +53,7 @@ abstract class AbstractModel extends \StoreCore\AbstractModel
             } catch (\PDOException $e) {
                 throw new \RuntimeException($e->getMessage(), $e->getCode(), $e);
             }
-            $registry->set('Connection', $dbh);
+            $registry->set('Database', $dbh);
         }
         $this->Registry = $registry;
     }

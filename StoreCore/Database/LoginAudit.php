@@ -4,8 +4,8 @@ namespace StoreCore\Database;
 /**
  * Login Audit
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
  * @version   0.1.0
@@ -16,6 +16,7 @@ namespace StoreCore\Database;
  */
 class LoginAudit extends AbstractModel
 {
+    /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
     /**
@@ -33,7 +34,7 @@ class LoginAudit extends AbstractModel
         }
         $minutes = (int)abs($minutes);
 
-        $stmt = $this->Connection->prepare('SELECT COUNT(*) FROM sc_login_attempts WHERE successful = 0 AND attempted > DATE_SUB(UTC_TIMESTAMP(), INTERVAL :minutes MINUTE)');
+        $stmt = $this->Database->prepare('SELECT COUNT(*) FROM sc_login_attempts WHERE successful = 0 AND attempted > DATE_SUB(UTC_TIMESTAMP(), INTERVAL :minutes MINUTE)');
         $stmt->bindValue(':minutes', $minutes, \PDO::PARAM_INT);
         $stmt->execute();
         $count = $stmt->fetchColumn();
@@ -79,7 +80,7 @@ class LoginAudit extends AbstractModel
             $successful = 0;
         }
 
-        $stmt = $this->Connection->prepare('INSERT INTO sc_login_attempts (successful, attempted, remote_address, username) VALUES (:successful, UTC_TIMESTAMP(), :remote_address, :username)');
+        $stmt = $this->Database->prepare('INSERT INTO sc_login_attempts (successful, attempted, remote_address, username) VALUES (:successful, UTC_TIMESTAMP(), :remote_address, :username)');
 
         $stmt->bindParam(':successful', $successful, \PDO::PARAM_INT);
 
