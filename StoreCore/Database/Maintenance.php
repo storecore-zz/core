@@ -163,12 +163,14 @@ class Maintenance extends AbstractModel
     }
 
     /**
-     * Optimize tables.
+     * Optimize one or more database tables.
      *
      * @param string|array|null $tables
-     *   Optional comma-separated list or array of table names.
+     *   Optional comma-separated list or array of table names.  If this
+     *   optional parameter is not set, all StoreCore tables are optimized.
      *
-     * @return void
+     * @return bool
+     *   Returns true on success or false on failure.
      */
     public function optimize($tables = null)
     {
@@ -182,8 +184,10 @@ class Maintenance extends AbstractModel
 
         try {
             $this->Database->query('OPTIMIZE TABLE ' . $tables);
+            return true;
         } catch (\PDOException $e) {
             $this->Logger->notice($e->getMessage());
+            return false;
         }
     }
 
@@ -194,7 +198,7 @@ class Maintenance extends AbstractModel
      *   Optional filename of a SQL backup file.
      *
      * @return bool
-     *   Returns true on success or false on failures.
+     *   Returns true on success or false on failure.
      */
     public function restore($filename = null)
     {
