@@ -209,7 +209,9 @@ class Maintenance extends AbstractModel
             // Update core tables using CREATE TABLE IF NOT EXISTS and INSERT IGNORE
             if (is_file(__DIR__ . DIRECTORY_SEPARATOR . 'core-mysql.sql')) {
                 $sql = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'core-mysql.sql', false);
+                $this->Database->exec('SET FOREIGN_KEY_CHECKS = 0');
                 $this->Database->exec($sql);
+                $this->Database->exec('SET FOREIGN_KEY_CHECKS = 1');
             }
 
             // Add new translations using INSERT IGNORE
