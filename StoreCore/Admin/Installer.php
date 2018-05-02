@@ -86,7 +86,10 @@ class Installer extends \StoreCore\AbstractController
      * Check the database DSN and account.
      *
      * @param void
+     *
      * @return bool
+     *   Returns true if the database connection is set up correctly,
+     *   otherwise false.
      */
     private function checkDatabaseConnection()
     {
@@ -112,7 +115,10 @@ class Installer extends \StoreCore\AbstractController
      * Check the database structure and optionally install the database.
      *
      * @param void
+     *
      * @return bool
+     *   Returns true if the database tables appear to be set up correctly,
+     *   otherwise false.
      */
     private function checkDatabaseStructure()
     {
@@ -142,7 +148,9 @@ class Installer extends \StoreCore\AbstractController
      * Check files and folders.
      *
      * @param void
+     *
      * @return bool
+     *   Returns true if the file system is set up correctly, otherwise false.
      */
     private function checkFileSystem()
     {
@@ -252,7 +260,10 @@ class Installer extends \StoreCore\AbstractController
      * Check for user account(s).
      *
      * @param void
+     *
      * @return bool
+     *   Returns true if there is at least one active admin user account,
+     *   otherwise false.
      */
     private function checkUsers()
     {
@@ -394,7 +405,7 @@ class Installer extends \StoreCore\AbstractController
      * @param void
      *
      * @return string
-     *   Returns the default DSN as a string.
+     *   Returns the default DSN (Data Source Name) as a string.
      */
     private function getDSN()
     {
@@ -410,7 +421,7 @@ class Installer extends \StoreCore\AbstractController
      * @param void
      *
      * @return string
-     *   Returns the GUID as a string.
+     *   Returns the GUID (Globally Unique Identifier) as a string.
      */
     private function getGUID()
     {
