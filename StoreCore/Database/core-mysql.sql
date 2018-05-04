@@ -1037,6 +1037,35 @@ CREATE TABLE IF NOT EXISTS sc_store_organization (
   FOREIGN KEY fk_store_organization_organizations (organization_id) REFERENCES sc_organizations (organization_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
+-- Store settings
+CREATE TABLE IF NOT EXISTS sc_settings (
+  setting_id    INT(10) UNSIGNED     NOT NULL  AUTO_INCREMENT,
+  setting_name  VARCHAR(255)         NOT NULL,
+  constrained   TINYINT(1) UNSIGNED  NOT NUll  DEFAULT 0,
+  data_type     VARCHAR(255)         NOT NULL  DEFAULT 'string',
+  min_value     BIGINT SIGNED        NULL  DEFAULT NULL,
+  max_value     BIGINT SIGNED        NULL  DEFAULT NULL,
+  PRIMARY KEY pk_setting_id (setting_id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_allowed_setting_values (
+  value_id       INT(10) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  setting_id     INT(10) UNSIGNED  NOT NULL,
+  setting_value  VARCHAR(255)      NOT NULL,
+  PRIMARY KEY pk_allowed_setting_value_id (value_id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS sc_store_settings (
+  store_id             TINYINT(3) UNSIGNED  NOT NULL,
+  setting_id           INT(10) UNSIGNED     NOT NULL,
+  constrained_value    INT(10) UNSIGNED     NULL  DEFAULT NULL,
+  unconstrained_value  VARCHAR(255)         NULL  DEFAULT NULL,
+  PRIMARY KEY pk_store_settings_id (store_id, setting_id),
+  FOREIGN KEY fk_store_settings_stores (store_id) REFERENCES sc_stores (store_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_store_settings_settings (setting_id) REFERENCES sc_settings (setting_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY fk_store_settings_allowed_setting_values (constrained_value) REFERENCES sc_allowed_setting_values (value_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
+
 
 -- Customer groups
 CREATE TABLE IF NOT EXISTS sc_customer_groups (
