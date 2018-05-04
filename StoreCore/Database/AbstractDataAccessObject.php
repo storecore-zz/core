@@ -86,7 +86,7 @@ abstract class AbstractDataAccessObject extends AbstractModel
      * @param mixed $value
      *   Value for the `WHERE $key = $value` SQL clause.
      *
-     * @param string|int|null $key
+     * @param string|null $key
      *   Optional key for the `WHERE $key = $value` clause.  If omitted, the
      *   primary key column in `static::PRIMARY_KEY` is used.
      *
@@ -130,7 +130,7 @@ abstract class AbstractDataAccessObject extends AbstractModel
      * @param mixed $value
      *   Value to search for in the $key column.
      *
-     * @param string|int|null $key
+     * @param string|null $key
      *   Optional name of a column in the `static::TABLE_NAME` database table.
      *   If omitted, the column for the primary key in `static::PRIMARY_KEY` is
      *   used.
