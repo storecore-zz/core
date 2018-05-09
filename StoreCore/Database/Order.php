@@ -4,14 +4,15 @@ namespace StoreCore\Database;
 /**
  * Order Model
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
 class Order extends \StoreCore\Database\AbstractModel
 {
+    /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
     /**
@@ -52,7 +53,7 @@ class Order extends \StoreCore\Database\AbstractModel
             return 0;
         }
 
-        $stmt = $this->Connection->prepare('SELECT SUM(units) FROM sc_order_products WHERE order_id = :order_id');
+        $stmt = $this->Database->prepare('SELECT SUM(units) FROM sc_order_products WHERE order_id = :order_id');
         $stmt->bindParam(':order_id', $this->OrderID, \PDO::PARAM_INT);
         if ($stmt->execute()) {
             $number_of_units = $stmt->fetchColumn();
@@ -82,7 +83,7 @@ class Order extends \StoreCore\Database\AbstractModel
         $cart_id = new \StoreCore\Types\CartID();
 
         $sql = 'INSERT INTO sc_orders (order_id, store_id, cart_uuid, cart_rand, date_created, customer_id) VALUES (:order_id, :store_id, UUID(), :cart_rand, UTC_TIMESTAMP(), :customer_id)';
-        $stmt = $this->Connection->prepare($sql);
+        $stmt = $this->Database->prepare($sql);
 
         $stmt->bindParam(':store_id', $this->StoreID, \PDO::PARAM_INT);
         $stmt->bindParam(':cart_rand', $cart_id->getToken(), \PDO::PARAM_STR);
@@ -119,7 +120,7 @@ class Order extends \StoreCore\Database\AbstractModel
             return false;
         }
 
-        $stmt = $this->Connection->prepare('SELECT COUNT(*) FROM sc_orders WHERE order_id = :order_id');
+        $stmt = $this->Database->prepare('SELECT COUNT(*) FROM sc_orders WHERE order_id = :order_id');
         $stmt->bindParam(':order_id', $this->OrderID, \PDO::PARAM_INT);
         if ($stmt->execute()) {
             $number_of_rows = $stmt->fetchColumn();
@@ -189,7 +190,7 @@ class Order extends \StoreCore\Database\AbstractModel
             return $this->CartID;
         }
 
-        $stmt = $this->Connection->prepare('SELECT cart_uuid, cart_rand FROM sc_orders WHERE order_id = :order_id');
+        $stmt = $this->Database->prepare('SELECT cart_uuid, cart_rand FROM sc_orders WHERE order_id = :order_id');
         $stmt->bindParam(':order_id', $this->OrderID, \PDO::PARAM_INT);
         $stmt->execute();
         $row = $stmt->fetch(\PDO::FETCH_ASSOC);

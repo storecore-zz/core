@@ -4,8 +4,8 @@ namespace StoreCore\Database;
 /**
  * Currencies
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright © 2017 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2017–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
@@ -33,7 +33,7 @@ class Currencies extends AbstractModel
             return false;
         }
 
-        $stmt = $this->Connection->prepare('
+        $stmt = $this->Database->prepare('
             SELECT COUNT(currency_id)
               FROM sc_currencies
              WHERE currency_id = ' . intval($iso_currency_code) . '
@@ -56,7 +56,7 @@ class Currencies extends AbstractModel
      */
     public function getDefaultStoreCurrency(\StoreCore\Types\StoreID $store_id)
     {
-        $stmt = $this->Connection->prepare('
+        $stmt = $this->Database->prepare('
                SELECT s.currency_id, c.currency_code, c.digits, c.currency_symbol
                  FROM sc_store_currencies s
             LEFT JOIN sc_currencies c
@@ -98,7 +98,7 @@ class Currencies extends AbstractModel
      */
     public function getStoreCurrencies(\StoreCore\Types\StoreID $store_id)
     {
-        $stmt = $this->Connection->prepare('
+        $stmt = $this->Database->prepare('
                SELECT s.currency_id, c.currency_code, c.digits, c.currency_symbol
                  FROM sc_store_currencies s
             LEFT JOIN sc_currencies c
@@ -142,7 +142,7 @@ class Currencies extends AbstractModel
      */
     public function listAllCurrencies()
     {
-        $stmt = $this->Connection->prepare("
+        $stmt = $this->Database->prepare("
               SELECT currency_id, CONCAT(currency_name, ' (', currency_code, ')') AS currency
                 FROM sc_currencies
             ORDER BY currency_name ASC

@@ -4,8 +4,8 @@ namespace StoreCore\Database;
 /**
  * Person Mapper
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright © 2016-2017 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2016–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CRM
  * @version   0.1.0
@@ -39,7 +39,7 @@ class PersonMapper extends AbstractDataAccessObject
 
         try {
             // Revoke an API or admin user account for an anonymized user.
-            $stmt = $this->Connection->prepare('
+            $stmt = $this->Database->prepare('
                 UPDATE sc_users
                    SET user_group_id = 0,
                        person_id = NULL,
@@ -50,7 +50,7 @@ class PersonMapper extends AbstractDataAccessObject
             $stmt->execute();
 
             // Delete associations with organizations.
-            $stmt = $this->Connection->prepare('
+            $stmt = $this->Database->prepare('
                 DELETE
                   FROM sc_person_organizations
                  WHERE person_id = :person_id
@@ -59,7 +59,7 @@ class PersonMapper extends AbstractDataAccessObject
             $stmt->execute();
 
             // Delete associations with addresses.
-            $stmt = $this->Connection->prepare('
+            $stmt = $this->Database->prepare('
                 DELETE
                   FROM sc_person_addresses
                  WHERE person_id = :person_id
@@ -102,7 +102,11 @@ class PersonMapper extends AbstractDataAccessObject
      * Map the person's data to a person object.
      *
      * @param array $keyed_data
+     *   Array consisting of key/value pairs for a single row in the
+     *   `sc_persons` database table.
+     *
      * @return \StoreCore\Person
+     *   Returns a core object representing a person.
      */
     private function getPersonObject(array $keyed_data)
     {
@@ -116,9 +120,15 @@ class PersonMapper extends AbstractDataAccessObject
         $person->setEmailAddress($keyed_data['email_address']);
 
         $person->setAnonymizedFlag($keyed_data['anonymized_flag']);
-        $person->setDeletedFlag($keyed_data['deleted_flag']);
         $person->setDateCreated($keyed_data['date_created']);
-        $person->setDateModified($keyed_data['date_modified']);
+
+        if ($keyed_data['date_modified'] !== null) {
+            $person->setDateModified($keyed_data['date_modified']);
+        }
+
+        if ($keyed_data['date_deleted'] !== null) {
+            $person->setDateDeleted($keyed_data['date_deleted']);
+        }
 
         $person->setGender($keyed_data['gender']);
         $person->setHonorificPrefix($keyed_data['honorific_prefix']);
@@ -156,8 +166,7 @@ class PersonMapper extends AbstractDataAccessObject
         $person_data = array();
 
         $person_data['anonymized_flag'] = $person->getAnonymizedFlag();
-        $person_data['deleted_flag'] = $person->getDeletedFlag();
-
+        $person_data['date_deleted'] = $person->getDateDeleted();
         $person_data['email_address'] = $person->getEmailAddress();
         $person_data['gender'] = $person->getGender();
         $person_data['honorific_prefix'] = $person->getHonorificPrefix();
@@ -178,9 +187,9 @@ class PersonMapper extends AbstractDataAccessObject
         $person_data['death_place'] = $person->getDeathPlace();
 
         if ($person->getPersonID() === null) {
-            $current_date = gmdate('Y-m-d');
-            $person_data['date_created'] = $current_date;
-            $person->setDateCreated($current_date);
+            $now = gmdate('Y-m-d H:i:s');
+            $person_data['date_created'] = $now;
+            $person->setDateCreated($now);
             $return = $this->create($person_data);
             if (is_numeric($return)) {
                 $person->setPersonID($return);

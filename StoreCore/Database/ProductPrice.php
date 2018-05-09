@@ -4,15 +4,11 @@ namespace StoreCore\Database;
 /**
  * Product Price
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
- *
- * @method bool calculate ( [ int $currency_id = 978 ] )
- * @method void setPrecision ( int $precision )
- * @method void setProductID ( int $product_id )
  */
 class ProductPrice extends \StoreCore\Database\AbstractModel
 {
@@ -136,7 +132,7 @@ class ProductPrice extends \StoreCore\Database\AbstractModel
                    AND ( thru_date IS NULL
                           OR thru_date > UTC_TIMESTAMP() )
          */
-        $stmt = $this->Connection->prepare('SELECT price_component_id, currency_id, price_or_factor FROM sc_product_prices WHERE product_id = :product_id AND (from_date IS NULL OR from_date <= UTC_TIMESTAMP()) AND (thru_date IS NULL OR thru_date > UTC_TIMESTAMP())');
+        $stmt = $this->Database->prepare('SELECT price_component_id, currency_id, price_or_factor FROM sc_product_prices WHERE product_id = :product_id AND (from_date IS NULL OR from_date <= UTC_TIMESTAMP()) AND (thru_date IS NULL OR thru_date > UTC_TIMESTAMP())');
         $stmt->bindParam(':product_id', $this->ProductID, \PDO::PARAM_INT);
         $stmt->execute();
 

@@ -18,7 +18,7 @@
     +------------+------------+------------+-----------------------+
 
     @author    Ward van der Put <Ward.van.der.Put@gmail.com>
-    @copyright Copyright (c) 2014-2017 StoreCore
+    @copyright Copyright (c) 2014-2018 StoreCore
     @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
     @package   StoreCore\I18N
     @version   0.1.0
@@ -80,6 +80,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_IDEAL', 'iDEAL', 0),
     ('NOUN_INSTAGRAM', 'Instagram', 0),
     ('NOUN_LINKEDIN', 'LinkedIn', 0),
+    ('NOUN_MOLLIE', 'Mollie', 1),
     ('NOUN_MYSPACE', 'Myspace', 1),
     ('NOUN_MYSQL', 'MySQL', 1),
     ('NOUN_PAYPAL', 'PayPal', 0),
@@ -93,12 +94,14 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_TARGETPAY', 'TargetPay', 1),
     ('NOUN_TUMBLR', 'Tumblr', 0),
     ('NOUN_TWITTER', 'Twitter', 0),
+    ('NOUN_WHATSAPP', 'WhatsApp', 0),
     ('NOUN_YOUTUBE', 'YouTube', 0);
 
 -- Nouns
 INSERT IGNORE INTO sc_translation_memory
     (translation_id, language_id, translation, admin_only_flag)
   VALUES
+    ('NOUN_BRANDS', 'ca-AD', 'marques', 0),
     ('NOUN_BRANDS', 'de-DE', 'Marken', 0),
     ('NOUN_BRANDS', 'en-GB', 'brands', 0),
     ('NOUN_BRANDS', 'es-ES', 'marcas', 0),
@@ -107,6 +110,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_BRANDS', 'it-IT', 'marchi', 0),
     ('NOUN_BRANDS', 'pt-PT', 'marcas', 0),
 
+    ('NOUN_CATEGORIES', 'ca-AD', 'categories', 1),
     ('NOUN_CATEGORIES', 'de-DE', 'Kategorien', 1),
     ('NOUN_CATEGORIES', 'en-GB', 'categories', 1),
     ('NOUN_CATEGORIES', 'es-ES', 'categorías', 1),
@@ -115,6 +119,16 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_CATEGORIES', 'nl-NL', 'categorieën', 1),
     ('NOUN_CATEGORIES', 'pt-PT', 'categorias', 1),
 
+    ('NOUN_CONTACTS', 'ca-AD', 'contactes', 1),
+    ('NOUN_CONTACTS', 'de-DE', 'Kontakte', 1),
+    ('NOUN_CONTACTS', 'en-GB', 'contacts', 1),
+    ('NOUN_CONTACTS', 'es-ES', 'contactos', 1),
+    ('NOUN_CONTACTS', 'fr-FR', 'contacts', 1),
+    ('NOUN_CONTACTS', 'it-IT', 'contatti', 1),
+    ('NOUN_CONTACTS', 'nl-NL', 'contacten', 1),
+    ('NOUN_CONTACTS', 'pt-PT', 'contatos', 1),
+
+    ('NOUN_DATABASE', 'ca-AD', 'base de dades', 1),
     ('NOUN_DATABASE', 'de-DE', 'Datenbank', 1),
     ('NOUN_DATABASE', 'en-GB', 'database', 1),
     ('NOUN_DATABASE', 'es-ES', 'base de datos', 1),
@@ -123,6 +137,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_DATABASE', 'nl-NL', 'database', 1),
     ('NOUN_DATABASE', 'pt-PT', 'base de dados', 1),
 
+    ('NOUN_DEFAULT_TIMEZONE', 'ca-AD', 'zona horària predeterminada', 1),
     ('NOUN_DEFAULT_TIMEZONE', 'de-DE', 'Standardzeitzone', 1),
     ('NOUN_DEFAULT_TIMEZONE', 'en-GB', 'default timezone', 1),
     ('NOUN_DEFAULT_TIMEZONE', 'es-ES', 'zona horaria predeterminada', 1),
@@ -131,19 +146,26 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_DEFAULT_TIMEZONE', 'nl-NL', 'standaardtijdzone', 1),
     ('NOUN_DEFAULT_TIMEZONE', 'pt-PT', 'fuso horário predefinido', 1),
 
+    ('NOUN_DUTCH', 'ca-AD', 'neerlandès', 0),
     ('NOUN_DUTCH', 'de-DE', 'Holländisch', 0),
     ('NOUN_DUTCH', 'en-GB', 'Dutch', 0),
+    ('NOUN_DUTCH', 'es-ES', 'Neerlandés', 0),
     ('NOUN_DUTCH', 'fr-FR', 'néerlandais', 0),
+    ('NOUN_DUTCH', 'it-IT', 'Olandese', 0),
     ('NOUN_DUTCH', 'nl-NL', 'Nederlands', 0),
+    ('NOUN_DUTCH', 'pt-BR', 'Holandês', 0),
+    ('NOUN_DUTCH', 'pt-PT', 'Neerlandês', 0),
 
+    ('NOUN_ENGLISH', 'ca-AD', 'anglès', 0),
     ('NOUN_ENGLISH', 'de-DE', 'Englisch', 0),
     ('NOUN_ENGLISH', 'en-GB', 'English', 0),
-    ('NOUN_ENGLISH', 'es-ES', 'Inglés', 0),
+    ('NOUN_ENGLISH', 'es-ES', 'inglés', 0),
     ('NOUN_ENGLISH', 'fr-FR', 'anglais', 0),
     ('NOUN_ENGLISH', 'it-IT', 'Inglese', 0),
     ('NOUN_ENGLISH', 'nl-NL', 'Engels', 0),
     ('NOUN_ENGLISH', 'pt-PT', 'Inglês', 0),
 
+    ('NOUN_ENERGY_EFFICIENCY_CLASS', 'ca-AD', 'classes d’eficàcia energètica', 0),
     ('NOUN_ENERGY_EFFICIENCY_CLASS', 'de-DE', 'Energieeffizienzklasse', 0),
     ('NOUN_ENERGY_EFFICIENCY_CLASS', 'en-GB', 'energy efficiency class', 0),
     ('NOUN_ENERGY_EFFICIENCY_CLASS', 'es-ES', 'nivel ​eficiencia ​energética', 0),
@@ -152,11 +174,16 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_ENERGY_EFFICIENCY_CLASS', 'nl-NL', 'energieklasse', 0),
     ('NOUN_ENERGY_EFFICIENCY_CLASS', 'pt-PT', 'classe eficiência energética', 0),
 
+    ('NOUN_FRENCH', 'ca-AD', 'francès', 0),
     ('NOUN_FRENCH', 'de-DE', 'Französisch', 0),
     ('NOUN_FRENCH', 'en-GB', 'French', 0),
+    ('NOUN_FRENCH', 'es-ES', 'francés', 0),
     ('NOUN_FRENCH', 'fr-FR', 'français', 0),
+    ('NOUN_FRENCH', 'it-IT', 'francese', 0),
     ('NOUN_FRENCH', 'nl-NL', 'Frans', 0),
+    ('NOUN_FRENCH', 'pt-PT', 'francês', 0),
 
+    ('NOUN_GENDER', 'ca-AD', 'gènere', 0),
     ('NOUN_GENDER', 'de-DE', 'Geschlecht', 0),
     ('NOUN_GENDER', 'en-GB', 'gender', 0),
     ('NOUN_GENDER', 'es-ES', 'sexo', 0),
@@ -165,10 +192,14 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_GENDER', 'nl-NL', 'geslacht', 0),
     ('NOUN_GENDER', 'pt-PT', 'gênero', 0),
 
+    ('NOUN_GERMAN', 'ca-AD', 'alemany', 0),
     ('NOUN_GERMAN', 'de-DE', 'Deutsch', 0),
     ('NOUN_GERMAN', 'en-GB', 'German', 0),
+    ('NOUN_GERMAN', 'es-ES', 'alemán', 0),
     ('NOUN_GERMAN', 'fr-FR', 'allemand', 0),
+    ('NOUN_GERMAN', 'it-IT', 'tedesco', 0),
     ('NOUN_GERMAN', 'nl-NL', 'Duits', 0),
+    ('NOUN_GERMAN', 'pt-PT', 'alemão', 0),
 
     ('NOUN_GOOGLE_PRODUCT_TAXONOMY', 'de-DE', 'Google-Produkt-Taxonomie', 1),
     ('NOUN_GOOGLE_PRODUCT_TAXONOMY', 'en-GB', 'Google product taxonomy', 1),
@@ -183,6 +214,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_IMPRESSUM', 'nl-NL', 'colofon', 0),
     ('NOUN_IMPRESSUM', 'pt-PT', 'ficha técnica', 0),
 
+    ('NOUN_LATITUDE', 'ca-AD', 'latitud', 0),
     ('NOUN_LATITUDE', 'de-DE', 'Breitengrad', 0),
     ('NOUN_LATITUDE', 'en-GB', 'latitude', 0),
     ('NOUN_LATITUDE', 'es-ES', 'latitud', 0),
@@ -191,6 +223,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_LATITUDE', 'nl-NL', 'breedtegraad', 0),
     ('NOUN_LATITUDE', 'pt-PT', 'latitude', 0),
 
+    ('NOUN_LONGITUDE', 'ca-AD', 'longitud', 0),
     ('NOUN_LONGITUDE', 'de-DE', 'Längengrad', 0),
     ('NOUN_LONGITUDE', 'en-GB', 'longitude', 0),
     ('NOUN_LONGITUDE', 'es-ES', 'longitud', 0),
@@ -209,6 +242,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_PACKING_SLIP', 'pt-BR', 'guia de remessa', 0),
     ('NOUN_PACKING_SLIP', 'pt-PT', 'guia de remessa', 0),
 
+    ('NOUN_PASSWORD', 'ca-AD', 'contrasenya', 0),
     ('NOUN_PASSWORD', 'de-DE', 'Kennwort', 0),
     ('NOUN_PASSWORD', 'en-GB', 'password', 0),
     ('NOUN_PASSWORD', 'es-ES', 'contraseña', 0),
@@ -218,6 +252,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_PASSWORD', 'pt-BR', 'senha', 0),
     ('NOUN_PASSWORD', 'pt-PT', 'palavra-passe', 0),
 
+    ('NOUN_PRIVACY_STATEMENT', 'ca-AD', 'declaració de privadesa', 0),
     ('NOUN_PRIVACY_STATEMENT', 'de-DE', 'Datenschutzerklärung', 0),
     ('NOUN_PRIVACY_STATEMENT', 'en-GB', 'privacy statement', 0),
     ('NOUN_PRIVACY_STATEMENT', 'es-ES', 'declaración de privacidad', 0),
@@ -227,14 +262,16 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_PRIVACY_STATEMENT', 'nl-NL', 'privacyverklaring', 0),
     ('NOUN_PRIVACY_STATEMENT', 'pt-PT', 'declaração de privacidade', 0),
 
+    ('NOUN_PIN_CODE', 'ca-AD', 'codi PIN', 1),
     ('NOUN_PIN_CODE', 'de-DE', 'PIN-Code', 1),
     ('NOUN_PIN_CODE', 'en-GB', 'PIN code', 1),
-    ('NOUN_PIN_CODE', 'es-ES', 'código PIN', 0),
+    ('NOUN_PIN_CODE', 'es-ES', 'código PIN', 1),
     ('NOUN_PIN_CODE', 'fr-FR', 'code PIN', 1),
     ('NOUN_PIN_CODE', 'it-IT', 'codice PIN', 1),
     ('NOUN_PIN_CODE', 'nl-NL', 'pincode', 1),
-    ('NOUN_PIN_CODE', 'pt-PT', 'código PIN', 0),
+    ('NOUN_PIN_CODE', 'pt-PT', 'código PIN', 1),
 
+    ('NOUN_POSTAL_CODE', 'ca-AD', 'codi postal', 0),
     ('NOUN_POSTAL_CODE', 'de-DE', 'Postleitzahl', 0),
     ('NOUN_POSTAL_CODE', 'en-GB', 'postcode', 0),
     ('NOUN_POSTAL_CODE', 'en-US', 'zip code', 0),
@@ -244,6 +281,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_POSTAL_CODE', 'nl-NL', 'postcode', 0),
     ('NOUN_POSTAL_CODE', 'pt-PT', 'código postal', 0),
 
+    ('NOUN_RELATED_PRODUCTS', 'ca-AD', 'productes relacionats', 0),
     ('NOUN_RELATED_PRODUCTS', 'de-DE', 'verwandte Produkte', 0),
     ('NOUN_RELATED_PRODUCTS', 'en-GB', 'related products', 0),
     ('NOUN_RELATED_PRODUCTS', 'es-ES', 'productos relacionados', 0),
@@ -252,6 +290,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_RELATED_PRODUCTS', 'nl-NL', 'gerelateerde producten', 0),
     ('NOUN_RELATED_PRODUCTS', 'pt-PT', 'produtos relacionados', 0),
 
+    ('NOUN_SHOPPING_CART', 'ca-AD', 'carret de compra', 0),
     ('NOUN_SHOPPING_CART', 'de-DE', 'Einkaufswagen', 0),
     ('NOUN_SHOPPING_CART', 'en-GB', 'shopping cart', 0),
     ('NOUN_SHOPPING_CART', 'es-ES', 'carro de la compra', 0),
@@ -260,6 +299,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_SHOPPING_CART', 'nl-NL', 'winkelwagen', 0),
     ('NOUN_SHOPPING_CART', 'pt-PT', 'carrinho de compras', 0),
 
+    ('NOUN_TERMS_AND_CONDITIONS', 'ca-AD', 'termes i condicions', 0),
     ('NOUN_TERMS_AND_CONDITIONS', 'de-DE', 'Geschäftsbedingungen', 0),
     ('NOUN_TERMS_AND_CONDITIONS', 'en-GB', 'terms and conditions', 0),
     ('NOUN_TERMS_AND_CONDITIONS', 'es-ES', 'términos y condiciones', 0),
@@ -269,14 +309,17 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_TERMS_AND_CONDITIONS', 'nl-NL', 'algemene voorwaarden', 0),
     ('NOUN_TERMS_AND_CONDITIONS', 'pt-PT', 'termos e condições', 0),
 
+    ('NOUN_TIMEZONE', 'ca-AD', 'zona horària', 1),
     ('NOUN_TIMEZONE', 'de-DE', 'Zeitzone', 1),
-    ('NOUN_TIMEZONE', 'en-GB', 'timezone', 1),
+    ('NOUN_TIMEZONE', 'en-GB', 'time zone', 1),
+    ('NOUN_TIMEZONE', 'en-US', 'timezone', 1),
     ('NOUN_TIMEZONE', 'es-ES', 'zona horaria', 1),
     ('NOUN_TIMEZONE', 'fr-FR', 'fuseau horaire', 1),
     ('NOUN_TIMEZONE', 'it-IT', 'fuso orario', 1),
     ('NOUN_TIMEZONE', 'nl-NL', 'tijdzone', 1),
     ('NOUN_TIMEZONE', 'pt-PT', 'fuso horário', 1),
 
+    ('NOUN_TRACKING_NUMBER', 'ca-AD', 'número de seguiment', 0),
     ('NOUN_TRACKING_NUMBER', 'de-DE', 'Nachverfolgungsnummer', 0),
     ('NOUN_TRACKING_NUMBER', 'en-GB', 'tracking number', 0),
     ('NOUN_TRACKING_NUMBER', 'es-ES', 'número de seguimiento', 0),
@@ -285,6 +328,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_TRACKING_NUMBER', 'nl-NL', 'trackingnummer', 0),
     ('NOUN_TRACKING_NUMBER', 'pt-PT', 'número de registo', 0),
 
+    ('NOUN_USER', 'ca-AD', 'usuari', 0),
     ('NOUN_USER', 'de-DE', 'Benutzer', 0),
     ('NOUN_USER', 'en-GB', 'user', 0),
     ('NOUN_USER', 'es-ES', 'usuario', 0),
@@ -293,6 +337,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_USER', 'nl-NL', 'gebruiker', 0),
     ('NOUN_USER', 'pt-PT', 'utilizador', 0),
 
+    ('NOUN_USERS', 'ca-AD', 'usuaris', 0),
     ('NOUN_USERS', 'de-DE', 'Benutzer', 0),
     ('NOUN_USERS', 'en-GB', 'users', 0),
     ('NOUN_USERS', 'es-ES', 'usuarios', 0),
@@ -305,6 +350,7 @@ INSERT IGNORE INTO sc_translation_memory
 INSERT IGNORE INTO sc_translation_memory
     (translation_id, language_id, translation)
   VALUES
+    ('VERB_CANCEL', 'ca-AD', 'cancel·lar'),
     ('VERB_CANCEL', 'de-DE', 'abbrechen'),
     ('VERB_CANCEL', 'en-GB', 'cancel'),
     ('VERB_CANCEL', 'es-ES', 'cancelar'),
@@ -313,6 +359,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('VERB_CANCEL', 'nl-NL', 'annuleren'),
     ('VERB_CANCEL', 'pt-PT', 'cancelar'),
 
+    ('VERB_PRINT', 'ca-AD', 'imprimir'),
     ('VERB_PRINT', 'de-DE', 'drucken'),
     ('VERB_PRINT', 'en-GB', 'print'),
     ('VERB_PRINT', 'es-ES', 'imprimir'),
@@ -321,6 +368,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('VERB_PRINT', 'nl-NL', 'printen'),
     ('VERB_PRINT', 'pt-PT', 'imprimir'),
 
+    ('VERB_SAVE', 'ca-AD', 'desar'),
     ('VERB_SAVE', 'de-DE', 'speichern'),
     ('VERB_SAVE', 'en-GB', 'save'),
     ('VERB_SAVE', 'es-ES', 'guardar'),
@@ -346,6 +394,7 @@ INSERT IGNORE INTO sc_translation_memory
 INSERT IGNORE INTO sc_translation_memory
     (translation_id, language_id, translation)
   VALUES
+    ('COMMAND_CANCEL', 'ca-AD', 'Cancel·la'),
     ('COMMAND_CANCEL', 'de-DE', 'Abbrechen'),
     ('COMMAND_CANCEL', 'en-GB', 'Cancel'),
     ('COMMAND_CANCEL', 'es-ES', 'Cancelar'),
@@ -354,6 +403,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('COMMAND_CANCEL', 'nl-NL', 'Annuleren'),
     ('COMMAND_CANCEL', 'pt-PT', 'Cancelar'),
 
+    ('COMMAND_DELETE', 'ca-AD', 'Suprimeix'),
     ('COMMAND_DELETE', 'de-DE', 'Löschen'),
     ('COMMAND_DELETE', 'en-GB', 'Delete'),
     ('COMMAND_DELETE', 'es-ES', 'Eliminar'),
@@ -362,6 +412,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('COMMAND_DELETE', 'it-IT', 'Elimina'),
     ('COMMAND_DELETE', 'pt-PT', 'Eliminar'),
 
+    ('COMMAND_NEXT', 'ca-AD', 'Endavant'),
     ('COMMAND_NEXT', 'de-DE', 'Weiter'),
     ('COMMAND_NEXT', 'en-GB', 'Next'),
     ('COMMAND_NEXT', 'es-ES', 'Siguiente'),
@@ -371,6 +422,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('COMMAND_NEXT', 'pt-BR', 'Avançar'),
     ('COMMAND_NEXT', 'pt-PT', 'Seguinte'),
 
+    ('COMMAND_PRINT', 'ca-Ad', 'Imprimeix…'),
     ('COMMAND_PRINT', 'de-DE', 'Drucken…'),
     ('COMMAND_PRINT', 'en-GB', 'Print…'),
     ('COMMAND_PRINT', 'es-ES', 'Imprimir…'),
@@ -379,6 +431,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('COMMAND_PRINT', 'nl-NL', 'Printen…'),
     ('COMMAND_PRINT', 'pt-PT', 'Imprimir…'),
 
+    ('COMMAND_SAVE', 'ca-AD', 'Desa'),
     ('COMMAND_SAVE', 'de-DE', 'Speichern'),
     ('COMMAND_SAVE', 'en-GB', 'Save'),
     ('COMMAND_SAVE', 'es-ES', 'Guardar'),
@@ -387,6 +440,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('COMMAND_SAVE', 'nl-NL', 'Opslaan'),
     ('COMMAND_SAVE', 'pt-PT', 'Guardar'),
 
+    ('COMMAND_SIGN_IN', 'ca-AD', 'Inicia sessió'),
     ('COMMAND_SIGN_IN', 'de-DE', 'Anmelden'),
     ('COMMAND_SIGN_IN', 'en-GB', 'Sign in'),
     ('COMMAND_SIGN_IN', 'es-ES', 'Iniciar sesión'),
@@ -395,6 +449,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('COMMAND_SIGN_IN', 'nl-NL', 'Inloggen'),
     ('COMMAND_SIGN_IN', 'pt-PT', 'Iniciar sessão'),
 
+    ('COMMAND_SIGN_OUT', 'ca-AD', 'Tancar sessió'),
     ('COMMAND_SIGN_OUT', 'de-DE', 'Abmelden'),
     ('COMMAND_SIGN_OUT', 'en-GB', 'Sign out'),
     ('COMMAND_SIGN_OUT', 'es-ES', 'Cerrar sesión'),
@@ -403,6 +458,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('COMMAND_SIGN_OUT', 'nl-NL', 'Uitloggen'),
     ('COMMAND_SIGN_OUT', 'pt-PT', 'Terminar sessão'),
 
+    ('COMMAND_UNLOCK', 'ca-AD', 'Desbloquejar…'),
     ('COMMAND_UNLOCK', 'de-DE', 'Entsperren…'),
     ('COMMAND_UNLOCK', 'en-GB', 'Unlock…'),
     ('COMMAND_UNLOCK', 'es-ES', 'Desbloquear…'),
@@ -452,6 +508,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_EMAIL_ADDRESS', 'nl-NL', 'E-mailadres'),
     ('HEADING_EMAIL_ADDRESS', 'pt-PT', 'Endereço de correio electrónico'),
 
+    ('HEADING_FIRST_NAME', 'ca-AD', 'Nom'),
     ('HEADING_FIRST_NAME', 'de-DE', 'Vorname'),
     ('HEADING_FIRST_NAME', 'en-GB', 'First name'),
     ('HEADING_FIRST_NAME', 'es-ES', 'Nombre'),
@@ -460,6 +517,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_FIRST_NAME', 'nl-NL', 'Voornaam'),
     ('HEADING_FIRST_NAME', 'pt-PT', 'Nome próprio'),
 
+    ('HEADING_LANGUAGE', 'ca-AD', 'Llengua'),
     ('HEADING_LANGUAGE', 'de-DE', 'Sprache'),
     ('HEADING_LANGUAGE', 'en-GB', 'Language'),
     ('HEADING_LANGUAGE', 'es-ES', 'Idioma'),
@@ -468,6 +526,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_LANGUAGE', 'nl-NL', 'Taal'),
     ('HEADING_LANGUAGE', 'pt-PT', 'Idioma'),
 
+    ('HEADING_LAST_NAME', 'ca-AD', 'Cognom'),
     ('HEADING_LAST_NAME', 'de-DE', 'Nachname'),
     ('HEADING_LAST_NAME', 'en-GB', 'Last name'),
     ('HEADING_LAST_NAME', 'es-ES', 'Apellidos'),
@@ -476,6 +535,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_LAST_NAME', 'nl-NL', 'Achternaam'),
     ('HEADING_LAST_NAME', 'pt-PT', 'Apelido'),
 
+    ('HEADING_LOG_FILES', 'ca-AD', 'Fitxers de registre'),
     ('HEADING_LOG_FILES', 'de-DE', 'Protokolldateien'),
     ('HEADING_LOG_FILES', 'en-GB', 'Log files'),
     ('HEADING_LOG_FILES', 'es-ES', 'Archivos de registro'),
@@ -484,6 +544,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_LOG_FILES', 'nl-NL', 'Logboekbestanden'),
     ('HEADING_LOG_FILES', 'pt-PT', 'Ficheiros de registo'),
 
+    ('HEADING_ORDERS', 'ca-AD', 'Comandes'),
     ('HEADING_ORDERS', 'de-DE', 'Bestellungen'),
     ('HEADING_ORDERS', 'en-GB', 'Orders'),
     ('HEADING_ORDERS', 'es-ES', 'Pedidos'),
@@ -492,6 +553,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_ORDERS', 'nl-NL', 'Orders'),
     ('HEADING_ORDERS', 'pt-PT', 'Encomendas'),
 
+    ('HEADING_PASSWORD', 'ca-AD', 'Contrasenya'),
     ('HEADING_PASSWORD', 'de-DE', 'Kennwort'),
     ('HEADING_PASSWORD', 'en-GB', 'Password'),
     ('HEADING_PASSWORD', 'es-ES', 'Contraseña'),
@@ -500,6 +562,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_PASSWORD', 'nl-NL', 'Wachtwoord'),
     ('HEADING_PASSWORD', 'pt-PT', 'Palavra-passe'),
 
+    ('HEADING_USER_ACCOUNT', 'ca-AD', 'Compte d’usuari'),
     ('HEADING_USER_ACCOUNT', 'de-DE', 'Benutzerkonto'),
     ('HEADING_USER_ACCOUNT', 'en-GB', 'User account'),
     ('HEADING_USER_ACCOUNT', 'es-ES', 'Cuenta de usuario'),
@@ -508,6 +571,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_USER_ACCOUNT', 'nl-NL', 'Gebruikersaccount'),
     ('HEADING_USER_ACCOUNT', 'pt-PT', 'Conta de utilizador'),
 
+    ('HEADING_USERNAME', 'ca-AD', 'Nom d’usuari'),
     ('HEADING_USERNAME', 'de-DE', 'Benutzername'),
     ('HEADING_USERNAME', 'en-GB', 'Username'),
     ('HEADING_USERNAME', 'es-ES', 'Nombre de usuario'),
@@ -519,6 +583,7 @@ INSERT IGNORE INTO sc_translation_memory
 INSERT IGNORE INTO sc_translation_memory
     (translation_id, language_id, translation, admin_only_flag)
   VALUES
+    ('HEADING_CATALOG', 'ca-AD', 'Catàleg', 1),
     ('HEADING_CATALOG', 'de-DE', 'Katalog', 1),
     ('HEADING_CATALOG', 'en-GB', 'Catalog', 1),
     ('HEADING_CATALOG', 'es-ES', 'Catálogo', 1),
@@ -527,6 +592,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_CATALOG', 'nl-NL', 'Catalogus', 1),
     ('HEADING_CATALOG', 'pt-PT', 'Catálogo', 1),
 
+    ('HEADING_CUSTOMERS', 'ca-AD', 'Clients', 1),
     ('HEADING_CUSTOMERS', 'de-DE', 'Kunden', 1),
     ('HEADING_CUSTOMERS', 'en-GB', 'Customers', 1),
     ('HEADING_CUSTOMERS', 'es-ES', 'Clientes', 1),
@@ -535,6 +601,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_CUSTOMERS', 'nl-NL', 'Klanten', 1),
     ('HEADING_CUSTOMERS', 'pt-PT', 'Clientes', 1),
 
+    ('HEADING_DATABASE_NAME', 'ca-AD', 'Nom de la base de dades', 1),
     ('HEADING_DATABASE_NAME', 'de-DE', 'Datenbankname', 1),
     ('HEADING_DATABASE_NAME', 'en-GB', 'Database name', 1),
     ('HEADING_DATABASE_NAME', 'es-ES', 'Nombre de la base de datos', 1),
@@ -543,6 +610,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_DATABASE_NAME', 'nl-NL', 'Databasenaam', 1),
     ('HEADING_DATABASE_NAME', 'pt-PT', 'Nome de base de dados', 1),
 
+    ('HEADING_DATABASE_SETTINGS', 'ca-AD', 'Configuració de la base de dades', 1),
     ('HEADING_DATABASE_SETTINGS', 'de-DE', 'Datenbankeinstellungen', 1),
     ('HEADING_DATABASE_SETTINGS', 'en-GB', 'Database settings', 1),
     ('HEADING_DATABASE_SETTINGS', 'es-ES', 'Configuración de la base de datos', 1),
@@ -551,11 +619,25 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_DATABASE_SETTINGS', 'nl-NL', 'Database-instellingen', 1),
     ('HEADING_DATABASE_SETTINGS', 'pt-PT', 'Definições da base de dados', 1),
 
+    ('HEADING_HELP_AND_SUPPORT', 'ca-AD', 'Ajuda i suport tècnic', 1),
+    ('HEADING_HELP_AND_SUPPORT', 'de-DE', 'Hilfe und Support', 1),
+    ('HEADING_HELP_AND_SUPPORT', 'en-GB', 'Help and support', 1),
+    ('HEADING_HELP_AND_SUPPORT', 'es-ES', 'Ayuda y soporte técnico', 1),
+    ('HEADING_HELP_AND_SUPPORT', 'fr-FR', 'Aide et support', 1),
+    ('HEADING_HELP_AND_SUPPORT', 'it-IT', 'Guida in linea e supporto tecnico', 1),
+    ('HEADING_HELP_AND_SUPPORT', 'nl-NL', 'Help en ondersteuning', 1),
+    ('HEADING_HELP_AND_SUPPORT', 'pt-PT', 'Ajuda e suporte', 1),
+
+    ('HEADING_KEY_PERFORMANCE_INDICATORS', 'ca-AD', 'Indicadors clau de rendiment (KPIs)', 1),
     ('HEADING_KEY_PERFORMANCE_INDICATORS', 'de-DE', 'Leistungskennzahlen (KPIs)', 1),
     ('HEADING_KEY_PERFORMANCE_INDICATORS', 'en-GB', 'Key performance indicators (KPIs)', 1),
+    ('HEADING_KEY_PERFORMANCE_INDICATORS', 'es-ES', 'Indicadores clave de rendimiento (KPI)', 1),
     ('HEADING_KEY_PERFORMANCE_INDICATORS', 'fr-FR', 'Indicateurs clés de performance (ICP)', 1),
+    ('HEADING_KEY_PERFORMANCE_INDICATORS', 'it-IT', 'Indicatore chiave di prestazione (KPI)', 1),
     ('HEADING_KEY_PERFORMANCE_INDICATORS', 'nl-NL', 'Kritieke prestatie-indicatoren (KPI’s)', 1),
+    ('HEADING_KEY_PERFORMANCE_INDICATORS', 'pt-PT', 'Indicadores-chave de desempenho (KPIs)', 1),
 
+    ('HEADING_LANGUAGES', 'ca-AD', 'Llengües', 1),
     ('HEADING_LANGUAGES', 'de-DE', 'Sprachen', 1),
     ('HEADING_LANGUAGES', 'en-GB', 'Languages', 1),
     ('HEADING_LANGUAGES', 'es-ES', 'Idiomas', 1),
@@ -564,6 +646,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_LANGUAGES', 'nl-NL', 'Talen', 1),
     ('HEADING_LANGUAGES', 'pt-PT', 'Idiomas', 1),
 
+    ('HEADING_HOST_NAME_OR_IP_ADDRESS', 'ca-AD', 'Nom de l’amfitrió ou adreça IP', 1),
     ('HEADING_HOST_NAME_OR_IP_ADDRESS', 'de-DE', 'Hostname oder IP-Adresse', 1),
     ('HEADING_HOST_NAME_OR_IP_ADDRESS', 'en-GB', 'Host name or IP address', 1),
     ('HEADING_HOST_NAME_OR_IP_ADDRESS', 'es-ES', 'Nombre de host o dirección IP', 1),
@@ -572,6 +655,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_HOST_NAME_OR_IP_ADDRESS', 'nl-NL', 'Hostnaam of IP-adres', 1),
     ('HEADING_HOST_NAME_OR_IP_ADDRESS', 'pt-PT', 'Nome ou endereço IP do de anfitrião', 1),
 
+    ('HEADING_PDO_DRIVER', 'ca-AD', 'Controlador PDO', 1),
     ('HEADING_PDO_DRIVER', 'de-DE', 'PDO-Treiber', 1),
     ('HEADING_PDO_DRIVER', 'en-GB', 'PDO driver', 1),
     ('HEADING_PDO_DRIVER', 'es-ES', 'Controlador PDO', 1),

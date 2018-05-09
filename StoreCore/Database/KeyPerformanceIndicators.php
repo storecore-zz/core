@@ -4,8 +4,8 @@ namespace StoreCore\Database;
 /**
  * Key Performance Indicators (KPIs) Model
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright © 2017 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2017–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\BI
  * @version   0.1.0
@@ -76,7 +76,7 @@ class KeyPerformanceIndicators extends AbstractModel
         // Dimension 5: database server
         if (defined('STORECORE_DATABASE_DRIVER')) {
             if (STORECORE_DATABASE_DRIVER == 'mysql') {
-                $this->Dimensions[5] = 'MySQL ' . $this->Connection->query('SELECT VERSION()')->fetchColumn();
+                $this->Dimensions[5] = 'MySQL ' . $this->Database->query('SELECT VERSION()')->fetchColumn();
             }
         }
 

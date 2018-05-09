@@ -4,8 +4,8 @@ namespace StoreCore\Database;
 /**
  * Translation Memory Model
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright © 2015-2017 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\I18N
  * @version   0.1.0
@@ -57,7 +57,7 @@ class TranslationMemory extends AbstractModel
         $needle = '%' . trim($needle, '%') . '%';
         $uppercase_needle = strtoupper($needle);
 
-        $stmt = $this->Connection->prepare('SELECT t.translation_id, t.language_id, t.translation FROM sc_translation_memory t LEFT JOIN sc_languages l ON t.language_id = l.language_id WHERE l.enabled_flag = 1 AND (t.translation_id LIKE :uppercase_needle OR t.translation LIKE :needle)');
+        $stmt = $this->Database->prepare('SELECT t.translation_id, t.language_id, t.translation FROM sc_translation_memory t LEFT JOIN sc_languages l ON t.language_id = l.language_id WHERE l.enabled_flag = 1 AND (t.translation_id LIKE :uppercase_needle OR t.translation LIKE :needle)');
         $stmt->bindParam(':uppercase_needle', $uppercase_needle, \PDO::PARAM_STR);
         $stmt->bindParam(':needle', $needle, \PDO::PARAM_STR);
         $stmt->execute();
@@ -131,7 +131,7 @@ class TranslationMemory extends AbstractModel
         }
         $sql .= ' ORDER BY translation_id ASC';
 
-        $stmt = $this->Connection->prepare($sql);
+        $stmt = $this->Database->prepare($sql);
         $stmt->bindParam(':language_id', $language_id, \PDO::PARAM_STR);
         $stmt->execute();
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
@@ -168,7 +168,7 @@ class TranslationMemory extends AbstractModel
             $language_code = $language_code . '%';
             $sql .= "AND language_id LIKE :language_code ORDER BY sort_order ASC, parent_id = 'en-GB' DESC LIMIT 1";
         }
-        $stmt = $this->Connection->prepare($sql);
+        $stmt = $this->Database->prepare($sql);
         $stmt->bindParam(':language_code', $language_code, \PDO::PARAM_STR);
         $stmt->execute();
         $row = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -226,7 +226,7 @@ class TranslationMemory extends AbstractModel
             $admin_only_flag = 0;
         }
 
-        $stmt = $this->Connection->prepare('INSERT INTO sc_translation_memory (translation_id, language_id, translation, admin_only_flag) VALUES (:translation_id, :language_id, :translation, :admin_only_flag) ON DUPLICATE KEY UPDATE translation_id = :update_translation_id, language_id = :update_language_id, translation = :update_translation, admin_only_flag = :update_admin_only_flag');
+        $stmt = $this->Database->prepare('INSERT INTO sc_translation_memory (translation_id, language_id, translation, admin_only_flag) VALUES (:translation_id, :language_id, :translation, :admin_only_flag) ON DUPLICATE KEY UPDATE translation_id = :update_translation_id, language_id = :update_language_id, translation = :update_translation, admin_only_flag = :update_admin_only_flag');
         $stmt->bindValue(':translation_id', $constant_name, \PDO::PARAM_STR);
         $stmt->bindValue(':update_translation_id', $constant_name, \PDO::PARAM_STR);
         $stmt->bindValue(':language_id', $language_id, \PDO::PARAM_STR);

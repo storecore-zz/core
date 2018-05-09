@@ -7,8 +7,8 @@ use \StoreCore\RouteCollection as RouteCollection;
 /**
  * Route Factory
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright © 2017 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2017–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
@@ -51,7 +51,7 @@ class RouteFactory extends AbstractModel
             ORDER BY dispatch_order ASC
          */
         try {
-            $stmt = $this->Connection->prepare('SELECT route_controller, controller_method, method_parameters FROM sc_routes WHERE route_path = :route_path ORDER BY dispatch_order ASC');
+            $stmt = $this->Database->prepare('SELECT route_controller, controller_method, method_parameters FROM sc_routes WHERE route_path = :route_path ORDER BY dispatch_order ASC');
             $stmt->bindParam(':route_path', $path, \PDO::PARAM_STR);
             $stmt->execute();
             $result = $stmt->fetchAll();
@@ -105,7 +105,7 @@ class RouteFactory extends AbstractModel
                WHERE route_path LIKE :route_path
             ORDER BY dispatch_order ASC
          */
-        $stmt = $this->Connection->prepare('SELECT route_path, route_controller, controller_method, method_parameters FROM sc_routes WHERE route_path LIKE :route_path ORDER BY dispatch_order ASC');
+        $stmt = $this->Database->prepare('SELECT route_path, route_controller, controller_method, method_parameters FROM sc_routes WHERE route_path LIKE :route_path ORDER BY dispatch_order ASC');
         $stmt->bindParam(':route_path', $path, \PDO::PARAM_STR);
         $stmt->execute();
         $result = $stmt->fetchAll();

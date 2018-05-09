@@ -4,9 +4,8 @@ namespace StoreCore\Admin;
 /**
  * StoreCore Installer
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright © 2015-2017 StoreCore
- * @internal
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
@@ -87,13 +86,16 @@ class Installer extends \StoreCore\AbstractController
      * Check the database DSN and account.
      *
      * @param void
+     *
      * @return bool
+     *   Returns true if the database connection is set up correctly,
+     *   otherwise false.
      */
     private function checkDatabaseConnection()
     {
         try {
             $dbh = new \PDO($this->getDSN(), STORECORE_DATABASE_DEFAULT_USERNAME, STORECORE_DATABASE_DEFAULT_PASSWORD, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
-            $this->Registry->set('Connection', $dbh);
+            $this->Registry->set('Database', $dbh);
         } catch (\PDOException $e) {
             $this->Logger->critical($e->getMessage());
             if ($this->Request->getRequestPath() !== '/admin/settings/database/account/') {
@@ -113,7 +115,10 @@ class Installer extends \StoreCore\AbstractController
      * Check the database structure and optionally install the database.
      *
      * @param void
+     *
      * @return bool
+     *   Returns true if the database tables appear to be set up correctly,
+     *   otherwise false.
      */
     private function checkDatabaseStructure()
     {
@@ -143,7 +148,9 @@ class Installer extends \StoreCore\AbstractController
      * Check files and folders.
      *
      * @param void
+     *
      * @return bool
+     *   Returns true if the file system is set up correctly, otherwise false.
      */
     private function checkFileSystem()
     {
@@ -253,7 +260,10 @@ class Installer extends \StoreCore\AbstractController
      * Check for user account(s).
      *
      * @param void
+     *
      * @return bool
+     *   Returns true if there is at least one active admin user account,
+     *   otherwise false.
      */
     private function checkUsers()
     {
@@ -395,7 +405,7 @@ class Installer extends \StoreCore\AbstractController
      * @param void
      *
      * @return string
-     *   Returns the default DSN as a string.
+     *   Returns the default DSN (Data Source Name) as a string.
      */
     private function getDSN()
     {
@@ -411,7 +421,7 @@ class Installer extends \StoreCore\AbstractController
      * @param void
      *
      * @return string
-     *   Returns the GUID as a string.
+     *   Returns the GUID (Globally Unique Identifier) as a string.
      */
     private function getGUID()
     {

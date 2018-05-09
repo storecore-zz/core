@@ -4,8 +4,8 @@ namespace StoreCore\Database;
 /**
  * Store Mapper
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright © 2017 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2017–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
@@ -51,7 +51,7 @@ class StoreMapper extends AbstractDataAccessObject
             $host_name = mb_strtolower($host_name, 'UTF-8');
         }
 
-        $stmt = $this->Connection->prepare('
+        $stmt = $this->Database->prepare('
                SELECT h.store_id, h.redirect_flag, h.redirect_to,
                       s.enabled_flag, s.store_name
                  FROM sc_store_hosts h
@@ -65,7 +65,7 @@ class StoreMapper extends AbstractDataAccessObject
 
         // Find possible redirect candidates if no matching host is found.
         if ($host === false || empty($host)) {
-            $stmt = $this->Connection->prepare('
+            $stmt = $this->Database->prepare('
                    SELECT h.host_name, s.ssl_mode
                      FROM sc_store_hosts h
                 LEFT JOIN sc_stores s ON h.store_id = s.store_id
@@ -113,7 +113,7 @@ class StoreMapper extends AbstractDataAccessObject
         if ($host['redirect_to'] !== null) {
             $location = $host['redirect_to'];
         } else {
-            $stmt = $this->Connection->prepare('
+            $stmt = $this->Database->prepare('
                    SELECT h.host_ip, h.host_name, s.ssl_mode
                      FROM sc_store_hosts h
                 LEFT JOIN sc_stores s ON h.store_id = s.store_id

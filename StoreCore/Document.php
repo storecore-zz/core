@@ -4,8 +4,8 @@ namespace StoreCore;
 /**
  * HTML5 Document with AMP Support
  *
- * @author    Ward van der Put <ward.vanderput@storecore.org>
- * @copyright Copyright © 2015-2017 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2015-2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
@@ -48,7 +48,7 @@ class Document
     protected $ScriptsDeferred;
     protected $Sections = array();
     protected $Style = '';
-    protected $Title;
+    protected $Title = 'StoreCore';
 
     /** @var array $MetaData */
     protected $MetaData = array(
@@ -392,9 +392,7 @@ class Document
             $head .= '<script defer src="/scripts/material.min.js"></script>';
         }
 
-        if ($this->Title != null) {
-            $head .= '<title>' . $this->Title . '</title>';
-        }
+        $head .= '<title>' . $this->Title . '</title>';
 
         if ($this->Links !== null) {
             $links = (string)null;

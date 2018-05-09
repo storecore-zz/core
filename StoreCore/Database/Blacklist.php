@@ -4,17 +4,12 @@ namespace StoreCore\Database;
 /**
  * Blacklist Model
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @api
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
  * @version   0.1.0
- *
- * @api
- * @method bool clear ( void )
- * @method bool create ( string $ip_address [, string $reason] )
- * @method bool delete ( string $ip_address )
- * @method bool array|null read ( void )
  */
 class Blacklist extends AbstractModel
 {
@@ -29,8 +24,8 @@ class Blacklist extends AbstractModel
     public function clear()
     {
         try {
-            $this->Connection->exec('DELETE FROM sc_ip_blacklist_comments WHERE ip_address IN (SELECT ip_address FROM sc_ip_blacklist WHERE thru_date IS NOT NULL AND thru_date < UTC_TIMESTAMP())');
-            $this->Connection->exec('DELETE FROM sc_ip_blacklist WHERE thru_date IS NOT NULL AND thru_date < UTC_TIMESTAMP()');
+            $this->Database->exec('DELETE FROM sc_ip_blacklist_comments WHERE ip_address IN (SELECT ip_address FROM sc_ip_blacklist WHERE thru_date IS NOT NULL AND thru_date < UTC_TIMESTAMP())');
+            $this->Database->exec('DELETE FROM sc_ip_blacklist WHERE thru_date IS NOT NULL AND thru_date < UTC_TIMESTAMP()');
             return true;
         } catch (\PDOException $e) {
             $this->Logger->error($e->getMessage());
@@ -65,7 +60,7 @@ class Blacklist extends AbstractModel
         }
 
         try {
-            $stmt = $this->Connection->prepare('INSERT INTO sc_ip_blacklist (ip_address, from_date) VALUES (:ip_address, UTC_TIMESTAMP())');
+            $stmt = $this->Database->prepare('INSERT INTO sc_ip_blacklist (ip_address, from_date) VALUES (:ip_address, UTC_TIMESTAMP())');
             $stmt->bindParam(':ip_address', $ip_address, \PDO::PARAM_STR);
             $stmt->execute();
         } catch (\PDOException $e) {
@@ -83,7 +78,7 @@ class Blacklist extends AbstractModel
                 throw new \LengthException();
             }
 
-            $stmt = $this->Connection->prepare('INSERT INTO sc_ip_blacklist_comments (ip_address, comments) VALUES (:ip_address, :comments)');
+            $stmt = $this->Database->prepare('INSERT INTO sc_ip_blacklist_comments (ip_address, comments) VALUES (:ip_address, :comments)');
             $stmt->bindParam(':ip_address', $ip_address, \PDO::PARAM_STR);
             $stmt->bindParam(':comments', $reason, \PDO::PARAM_STR);
             $stmt->execute();
@@ -111,7 +106,7 @@ class Blacklist extends AbstractModel
         }
 
         try {
-            $stmt = $this->Connection->prepare('UPDATE sc_ip_blacklist SET thru_date = UTC_TIMESTAMP() WHERE ip_address = :ip_address');
+            $stmt = $this->Database->prepare('UPDATE sc_ip_blacklist SET thru_date = UTC_TIMESTAMP() WHERE ip_address = :ip_address');
             $stmt->bindParam(':ip_address', $ip_address, \PDO::PARAM_STR);
             $stmt->execute();
             return true;
@@ -140,7 +135,7 @@ class Blacklist extends AbstractModel
                   OR thru_date > UTC_TIMESTAMP()
             ORDER BY from_date DESC
          */
-        $stmt = $this->Connection->prepare('SELECT ip_address, from_date FROM sc_ip_blacklist WHERE thru_date IS NULL OR thru_date > UTC_TIMESTAMP() ORDER BY from_date DESC');
+        $stmt = $this->Database->prepare('SELECT ip_address, from_date FROM sc_ip_blacklist WHERE thru_date IS NULL OR thru_date > UTC_TIMESTAMP() ORDER BY from_date DESC');
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_NUM);
         $stmt = null;

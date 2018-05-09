@@ -11,8 +11,8 @@ namespace StoreCore\Database;
  * late static bindings: a `TABLE_NAME` with the database table name the model
  * operates on and a `PRIMARY_KEY` for the primary key column of this table.
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright © 2015-2017 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   1.0.0
@@ -43,7 +43,7 @@ abstract class AbstractDataAccessObject extends AbstractModel
         $sql = 'INSERT INTO ' . static::TABLE_NAME . ' (' . implode(', ', $columns) . ') VALUES (:' . implode(', :', $columns) . ')';
 
         try {
-            $stmt = $this->Connection->prepare($sql);
+            $stmt = $this->Database->prepare($sql);
             unset($columns, $sql);
 
             foreach ($keyed_data as $key => $value) {
@@ -68,7 +68,7 @@ abstract class AbstractDataAccessObject extends AbstractModel
 
             if ($stmt->execute()) {
                 $stmt->closeCursor();
-                return $this->Connection->lastInsertId();
+                return $this->Database->lastInsertId();
             } else {
                 return false;
             }
@@ -86,7 +86,7 @@ abstract class AbstractDataAccessObject extends AbstractModel
      * @param mixed $value
      *   Value for the `WHERE $key = $value` SQL clause.
      *
-     * @param string|int|null $key
+     * @param string|null $key
      *   Optional key for the `WHERE $key = $value` clause.  If omitted, the
      *   primary key column in `static::PRIMARY_KEY` is used.
      *
@@ -107,7 +107,7 @@ abstract class AbstractDataAccessObject extends AbstractModel
         }
 
         try {
-            $stmt = $this->Connection->prepare($sql);
+            $stmt = $this->Database->prepare($sql);
             if ($value !== null) {
                 $key = ':' . $key;
                 if (is_int($value)) {
@@ -130,7 +130,7 @@ abstract class AbstractDataAccessObject extends AbstractModel
      * @param mixed $value
      *   Value to search for in the $key column.
      *
-     * @param string|int|null $key
+     * @param string|null $key
      *   Optional name of a column in the `static::TABLE_NAME` database table.
      *   If omitted, the column for the primary key in `static::PRIMARY_KEY` is
      *   used.
@@ -154,7 +154,7 @@ abstract class AbstractDataAccessObject extends AbstractModel
         }
 
         try {
-            $stmt = $this->Connection->prepare($sql);
+            $stmt = $this->Database->prepare($sql);
             if ($value !== null) {
                 $key = ':' . $key;
                 if (is_int($value)) {
@@ -220,7 +220,7 @@ abstract class AbstractDataAccessObject extends AbstractModel
         $sql = 'UPDATE ' . static::TABLE_NAME . ' SET ' . implode(', ', $updates) . $where_clause;
 
         try {
-            $stmt = $this->Connection->prepare($sql);
+            $stmt = $this->Database->prepare($sql);
             foreach ($keyed_data as $key => $value) {
                 $key = ':' . $key;
                 if (is_null($value)) {

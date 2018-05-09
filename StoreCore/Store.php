@@ -4,8 +4,8 @@ namespace StoreCore;
 /**
  * Store Model
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright © 2017 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2017-2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
@@ -49,6 +49,12 @@ class Store extends AbstractModel
     private $StoreName = '';
 
     /**
+     * @va string $Timezone
+     *   Default date and time zone of the store.
+     */
+    private $TimezoneIdentifier = 'UTC';
+
+    /**
      * Close the store.
      *
      * @param void
@@ -57,6 +63,19 @@ class Store extends AbstractModel
     public function close()
     {
         $this->EnabledFlag = false;
+    }
+
+    /**
+     * Get the store's date and time zone.
+     *
+     * @param void
+     *
+     * @return string
+     *   Returns the current timezone for a store as a PHP timezone identifier.
+     */
+    public function getDateTimeZone()
+    {
+        return $this->TimezoneIdentifier;
     }
 
     /**
@@ -205,5 +224,31 @@ class Store extends AbstractModel
         }
 
         $this->StoreName = $store_name;
+    }
+
+    /**
+     * Set the store's date and time zone.
+     *
+     * @param string $timezone_identifier
+     *   The PHP timezone identifier.
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     *   Throws an invalid argument exception if the parameter is not a string
+     *   an empty string, or an unknown PHP timezone identifier.
+     */
+    public function setDateTimeZone($timezone_identifier)
+    {
+        if (!is_string($timezone_identifier) || empty($timezone_identifier) ) {
+            throw new \InvalidArgumentException();
+        }
+
+        $timezones = \DateTimeZone::listIdentifiers(\DateTimeZone::ALL);
+        if (in_array($timezone_identifier, $timezones)) {
+            $this->TimezoneIdentifier = $timezone_identifier;
+        } else {
+            throw new \InvalidArgumentException();
+        }
     }
 }

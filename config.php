@@ -7,6 +7,7 @@
 define('STORECORE_KILL_SWITCH', false);
 define('STORECORE_MAINTENANCE_MODE', false);
 define('STORECORE_NULL_LOGGER', false);
+define('STORECORE_RESPONSE_COMPRESSION_LEVEL', -1);
 
 /* Database */
 define('STORECORE_DATABASE_DRIVER',           'mysql');

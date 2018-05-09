@@ -2,16 +2,15 @@
 namespace StoreCore\Database;
 
 /**
- * Database Maintenance
+ * Database Maintenance Module
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright © 2015-2017 StoreCore
- * @internal
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-class Maintenance extends \StoreCore\AbstractModel
+class Maintenance extends AbstractModel
 {
     /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
@@ -36,17 +35,30 @@ class Maintenance extends \StoreCore\AbstractModel
     );
 
     /**
+     * @var bool $UpdateAvailable
+     *   Boolean flag that indicates if a database update is available (true)
+     *   or not (default false).
+     */
+    private $UpdateAvailable = false;
+
+    /**
+     * Database maintenance module constructor.
+     *
+     * The database maintenance module checks for updates as soon as it is
+     * called (on construction) in two ways.  If the currently installed
+     * database version is older than the version of this maintenance model,
+     * an update is available.  If the database version is unknown, we assume
+     * the database was never installed.
+     *
      * @param \StoreCore\Registry $registry
-     * @return void
+     *   Single instance of the StoreCore registry.
+     *
+     * @return self
      */
     public function __construct(\StoreCore\Registry $registry)
     {
         parent::__construct($registry);
 
-        /*
-         * If the currently installed database version is older than this
-         * maintenance module, an update is available.
-         */
         if (
             !defined('STORECORE_DATABASE_VERSION_INSTALLED')
             || version_compare(STORECORE_DATABASE_VERSION_INSTALLED, self::VERSION, '<')
@@ -58,19 +70,36 @@ class Maintenance extends \StoreCore\AbstractModel
     /**
      * Delete records marked for removal after 30 days.
      *
-     * @param void
+     * @param int $interval_in_days
+     *   Optional number of days records marked for deletion are kept in the
+     *   recycle bin.  Defaults to 30 days.  The interval can be set to 0 (zero)
+     *   to fully empty the recycle bin.
      *
      * @return int
      *   Returns the number of deleted database table rows.
+     *
+     * @throws \InvalidArgumentException
+     *   Throws an invalid argument exception if the `$interval_in_days`
+     *   parameter is not an integer.
      */
-    public function emptyRecycleBin()
+    public function emptyRecycleBin($interval_in_days = 30)
     {
+        if (!is_int($interval_in_days)) {
+            throw new \InvalidArgumentException();
+        }
+
+        if ($interval_in_days < 0) {
+            $interval_in_days = 0;
+        }
+
         $affected_rows = 0;
-        $tables = array('sc_customers', 'sc_persons', 'sc_organizations', 'sc_addresses');
+        $tables = array('sc_orders', 'sc_customers', 'sc_persons', 'sc_organizations', 'sc_addresses');
         foreach ($tables as $table) {
-            $affected_rows += $this->Connection->exec(
-                'DELETE FROM ' . $table . ' WHERE date_deleted < DATE_SUB(UTC_TIMESTAMP(), INTERVAL 30 DAY)'
-            );
+            $sql = 'DELETE FROM ' . $table . ' WHERE date_deleted IS NOT NULL';
+            if ($interval_in_days !== 0) {
+                $sql .= ' AND date_deleted < DATE_SUB(UTC_TIMESTAMP(), INTERVAL ' . $interval_in_days . ' DAY)';
+            }
+            $affected_rows += $this->Database->exec($sql);
         }
         return $affected_rows;
     }
@@ -79,6 +108,7 @@ class Maintenance extends \StoreCore\AbstractModel
      * List the available SQL backup files.
      *
      * @param void
+     *
      * @return array
      */
     public function getBackupFiles()
@@ -121,7 +151,7 @@ class Maintenance extends \StoreCore\AbstractModel
     public function getTables()
     {
         $tables = array();
-        $stmt = $this->Connection->prepare('SHOW TABLES');
+        $stmt = $this->Database->prepare('SHOW TABLES');
         if ($stmt->execute()) {
             while ($row = $stmt->fetch(\PDO::FETCH_NUM)) {
                 if (strpos($row[0], 'sc_', 0) === 0) {
@@ -133,12 +163,14 @@ class Maintenance extends \StoreCore\AbstractModel
     }
 
     /**
-     * Optimize tables.
+     * Optimize one or more database tables.
      *
      * @param string|array|null $tables
-     *   Optional comma-separated list or array of table names.
+     *   Optional comma-separated list or array of table names.  If this
+     *   optional parameter is not set, all StoreCore tables are optimized.
      *
-     * @return void
+     * @return bool
+     *   Returns true on success or false on failure.
      */
     public function optimize($tables = null)
     {
@@ -150,7 +182,13 @@ class Maintenance extends \StoreCore\AbstractModel
             $tables = implode(', ', $tables);
         }
 
-        $this->Connection->query('OPTIMIZE TABLE ' . $tables);
+        try {
+            $this->Database->query('OPTIMIZE TABLE ' . $tables);
+            return true;
+        } catch (\PDOException $e) {
+            $this->Logger->notice($e->getMessage());
+            return false;
+        }
     }
 
     /**
@@ -160,30 +198,36 @@ class Maintenance extends \StoreCore\AbstractModel
      *   Optional filename of a SQL backup file.
      *
      * @return bool
-     *   Returns true on success or false on failures.
+     *   Returns true on success or false on failure.
      */
     public function restore($filename = null)
     {
+        // Write pending changes to database files
         try {
-            // Write pending changes to database files
-            $this->Connection->exec('FLUSH TABLES');
+            $this->Database->exec('FLUSH TABLES');
+        } catch (\PDOException $e) {
+            $this->Logger->notice($e->getMessage());
+        }
 
+        try {
             // Update core tables using CREATE TABLE IF NOT EXISTS and INSERT IGNORE
             if (is_file(__DIR__ . DIRECTORY_SEPARATOR . 'core-mysql.sql')) {
                 $sql = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'core-mysql.sql', false);
-                $this->Connection->exec($sql);
+                $this->Database->exec('SET FOREIGN_KEY_CHECKS = 0');
+                $this->Database->exec($sql);
+                $this->Database->exec('SET FOREIGN_KEY_CHECKS = 1');
             }
 
             // Add new translations using INSERT IGNORE
             if (is_file(__DIR__ . DIRECTORY_SEPARATOR . 'i18n-dml.sql')) {
                 $sql = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'i18n-dml.sql', false);
-                $this->Connection->exec($sql);
+                $this->Database->exec($sql);
             }
 
             // Add optional SQL to restore a backup
             if ($filename !== null && is_file($filename)) {
                 $sql = file_get_contents($filename, false);
-                $this->Connection->exec($sql);
+                $this->Database->exec($sql);
             }
 
         } catch (\PDOException $e) {
@@ -229,7 +273,7 @@ class Maintenance extends \StoreCore\AbstractModel
             // Execute other SQL statements
             foreach ($this->ChangeLog as $version => $sql) {
                 if (version_compare($version, self::VERSION, '<=') == true) {
-                    $this->Connection->exec($sql);
+                    $this->Database->exec($sql);
                 }
             }
 

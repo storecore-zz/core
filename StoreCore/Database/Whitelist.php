@@ -4,14 +4,15 @@ namespace StoreCore\Database;
 /**
  * IP Access Control Whitelist
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2015 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
  * @version   0.1.0
  */
 class Whitelist extends \StoreCore\Database\AbstractModel implements \Countable
 {
+    /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
     /**
@@ -29,7 +30,7 @@ class Whitelist extends \StoreCore\Database\AbstractModel implements \Countable
                AND from_date <= UTC_TIMESTAMP()
                AND (thru_date = '0000-00-00 00:00:00' OR thru_date > UTC_TIMESTAMP())
          */
-        $stmt = $this->Connection->prepare("SELECT SQL_NO_CACHE COUNT(*) FROM sc_ip_whitelist WHERE (admin_flag = 1 OR api_flag = 1) AND from_date <= UTC_TIMESTAMP() AND (thru_date = '0000-00-00 00:00:00' OR thru_date > UTC_TIMESTAMP())");
+        $stmt = $this->Database->prepare("SELECT SQL_NO_CACHE COUNT(*) FROM sc_ip_whitelist WHERE (admin_flag = 1 OR api_flag = 1) AND from_date <= UTC_TIMESTAMP() AND (thru_date = '0000-00-00 00:00:00' OR thru_date > UTC_TIMESTAMP())");
         $stmt->execute();
         $count = $stmt->fetchColumn();
         return (int)$count;
@@ -48,7 +49,7 @@ class Whitelist extends \StoreCore\Database\AbstractModel implements \Countable
      */
     public function isEmpty()
     {
-        $stmt = $this->Connection->prepare('SELECT SQL_NO_CACHE COUNT(*) FROM sc_ip_whitelist');
+        $stmt = $this->Database->prepare('SELECT SQL_NO_CACHE COUNT(*) FROM sc_ip_whitelist');
         $stmt->execute();
         $count = (int) $stmt->fetchColumn();
         return ($count === 0) ? true : false;
@@ -102,7 +103,7 @@ class Whitelist extends \StoreCore\Database\AbstractModel implements \Countable
         $sql .= " AND from_date <= UTC_TIMESTAMP() AND (thru_date = '0000-00-00 00:00:00' OR thru_date > UTC_TIMESTAMP())";
 
         try {
-            $stmt = $this->Connection->prepare($sql);
+            $stmt = $this->Database->prepare($sql);
             $stmt->bindParam(':ip_address', $ip_address);
             $stmt->execute();
             $count = (int) $stmt->fetchColumn(0);

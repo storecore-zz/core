@@ -4,8 +4,8 @@ namespace StoreCore\Database;
 /**
  * Event Scheduler
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright (c) 2016 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2016–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.0.1
@@ -28,7 +28,7 @@ class EventScheduler extends AbstractModel
         }
 
         $count = 0;
-        $sth = $this->Connection->prepare('
+        $sth = $this->Database->prepare('
             UPDATE sc_cron_events
                SET executed = UTC_TIMESTAMP()
              WHERE route_id = :route_id
@@ -65,7 +65,7 @@ class EventScheduler extends AbstractModel
      */
     public function getCurrentEvents()
     {
-        $sth = $this->Connection->prepare('
+        $sth = $this->Database->prepare('
               SELECT e.route_id, e.scheduled, r.route
                 FROM sc_cron_events e
                 JOIN sc_cron_routes r
@@ -128,7 +128,7 @@ class EventScheduler extends AbstractModel
      */
     private function getLastDateTime()
     {
-        $sth = $this->Connection->prepare('SELECT MAX(scheduled) FROM sc_cron_events');
+        $sth = $this->Database->prepare('SELECT MAX(scheduled) FROM sc_cron_events');
         $sth->execute();
         $row = $sth->fetch(\PDO::FETCH_NUM);
         $sth = null;
@@ -149,20 +149,20 @@ class EventScheduler extends AbstractModel
     public function optimize()
     {
         // Delete schedules and executed events after 1 month
-        $this->Connection->exec('
+        $this->Database->exec('
             DELETE
-               FROM sc_cron_routes 
-              WHERE TIMESTAMPDIFF(MONTH, thru_date, UTC_TIMESTAMP()) >= 1
+              FROM sc_cron_routes 
+             WHERE TIMESTAMPDIFF(MONTH, thru_date, UTC_TIMESTAMP()) >= 1
         ');
-        $this->Connection->exec('
+        $this->Database->exec('
             DELETE
                FROM sc_cron_events
               WHERE executed IS NOT NULL
                 AND TIMESTAMPDIFF(MONTH, executed, UTC_TIMESTAMP()) >= 1
         ');
 
-        $this->Connection->exec('OPTIMIZE TABLE sc_cron_events');
-        $this->Connection->exec('OPTIMIZE TABLE sc_cron_routes');
+        $this->Database->exec('OPTIMIZE TABLE sc_cron_events');
+        $this->Database->exec('OPTIMIZE TABLE sc_cron_routes');
     }
 
     /**
@@ -216,7 +216,7 @@ class EventScheduler extends AbstractModel
             $end = new \DateTime($end);
         }
 
-        $sth = $this->Connection->prepare('
+        $sth = $this->Database->prepare('
             INSERT
               INTO sc_cron_routes
                 (from_date, thru_date, description, schedule, route)
@@ -234,7 +234,7 @@ class EventScheduler extends AbstractModel
         $sth->bindValue(':route', $route, \PDO::PARAM_STR);
         $sth->execute();
 
-        $last_insert_id = $this->Connection->lastInsertId();
+        $last_insert_id = $this->Database->lastInsertId();
         
         // Schedule tasks without end date for 1 year
         if ($end === null) {
@@ -265,7 +265,7 @@ class EventScheduler extends AbstractModel
         unset($datetime, $last_insert_id, $period);
         
         $sql = 'INSERT INTO sc_cron_events (route_id, scheduled) VALUES ' . implode(', ', $values);
-        $this->Connection->exec($sql);
+        $this->Database->exec($sql);
     }
 
     /**
@@ -279,14 +279,14 @@ class EventScheduler extends AbstractModel
      */
     public function unschedule($route_id)
     {
-        if ($this->Connection->beginTransaction()) {
-            $sth = $this->Connection->prepare('UPDATE sc_cron_routes SET thru_date = UTC_TIMESTAMP() WHERE route_id = :route_id');
+        if ($this->Database->beginTransaction()) {
+            $sth = $this->Database->prepare('UPDATE sc_cron_routes SET thru_date = UTC_TIMESTAMP() WHERE route_id = :route_id');
             $sth->bindParam(':route_id', $route_id, \PDO::PARAM_INT);
             $sth->execute();
-            $sth = $this->Connection->prepare('DELETE FROM sc_cron_events WHERE route_id = :route_id');
+            $sth = $this->Database->prepare('DELETE FROM sc_cron_events WHERE route_id = :route_id');
             $sth->bindParam(':route_id', $route_id, \PDO::PARAM_INT);
             $sth->execute();
-            return $this->Connection->commit();
+            return $this->Database->commit();
         } else {
             return false;
         }

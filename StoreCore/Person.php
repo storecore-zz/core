@@ -21,8 +21,8 @@ class Person extends AbstractSubject
      * @var string|null $BirthDate
      * @var string|null $BirthPlace
      * @var string|null $DateCreated
+     * @var string|null $DateDeleted
      * @var string|null $DateModified
-     * @var bool        $DeletedFlag
      * @var string|null $DeathDate
      * @var string|null $DeathPlace
      * @var string|null $EmailAddress
@@ -44,9 +44,9 @@ class Person extends AbstractSubject
     private $BirthDate;
     private $BirthPlace;
     private $DateCreated;
+    private $DateDeleted;
     private $DateModified;
     private $DeathDate;
-    private $DeletedFlag = false;
     private $DeathPlace;
     private $EmailAddress;
     private $FamilyName;
@@ -157,6 +157,20 @@ class Person extends AbstractSubject
     }
 
     /**
+     * Get the date the person was deleted.
+     *
+     * @param void
+     *
+     * @return string|null
+     *   Returns the date and time as a string or null if the person was not
+     *   deleted.
+     */
+    public function getDateDeleted()
+    {
+        return $this->DateDeleted;
+    }
+
+    /**
      * @param void
      * @return string|null
      */
@@ -172,15 +186,6 @@ class Person extends AbstractSubject
     public function getDeathPlace()
     {
         return $this->DeathPlace;
-    }
-
-    /**
-     * @param void
-     * @return bool
-     */
-    public function getDeletedFlag()
-    {
-        return $this->DeletedFlag;
     }
 
     /**
@@ -385,12 +390,29 @@ class Person extends AbstractSubject
     }
 
     /**
+     * Set the date and time the person object was created.
+     *
      * @param string $date_created
+     *   Datetime string in the ISO format 'YYYY-MM-DD HH:MM:SS'.
+     *
      * @return void
      */
     public function setDateCreated($date_created)
     {
         $this->DateCreated = $date_created;
+    }
+
+    /**
+     * Set the date and time the person data was marked for deletion.
+     *
+     * @param string $date_deleted
+     *   Datetime string in the ISO format 'YYYY-MM-DD HH:MM:SS'.
+     *
+     * @return void
+     */
+    public function setDateDeleted($date_deleted)
+    {
+        $this->DateDeleted = $date_deleted;
     }
 
     /**
@@ -449,15 +471,6 @@ class Person extends AbstractSubject
     public function setDeathPlace($death_place)
     {
         $this->DeathPlace = $death_place;
-    }
-
-    /**
-     * @param mixed $deleted_flag
-     * @return void
-     */
-    public function setDeletedFlag($deleted_flag)
-    {
-        $this->DeletedFlag = (bool)$deleted_flag;
     }
 
     /**
