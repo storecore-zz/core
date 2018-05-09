@@ -11,7 +11,7 @@ namespace StoreCore\Types;
  * enabled, this class will throw a domain logic exception assuming that a
  * fixed length can never by 0.
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
  * @copyright Copyright (c) 2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core

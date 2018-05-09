@@ -4,7 +4,7 @@ namespace StoreCore\FileSystem;
 /**
  * File Integrity Monitor
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
  * @copyright Copyright (c) 2014-2015 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security

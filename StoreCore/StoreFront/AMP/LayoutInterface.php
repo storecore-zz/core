@@ -9,7 +9,7 @@ namespace StoreCore\StoreFront\AMP;
  * used in the `layout` attribute.  The attribute MUST be accessed through the
  * setter and getter `setLayout()` and `getLayout()`.
  *
- * @author    Ward van der Put <ward@storecore.org>
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
  * @copyright Copyright © 2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS

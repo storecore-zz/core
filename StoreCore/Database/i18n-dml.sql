@@ -17,7 +17,7 @@
     |            | TEXT       | Text       | Tekst                 |
     +------------+------------+------------+-----------------------+
 
-    @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+    @author    Ward van der Put <Ward.van.der.Put@storecore.org>
     @copyright Copyright (c) 2014-2018 StoreCore
     @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
     @package   StoreCore\I18N
