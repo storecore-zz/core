@@ -2,11 +2,11 @@
 /**
  * StoreCore Framework Bootloader
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
- * @copyright Copyright © 2015-2017 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @version   1.0.0-beta.1
+ * @version   1.0.0-alpha.1
  */
 
 // Global script/request timer start
