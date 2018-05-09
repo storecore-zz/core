@@ -15,16 +15,16 @@ use \StoreCore\Session as Session;
 /**
  * Administration Front Controller
  *
- * @author    Ward van der Put <ward.vanderput@storecore.org>
- * @copyright Copyright © 2015-2017 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @version   0.1.0
+ * @version   1.0.0-alpha.1
  */
 class FrontController extends AbstractController implements LoggerAwareInterface
 {
     /** @var string VERSION Semantic Version (SemVer) */
-    const VERSION = '0.1.0';
+    const VERSION = '1.0.0-alpha.1';
 
     /**
      * @param \StoreCore\Registry $registry
