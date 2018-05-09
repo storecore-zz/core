@@ -23,6 +23,20 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     * @testdox VERSION constant is non-empty string
+     */
+    public function testVersionConstantIsNonEmptyString()
+    {
+        $class = new \ReflectionClass('\StoreCore\Store');
+        $class_constant = $class->getConstant('VERSION');
+        $this->assertNotEmpty($class_constant);
+        $this->assertTrue(is_string($class_constant));
+    }
+
+    /**
+     * @covers ::getDateTimeZone
      * @testdox Public getDateTimeZone() method exists
      */
     public function testPublicGetDateTimeZoneMethodExists()
@@ -32,6 +46,7 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::getDateTimeZone
      * @testdox Public getDateTimeZone() method is public
      */
     public function testPublicGetDateTimeZoneMethodIsPublic()
@@ -41,6 +56,7 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::getDateTimeZone
      * @testdox Public getDateTimeZone() method returns string 'UTC' by default
      */
     public function testPublicGetDateTimeZoneMethodReturnsStringUTCByDefault()
@@ -51,6 +67,7 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::setDateTimeZone
      * @testdox Public setDateTimeZone() method exists
      */
     public function testPublicSetDateTimeZoneMethodExists()
@@ -60,6 +77,7 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::setDateTimeZone
      * @testdox Public setDateTimeZone() method is public
      */
     public function testPublicSetDateTimeZoneMethodIsPublic()
