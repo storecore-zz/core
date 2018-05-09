@@ -11,7 +11,7 @@ namespace StoreCore;
  * database load, to bypass the full core services stack, and to allow for
  * manual addition and deletion of redirects by users.
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
  * @copyright Copyright © 2016-2017 StoreCore
  * @internal
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License

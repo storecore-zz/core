@@ -12,7 +12,7 @@ namespace StoreCore;
  *      $loader->addNamespace('Foo\Bar', '/path/to/packages/foo-bar/tests');
  *
  * @api
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
  * @copyright Copyright (c) 2014-2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @see       https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader-examples.md

@@ -10,7 +10,7 @@ namespace StoreCore\Types;
  * The client ID may be stored as a CHAR(36) database value and is generally
  * stored as a first-party cookie with a two-year expiration.
  *
- * @author    Ward van der Put <Ward.van.der.Put@gmail.com>
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
  * @copyright Copyright (c) 2016 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\BI

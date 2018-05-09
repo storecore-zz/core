@@ -4,7 +4,7 @@ namespace StoreCore\Database;
 /**
  * Salt
  *
- * @author    Ward van der Put <ward@storecore.org>
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
  * @copyright Copyright © 2014-2017 StoreCore
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
