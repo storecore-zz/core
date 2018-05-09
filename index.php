@@ -2,9 +2,9 @@
 /**
  * StoreCore Store Front Application
  *
- * @copyright Copyright © 2015-2017 StoreCore
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
- * @version   1.0.0-beta.1
+ * @version   1.0.0-alpha.1
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
