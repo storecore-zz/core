@@ -14,7 +14,7 @@ ErrorDocument 503 /503.html
 </Files>
 
 # Deny access to file types by extension
-<FilesMatch "\.(bak|gz|inc|ini|log|md|phps|phtml|sql|ssi|tar|tmp|tpl)$">
+<FilesMatch "\.(bak|gz|inc|ini|log|md|phps|phtml|sh|sql|ssi|tar|tmp|tpl|yml)$">
   Deny from all
 </FilesMatch>
 
