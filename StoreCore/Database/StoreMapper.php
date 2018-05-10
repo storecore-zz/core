@@ -66,7 +66,7 @@ class StoreMapper extends AbstractDataAccessObject
         // Find possible redirect candidates if no matching host is found.
         if ($host === false || empty($host)) {
             $stmt = $this->Database->prepare('
-                   SELECT h.host_name, s.ssl_mode
+                   SELECT h.host_name, s.https_flag
                      FROM sc_store_hosts h
                 LEFT JOIN sc_stores s ON h.store_id = s.store_id
                     WHERE h.redirect_flag = 0
@@ -80,7 +80,7 @@ class StoreMapper extends AbstractDataAccessObject
             if ($hosts === false || empty($hosts)) {
                 return null;
             } elseif (count($hosts) === 1) {
-                if ($hosts['ssl_mode'] === 0) {
+                if ($hosts['https_flag'] === 0) {
                     $location .= 'http://' . $hosts['host_name'] . '/';
                 } else {
                     $location .= 'https://' . $hosts['host_name'] . '/';
@@ -94,7 +94,7 @@ class StoreMapper extends AbstractDataAccessObject
             foreach ($hosts as $candidate) {
                 $levenshtein_distance = levenshtein($host_name, $candidate['host_name']);
                 if ($levenshtein_distance < $smallest_levenshtein_distance) {
-                    $location = ($candidate['ssl_mode'] === 0) ? 'http://' : 'https://';
+                    $location = ($candidate['https_flag'] === 0) ? 'http://' : 'https://';
                     $location .= $candidate['host_name'] . '/';
                     $smallest_levenshtein_distance = $levenshtein_distance;
                 }
@@ -114,7 +114,7 @@ class StoreMapper extends AbstractDataAccessObject
             $location = $host['redirect_to'];
         } else {
             $stmt = $this->Database->prepare('
-                   SELECT h.host_ip, h.host_name, s.ssl_mode
+                   SELECT h.host_ip, h.host_name, s.https_flag
                      FROM sc_store_hosts h
                 LEFT JOIN sc_stores s ON h.store_id = s.store_id
                     WHERE h.store_id = :store_id
@@ -135,7 +135,7 @@ class StoreMapper extends AbstractDataAccessObject
                     return null;
                 }
 
-                if ($host['ssl_mode'] === 0) {
+                if ($host['https_flag'] === 0) {
                     $location = 'http://' . $location . '/';
                 } else {
                     $location = 'https://' . $location . '/';
@@ -177,18 +177,28 @@ class StoreMapper extends AbstractDataAccessObject
      */
     private function getStoreObject(array $store_data)
     {
-        $store_id = new \StoreCore\Types\StoreID($store_data['store_id']);
-
         $store = new \StoreCore\Store($this->Registry);
+
+        // Set the store ID and store name.
+        $store_id = new \StoreCore\Types\StoreID($store_data['store_id']);
         $store->setStoreID($store_id);
         $store->setStoreName($store_data['store_name']);
-        if ($store_data['enabled_flag'] === 1) {
+        
+        // Set the store's default timezone if it is not 'UTC'.
+        if ($store_data['date_time_zone'] !== 'UTC') {
+            $store->setDateTimeZone($store_data['date_time_zone']);
+        }
+
+        // Open the store.
+        if ($store_data['enabled_flag'] == 1) {
             $store->open();
         }
 
+        // Add store languages.
         $model = new \StoreCore\Database\Languages($this->Registry);
         $store->setStoreLanguages($model->getStoreLanguages($store_id));
 
+        // Add store currencies.
         $model = new \StoreCore\Database\Currencies($this->Registry);
         $store->setStoreCurrencies($model->getStoreCurrencies($store_id));
 

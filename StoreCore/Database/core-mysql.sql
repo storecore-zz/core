@@ -989,7 +989,7 @@ UPDATE sc_countries SET subdivision_required = 1 WHERE iso_alpha_two = 'US';
 CREATE TABLE IF NOT EXISTS sc_stores (
   store_id        TINYINT(3) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   enabled_flag    TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
-  ssl_mode        TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
+  https_flag      TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
   store_name      VARCHAR(64)          NOT NULL,
   date_time_zone  VARCHAR(255)         NOT NULL  DEFAULT 'UTC'  COMMENT 'PHP DateTimeZone identifier',
   PRIMARY KEY pk_store_id (store_id)

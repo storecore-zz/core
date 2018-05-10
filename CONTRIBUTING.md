@@ -167,26 +167,6 @@ setting:
 storecore.null_logger = Off
 ```
 
-## 3.5. SSL Modes
-
-StoreCore supports four SSL modes per store.  This `ssl_mode` is a 4 bit value
-stored as a decimal integer in the core `sc_stores` table.  The binary bitmask
-is outlined below.
-
-| Bin  | Dec | SSL Secured Information                   |
-| ---- | --: | ----------------------------------------- |
-| 0000 |   0 | Off: no SSL support                       |
-| 0001 |   1 | Payment transactions                      |
-| 0010 |   2 | Personally identifiable information (PII) |
-| 0100 |   4 | Company and legal information             |
-| 1000 |   8 | General information                       |
-| 1111 |  15 | On: full SSL support                      |
-
-In most use cases, the SSL mode can simply be set to 15 (on) or 0 (off).
-The other two supported modes are 1 (0001) for payment transactions only and
-3 (0011) for payment transactions plus personally identifiable information
-(PII).
-
 
 # 4. Performance
 
