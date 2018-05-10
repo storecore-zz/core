@@ -89,6 +89,39 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers \StoreCore\Store::getStoreID
+     * @group hmvc
+     * @testdox Public getStoreID() method exists
+     */
+    public function testPublicgetStoreIdMethodExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Store');
+        $this->assertTrue($class->hasMethod('getStoreID'));
+    }
+
+    /**
+     * @covers \StoreCore\Store::isSecure
+     * @group hmvc
+     * @testdox Public getStoreID() method is public
+     */
+    public function testPublicGetStoreIdMethodIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Store', 'getStoreID');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @covers \StoreCore\Store::getStoreID
+     * @group hmvc
+     * @testdox Public getStoreID() method returns null by default
+     */
+    public function testPublicGetStoreIDMethodReturnsNullByDefault()
+    {
+        $store = new \StoreCore\Store(\StoreCore\Registry::getInstance());
+        $this->assertNull($store->getStoreID());
+    }
+
+    /**
      * @covers \StoreCore\Store::isSecure
      * @group security
      * @testdox Public isSecure() method exists

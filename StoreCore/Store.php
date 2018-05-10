@@ -45,7 +45,7 @@ class Store extends AbstractModel
     private $StoreCurrencies;
 
     /**
-     * @var \StoreCore\Types\StoreID $StoreID
+     * @var \StoreCore\Types\StoreID|null $StoreID
      *   Unique store identifier.
      */
     private $StoreID;
@@ -147,7 +147,10 @@ class Store extends AbstractModel
      * Get the store identifier.
      *
      * @param void
-     * @return \StoreCore\Types\StoreID
+     *
+     * @return \StoreCore\Types\StoreID|null
+     *   Returns the store ID as a data object or null if the store does not
+     *   have an ID yet.
      */
     public function getStoreID()
     {
