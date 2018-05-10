@@ -15,7 +15,7 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     /**
      * @group distro
      */
-    public function testAbstractDataAccessObjectClassFileExists()
+    public function testExtendedAbstractDataAccessObjectClassFileExists()
     {
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Database' . DIRECTORY_SEPARATOR . 'AbstractDataAccessObject.php');
     }
