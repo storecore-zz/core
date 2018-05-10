@@ -1,7 +1,4 @@
 <?php
-/**
- * @coversDefaultClass \StoreCore\Person
- */
 class PersonTest extends PHPUnit_Framework_TestCase
 {
     /**
@@ -14,7 +11,6 @@ class PersonTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group distro
-     * @testdox VERSION constant is defined
      */
     public function testVersionConstantIsDefined()
     {
@@ -23,7 +19,6 @@ class PersonTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getDateDeleted
      * @testdox Public getDateDeleted() method exists
      */
     public function testPublicGetDateDeletedMethodExists()
@@ -33,7 +28,6 @@ class PersonTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getDateDeleted
      * @depends testPublicGetDateDeletedMethodExists
      * @testdox Public getDateDeleted() method is public
      */
@@ -44,7 +38,6 @@ class PersonTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getDateDeleted
      * @depends testPublicGetDateDeletedMethodExists
      * @testdox Public getDateDeleted() method has no parameters
      */
@@ -55,7 +48,6 @@ class PersonTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getDateDeleted
      * @depends testPublicGetDateDeletedMethodExists
      * @testdox Public getDateDeleted() method returns null by default
      */
@@ -66,7 +58,6 @@ class PersonTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setDateDeleted
      * @testdox Public setDateDeleted() method exists
      */
     public function testPublicSetDateDeletedMethodExists()
@@ -76,7 +67,6 @@ class PersonTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setDateDeleted
      * @depends testPublicSetDateDeletedMethodExists
      * @testdox Public setDateDeleted() method is public
      */
@@ -87,7 +77,6 @@ class PersonTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setDateDeleted
      * @depends testPublicSetDateDeletedMethodExists
      * @testdox Public setDateDeleted() method has one parameter
      */
@@ -98,7 +87,6 @@ class PersonTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setDateDeleted
      * @depends testPublicSetDateDeletedMethodHasOneParameter
      * @testdox Public setDateDeleted() method has one required parameter
      */
@@ -109,7 +97,6 @@ class PersonTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getDateDeleted
      * @depends testPublicGetDateDeletedMethodExists
      * @depends testPublicSetDateDeletedMethodExists
      * @testdox Public getDateDeleted() method returns datetime string
