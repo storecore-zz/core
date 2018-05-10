@@ -183,7 +183,7 @@ class StoreMapper extends AbstractDataAccessObject
         $store_id = new \StoreCore\Types\StoreID($store_data['store_id']);
         $store->setStoreID($store_id);
         $store->setStoreName($store_data['store_name']);
-        
+
         // Set the store's default timezone if it is not 'UTC'.
         if ($store_data['date_time_zone'] !== 'UTC') {
             $store->setDateTimeZone($store_data['date_time_zone']);
@@ -203,5 +203,51 @@ class StoreMapper extends AbstractDataAccessObject
         $store->setStoreCurrencies($model->getStoreCurrencies($store_id));
 
         return $store;
+    }
+
+    /**
+     * Save a store.
+     *
+     * @param \StoreCore\Store $store
+     *   StoreCore store model object.
+     *
+     * @return bool
+     *   Returns true on success or false on failure.
+     */
+    public function save(\StoreCore\Store &$store)
+    {
+        $store_data = array(
+            'store_name' => $store->getStoreName(),
+            'date_time_zone' => $store->getDateTimeZone()->getName(),
+        );
+
+        if ($store->getStoreID() !== null) {
+            $store_id = (string)$store->getStoreID();
+            $store_data[self::PRIMARY_KEY] = (int)$store_id;
+        }
+
+        if ($store->isOpen()) {
+            $store_data['enabled_flag'] = 1;
+        } else {
+            $store_data['enabled_flag'] = 0;
+        }
+
+        if ($store->isSecure()) {
+            $store_data['https_flag'] = 1;
+        } else {
+            $store_data['https_flag'] = 0;
+        }
+
+        if ($store->getStoreID() === null) {
+            $result = $this->create($store_data);
+            if (is_numeric($result)) {
+                $store->setStoreID($result);
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return $this->update($store_data);
     }
 }
