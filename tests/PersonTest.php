@@ -11,7 +11,6 @@ class PersonTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group distro
-     * @testdox VERSION constant is defined
      */
     public function testVersionConstantIsDefined()
     {
