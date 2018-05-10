@@ -15,6 +15,14 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     /**
      * @group distro
      */
+    public function testExtendedAbstractDataAccessObjectClassFileExists()
+    {
+        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Database' . DIRECTORY_SEPARATOR . 'AbstractDataAccessObject.php');
+    }
+
+    /**
+     * @group distro
+     */
     public function testVersionConstantIsDefined()
     {
         $class = new \ReflectionClass('\StoreCore\Database\UserMapper');
@@ -22,6 +30,61 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     */
+    public function testVersionConstantIsNonEmptyString()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\UserMapper');
+        $class_constant = $class->getConstant('VERSION');
+        $this->assertNotEmpty($class_constant);
+        $this->assertTrue(is_string($class_constant));
+    }
+
+    /**
+     * @group hmvc
+     */
+    public function testTableNameConstantIsDefined()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\UserMapper');
+        $this->assertTrue($class->hasConstant('TABLE_NAME'));
+    }
+
+    /**
+     * @depends testTableNameConstantIsDefined
+     * @group hmvc
+     */
+    public function testTableNameConstantIsNonEmptyString()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\UserMapper');
+        $class_constant = $class->getConstant('TABLE_NAME');
+        $this->assertNotEmpty($class_constant);
+        $this->assertTrue(is_string($class_constant));
+    }
+
+    /**
+     * @group hmvc
+     */
+    public function testPrimaryKeyConstantIsDefined()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\UserMapper');
+        $this->assertTrue($class->hasConstant('PRIMARY_KEY'));
+    }
+
+    /**
+     * @depends testPrimaryKeyConstantIsDefined
+     * @group hmvc
+     */
+    public function testPrimaryKeyConstantIsNonEmptyString()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\UserMapper');
+        $class_constant = $class->getConstant('PRIMARY_KEY');
+        $this->assertNotEmpty($class_constant);
+        $this->assertTrue(is_string($class_constant));
+    }
+
+    /**
+     * @covers \StoreCore\Database\UserMapper::ban
      * @testdox Public ban() method exists
      */
     public function testPublicAuthenticateMethodExists()
@@ -31,6 +94,7 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers \StoreCore\Database\UserMapper::ban
      * @testdox Public ban() method is public
      */
     public function testPublicBanMethodIsPublic()
@@ -40,6 +104,7 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers \StoreCore\Database\UserMapper::getUser
      * @testdox Public getUser() method is public
      */
     public function testPublicGetUserMethodIsPublic()
@@ -49,6 +114,7 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers \StoreCore\Database\UserMapper::getUser
      * @testdox Public getUser() method exists
      */
     public function testPublicGetUserMethodExists()
@@ -58,6 +124,7 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers \StoreCore\Database\UserMapper::getUserByEmailAddress
      * @testdox Public getUserByEmailAddress() method exists
      */
     public function testPublicGetUserByEmailAddressMethodExists()
@@ -67,6 +134,7 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers \StoreCore\Database\UserMapper::getUserByEmailAddress
      * @testdox Public getUserByEmailAddress() method is public
      */
     public function testPublicGetUserByEmailAddressMethodIsPublic()
@@ -76,6 +144,7 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers \StoreCore\Database\UserMapper::getUserByUsername
      * @testdox Public getUserByUsername() method exists
      */
     public function testPublicGetUserByUsernameMethodExists()
@@ -85,6 +154,7 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers \StoreCore\Database\UserMapper::getUserByUsername
      * @testdox Public getUserByUsername() method is public
      */
     public function testPublicGetUserByUsernameMethodIsPublic()

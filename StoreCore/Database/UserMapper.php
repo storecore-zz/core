@@ -89,7 +89,9 @@ class UserMapper extends AbstractDataAccessObject
      * Map the user’s data to a user object.
      *
      * @param array $user_data
+     *
      * @return \StoreCore\User
+     *   Returns a StoreCore user model as an object.
      */
     private function getUserObject(array $user_data)
     {
@@ -105,7 +107,11 @@ class UserMapper extends AbstractDataAccessObject
         $user->setHashAlgorithm($user_data['hash_algo']);
         $user->setPasswordHash($user_data['password_hash']);
         $user->setPIN($user_data['pin_code']);
-        $user->setDateTimeZone($user_data['date_time_zone']);
+
+        if ($user_data['date_time_zone'] !== 'UTC') {
+            $tz = new \DateTimeZone($user_data['date_time_zone']);
+            $user->setDateTimeZone($tz);
+        }
 
         if ($user_data['person_id'] !== null) {
             $user->setPersonID($user_data['person_id']);
@@ -166,6 +172,7 @@ class UserMapper extends AbstractDataAccessObject
      * Save a user.
      *
      * @param \StoreCore\User $user
+     *   StoreCore user model object.
      *
      * @return bool
      *   Returns true on success or false on failure.
@@ -193,7 +200,7 @@ class UserMapper extends AbstractDataAccessObject
         $user_data['hash_algo'] = $user->getHashAlgorithm();
         $user_data['password_hash'] = $user->getPasswordHash();
         $user_data['pin_code'] = $user->getPIN();
-        $user_data['date_time_zone'] = $user->getDateTimeZone();
+        $user_data['date_time_zone'] = $user->getDateTimeZone()->getName();
 
         if (in_array(null, $user_data, true)) {
             throw new \DomainException();
