@@ -2,7 +2,7 @@
 namespace StoreCore;
 
 /**
- * Store Model
+ * StoreCore Store Model
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
  * @copyright Copyright © 2017-2018 StoreCore™
@@ -12,8 +12,17 @@ namespace StoreCore;
  */
 class Store extends AbstractModel
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer)
+     */
     const VERSION = '0.1.0';
+
+    /**
+     * @var \DateTimeZone $DateTimeZone
+     *   Default date and time zone of the store.
+     */
+    private $DateTimeZone;
 
     /**
      * @var bool $EnabledFlag
@@ -49,10 +58,18 @@ class Store extends AbstractModel
     private $StoreName = '';
 
     /**
-     * @va string $Timezone
-     *   Default date and time zone of the store.
+     * Construct a store model object.
+     *
+     * @param \StoreCore\Registry $registry
+     *   Global StoreCore service locator.
+     *
+     * @return self
      */
-    private $TimezoneIdentifier = 'UTC';
+    public function __construct(Registry $registry)
+    {
+        parent::__construct($registry);
+        $this->DateTimeZone = new \DateTimeZone('UTC');
+    }
 
     /**
      * Close the store.
@@ -70,12 +87,12 @@ class Store extends AbstractModel
      *
      * @param void
      *
-     * @return string
-     *   Returns the current timezone for a store as a PHP timezone identifier.
+     * @return \DateTimeZone
+     *   Returns the current timezone for a store as a PHP DateTimeZone object.
      */
     public function getDateTimeZone()
     {
-        return $this->TimezoneIdentifier;
+        return $this->DateTimeZone;
     }
 
     /**
@@ -128,6 +145,19 @@ class Store extends AbstractModel
     public function getStoreID()
     {
         return $this->StoreID;
+    }
+
+    /**
+     * Get the store's timezone identifier.
+     *
+     * @param void
+     *
+     * @return string
+     *   Returns one of the default PHP timezone identifiers as a string.
+     */
+    public function getTimezoneID()
+    {
+        return $this->DateTimeZone->getName();
     }
 
     /**
@@ -229,24 +259,30 @@ class Store extends AbstractModel
     /**
      * Set the store's date and time zone.
      *
-     * @param string $timezone_identifier
-     *   The PHP timezone identifier.
+     * @param \DateTimeZone|string $timezone
+     *   The timezone to set as a DateTimeZone PHP object or one of the PHP
+     *   timezone identifier.
      *
      * @return void
      *
      * @throws \InvalidArgumentException
-     *   Throws an invalid argument exception if the parameter is not a string
-     *   an empty string, or an unknown PHP timezone identifier.
+     *   Throws an invalid argument exception if the parameter is not a
+     *   DateTimeZone instance, not a string, an empty string, or an unknown
+     *   PHP timezone identifier.
+     *
+     * @uses \DateTimeZone::listIdentifiers()
      */
-    public function setDateTimeZone($timezone_identifier)
+    public function setDateTimeZone($timezone)
     {
-        if (!is_string($timezone_identifier) || empty($timezone_identifier) ) {
-            throw new \InvalidArgumentException();
-        }
-
-        $timezones = \DateTimeZone::listIdentifiers(\DateTimeZone::ALL);
-        if (in_array($timezone_identifier, $timezones)) {
-            $this->TimezoneIdentifier = $timezone_identifier;
+        if ($timezone instanceof \DateTimeZone) {
+            $this->DateTimeZone = $timezone;
+        } elseif (is_string($timezone) && !empty($timezone)) {
+            $timezones = \DateTimeZone::listIdentifiers(\DateTimeZone::ALL);
+            if (in_array($timezone, $timezones)) {
+                $this->DateTimeZone = new \DateTimeZone($timezone);
+            } else {
+                throw new \InvalidArgumentException();
+            }
         } else {
             throw new \InvalidArgumentException();
         }

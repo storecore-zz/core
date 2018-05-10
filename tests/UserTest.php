@@ -88,13 +88,33 @@ class UserTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::getDateTimeZone
-     * @testdox Public getDateTimeZone() method returns string 'UTC' by default
+     * @testdox Public getDateTimeZone() method returns object
      */
-    public function testPublicGetDateTimeZoneMethodReturnsStringUTCByDefault()
+    public function testPublicGetDateTimeZoneMethodReturnsObject()
     {
-        $object = new \StoreCore\User();
-        $this->assertTrue(is_string($object->getDateTimeZone()));
-        $this->assertEquals('UTC', $object->getDateTimeZone());
+        $user = new \StoreCore\User();
+        $this->assertTrue(is_object($user->getDateTimeZone()));
+    }
+
+    /**
+     * @covers ::getDateTimeZone
+     * @testdox Public getDateTimeZone() method returns DateTimeZone object by default
+     */
+    public function testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault()
+    {
+        $user = new \StoreCore\User();
+        $this->assertTrue($user->getDateTimeZone() instanceof \DateTimeZone);
+    }
+
+    /**
+     * @covers ::getDateTimeZone
+     * @depends testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault
+     * @testdox Public getDateTimeZone() method returns 'UTC' DateTimeZone by default
+     */
+    public function testPublicGetDateTimeZoneMethodReturnsUTCDateTimeZoneByDefault()
+    {
+        $user = new \StoreCore\User();
+        $this->assertEquals('UTC', $user->getDateTimeZone()->getName());
     }
 
     /**
@@ -382,24 +402,17 @@ class UserTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::setDateTimeZone
-     * @testdox Public setDateTimeZone() method returns string 'UTC' on non-existent timezone
+     * @depends testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault
+     * @testdox Public setDateTimeZone() method accepts global 'UTC' DateTimeZone
      */
-    public function testPublicSetDateTimeZoneMethodReturnsStringUTCOnNonExistentTimezone()
+    public function testPublicSetDateTimeZoneMethodAcceptsGlobalUTCDateTimeZone()
     {
-        $object = new \StoreCore\User();
-        $this->assertTrue(is_string($object->setDateTimeZone('Foo/Bar')));
-        $this->assertEquals('UTC', $object->setDateTimeZone('Foo/Bar'));
-    }
-
-    /**
-     * @covers ::setDateTimeZone
-     * @testdox Public setDateTimeZone() method returns set timezone
-     */
-    public function testPublicSetDateTimeZoneMethodReturnsSetTimezone()
-    {
-        $object = new \StoreCore\User();
-        $this->assertEquals('Europe/Amsterdam', $object->setDateTimeZone('Europe/Amsterdam'));
-        $this->assertEquals('Europe/Amsterdam', $object->getDateTimeZone());
+        $timezone_string = 'UTC';
+        $timezone_object = new \DateTimeZone($timezone_string);
+        $user = new \StoreCore\User();
+        $user->setDateTimeZone($timezone_object);
+        $this->assertSame($timezone_object, $user->getDateTimeZone());
+        $this->assertSame($timezone_string, $user->getDateTimeZone()->getName());
     }
 
     /**

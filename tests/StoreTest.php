@@ -57,13 +57,35 @@ class StoreTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::getDateTimeZone
-     * @testdox Public getDateTimeZone() method returns string 'UTC' by default
+     * @testdox Public getDateTimeZone() method returns object
      */
-    public function testPublicGetDateTimeZoneMethodReturnsStringUTCByDefault()
+    public function testPublicGetDateTimeZoneMethodReturnsObject()
     {
         $object = new \StoreCore\Store(\StoreCore\Registry::getInstance());
-        $this->assertTrue(is_string($object->getDateTimeZone()));
-        $this->assertEquals('UTC', $object->getDateTimeZone());
+        $return = $object->getDateTimeZone();
+        $this->assertTrue(is_object($return));
+    }
+
+    /**
+     * @covers ::getDateTimeZone
+     * @testdox Public getDateTimeZone() method returns DateTimeZone object by default
+     */
+    public function testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault()
+    {
+        $object = new \StoreCore\Store(\StoreCore\Registry::getInstance());
+        $return = $object->getDateTimeZone();
+        $this->assertTrue($return instanceof \DateTimeZone);
+    }
+
+    /**
+     * @covers ::getDateTimeZone
+     * @depends testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault
+     * @testdox Public getDateTimeZone() method returns 'UTC' DateTimeZone by default
+     */
+    public function testPublicGetDateTimeZoneMethodReturnsUTCDateTimeZoneByDefault()
+    {
+        $object = new \StoreCore\Store(\StoreCore\Registry::getInstance());
+        $this->assertEquals('UTC', $object->getDateTimeZone()->getName());
     }
 
     /**
@@ -84,5 +106,30 @@ class StoreTest extends PHPUnit_Framework_TestCase
     {
         $method = new \ReflectionMethod('\StoreCore\Store', 'setDateTimeZone');
         $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @covers ::setDateTimeZone
+     * @depends testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault
+     * @testdox Public setDateTimeZone() method accepts common timezone identifiers
+     */
+    public function testPublicSetDateTimeZoneMethodAcceptsCommonTimezoneIdentifiers()
+    {
+        $timezone_identifiers = array(
+            'America/Los_Angeles',
+            'America/New_York',
+            'Europe/Amsterdam',
+            'Europe/Brussels',
+            'Europe/Berlin',
+            'Europe/London',
+            'Europe/Paris',
+            'UTC',
+        );
+
+        $store = new \StoreCore\Store(\StoreCore\Registry::getInstance());
+        foreach ($timezone_identifiers as $timezone_identifier) {
+            $store->setDateTimeZone($timezone_identifier);
+            $this->assertEquals($timezone_identifier, $store->getDateTimeZone()->getName());
+        }
     }
 }

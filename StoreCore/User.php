@@ -2,10 +2,10 @@
 namespace StoreCore;
 
 /**
- * StoreCore User
+ * StoreCore User Model
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015-2017 StoreCore
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
  * @version   0.1.0
@@ -16,19 +16,19 @@ class User
     const VERSION = '0.1.0';
 
     /**
-     * @var string      $DateTimeZone
-     * @var string|null $EmailAddress
-     * @var string|null $HashAlgorithm
-     * @var string      $LanguageID
-     * @var string|null $PasswordHash
-     * @var string|null $PasswordSalt
-     * @var int|null    $PersonID
-     * @var string      $PinCode
-     * @var int         $UserGroupID
-     * @var int|null    $UserID
-     * @var string|null $Username
+     * @var \DateTimeZone $DateTimeZone
+     * @var string|null   $EmailAddress
+     * @var string|null   $HashAlgorithm
+     * @var string        $LanguageID
+     * @var string|null   $PasswordHash
+     * @var string|null   $PasswordSalt
+     * @var int|null      $PersonID
+     * @var string        $PinCode
+     * @var int           $UserGroupID
+     * @var int|null      $UserID
+     * @var string|null   $Username
      */
-    private $DateTimeZone = 'UTC';
+    private $DateTimeZone;
     private $EmailAddress;
     private $HashAlgorithm;
     private $LanguageID = 'en-GB';
@@ -39,6 +39,17 @@ class User
     private $UserGroupID = 0;
     private $UserID;
     private $Username;
+
+    /**
+     * Construct a user model object.
+     *
+     * @param void
+     * @return self
+     */
+    public function __construct()
+    {
+        $this->DateTimeZone = new \DateTimeZone('UTC');
+    }
 
     /**
      * Check the user credentials.
@@ -86,9 +97,9 @@ class User
      *
      * @param void
      *
-     * @return string
-     *   Returns a DateTimeZone identifier as a string.  The default for all
-     *   StoreCore dates, times, and datetimes is 'UTC'.
+     * @return \DateTimeZone
+     *   Returns a DateTimeZone object.  The default timezone for all
+     *   dates, times, and datetimes in StoreCore is 'UTC'.
      */
     public function getDateTimeZone()
     {
@@ -216,19 +227,14 @@ class User
     /**
      * Set the user’s timezone.
      *
-     * @param string $timezone_identifier
-     *   DateTimeZone identifier for the user’s current date and time zone.
+     * @param \DateTimeZone $object
+     *   DateTimeZone object for the user’s current date and time zone.
      *
-     * @return string
-     *   Returns the currently set timezone identifier.
+     * @return void
      */
-    public function setDateTimeZone($timezone_identifier)
+    public function setDateTimeZone(\DateTimeZone $object)
     {
-        $timezone_identifiers = \DateTimeZone::listIdentifiers();
-        if (in_array($timezone_identifier, $timezone_identifiers, true)) {
-            $this->DateTimeZone = $timezone_identifier;
-        }
-        return $this->getDateTimeZone();
+        $this->DateTimeZone = $object;
     }
 
     /**
