@@ -32,6 +32,13 @@ class Store extends AbstractModel
     private $EnabledFlag = false;
 
     /**
+     * @var bool $Secure
+     *   Determines if the store is accessible over HTTPS (true) or plain HTTP
+     *   without SSL (default false).
+     */
+    private $Secure = false;
+
+    /**
      * @var array $StoreCurrencies
      *   Array with \StoreCore\Currency objects for the store’s currencies.
      */
@@ -161,6 +168,20 @@ class Store extends AbstractModel
     }
 
     /**
+     * Check if the store runs over HTTPS (HTTP Secure).
+     *
+     * @param void
+     *
+     * @return bool
+     *   Returns true if the store uses secure HTTPS connections, otherwise
+     *   false.
+     */
+    public function isSecure()
+    {
+        return $this->Secure;
+    }
+
+    /**
      * Check if a store is open or closed.
      *
      * @param void
@@ -184,6 +205,17 @@ class Store extends AbstractModel
     public function open()
     {
         $this->EnabledFlag = true;
+    }
+
+    /**
+     * Enforce HTTP Secure (HTTPS).
+     *
+     * @param void
+     * @return void
+     */
+    public function secure()
+    {
+        $this->Secure = true;
     }
 
     /**

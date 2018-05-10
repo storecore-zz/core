@@ -89,6 +89,61 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers \StoreCore\Store::isSecure
+     * @group security
+     * @testdox Public isSecure() method exists
+     */
+    public function testPublicIsSecureMethodExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Store');
+        $this->assertTrue($class->hasMethod('isSecure'));
+    }
+
+    /**
+     * @covers \StoreCore\Store::isSecure
+     * @group security
+     * @testdox Public isSecure() method is public
+     */
+    public function testPublicIsSecureMethodIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Store', 'isSecure');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @covers \StoreCore\Store::isSecure
+     * @group security
+     * @testdox Public isSecure() method returns false by default
+     */
+    public function testPublicIsSecureMethodReturnsFalseByDefault()
+    {
+        $store = new \StoreCore\Store(\StoreCore\Registry::getInstance());
+        $this->assertFalse($store->isSecure());
+    }
+
+    /**
+     * @covers \StoreCore\Store::secure
+     * @group security
+     * @testdox Public secure() method exists
+     */
+    public function testPublicSecureMethodExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Store');
+        $this->assertTrue($class->hasMethod('secure'));
+    }
+
+    /**
+     * @covers \StoreCore\Store::secure
+     * @group security
+     * @testdox Public secure() method is public
+     */
+    public function testPublicSecureMethodIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Store', 'secure');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
      * @covers ::setDateTimeZone
      * @testdox Public setDateTimeZone() method exists
      */
