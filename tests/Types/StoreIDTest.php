@@ -28,11 +28,15 @@ class StoreIDTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @depends testVersionConstantIsDefined
      * @group distro
      */
-    public function testVersionMatchesDevelopmentBranch()
+    public function testVersionConstantIsNonEmptyString()
     {
-        $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Types\StoreID::VERSION);
+        $class = new \ReflectionClass('\StoreCore\Types\StoreID');
+        $class_constant = $class->getConstant('VERSION');
+        $this->assertNotEmpty($class_constant);
+        $this->assertTrue(is_string($class_constant));
     }
 
     /**
