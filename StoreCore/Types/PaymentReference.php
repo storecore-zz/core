@@ -5,25 +5,44 @@ namespace StoreCore\Types;
  * Numeric Payment Reference
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2017 StoreCore
+ * @copyright Copyright © 2017–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\OML
  * @version   0.1.0
  */
- class PaymentReference
+ class PaymentReference implements StringableInterface
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
-    /** @var string $Prefix */
+    /**
+     * @var string $Prefix
+     *   Single digit for a checksum that precedes the checked number.
+     */
     private $Prefix;
 
-    /** @var string $TransactionID */
+    /**
+     * @var string $TransactionID
+     *   Transaction identifier, usually a numeric string consisting of decimal
+     *   digits.
+     */
     private $TransactionID;
 
     /**
+     * Construct a transaction identifier data object.
+     *
      * @param int|string $transaction_id
+     *   Optional transaction identifier to set.  If omitted, a random
+     *   transaction ID is generated with a prefix containing the current date
+     *   in the `yyyymmdd` format.  To allow for long transaction identifiers,
+     *   the transaction ID may be set using an integer as well as a
+     *   string.
+     *
      * @return self
+     *
      * @uses setTransactionID()
      */
     public function __construct($transaction_id = null)
@@ -36,8 +55,12 @@ namespace StoreCore\Types;
     }
 
     /**
+     * Convert the data object to a string.
+     *
      * @param void
+     *
      * @return string
+     *   Returns the payment reference as a numeric string.
      */
     public function __toString()
     {
@@ -87,6 +110,8 @@ namespace StoreCore\Types;
      * @return void
      *
      * @throws \InvalidArgumentException
+     *   Throws an invalid argument exception if the transaction ID is not an
+     *   integer and not a numeric string consisting of decimal digits.
      */
     public function setTransactionID($transaction_id)
     {

@@ -19,6 +19,24 @@ class StoreIDTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group hmvc
+     */
+    public function testClassImplementsStringableInterface()
+    {
+        $object = new \StoreCore\Types\StoreID();
+        $this->assertTrue($object instanceof \StoreCore\Types\StringableInterface);
+    }
+
+    /**
+     * @group hmvc
+     */
+    public function testClassImplementsTypeInterface()
+    {
+        $object = new \StoreCore\Types\StoreID();
+        $this->assertTrue($object instanceof \StoreCore\Types\TypeInterface);
+    }
+
+    /**
      * @group distro
      */
     public function testVersionConstantIsDefined()
@@ -28,11 +46,15 @@ class StoreIDTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @depends testVersionConstantIsDefined
      * @group distro
      */
-    public function testVersionMatchesDevelopmentBranch()
+    public function testVersionConstantIsNonEmptyString()
     {
-        $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Types\StoreID::VERSION);
+        $class = new \ReflectionClass('\StoreCore\Types\StoreID');
+        $class_constant = $class->getConstant('VERSION');
+        $this->assertNotEmpty($class_constant);
+        $this->assertTrue(is_string($class_constant));
     }
 
     /**
