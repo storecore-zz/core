@@ -18,6 +18,33 @@ class InternationalArticleNumberTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group hmvc
+     */
+    public function testClassImplementsStringableInterface()
+    {
+        $object = new \StoreCore\Types\InternationalArticleNumber('9789043017121');
+        $this->assertTrue($object instanceof \StoreCore\Types\StringableInterface);
+    }
+
+    /**
+     * @group hmvc
+     */
+    public function testClassImplementsTypeInterface()
+    {
+        $object = new \StoreCore\Types\InternationalArticleNumber('9789043017121');
+        $this->assertTrue($object instanceof \StoreCore\Types\TypeInterface);
+    }
+
+    /**
+     * @group hmvc
+     */
+    public function testClassImplementsValidateInterface()
+    {
+        $object = new \StoreCore\Types\InternationalArticleNumber('9789043017121');
+        $this->assertTrue($object instanceof \StoreCore\Types\ValidateInterface);
+    }
+
+    /**
      * @group distro
      */
     public function testVersionConstantIsDefined()
@@ -27,9 +54,21 @@ class InternationalArticleNumberTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @depends testVersionConstantIsDefined
      * @group distro
      */
-    public function testVersionMatchesDevelopmentBranch()
+    public function testVersionConstantIsNonEmptyString()
+    {
+        $class = new \ReflectionClass('\StoreCore\Types\InternationalArticleNumber');
+        $class_constant = $class->getConstant('VERSION');
+        $this->assertNotEmpty($class_constant);
+        $this->assertTrue(is_string($class_constant));
+    }
+
+    /**
+     * @group distro
+     */
+    public function testVersionMatchesMasterBranch()
     {
         $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Types\InternationalArticleNumber::VERSION);
     }

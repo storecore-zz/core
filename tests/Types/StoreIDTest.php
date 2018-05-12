@@ -19,6 +19,24 @@ class StoreIDTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group hmvc
+     */
+    public function testClassImplementsStringableInterface()
+    {
+        $object = new \StoreCore\Types\StoreID();
+        $this->assertTrue($object instanceof \StoreCore\Types\StringableInterface);
+    }
+
+    /**
+     * @group hmvc
+     */
+    public function testClassImplementsTypeInterface()
+    {
+        $object = new \StoreCore\Types\StoreID();
+        $this->assertTrue($object instanceof \StoreCore\Types\TypeInterface);
+    }
+
+    /**
      * @group distro
      */
     public function testVersionConstantIsDefined()
