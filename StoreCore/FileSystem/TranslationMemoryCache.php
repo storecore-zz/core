@@ -14,14 +14,17 @@ use \StoreCore\FileSystem\Logger as Logger;
  * limited to languages that are currently enabled.
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015-2017 StoreCore
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\I18N
  * @version   0.1.0
  */
 class TranslationMemoryCache
 {
-    /** @var string VERSION Semantic Version (SemVer). */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -30,7 +33,8 @@ class TranslationMemoryCache
      * @param void
      *
      * @return bool
-     *   Returns true on success or false on failure.
+     *   Returns true on success or false on failure.  This static method does
+     *   not throw exceptions on failures, but logs the errors.
      */
     public static function rebuild()
     {
