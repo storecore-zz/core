@@ -2,7 +2,7 @@
 -- MySQL Data Definition
 --
 -- @author    Ward van der Put <Ward.van.der.Put@storecore.org>
--- @copyright Copyright © 2014-2018 StoreCore™
+-- @copyright Copyright © 2014–2018 StoreCore™
 -- @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
 -- @package   StoreCore\Database
 -- @version   0.1.0
@@ -136,7 +136,7 @@ INSERT IGNORE INTO sc_languages (language_id, parent_id, english_name, local_nam
   ('fr-LU', 'fr-FR', 'French - Luxembourg', 'Français - Luxembourg', 0),
   ('fr-MC', 'fr-FR', 'French - Monaco', 'Français - Monaco', 0),
   ('it-CH', 'it-IT', 'Italian - Switzerland', 'Italiano - Svizzera', 0),
-  ('nl-BE', 'nl-NL', 'Dutch - Belgium', 'Nederlands - België', 0),
+  ('nl-BE', 'nl-NL', 'Dutch - Belgium', 'Nederlands - België', 1),
   ('pt-BR', 'pt-BR', 'Portuguese - Brazil', 'Português - Brasil', 0),
   ('sv-FI', 'sv-SE', 'Swedish - Finland', 'Finlandssvenska - Finland', 0);
 
