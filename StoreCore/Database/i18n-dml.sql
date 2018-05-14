@@ -441,7 +441,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('COMMAND_NEXT', 'pt-BR', 'Avançar'),
     ('COMMAND_NEXT', 'pt-PT', 'Seguinte'),
 
-    ('COMMAND_PRINT', 'ca-Ad', 'Imprimeix…'),
+    ('COMMAND_PRINT', 'ca-AD', 'Imprimeix…'),
     ('COMMAND_PRINT', 'de-DE', 'Drucken…'),
     ('COMMAND_PRINT', 'en-GB', 'Print…'),
     ('COMMAND_PRINT', 'es-ES', 'Imprimir…'),
