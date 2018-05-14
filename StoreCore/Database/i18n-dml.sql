@@ -18,7 +18,7 @@
     +------------+------------+------------+-----------------------+
 
     @author    Ward van der Put <Ward.van.der.Put@storecore.org>
-    @copyright Copyright (c) 2014-2018 StoreCore
+    @copyright Copyright © 2014–2018 StoreCore™
     @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
     @package   StoreCore\I18N
     @version   0.1.0
@@ -60,6 +60,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('ADJECTIVE_MALE', 'nl-NL', 'mannelijk'),
     ('ADJECTIVE_MALE', 'pt-PT', 'masculino'),
 
+    ('ADJECTIVE_UNKNOWN', 'ca-AD', 'desconegut'),
     ('ADJECTIVE_UNKNOWN', 'en-GB', 'unknown'),
     ('ADJECTIVE_UNKNOWN', 'de-DE', 'unbekannt'),
     ('ADJECTIVE_UNKNOWN', 'es-ES', 'desconocido'),
@@ -72,12 +73,19 @@ INSERT IGNORE INTO sc_translation_memory
 INSERT IGNORE INTO sc_translation_memory
     (translation_id, translation, admin_only_flag)
   VALUES
+    ('NOUN_AMERICAN_EXPRESS', 'American Express', 0),
     ('NOUN_BANCONTACT', 'Bancontact', 0),
+    ('NOUN_BELFIUS_PAY_BUTTON', 'Belfius Pay Button', 0),
+    ('NOUN_BITCOIN', 'Bitcoin', 0),
+    ('NOUN_CARTASI', 'CartaSi', 0),
+    ('NOUN_CARTES_BANCAIRES', 'Cartes Bancaires', 0),
     ('NOUN_FACEBOOK', 'Facebook', 0),
     ('NOUN_GOOGLE', 'Google', 1),
     ('NOUN_GOOGLE_ANALYTICS', 'Google Analytics', 1),
     ('NOUN_GOOGLE_PLUS', 'Google+', 0),
+    ('NOUN_GOOGLE_SHOPPING', 'Google Shopping', 1),
     ('NOUN_IDEAL', 'iDEAL', 0),
+    ('NOUN_ING_HOME_PAY', 'ING Home’Pay', 0),
     ('NOUN_INSTAGRAM', 'Instagram', 0),
     ('NOUN_LINKEDIN', 'LinkedIn', 0),
     ('NOUN_MOLLIE', 'Mollie', 1),
@@ -88,6 +96,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_PHP', 'PHP', 1),
     ('NOUN_PINTEREST', 'Pinterest', 0),
     ('NOUN_SOFORT', 'SOFORT', 0),
+    ('NOUN_SOFORT_BANKING', 'SOFORT Banking', 0),
     ('NOUN_STORECORE', 'StoreCore', 0),
     ('NOUN_SOUNDCLOUD', 'SoundCloud', 0),
     ('NOUN_TARGETMEDIA', 'TargetMedia', 1),
@@ -127,6 +136,16 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_CONTACTS', 'it-IT', 'contatti', 1),
     ('NOUN_CONTACTS', 'nl-NL', 'contacten', 1),
     ('NOUN_CONTACTS', 'pt-PT', 'contatos', 1),
+
+    ('NOUN_CREDIT_CARD', 'ca-AD', 'targeta de crèdit', 0),
+    ('NOUN_CREDIT_CARD', 'de-DE', 'Kreditkarte', 0),
+    ('NOUN_CREDIT_CARD', 'en-GB', 'credit card', 0),
+    ('NOUN_CREDIT_CARD', 'es-ES', 'tarjeta de crédito', 0),
+    ('NOUN_CREDIT_CARD', 'fr-FR', 'carte de crédit', 0),
+    ('NOUN_CREDIT_CARD', 'it-IT', 'carta di credito', 0),
+    ('NOUN_CREDIT_CARD', 'nl-BE', 'kredietkaart', 0),
+    ('NOUN_CREDIT_CARD', 'nl-NL', 'creditcard', 0),
+    ('NOUN_CREDIT_CARD', 'pt-PT', 'cartão de crédito', 0),
 
     ('NOUN_DATABASE', 'ca-AD', 'base de dades', 1),
     ('NOUN_DATABASE', 'de-DE', 'Datenbank', 1),
@@ -263,7 +282,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_PRIVACY_STATEMENT', 'pt-PT', 'declaração de privacidade', 0),
 
     ('NOUN_PIN_CODE', 'ca-AD', 'codi PIN', 1),
-    ('NOUN_PIN_CODE', 'de-DE', 'PIN-Code', 1),
+    ('NOUN_PIN_CODE', 'de-DE', 'Geheimzahl', 1),
     ('NOUN_PIN_CODE', 'en-GB', 'PIN code', 1),
     ('NOUN_PIN_CODE', 'es-ES', 'código PIN', 1),
     ('NOUN_PIN_CODE', 'fr-FR', 'code PIN', 1),
@@ -492,6 +511,7 @@ INSERT IGNORE INTO sc_translation_memory
 INSERT IGNORE INTO sc_translation_memory
     (translation_id, language_id, translation)
   VALUES
+    ('HEADING_CONFIRM_PASSWORD', 'ca-AD', 'Confirma la contrasenya'),
     ('HEADING_CONFIRM_PASSWORD', 'de-DE', 'Kennwort bestätigen'),
     ('HEADING_CONFIRM_PASSWORD', 'en-GB', 'Confirm password'),
     ('HEADING_CONFIRM_PASSWORD', 'es-ES', 'Confirmar contraseña'),
@@ -500,6 +520,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_CONFIRM_PASSWORD', 'nl-NL', 'Wachtwoord bevestigen'),
     ('HEADING_CONFIRM_PASSWORD', 'pt-PT', 'Confirmar palavra-passe'),
 
+    ('HEADING_EMAIL_ADDRESS', 'ca-AD', 'Adreça electrònica'),
     ('HEADING_EMAIL_ADDRESS', 'de-DE', 'E-Mail-Adresse'),
     ('HEADING_EMAIL_ADDRESS', 'en-GB', 'E-mail address'),
     ('HEADING_EMAIL_ADDRESS', 'es-ES', 'Dirección de correo electrónico'),
@@ -664,6 +685,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_PDO_DRIVER', 'nl-NL', 'PDO-stuurprogramma', 1),
     ('HEADING_PDO_DRIVER', 'pt-PT', 'Controlador PDO', 1),
 
+    ('HEADING_SETTINGS', 'ca-AD', 'Configuració', 1),
     ('HEADING_SETTINGS', 'de-DE', 'Einstellungen', 1),
     ('HEADING_SETTINGS', 'en-GB', 'Settings', 1),
     ('HEADING_SETTINGS', 'es-ES', 'Configuración', 1),
