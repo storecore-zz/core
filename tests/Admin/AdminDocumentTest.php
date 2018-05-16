@@ -71,4 +71,40 @@ class AdminDocumentTest extends PHPUnit_Framework_TestCase
         $document = new \StoreCore\Admin\Document();
         $this->assertContains('<link href="/styles/admin.min.css" rel="stylesheet">', $document->getHead());
     }
+
+    /**
+     * @testdox Public getBody() method exists
+     */
+    public function testPublicGetBodyMethodExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Admin\Document');
+        $this->assertTrue($class->hasMethod('getBody'));
+    }
+
+    /**
+     * @testdox Public getBody() method is public
+     */
+    public function testPublicGetBodyMethodIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Admin\Document', 'getBody');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @testdox Public getBody() method returns MDC start tag
+     */
+    public function testPublicGetBodyMethodReturnsMdcStartTag()
+    {
+        $document = new \StoreCore\Admin\Document();
+        $this->assertStringStartsWith('<body class="mdc-typography">', $document->getBody());
+    }
+
+    /**
+     * @testdox Public getBody() method returns closing tag
+     */
+    public function testPublicGetBodyMethodReturnsClosingTag()
+    {
+        $document = new \StoreCore\Admin\Document();
+        $this->assertStringEndsWith('</body>', $document->getBody());
+    }
 }

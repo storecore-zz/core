@@ -66,4 +66,15 @@ class Document extends \StoreCore\Document
 
     /** @var string $Title */
     protected $Title = 'StoreCore';
+
+    /**
+     * @inheritDoc
+     */
+    public function getBody()
+    {
+        return
+            '<body class="mdc-typography">'
+            . implode($this->Sections)
+            . '</body>';
+    }
 }
