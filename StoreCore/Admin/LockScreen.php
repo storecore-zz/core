@@ -30,6 +30,10 @@ class LockScreen extends \StoreCore\AbstractController
     {
         parent::__construct($registry);
 
+        if (!defined('STORECORE\I18N\COMMAND_UNLOCK')) {
+            define('STORECORE\I18N\COMMAND_UNLOCK', 'Unlock…');
+        }
+
         $html
             = '<div class="lock-screen">'
             . '<h1><strong>Store</strong>Core<sup>™</sup></h1>'
