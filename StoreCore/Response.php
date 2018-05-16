@@ -6,14 +6,17 @@ namespace StoreCore;
  *
  * @api
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015-2018 StoreCore™
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
 class Response extends AbstractController
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -137,6 +140,20 @@ class Response extends AbstractController
             header('X-Powered-By: StoreCore/' . STORECORE_VERSION, true);
             header('X-UA-Compatible: IE=edge', true);
             header('X-XSS-Protection: 1; mode=block', true);
+
+            /*
+             * @todo
+             *   This needs more work for specific server, database, and
+             *   middleware details.  For now we are simply measuring the total
+             *   server processing timing in milliseconds.
+             *
+             * @see https://www.w3.org/TR/server-timing/
+             *      Server Timing (W3C Working Draft 29 December 2017)
+             *
+             * @see https://secure.php.net/microtime
+             *      PHP microtime() function and $_SERVER['REQUEST_TIME_FLOAT']) superglobal
+             */
+             header('Server-Timing: total;dur=' . round(1000 * (microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']), 1));
         }
 
         if ($this->ResponseBody !== null && $this->Request->getMethod() !== 'HEAD') {
