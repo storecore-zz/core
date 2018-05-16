@@ -45,6 +45,7 @@ class LockScreen extends \StoreCore\AbstractController
         $lock_screen->addSection($html, '');
 
         $response = new \StoreCore\Response($this->Registry);
+        $response->addHeader('X-Robots-Tag: noindex');
         $response->setResponseBody($lock_screen);
         $response->output();
     }
