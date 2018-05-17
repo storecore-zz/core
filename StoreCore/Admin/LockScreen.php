@@ -35,9 +35,14 @@ class LockScreen extends \StoreCore\AbstractController
         }
 
         $html
-            = '<div class="lock-screen">'
-            . '<h1><strong>Store</strong>Core<sup>™</sup></h1>'
-            . '<p><a href="/admin/sign-in/" target="_top">' . \STORECORE\I18N\COMMAND_UNLOCK . '</a></p>'
+            = '<div class="sc-lock-screen">'
+            . '<h1 class="sc-logo">'
+            . '<strong>Store</strong>Core'
+            . '<br>'
+            . '<a class="sc-unlock-link" href="/admin/sign-in/" target="_top">'
+            . \STORECORE\I18N\COMMAND_UNLOCK
+            . '</a>'
+            . '</h1>'
             . '</div>';
 
         $lock_screen = new \StoreCore\Admin\Document();
