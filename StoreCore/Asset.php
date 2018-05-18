@@ -23,7 +23,7 @@ class Asset
      *   File name of the cacheable asset file.
      */
     private $FileName;
-    
+
     /**
      * @var string $FileType
      *   File type of the asset file.
@@ -73,6 +73,14 @@ class Asset
             $this->setFileType(pathinfo($filename, PATHINFO_EXTENSION));
         } else {
             $this->setFileType($filetype);
+        }
+
+        // Match generic favicon.ico to a domain-specific icon.
+        if ($this->FileName === 'favicon.ico') {
+            $this->setFileName(strip_tags($_SERVER['HTTP_HOST']) . '.ico');
+            if (false === $this->fileExists()) {
+                $this->setFileName('blank.ico');
+            }
         }
 
         if ($this->fileExists()) {
