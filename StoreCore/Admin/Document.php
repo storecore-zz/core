@@ -6,14 +6,17 @@ namespace StoreCore\Admin;
  *
  * @api
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015-2018 StoreCore™
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
 class Document extends \StoreCore\Document
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -52,7 +55,10 @@ class Document extends \StoreCore\Document
         ),
     );
 
-    /** @var array $MetaData */
+    /**
+     * @var array $MetaData
+     *   Document meta data for `<meta name="…" value="…">` tags.
+     */
     protected $MetaData = array(
         'generator' => 'StoreCore',
         'robots' => 'noindex,nofollow',
@@ -64,7 +70,10 @@ class Document extends \StoreCore\Document
         'theme-color' => '#689f38',
     );
 
-    /** @var string $Title */
+    /**
+     * @var string $Title
+     *   Document title, defaults to the app name StoreCore.
+     */
     protected $Title = 'StoreCore';
 
     /**
