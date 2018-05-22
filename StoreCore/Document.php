@@ -10,7 +10,7 @@ namespace StoreCore;
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-class Document
+class Document implements \StoreCore\Types\StringableInterface
 {
     /**
      * @var string VERSION
@@ -79,8 +79,13 @@ class Document
     }
 
     /**
+     * Convert the document to an HTML string.
+     *
      * @param void
+     *
      * @return string
+     *   Returns the document in HTML5 or AMP HTML.
+     *
      * @uses getDocument()
      */
     public function __toString()

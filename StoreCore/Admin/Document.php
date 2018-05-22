@@ -11,7 +11,7 @@ namespace StoreCore\Admin;
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-class Document extends \StoreCore\Document
+class Document extends \StoreCore\Document implements \StoreCore\Types\StringableInterface
 {
     /**
      * @var string VERSION

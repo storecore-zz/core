@@ -19,12 +19,51 @@ class AdminDocumentTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group hmvc
+     * @testdox \StoreCore\Admin\Document extends \StoreCore\Document
+     */
+    public function testAdminDocumentExtendsDocument()
+    {
+        $object = new \StoreCore\Admin\Document();
+        $this->assertTrue($object instanceof \StoreCore\Document);
+    }
+
+    /**
+     * @group hmvc
+     */
+    public function testClassImplementsStringableInterface()
+    {
+        $object = new \StoreCore\Admin\Document();
+        $this->assertTrue($object instanceof \StoreCore\Types\StringableInterface);
+    }
+
+    /**
      * @group distro
      */
     public function testVersionConstantIsDefined()
     {
         $class = new \ReflectionClass('\StoreCore\Admin\Document');
         $this->assertTrue($class->hasConstant('VERSION'));
+    }
+
+    /**
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     */
+    public function testVersionConstantIsNotEmpty()
+    {
+        $class = new \ReflectionClass('\StoreCore\Admin\Document');
+        $this->assertNotEmpty($class->getConstant('VERSION'));
+    }
+
+    /**
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     */
+    public function testVersionConstantIsString()
+    {
+        $class = new \ReflectionClass('\StoreCore\Admin\Document');
+        $this->assertTrue(is_string($class->getConstant('VERSION')));
     }
 
     /**
