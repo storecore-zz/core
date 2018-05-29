@@ -1,7 +1,4 @@
 <?php
-/**
- * @coversDefaultClass \StoreCore\Database\Maintenance
- */
 class MaintenanceTest extends PHPUnit_Framework_TestCase
 {
     /**
@@ -60,7 +57,6 @@ class MaintenanceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::emptyRecycleBin
      * @testdox Public emptyRecycleBin() method exists
      */
     public function testPublicEmptyRecycleBinMethodExists()
@@ -70,7 +66,6 @@ class MaintenanceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::emptyRecycleBin
      * @depends testPublicEmptyRecycleBinMethodExists
      * @testdox Public emptyRecycleBin() method is public
      */
@@ -81,7 +76,6 @@ class MaintenanceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::emptyRecycleBin
      * @depends testPublicEmptyRecycleBinMethodExists
      * @testdox Public emptyRecycleBin() method has one parameter
      */
@@ -92,7 +86,6 @@ class MaintenanceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::emptyRecycleBin
      * @depends testPublicEmptyRecycleBinMethodHasOneParameter
      * @testdox Public emptyRecycleBin() method parameter is optional
      */
