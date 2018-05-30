@@ -11,7 +11,7 @@ namespace StoreCore\Types;
  * @see       https://schema.org/Thing
  * @version   0.1.0
  */
-class Thing extends AbstractRichSnippet
+class Thing extends AbstractRichSnippet implements StringableInterface
 {
     /**
      * @var string VERSION

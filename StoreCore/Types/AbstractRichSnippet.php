@@ -11,7 +11,7 @@ namespace StoreCore\Types;
  * @see       https://developers.google.com/search/docs/guides/intro-structured-data
  * @version   0.1.0
  */
-abstract class AbstractRichSnippet
+abstract class AbstractRichSnippet implements StringableInterface
 {
     /**
      * @var string VERSION
@@ -39,7 +39,12 @@ abstract class AbstractRichSnippet
      * Generic property getter.
      *
      * @param string $name
+     *   Name of the property to return.
+     *
      * @return mixed|null
+     *   Returns the property value or null if the property does not exist.
+     *   Note that this method therefore does not throw an exception if the
+     *   requested is undefined.
      */
     public function __get($name) {
         if (array_key_exists($name, $this->Data)) {

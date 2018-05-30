@@ -12,7 +12,7 @@ namespace StoreCore\Types;
  * @see       https://developers.google.com/search/docs/data-types/products
  * @version   0.1.0
  */
-class Product extends Thing
+class Product extends Thing implements StringableInterface
 {
     /**
      * @var string VERSION
