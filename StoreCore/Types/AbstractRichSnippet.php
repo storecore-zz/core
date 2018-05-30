@@ -5,7 +5,7 @@ namespace StoreCore\Types;
  * Abstract Rich Snippet
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2016 StoreCore
+ * @copyright Copyright © 2016–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @see       https://developers.google.com/search/docs/guides/intro-structured-data
@@ -13,10 +13,15 @@ namespace StoreCore\Types;
  */
 abstract class AbstractRichSnippet
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
      * @var array $Data
+     *   Object properties as key/value pairs.
      */
     protected $Data = array(
         '@context' => 'http://schema.org',
@@ -45,8 +50,13 @@ abstract class AbstractRichSnippet
     }
 
     /**
+     * Convert the data object to a JSON encoded string.
+     *
      * @param void
+     *
      * @return string
+     *   Returns a JSON encoded multidimensional array as a string.
+     *   Use the `getScript()` method for a similar HTML snippet in JSON-LD.
      */
     public function __toString()
     {
@@ -58,7 +68,9 @@ abstract class AbstractRichSnippet
      * Get the object data as an array.
      *
      * @param void
+     *
      * @return array
+     *   Returns all object data as a multidimensional array.
      */
     public function getDataArray()
     {
@@ -78,6 +90,9 @@ abstract class AbstractRichSnippet
      * @param void
      *
      * @return string
+     *   Returns the data object as a string in JavaScript Object Notation
+     *   for Linked Data (JSON-LD) within the HTML5 and AMP HTML script tag
+     *   `<script type="application/ld+json">…</script>`.
      *
      * @see https://search.google.com/structured-data/testing-tool
      *      Google Structured Data Testing Tool (SDTT)
@@ -109,6 +124,8 @@ abstract class AbstractRichSnippet
      * @return $this
      *
      * @throws \InvalidArgumentException
+     *   Throws an invalid argument exception if the `$date` parameter is not
+     *   a valid date.
      */
     public function setDateProperty($name, $date)
     {
@@ -142,9 +159,18 @@ abstract class AbstractRichSnippet
      * Generic property setter.
      *
      * @param string $name
+     *   Name of the property as a string.
+     *
      * @param mixed $value
+     *   Value of the property.
+     *
      * @return $this
+     *
      * @throws \InvalidArgumentException
+     *   Throws an invalid argument exception if the `$name` parameter is not
+     *   a string or an empty string.  The `$type` property is not checked;
+     *   this MAY be implemented in classes that extend this abstract class.
+     *   Use the `setStringProperty()` method if the `$value` must be a string.
      */
     public function setProperty($name, $value)
     {
@@ -171,9 +197,16 @@ abstract class AbstractRichSnippet
      * Generic string property setter.
      *
      * @param string $name
+     *   Name of the property as a string.
+     *
      * @param string $value
+     *   Value of the property as a string.
+     *
      * @return $this
+     *
      * @throws \InvalidArgumentException
+     *   Throws an invalid argument exception if the `$value` is not a string
+     *   or an empty string.
      */
     public function setStringProperty($name, $value)
     {
@@ -203,7 +236,7 @@ abstract class AbstractRichSnippet
      *   not a string.
      *
      * @throws \DomainException
-     *   Throws a domain exception if the $type parameter is not one of the
+     *   Throws a domain exception if the `$type` parameter is not one of the
      *   supported classes or subclasses.
      */
     public function setType($type)

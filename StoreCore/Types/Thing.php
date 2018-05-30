@@ -5,7 +5,7 @@ namespace StoreCore\Types;
  * Schema.org Thing
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2016 StoreCore
+ * @copyright Copyright © 2016–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @see       https://schema.org/Thing
@@ -13,6 +13,10 @@ namespace StoreCore\Types;
  */
 class Thing extends AbstractRichSnippet
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
