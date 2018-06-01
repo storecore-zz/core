@@ -32,7 +32,6 @@ class SaltTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getInstance
      * @testdox Public static getInstance() method exists
      */
     public function testPublicStaticGetInstanceMethodExists()
@@ -42,7 +41,6 @@ class SaltTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getInstance
      * @depends testPublicStaticGetInstanceMethodExists
      * @testdox Public static getInstance() method is public
      */
@@ -53,7 +51,6 @@ class SaltTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getInstance
      * @depends testPublicStaticGetInstanceMethodExists
      * @testdox Public static getInstance() method is static
      */
@@ -64,7 +61,6 @@ class SaltTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getInstance
      * @depends testPublicStaticGetInstanceMethodIsStatic
      * @testdox Public static getInstance() method returns 255 characters by default
      */
@@ -76,7 +72,6 @@ class SaltTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getInstance
      * @depends testPublicStaticGetInstanceMethodIsStatic
      * @testdox Public static getInstance() method returns at least 2 characters
      */
