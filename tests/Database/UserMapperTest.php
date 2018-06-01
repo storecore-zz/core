@@ -84,7 +84,6 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\UserMapper::ban
      * @testdox Public ban() method exists
      */
     public function testPublicAuthenticateMethodExists()
@@ -94,7 +93,6 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\UserMapper::ban
      * @testdox Public ban() method is public
      */
     public function testPublicBanMethodIsPublic()
@@ -104,7 +102,6 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\UserMapper::getUser
      * @testdox Public getUser() method is public
      */
     public function testPublicGetUserMethodIsPublic()
@@ -114,7 +111,6 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\UserMapper::getUser
      * @testdox Public getUser() method exists
      */
     public function testPublicGetUserMethodExists()
@@ -124,7 +120,6 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\UserMapper::getUserByEmailAddress
      * @testdox Public getUserByEmailAddress() method exists
      */
     public function testPublicGetUserByEmailAddressMethodExists()
@@ -134,7 +129,6 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\UserMapper::getUserByEmailAddress
      * @testdox Public getUserByEmailAddress() method is public
      */
     public function testPublicGetUserByEmailAddressMethodIsPublic()
@@ -144,7 +138,6 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\UserMapper::getUserByUsername
      * @testdox Public getUserByUsername() method exists
      */
     public function testPublicGetUserByUsernameMethodExists()
@@ -154,7 +147,6 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\UserMapper::getUserByUsername
      * @testdox Public getUserByUsername() method is public
      */
     public function testPublicGetUserByUsernameMethodIsPublic()

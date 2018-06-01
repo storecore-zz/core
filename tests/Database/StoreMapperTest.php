@@ -81,7 +81,6 @@ class StoreMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\StoreMapper::find
      * @testdox Public find() method exists
      */
     public function testPublicFindMethodExists()
@@ -91,7 +90,6 @@ class StoreMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\StoreMapper::find
      * @depends testPublicFindMethodExists
      * @testdox Public find() method is public
      */
@@ -102,7 +100,6 @@ class StoreMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\StoreMapper::getStore
      * @testdox Public getStore() method exists
      */
     public function testPublicGetStoreMethodExists()
@@ -112,7 +109,6 @@ class StoreMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\StoreMapper::find
      * @depends testPublicGetStoreMethodExists
      * @testdox Public getStore() method is public
      */
@@ -123,7 +119,6 @@ class StoreMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\StoreMapper::save
      * @testdox Public save() method exists
      */
     public function testPublicSaveMethodExists()
@@ -133,7 +128,6 @@ class StoreMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\StoreMapper::save
      * @depends testPublicSaveMethodExists
      * @testdox Public save() method is public
      */
