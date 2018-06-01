@@ -1237,15 +1237,15 @@ CREATE TABLE IF NOT EXISTS sc_product_availability_types (
 INSERT IGNORE INTO sc_product_availability_types
     (availability_id, item_availability)
   VALUES
-    (1, 'Discontinued'),
-    (2, 'InStock'),
-    (3, 'InStoreOnly'),
-    (4, 'LimitedAvailability'),
-    (5, 'OnlineOnly'),
-    (6, 'OutOfStock'),
-    (7, 'PreOrder'),
-    (8, 'PreSale'),
-    (9, 'SoldOut');
+    (1, 'http://schema.org/Discontinued'),
+    (2, 'http://schema.org/InStock'),
+    (3, 'http://schema.org/InStoreOnly'),
+    (4, 'http://schema.org/LimitedAvailability'),
+    (5, 'http://schema.org/OnlineOnly'),
+    (6, 'http://schema.org/OutOfStock'),
+    (7, 'http://schema.org/PreOrder'),
+    (8, 'http://schema.org/PreSale'),
+    (9, 'http://schema.org/SoldOut');
 
 
 -- Products
