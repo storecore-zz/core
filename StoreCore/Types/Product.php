@@ -5,15 +5,19 @@ namespace StoreCore\Types;
  * Schema.org Product
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2016 StoreCore
+ * @copyright Copyright © 2016–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @see       https://schema.org/Product
  * @see       https://developers.google.com/search/docs/data-types/products
  * @version   0.1.0
  */
-class Product extends Thing
+class Product extends Thing implements StringableInterface
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
