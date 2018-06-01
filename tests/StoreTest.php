@@ -6,10 +6,21 @@ class StoreTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @group distro
+     * @testdox Store model class file exists
      */
-    public function testCoreStoreModelClassFileExists()
+    public function testStoreModelClassFileExists()
     {
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Store.php');
+    }
+
+    /**
+     * @group hmvc
+     * @testdox Store model extends \StoreCore\AbstractModel
+     */
+    public function testStoreModelExtendsStoreCoreAbstractModel()
+    {
+        $store = new \StoreCore\Store(\StoreCore\Registry::getInstance());
+        $this->assertTrue($store instanceof \StoreCore\AbstractModel);
     }
 
     /**
@@ -43,6 +54,15 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     */
+    public function testVersionMatchesMasterBranch()
+    {
+        $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Store::VERSION);
+    }
+
+    /**
      * @testdox Public getDateTimeZone() method exists
      */
     public function testPublicGetDateTimeZoneMethodExists()
@@ -58,6 +78,15 @@ class StoreTest extends PHPUnit_Framework_TestCase
     {
         $method = new \ReflectionMethod('\StoreCore\Store', 'getDateTimeZone');
         $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @testdox Public getDateTimeZone() method has no parameters
+     */
+    public function testPublicGetDateTimeZoneMethodHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Store', 'getDateTimeZone');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
     }
 
     /**
@@ -112,6 +141,16 @@ class StoreTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group hmvc
+     * @testdox Public getStoreID() method has no parameters
+     */
+    public function testPublicGetStoreIdMethodHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Store', 'getStoreID');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+    /**
+     * @group hmvc
      * @testdox Public getStoreID() method returns null by default
      */
     public function testPublicGetStoreIDMethodReturnsNullByDefault()
@@ -138,6 +177,16 @@ class StoreTest extends PHPUnit_Framework_TestCase
     {
         $method = new \ReflectionMethod('\StoreCore\Store', 'isSecure');
         $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @group security
+     * @testdox Public isSecure() method has no parameters
+     */
+    public function testPublicIsSecureMethodHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Store', 'isSecure');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
     }
 
     /**
@@ -186,6 +235,16 @@ class StoreTest extends PHPUnit_Framework_TestCase
     {
         $method = new \ReflectionMethod('\StoreCore\Store', 'setDateTimeZone');
         $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @group security
+     * @testdox Public setDateTimeZone() method has one parameter
+     */
+    public function testPublicSetDateTimeZoneMethodHasOneParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Store', 'setDateTimeZone');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
     }
 
     /**
