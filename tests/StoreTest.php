@@ -6,10 +6,21 @@ class StoreTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @group distro
+     * @testdox Store model class file exists
      */
-    public function testCoreStoreModelClassFileExists()
+    public function testStoreModelClassFileExists()
     {
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Store.php');
+    }
+
+    /**
+     * @group hmvc
+     * @testdox Store model extends \StoreCore\AbstractModel
+     */
+    public function testStoreModelExtendsStoreCoreAbstractModel()
+    {
+        $store = new \StoreCore\Store(\StoreCore\Registry::getInstance());
+        $this->assertTrue($store instanceof \StoreCore\AbstractModel);
     }
 
     /**
@@ -25,18 +36,33 @@ class StoreTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
-     * @testdox VERSION constant is non-empty string
+     * @testdox VERSION constant is not empty
      */
-    public function testVersionConstantIsNonEmptyString()
+    public function testVersionConstantIsNotEmpty()
     {
-        $class = new \ReflectionClass('\StoreCore\Store');
-        $class_constant = $class->getConstant('VERSION');
-        $this->assertNotEmpty($class_constant);
-        $this->assertTrue(is_string($class_constant));
+        $this->assertNotEmpty(\StoreCore\Store::VERSION);
     }
 
     /**
-     * @covers ::getDateTimeZone
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     * @testdox VERSION constant is string
+     */
+    public function testVersionConstantIsString()
+    {
+        $this->assertTrue(is_string(\StoreCore\Store::VERSION));
+    }
+
+    /**
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     */
+    public function testVersionMatchesMasterBranch()
+    {
+        $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Store::VERSION);
+    }
+
+    /**
      * @testdox Public getDateTimeZone() method exists
      */
     public function testPublicGetDateTimeZoneMethodExists()
@@ -46,7 +72,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getDateTimeZone
      * @testdox Public getDateTimeZone() method is public
      */
     public function testPublicGetDateTimeZoneMethodIsPublic()
@@ -56,7 +81,15 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getDateTimeZone
+     * @testdox Public getDateTimeZone() method has no parameters
+     */
+    public function testPublicGetDateTimeZoneMethodHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Store', 'getDateTimeZone');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+    /**
      * @testdox Public getDateTimeZone() method returns object
      */
     public function testPublicGetDateTimeZoneMethodReturnsObject()
@@ -67,7 +100,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getDateTimeZone
      * @testdox Public getDateTimeZone() method returns DateTimeZone object by default
      */
     public function testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault()
@@ -78,7 +110,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getDateTimeZone
      * @depends testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault
      * @testdox Public getDateTimeZone() method returns 'UTC' DateTimeZone by default
      */
@@ -89,7 +120,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Store::getStoreID
      * @group hmvc
      * @testdox Public getStoreID() method exists
      */
@@ -100,7 +130,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Store::isSecure
      * @group hmvc
      * @testdox Public getStoreID() method is public
      */
@@ -111,7 +140,16 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Store::getStoreID
+     * @group hmvc
+     * @testdox Public getStoreID() method has no parameters
+     */
+    public function testPublicGetStoreIdMethodHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Store', 'getStoreID');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+    /**
      * @group hmvc
      * @testdox Public getStoreID() method returns null by default
      */
@@ -122,7 +160,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Store::isSecure
      * @group security
      * @testdox Public isSecure() method exists
      */
@@ -133,7 +170,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Store::isSecure
      * @group security
      * @testdox Public isSecure() method is public
      */
@@ -144,7 +180,16 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Store::isSecure
+     * @group security
+     * @testdox Public isSecure() method has no parameters
+     */
+    public function testPublicIsSecureMethodHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Store', 'isSecure');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+    /**
      * @group security
      * @testdox Public isSecure() method returns false by default
      */
@@ -155,7 +200,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Store::secure
      * @group security
      * @testdox Public secure() method exists
      */
@@ -166,7 +210,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Store::secure
      * @group security
      * @testdox Public secure() method is public
      */
@@ -177,7 +220,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setDateTimeZone
      * @testdox Public setDateTimeZone() method exists
      */
     public function testPublicSetDateTimeZoneMethodExists()
@@ -187,7 +229,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setDateTimeZone
      * @testdox Public setDateTimeZone() method is public
      */
     public function testPublicSetDateTimeZoneMethodIsPublic()
@@ -197,7 +238,16 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setDateTimeZone
+     * @group security
+     * @testdox Public setDateTimeZone() method has one parameter
+     */
+    public function testPublicSetDateTimeZoneMethodHasOneParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Store', 'setDateTimeZone');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+    }
+
+    /**
      * @depends testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault
      * @testdox Public setDateTimeZone() method accepts common timezone identifiers
      */
