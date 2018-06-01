@@ -36,7 +36,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getDateTimeZone
      * @testdox Public getDateTimeZone() method exists
      */
     public function testPublicGetDateTimeZoneMethodExists()
@@ -46,7 +45,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getDateTimeZone
      * @testdox Public getDateTimeZone() method is public
      */
     public function testPublicGetDateTimeZoneMethodIsPublic()
@@ -56,7 +54,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getDateTimeZone
      * @testdox Public getDateTimeZone() method returns object
      */
     public function testPublicGetDateTimeZoneMethodReturnsObject()
@@ -67,7 +64,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getDateTimeZone
      * @testdox Public getDateTimeZone() method returns DateTimeZone object by default
      */
     public function testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault()
@@ -78,7 +74,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getDateTimeZone
      * @depends testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault
      * @testdox Public getDateTimeZone() method returns 'UTC' DateTimeZone by default
      */
@@ -89,7 +84,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Store::getStoreID
      * @group hmvc
      * @testdox Public getStoreID() method exists
      */
@@ -100,7 +94,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Store::isSecure
      * @group hmvc
      * @testdox Public getStoreID() method is public
      */
@@ -111,7 +104,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Store::getStoreID
      * @group hmvc
      * @testdox Public getStoreID() method returns null by default
      */
@@ -122,7 +114,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Store::isSecure
      * @group security
      * @testdox Public isSecure() method exists
      */
@@ -133,7 +124,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Store::isSecure
      * @group security
      * @testdox Public isSecure() method is public
      */
@@ -144,7 +134,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Store::isSecure
      * @group security
      * @testdox Public isSecure() method returns false by default
      */
@@ -155,7 +144,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Store::secure
      * @group security
      * @testdox Public secure() method exists
      */
@@ -166,7 +154,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Store::secure
      * @group security
      * @testdox Public secure() method is public
      */
@@ -177,7 +164,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setDateTimeZone
      * @testdox Public setDateTimeZone() method exists
      */
     public function testPublicSetDateTimeZoneMethodExists()
@@ -187,7 +173,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setDateTimeZone
      * @testdox Public setDateTimeZone() method is public
      */
     public function testPublicSetDateTimeZoneMethodIsPublic()
@@ -197,7 +182,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setDateTimeZone
      * @depends testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault
      * @testdox Public setDateTimeZone() method accepts common timezone identifiers
      */
