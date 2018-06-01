@@ -37,7 +37,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::authenticate
      * @testdox Public authenticate() method exists
      */
     public function testPublicAuthenticateMethodExists()
@@ -47,7 +46,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::authenticate
      * @testdox Public authenticate() method is public
      */
     public function testPublicAuthenticateMethodIsPublic()
@@ -57,7 +55,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::authenticate
      * @testdox Public authenticate($password) method has one required parameter
      */
     public function testPublicAuthenticateMethodHasOneRequiredParameter()
@@ -67,7 +64,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getDateTimeZone
      * @testdox Public getDateTimeZone() method exists
      */
     public function testPublicGetDateTimeZoneMethodExists()
@@ -77,7 +73,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getDateTimeZone
      * @testdox Public getDateTimeZone() method is public
      */
     public function testPublicGetDateTimeZoneMethodIsPublic()
@@ -87,7 +82,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getDateTimeZone
      * @testdox Public getDateTimeZone() method returns object
      */
     public function testPublicGetDateTimeZoneMethodReturnsObject()
@@ -97,7 +91,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getDateTimeZone
      * @testdox Public getDateTimeZone() method returns DateTimeZone object by default
      */
     public function testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault()
@@ -107,7 +100,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getDateTimeZone
      * @depends testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault
      * @testdox Public getDateTimeZone() method returns 'UTC' DateTimeZone by default
      */
@@ -118,7 +110,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getEmailAddress
      * @testdox Public getEmailAddress() method exists
      */
     public function testPublicGetEmailAddressMethodExists()
@@ -128,7 +119,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getEmailAddress
      * @testdox Public getEmailAddress() method is public
      */
     public function testPublicGetEmailAddressMethodIsPublic()
@@ -138,7 +128,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getHashAlgorithm
      * @testdox Public getHashAlgorithm() method exists
      */
     public function testPublicGetHashAlgorithmMethodExists()
@@ -148,7 +137,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getHashAlgorithm
      * @testdox Public getHashAlgorithm() method is public
      */
     public function testPublicGetHashAlgorithmMethodIsPublic()
@@ -158,7 +146,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getLanguageID
      * @testdox Public getLanguageID() method exists
      */
     public function testPublicGetLanguageIDMethodExists()
@@ -168,7 +155,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getLanguageID
      * @testdox Public getLanguageID() method is public
      */
     public function testPublicGetLanguageIDMethodIsPublic()
@@ -178,7 +164,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getLanguageID
      * @testdox Public getLanguageID() method returns string 'en-GB' by default
      */
     public function testPublicGetLanguageIDMethodReturnsStringForBritishEnglishByDefault()
@@ -189,7 +174,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getPasswordHash
      * @testdox Public getPasswordHash() method exists
      */
     public function testPublicGetPasswordHashMethodExists()
@@ -199,7 +183,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getPasswordHash
      * @testdox Public getPasswordHash() method is public
      */
     public function testPublicGetPasswordHashMethodIsPublic()
@@ -209,7 +192,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getPasswordSalt
      * @testdox Public getPasswordSalt() method exists
      */
     public function testPublicGetPasswordSaltMethodExists()
@@ -219,7 +201,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getPasswordSalt
      * @testdox Public getPasswordSalt() method is public
      */
     public function testPublicGetPasswordSaltMethodIsPublic()
@@ -229,7 +210,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getPersonID
      * @testdox Public getPersonID() method exists
      */
     public function testPublicGetPersonIDMethodExists()
@@ -239,7 +219,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getPersonID
      * @testdox Public getPersonID() method is public
      */
     public function testPublicGetPersonIDMethodIsPublic()
@@ -249,7 +228,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getPersonID
      * @testdox Public getPersonID() method returns null by default
      */
     public function testPublicGetPersonIDMethodReturnsNullByDefault()
@@ -259,7 +237,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getPIN
      * @testdox Public getPIN() method exists
      */
     public function testPublicGetPINMethodExists()
@@ -269,7 +246,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getPIN
      * @testdox Public getPIN() method is public
      */
     public function testPublicGetPINMethodIsPublic()
@@ -279,7 +255,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getPIN
      * @testdox Public getPIN() method returns string '0000' by default
      */
     public function testPublicGetPINMethodReturnsString0000ByDefault()
@@ -290,7 +265,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getUserGroupID
      * @testdox Public getUserGroupID() method exists
      */
     public function testPublicGetUserGroupIDMethodExists()
@@ -300,7 +274,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getUserGroupID
      * @testdox Public getUserGroupID() method is public
      */
     public function testPublicGetUserGroupIDMethodIsPublic()
@@ -310,7 +283,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getUserGroupID
      * @testdox Public getUserGroupID() method returns int 0 by default
      */
     public function testPublicGetUserGroupIDMethodReturnsInt0ByDefault()
@@ -321,7 +293,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getUserID
      * @testdox Public getUserID() method exists
      */
     public function testPublicGetUserIDMethodExists()
@@ -331,7 +302,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getUserID
      * @testdox Public getUserID() method is public
      */
     public function testPublicGetUserIDMethodIsPublic()
@@ -341,7 +311,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getUserID
      * @testdox Public getUserID() method returns null by default
      */
     public function testPublicGetUserIDMethodReturnsNullByDefault()
@@ -351,7 +320,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getUsername
      * @testdox Public getUsername() method exists
      */
     public function testPublicGetUsernameMethodExists()
@@ -361,7 +329,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getUsername
      * @testdox Public getUsername() method is public
      */
     public function testPublicGetUsernameMethodIsPublic()
@@ -371,7 +338,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getUsername
      * @testdox Public getUsername() method returns null by default
      */
     public function testPublicGetUsernameMethodReturnsNullByDefault()
@@ -381,7 +347,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setDateTimeZone
      * @testdox Public setDateTimeZone() method exists
      */
     public function testPublicSetDateTimeZoneMethodExists()
@@ -391,7 +356,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setDateTimeZone
      * @testdox Public setDateTimeZone() method is public
      */
     public function testPublicSetDateTimeZoneMethodIsPublic()
@@ -401,7 +365,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setDateTimeZone
      * @depends testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault
      * @testdox Public setDateTimeZone() method accepts global 'UTC' DateTimeZone
      */
@@ -416,7 +379,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setPasswordHash
      * @testdox Public setPasswordHash() method exists
      */
     public function testPublicSetPasswordHashMethodExists()
@@ -426,7 +388,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setPasswordHash
      * @testdox Public setPasswordHash() method is public
      */
     public function testPublicSetPasswordHashMethodIsPublic()
@@ -436,7 +397,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setPasswordSalt
      * @testdox Public setPasswordSalt() method exists
      */
     public function testPublicSetPasswordSaltMethodExists()
@@ -446,7 +406,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setPasswordSalt
      * @testdox Public setPasswordSalt() method is public
      */
     public function testPublicSetPasswordSaltMethodIsPublic()
@@ -456,7 +415,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setPersonID
      * @testdox Public setPersonID() method exists
      */
     public function testPublicSetPersonIDMethodExists()
@@ -466,7 +424,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setPersonID
      * @testdox Public setPersonID() method is public
      */
     public function testPublicSetPersonIDMethodIsPublic()
@@ -476,7 +433,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setPIN
      * @testdox Public setPIN() method exists
      */
     public function testPublicSetPINMethodExists()
@@ -486,7 +442,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setPIN
      * @testdox Public setPIN() method is public
      */
     public function testPublicSetPINMethodIsPublic()
@@ -496,7 +451,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setPIN
      * @expectedException \UnexpectedValueException
      * @testdox Public setPIN() method throws \UnexpectedValueException on letters
      */
@@ -507,7 +461,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setUserGroupID
      * @testdox Public setUserGroupID() method exists
      */
     public function testPublicSetUserGroupIDExists()
@@ -517,7 +470,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setUserGroupID
      * @testdox Public setUserGroupID() method is public
      */
     public function testPublicSetUserGroupIDIsPublic()
@@ -527,7 +479,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setUserGroupID
      * @expectedException \DomainException
      * @testdox Public setUserGroupID() method throws \DomainException on tinyint less than 0
      */
@@ -538,7 +489,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setUserGroupID
      * @expectedException \DomainException
      * @testdox Public setUserGroupID() method throws \DomainException on tinyint greater than 255
      */
@@ -549,7 +499,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setUserID
      * @testdox Public setUserID() method exists
      */
     public function testPublicSetUserIDExists()
@@ -559,7 +508,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setUserID
      * @testdox Public setUserID() method is public
      */
     public function testPublicSetUserIDIsPublic()
@@ -569,7 +517,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setUsername
      * @testdox Public setUsername() method exists
      */
     public function testPublicSetUsernameExists()
@@ -579,7 +526,6 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setUsername
      * @testdox Public setUsername() method is public
      */
     public function testPublicSetUsernameIsPublic()
