@@ -13,7 +13,7 @@ namespace StoreCore\Types;
  * @see https://dev.mysql.com/doc/refman/8.0/en/integer-types.html
  *      Integer Types (Exact Value) in the MySQL 8.0 Reference Manual 
  */
-class SmallintUnsigned implements TypeInterface
+class SmallintUnsigned implements TypeInterface, StringableInterface
 {
     /**
      * @var string VERSION
@@ -60,6 +60,14 @@ class SmallintUnsigned implements TypeInterface
         $this->Value = (int)$initial_value;
     }
 
+    /**
+     * Convert the data object to a numeric string.
+     *
+     * @param void
+     *
+     * @return string
+     *   Returns the current integer value as a numeric string.
+     */
     public function __toString()
     {
         return (string)$this->Value;
