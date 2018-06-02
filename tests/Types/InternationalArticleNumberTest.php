@@ -97,7 +97,7 @@ class InternationalArticleNumberTest extends PHPUnit_Framework_TestCase
         );
         foreach ($article_numbers as $article_number => $check_digit) {
             $ean = new \StoreCore\Types\InternationalArticleNumber($article_number);
-            $this->assertTrue($article_number . $check_digit === (string)$ean);
+            $this->assertSame($article_number . $check_digit, (string)$ean);
         }
     }
 
