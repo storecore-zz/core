@@ -42,6 +42,10 @@ class SmallintUnsigned implements TypeInterface, StringableInterface
      *   Throws an invalid argument exception if the initial value is not
      *   an integer (in strict mode) or cannot be converted to an integer (if
      *   the strict mode is disabled).
+     *
+     * @throws \DomainException
+     *   Throws a domain expection if the initial value is too small or
+     *   too large for an unsigned small integer.
      */
     public function __construct($initial_value, $strict = true)
     {
