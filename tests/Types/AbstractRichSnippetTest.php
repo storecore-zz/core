@@ -20,6 +20,7 @@ class AbstractRichSnippetTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group distro
+     * @testdox VERSION constant is defined
      */
     public function testVersionConstantIsDefined()
     {
@@ -30,13 +31,21 @@ class AbstractRichSnippetTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
+     * @testdox VERSION constant is not empty
      */
-    public function testVersionConstantIsNonEmptyString()
+    public function testVersionConstantIsNotEmpty()
     {
-        $class = new \ReflectionClass('\StoreCore\Types\AbstractRichSnippet');
-        $class_constant = $class->getConstant('VERSION');
-        $this->assertNotEmpty($class_constant);
-        $this->assertTrue(is_string($class_constant));
+        $this->assertNotEmpty(\StoreCore\Types\AbstractRichSnippet::VERSION);
+    }
+
+    /**
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     * @testdox VERSION constant is string
+     */
+    public function testVersionConstantIsString()
+    {
+        $this->assertTrue(is_string(\StoreCore\Types\AbstractRichSnippet::VERSION));
     }
 
     /**
