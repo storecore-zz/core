@@ -11,7 +11,7 @@ namespace StoreCore\Types;
  * @version   0.1.0
  *
  * @see https://dev.mysql.com/doc/refman/8.0/en/integer-types.html
- *      Integer Types (Exact Value) in the MySQL 8.0 Reference Manual 
+ *      Integer Types (Exact Value) in the MySQL 8.0 Reference Manual
  */
 class SmallintUnsigned implements TypeInterface, StringableInterface
 {
