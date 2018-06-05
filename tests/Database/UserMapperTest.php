@@ -22,6 +22,7 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group distro
+     * @testdox VERSION constant is defined
      */
     public function testVersionConstantIsDefined()
     {
@@ -32,13 +33,30 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
+     * @testdox VERSION constant is not empty
      */
-    public function testVersionConstantIsNonEmptyString()
+    public function testVersionConstantIsNotEmpty()
     {
-        $class = new \ReflectionClass('\StoreCore\Database\UserMapper');
-        $class_constant = $class->getConstant('VERSION');
-        $this->assertNotEmpty($class_constant);
-        $this->assertTrue(is_string($class_constant));
+        $this->assertNotEmpty(\StoreCore\Database\UserMapper::VERSION);
+    }
+
+    /**
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     * @testdox VERSION constant is string
+     */
+    public function testVersionConstantIsString()
+    {
+        $this->assertTrue(is_string(\StoreCore\Database\UserMapper::VERSION));
+    }
+
+    /**
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     */
+    public function testVersionMatchesMasterBranch()
+    {
+        $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Database\UserMapper::VERSION);
     }
 
     /**
@@ -84,7 +102,6 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\UserMapper::ban
      * @testdox Public ban() method exists
      */
     public function testPublicAuthenticateMethodExists()
@@ -94,7 +111,6 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\UserMapper::ban
      * @testdox Public ban() method is public
      */
     public function testPublicBanMethodIsPublic()
@@ -104,7 +120,6 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\UserMapper::getUser
      * @testdox Public getUser() method is public
      */
     public function testPublicGetUserMethodIsPublic()
@@ -114,7 +129,6 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\UserMapper::getUser
      * @testdox Public getUser() method exists
      */
     public function testPublicGetUserMethodExists()
@@ -124,7 +138,6 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\UserMapper::getUserByEmailAddress
      * @testdox Public getUserByEmailAddress() method exists
      */
     public function testPublicGetUserByEmailAddressMethodExists()
@@ -134,7 +147,6 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\UserMapper::getUserByEmailAddress
      * @testdox Public getUserByEmailAddress() method is public
      */
     public function testPublicGetUserByEmailAddressMethodIsPublic()
@@ -144,7 +156,6 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\UserMapper::getUserByUsername
      * @testdox Public getUserByUsername() method exists
      */
     public function testPublicGetUserByUsernameMethodExists()
@@ -154,7 +165,6 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\UserMapper::getUserByUsername
      * @testdox Public getUserByUsername() method is public
      */
     public function testPublicGetUserByUsernameMethodIsPublic()

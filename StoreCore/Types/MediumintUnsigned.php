@@ -2,10 +2,10 @@
 namespace StoreCore\Types;
 
 /**
- * Unsigned Small Integer
+ * Unsigned Medium Integer
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015, 2018 StoreCore™
+ * @copyright Copyright © 2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
@@ -13,7 +13,7 @@ namespace StoreCore\Types;
  * @see https://dev.mysql.com/doc/refman/8.0/en/integer-types.html
  *      Integer Types (Exact Value) in the MySQL 8.0 Reference Manual
  */
-class SmallintUnsigned implements TypeInterface, StringableInterface
+class MediumintUnsigned implements TypeInterface, StringableInterface
 {
     /**
      * @var string VERSION
@@ -22,13 +22,7 @@ class SmallintUnsigned implements TypeInterface, StringableInterface
     const VERSION = '0.1.0';
 
     /**
-     * @var int $Value
-     *   Current value of the integer.
-     */
-    protected $Value;
-
-    /**
-     * Construct an unsigned small integer.
+     * Construct an unsigned medium integer.
      *
      * @param int|mixed $initial_value
      *   Initial value of the integer.
@@ -45,7 +39,7 @@ class SmallintUnsigned implements TypeInterface, StringableInterface
      *
      * @throws \DomainException
      *   Throws a domain expection if the initial value is too small or
-     *   too large for an unsigned small integer.
+     *   too large for an unsigned medium integer.
      */
     public function __construct($initial_value, $strict = true)
     {
@@ -55,9 +49,7 @@ class SmallintUnsigned implements TypeInterface, StringableInterface
             throw new \InvalidArgumentException();
         }
 
-        if ($initial_value < 0) {
-            throw new \DomainException();
-        } elseif ($initial_value > 65535) {
+        if ($initial_value < 0 || $initial_value > 16777215) {
             throw new \DomainException();
         }
 

@@ -19,6 +19,7 @@ class StoreMapperTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group distro
+     * @testdox VERSION constant is defined
      */
     public function testVersionConstantIsDefined()
     {
@@ -29,13 +30,30 @@ class StoreMapperTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
+     * @testdox VERSION constant is not empty
      */
-    public function testVersionConstantIsNonEmptyString()
+    public function testVersionConstantIsNotEmpty()
     {
-        $class = new \ReflectionClass('\StoreCore\Database\StoreMapper');
-        $class_constant = $class->getConstant('VERSION');
-        $this->assertNotEmpty($class_constant);
-        $this->assertTrue(is_string($class_constant));
+        $this->assertNotEmpty(\StoreCore\Database\StoreMapper::VERSION);
+    }
+
+    /**
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     * @testdox VERSION constant is string
+     */
+    public function testVersionConstantIsString()
+    {
+        $this->assertTrue(is_string(\StoreCore\Database\StoreMapper::VERSION));
+    }
+
+    /**
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     */
+    public function testVersionMatchesMasterBranch()
+    {
+        $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Database\StoreMapper::VERSION);
     }
 
     /**
@@ -81,7 +99,6 @@ class StoreMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\StoreMapper::find
      * @testdox Public find() method exists
      */
     public function testPublicFindMethodExists()
@@ -91,7 +108,6 @@ class StoreMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\StoreMapper::find
      * @depends testPublicFindMethodExists
      * @testdox Public find() method is public
      */
@@ -102,7 +118,6 @@ class StoreMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\StoreMapper::getStore
      * @testdox Public getStore() method exists
      */
     public function testPublicGetStoreMethodExists()
@@ -112,7 +127,6 @@ class StoreMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\StoreMapper::find
      * @depends testPublicGetStoreMethodExists
      * @testdox Public getStore() method is public
      */
@@ -123,7 +137,6 @@ class StoreMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\StoreMapper::save
      * @testdox Public save() method exists
      */
     public function testPublicSaveMethodExists()
@@ -133,7 +146,6 @@ class StoreMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \StoreCore\Database\StoreMapper::save
      * @depends testPublicSaveMethodExists
      * @testdox Public save() method is public
      */
