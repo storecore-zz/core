@@ -1254,6 +1254,7 @@ CREATE TABLE IF NOT EXISTS sc_products (
   availability_id               TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 2,
   service_flag                  TINYINT(1) UNSIGNED    NOT NULL  DEFAULT 0  COMMENT 'Good (0) or service (1)',
   taxonomy_id                   MEDIUMINT(8) UNSIGNED  NULL  DEFAULT NULL,
+  date_modified                 DATETIME               NULL  DEFAULT NULL  ON UPDATE CURRENT_TIMESTAMP,
   introduction_date             DATETIME               NULL  DEFAULT NULL,
   sales_discontinuation_date    DATETIME               NULL  DEFAULT NULL,
   support_discontinuation_date  DATETIME               NULL  DEFAULT NULL,
