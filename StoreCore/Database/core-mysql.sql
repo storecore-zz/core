@@ -1204,11 +1204,12 @@ CREATE TABLE IF NOT EXISTS sc_categories (
   FOREIGN KEY fk_categories_categories (parent_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
--- Localized category names
+-- Localized category names and optional category page titles
 CREATE TABLE IF NOT EXISTS sc_category_names (
-  category_id    SMALLINT(5) UNSIGNED  NOT NULL,
-  language_id    CHAR(5)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
-  category_name  VARCHAR(255)          NOT NULL,
+  category_id     SMALLINT(5) UNSIGNED  NOT NULL,
+  language_id     CHAR(5)               CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
+  category_name   VARCHAR(255)          NOT NULL,
+  title_override  VARCHAR(255)          NULL  DEFAULT NULL,
   PRIMARY KEY pk_category_names_id (category_id, language_id),
   FOREIGN KEY fk_category_names_categories (category_id) REFERENCES sc_categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY fk_category_names_languages (language_id) REFERENCES sc_languages (language_id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -1253,8 +1254,9 @@ CREATE TABLE IF NOT EXISTS sc_products (
   product_id                    MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
   availability_id               TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 2,
   service_flag                  TINYINT(1) UNSIGNED    NOT NULL  DEFAULT 0  COMMENT 'Good (0) or service (1)',
-  introduction_date             DATETIME               NOT NULL  DEFAULT CURRENT_TIMESTAMP,
   taxonomy_id                   MEDIUMINT(8) UNSIGNED  NULL  DEFAULT NULL,
+  date_modified                 DATETIME               NULL  DEFAULT NULL  ON UPDATE CURRENT_TIMESTAMP,
+  introduction_date             DATETIME               NULL  DEFAULT NULL,
   sales_discontinuation_date    DATETIME               NULL  DEFAULT NULL,
   support_discontinuation_date  DATETIME               NULL  DEFAULT NULL,
   global_product_name           VARCHAR(255)           NULL  DEFAULT NULL,
@@ -1297,6 +1299,7 @@ CREATE TABLE IF NOT EXISTS sc_product_texts (
   product_id          MEDIUMINT(8) UNSIGNED  NOT NULL,
   language_id         CHAR(5)                CHARACTER SET ascii  COLLATE ascii_bin  NOT NULL,
   local_product_name  VARCHAR(255)           NULL  DEFAULT NULL,
+  title_override      VARCHAR(255)           NULL  DEFAULT NULL  COMMENT 'Plain text',
   keywords            VARCHAR(255)           NULL  DEFAULT NULL,
   summary             VARCHAR(255)           NULL  DEFAULT NULL  COMMENT 'Plain text',
   description         TEXT                   NULL  DEFAULT NULL  COMMENT 'Formatted HTML',
