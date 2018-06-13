@@ -1252,6 +1252,7 @@ INSERT IGNORE INTO sc_product_availability_types
 -- Products
 CREATE TABLE IF NOT EXISTS sc_products (
   product_id                    MEDIUMINT(8) UNSIGNED  NOT NULL  AUTO_INCREMENT,
+  parent_id                     MEDIUMINT(8) UNSIGNED  NULL  DEFAULT NULL,
   availability_id               TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 2,
   service_flag                  TINYINT(1) UNSIGNED    NOT NULL  DEFAULT 0  COMMENT 'Good (0) or service (1)',
   taxonomy_id                   MEDIUMINT(8) UNSIGNED  NULL  DEFAULT NULL,
@@ -1261,6 +1262,7 @@ CREATE TABLE IF NOT EXISTS sc_products (
   support_discontinuation_date  DATETIME               NULL  DEFAULT NULL,
   global_product_name           VARCHAR(255)           NULL  DEFAULT NULL,
   PRIMARY KEY pk_product_id (product_id),
+  FOREIGN KEY fk_products_products (parent_id) REFERENCES sc_products (product_id) ON DELETE SET NULL ON UPDATE CASCADE,
   FOREIGN KEY fk_products_product_availability_types (availability_id) REFERENCES sc_product_availability_types (availability_id) ON DELETE NO ACTION ON UPDATE CASCADE,
   INDEX ix_introduction_date (introduction_date DESC)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
