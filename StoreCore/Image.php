@@ -10,7 +10,7 @@ namespace StoreCore;
  * @package   StoreCore\CMS
  * @version   0.1.0
  */
-class Image
+class Image implements \StoreCore\Types\StringableInterface
 {
     /**
      * @var string VERSION

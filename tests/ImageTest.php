@@ -4,11 +4,21 @@ class ImageTest extends PHPUnit_Framework_TestCase
     /**
      * @group distro
      */
-    public function testStoreFrontImageClassFileExists()
+    public function testImageClassFileExists()
     {
         $this->assertFileExists(
             STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Image.php'
         );
+    }
+
+    /**
+     * @group hmvc
+     * @testdox Class implements \StoreCore\Types\StringableInterface
+     */
+    public function testClassImplementsStoreCoreTypesStringableInterface()
+    {
+        $image = new \StoreCore\Image();
+        $this->assertTrue($image instanceof \StoreCore\Types\StringableInterface);
     }
 
     /**
