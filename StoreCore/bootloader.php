@@ -50,6 +50,7 @@ $loader->addNamespace('StoreCore\Database', __DIR__ . DIRECTORY_SEPARATOR . 'Dat
 $loader->addNamespace('StoreCore\FileSystem', __DIR__ . DIRECTORY_SEPARATOR . 'FileSystem', true);
 $loader->addNamespace('StoreCore', __DIR__, true);
 
+$loader->addNamespace('StoreCore\AMP', __DIR__ . DIRECTORY_SEPARATOR . 'AMP');
 $loader->addNamespace('StoreCore\Admin', __DIR__ . DIRECTORY_SEPARATOR . 'Admin');
 $loader->addNamespace('StoreCore\Modules', __DIR__ . DIRECTORY_SEPARATOR . 'Modules');
 $loader->addNamespace('StoreCore\Types', __DIR__ . DIRECTORY_SEPARATOR . 'Types');
