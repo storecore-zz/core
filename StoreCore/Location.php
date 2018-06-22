@@ -1,36 +1,56 @@
 <?php
-namespace StoreCore\StoreFront;
+namespace StoreCore;
 
 /**
- * Uniform Resource Identifier (URI)
+ * Uniform Resource Identifier (URI).
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-class Location extends \StoreCore\AbstractController
+class Location extends \StoreCore\AbstractModel implements \StoreCore\Types\StringableInterface
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
-    /** @var string $Location */
+    /**
+     * @var string $Location
+     *   Location of a web page, asset, or some other resource.
+     */
     private $Location;
 
     /**
+     * Create a location data object.
+     *
      * @param \StoreCore\Registry $registry
-     * @return void
+     *   Global service locator.
+     *
+     * @return self
+     *
+     * @uses \StoreCore\Request::getHostName()
+     *
+     * @uses \StoreCore\Request::getRequestPath()
      */
     public function __construct(\StoreCore\Registry $registry)
     {
         parent::__construct($registry);
-
         $this->set($this->Request->getHostName() . $this->Request->getRequestPath());
     }
 
     /**
+     * Convert the location to a URL string.
+     *
      * @param void
+     *
      * @return string
+     *   Returns the current location as a string.
+     *
+     * @uses \StoreCore\Location::get()
      */
     public function __toString()
     {
@@ -38,8 +58,12 @@ class Location extends \StoreCore\AbstractController
     }
 
     /**
+     * Get the current location.
+     *
      * @param void
+     *
      * @return string
+     *   Returns the current location as a string.
      */
     public function get()
     {
@@ -50,13 +74,15 @@ class Location extends \StoreCore\AbstractController
      * Set the location by a URI or URL.
      *
      * @param string $uri
+     *   Uniform resource identifier (URI) or uniform resource locator (URL)
+     *   for the current location.
      *
      * @return void
      *
-     * @todo This method strips index file names like "index.php" from URLs, so
+     * @todo This method strips index file names like “index.php” from URLs, so
      *   these currently are simply ignored.  Another, more strict approach
-     *   would be to disallow directory listings with a "Directory listing
-     *   denied" HTTP response or a redirect.
+     *   would be to disallow directory listings with a “Directory listing
+     *   denied” HTTP response or a redirect.
      */
     public function set($uri)
     {
