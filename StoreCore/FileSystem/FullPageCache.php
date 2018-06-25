@@ -26,7 +26,7 @@ class FullPageCache extends \StoreCore\AbstractController
      * @return bool
      *   Returns true on a cache hit or false on a cache miss.
      */
-    public function trigger()
+    public static function trigger()
     {
         $location = new \StoreCore\Location($this->Registry);
         $key = new \StoreCore\Types\CacheKey($location->get());
