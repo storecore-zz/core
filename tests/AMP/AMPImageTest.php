@@ -3,12 +3,12 @@ class AMPImageTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @group distro
-     * @testdox Store front AMP image class file exists
+     * @testdox AMP image class file exists
      */
-    public function testStoreFrontAMPImageClassFileExists()
+    public function testAMPImageClassFileExists()
     {
         $this->assertFileExists(
-            STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'StoreFront' . DIRECTORY_SEPARATOR . 'AMP' . DIRECTORY_SEPARATOR . 'Image.php'
+            STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'AMP' . DIRECTORY_SEPARATOR . 'Image.php'
         );
     }
 
@@ -19,7 +19,7 @@ class AMPImageTest extends PHPUnit_Framework_TestCase
     public function testImplementedLayoutInterfaceInterfaceFileExists()
     {
         $this->assertFileExists(
-            STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'StoreFront' . DIRECTORY_SEPARATOR . 'AMP' . DIRECTORY_SEPARATOR . 'LayoutInterface.php'
+            STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'AMP' . DIRECTORY_SEPARATOR . 'LayoutInterface.php'
         );
     }
 
@@ -28,7 +28,7 @@ class AMPImageTest extends PHPUnit_Framework_TestCase
      */
     public function testVersionConstantIsDefined()
     {
-        $class = new \ReflectionClass('\StoreCore\StoreFront\AMP\Image');
+        $class = new \ReflectionClass('\StoreCore\AMP\Image');
         $this->assertTrue($class->hasConstant('VERSION'));
     }
 
@@ -37,7 +37,7 @@ class AMPImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicToStringMethodExists()
     {
-        $class = new \ReflectionClass('\StoreCore\StoreFront\AMP\Image');
+        $class = new \ReflectionClass('\StoreCore\AMP\Image');
         $this->assertTrue($class->hasMethod('__toString'));
     }
 
@@ -46,7 +46,7 @@ class AMPImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicToStringMethodIsPublic()
     {
-        $method = new \ReflectionMethod('\StoreCore\StoreFront\AMP\Image', '__toString');
+        $method = new \ReflectionMethod('\StoreCore\AMP\Image', '__toString');
         $this->assertTrue($method->isPublic());
     }
 
@@ -55,7 +55,7 @@ class AMPImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicToStringMethodIsPublicReturnsAmpImgTag()
     {
-        $img = new \StoreCore\StoreFront\AMP\Image();
+        $img = new \StoreCore\AMP\Image();
         $this->assertStringStartsWith('<amp-img ', (string)$img);
     }
 
@@ -64,7 +64,7 @@ class AMPImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicToStringMethodIsPublicReturnsLayoutIsResponsiveAttributeByDefault()
     {
-        $img = new \StoreCore\StoreFront\AMP\Image();
+        $img = new \StoreCore\AMP\Image();
         $this->assertContains(' layout="responsive"', (string)$img);
     }
 
@@ -73,7 +73,7 @@ class AMPImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicGetLayoutMethodExists()
     {
-        $class = new \ReflectionClass('\StoreCore\StoreFront\AMP\Image');
+        $class = new \ReflectionClass('\StoreCore\AMP\Image');
         $this->assertTrue($class->hasMethod('getLayout'));
     }
 
@@ -82,7 +82,7 @@ class AMPImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicGetLayoutMethodIsPublic()
     {
-        $method = new \ReflectionMethod('\StoreCore\StoreFront\AMP\Image', 'getLayout');
+        $method = new \ReflectionMethod('\StoreCore\AMP\Image', 'getLayout');
         $this->assertTrue($method->isPublic());
     }
 
@@ -91,7 +91,7 @@ class AMPImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicGetLayoutMethodReturnsResponsiveByDefault()
     {
-        $image = new \StoreCore\StoreFront\AMP\Image();
+        $image = new \StoreCore\AMP\Image();
         $this->assertEquals('responsive', $image->getLayout());
     }
 
@@ -100,7 +100,7 @@ class AMPImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicSetFallbackMethodExists()
     {
-        $class = new \ReflectionClass('\StoreCore\StoreFront\AMP\Image');
+        $class = new \ReflectionClass('\StoreCore\AMP\Image');
         $this->assertTrue($class->hasMethod('setFallback'));
     }
 
@@ -109,7 +109,7 @@ class AMPImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicSetFallbackMethodIsPublic()
     {
-        $method = new \ReflectionMethod('\StoreCore\StoreFront\AMP\Image', 'setFallback');
+        $method = new \ReflectionMethod('\StoreCore\AMP\Image', 'setFallback');
         $this->assertTrue($method->isPublic());
     }
 }

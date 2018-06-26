@@ -3,12 +3,12 @@ class AMPFallbackImageTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @group distro
-     * @testdox Store front AMP fallback image class file exists
+     * @testdox AMP fallback image class file exists
      */
-    public function testStoreFrontAMPImageFallbackClassFileExists()
+    public function testAMPImageFallbackClassFileExists()
     {
         $this->assertFileExists(
-            STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'StoreFront' . DIRECTORY_SEPARATOR . 'AMP' . DIRECTORY_SEPARATOR . 'FallbackImage.php'
+            STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'AMP' . DIRECTORY_SEPARATOR . 'FallbackImage.php'
         );
     }
 
@@ -17,7 +17,7 @@ class AMPFallbackImageTest extends PHPUnit_Framework_TestCase
      */
     public function testVersionConstantIsDefined()
     {
-        $class = new \ReflectionClass('\StoreCore\StoreFront\AMP\FallbackImage');
+        $class = new \ReflectionClass('\StoreCore\AMP\FallbackImage');
         $this->assertTrue($class->hasConstant('VERSION'));
     }
 
@@ -26,7 +26,7 @@ class AMPFallbackImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicToStringMethodExists()
     {
-        $class = new \ReflectionClass('\StoreCore\StoreFront\AMP\PlaceholderImage');
+        $class = new \ReflectionClass('\StoreCore\AMP\PlaceholderImage');
         $this->assertTrue($class->hasMethod('__toString'));
     }
 
@@ -35,7 +35,7 @@ class AMPFallbackImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicToStringMethodIsPublic()
     {
-        $method = new \ReflectionMethod('\StoreCore\StoreFront\AMP\FallbackImage', '__toString');
+        $method = new \ReflectionMethod('\StoreCore\AMP\FallbackImage', '__toString');
         $this->assertTrue($method->isPublic());
     }
 
@@ -44,7 +44,7 @@ class AMPFallbackImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicToStringMethodIsPublicReturnsAmpImgTag()
     {
-        $image = new \StoreCore\StoreFront\AMP\FallbackImage();
+        $image = new \StoreCore\AMP\FallbackImage();
         $this->assertStringStartsWith('<amp-img ', (string)$image);
     }
 
@@ -53,7 +53,7 @@ class AMPFallbackImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicToStringMethodIsPublicReturnsFallbackAttribute()
     {
-        $image = new \StoreCore\StoreFront\AMP\FallbackImage();
+        $image = new \StoreCore\AMP\FallbackImage();
         $this->assertContains(' fallback', (string)$image);
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace StoreCore\StoreFront\AMP;
+namespace StoreCore\AMP;
 
 /**
  * AMP Layout Interface
@@ -10,7 +10,7 @@ namespace StoreCore\StoreFront\AMP;
  * setter and getter `setLayout()` and `getLayout()`.
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2017 StoreCore
+ * @copyright Copyright © 2017–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
  * @see       https://www.ampproject.org/docs/guides/responsive/control_layout#the-layout-attribute

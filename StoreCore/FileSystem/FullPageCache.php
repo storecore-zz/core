@@ -1,18 +1,22 @@
 <?php
-namespace StoreCore\StoreFront;
+namespace StoreCore\FileSystem;
 
 /**
- * Web Page Cache
+ * Full-Page Cache
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2015 StoreCore
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Catalog
- * @version   0.1.0-alpha.1
+ * @version   0.1.0
  */
 class FullPageCache extends \StoreCore\AbstractController
 {
-    const VERSION = '0.1.0-alpha.1';
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
+    const VERSION = '0.1.0';
 
     /**
      * Silently read and publish a web page from the web cache.
@@ -22,9 +26,9 @@ class FullPageCache extends \StoreCore\AbstractController
      * @return bool
      *   Returns true on a cache hit or false on a cache miss.
      */
-    public function trigger()
+    public static function trigger()
     {
-        $location = new \StoreCore\StoreFront\Location($this->Registry);
+        $location = new \StoreCore\Location($this->Registry);
         $key = new \StoreCore\Types\CacheKey($location->get());
         $cache = new \StoreCore\FileSystem\FileCacheReader();
 
