@@ -1,11 +1,11 @@
 <?php
-namespace StoreCore\StoreFront\AMP;
+namespace StoreCore\AMP;
 
 /**
  * AMP Fallback Image
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2017 StoreCore
+ * @copyright Copyright © 2017–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
  * @see       https://www.ampproject.org/docs/guides/responsive/placeholders
@@ -13,7 +13,10 @@ namespace StoreCore\StoreFront\AMP;
  */
 class FallbackImage extends Image
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**

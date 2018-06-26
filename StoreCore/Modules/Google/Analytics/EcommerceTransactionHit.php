@@ -1,18 +1,21 @@
 <?php
-namespace StoreCore\StoreFront;
+namespace Google\Analytics;
 
 /**
  * Google Analytics E-commerce Transaction Hit
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2016 StoreCore
+ * @copyright Copyright © 2016–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\BI
  * @version   0.1.0
  */
-class GoogleAnalyticsEcommerceTransactionHit extends GoogleAnalyticsHit
+class EcommerceTransactionHit extends Hit
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
