@@ -4,11 +4,21 @@ class ImageTest extends PHPUnit_Framework_TestCase
     /**
      * @group distro
      */
-    public function testStoreFrontImageClassFileExists()
+    public function testImageClassFileExists()
     {
         $this->assertFileExists(
-            STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'StoreFront' . DIRECTORY_SEPARATOR . 'Image.php'
+            STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Image.php'
         );
+    }
+
+    /**
+     * @group hmvc
+     * @testdox Class implements \StoreCore\Types\StringableInterface
+     */
+    public function testClassImplementsStoreCoreTypesStringableInterface()
+    {
+        $image = new \StoreCore\Image();
+        $this->assertTrue($image instanceof \StoreCore\Types\StringableInterface);
     }
 
     /**
@@ -16,7 +26,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
      */
     public function testVersionConstantIsDefined()
     {
-        $class = new \ReflectionClass('\StoreCore\StoreFront\Image');
+        $class = new \ReflectionClass('\StoreCore\Image');
         $this->assertTrue($class->hasConstant('VERSION'));
     }
 
@@ -25,36 +35,39 @@ class ImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicToStringMethodExists()
     {
-        $class = new \ReflectionClass('\StoreCore\StoreFront\Image');
+        $class = new \ReflectionClass('\StoreCore\Image');
         $this->assertTrue($class->hasMethod('__toString'));
     }
 
     /**
+     * @depends testPublicToStringMethodExists
      * @testdox Public __toString() method is public
      */
     public function testPublicToStringMethodIsPublic()
     {
-        $method = new \ReflectionMethod('\StoreCore\StoreFront\Image', '__toString');
+        $method = new \ReflectionMethod('\StoreCore\Image', '__toString');
         $this->assertTrue($method->isPublic());
     }
 
     /**
+     * @depends testPublicToStringMethodExists
      * @testdox Public __toString() method returns non-empty string
      */
     public function testPublicToStringMethodReturnsNonEmptyString()
     {
-        $image = new \StoreCore\StoreFront\Image();
+        $image = new \StoreCore\Image();
         $this->assertFalse(empty($image->__toString()));
         $this->assertFalse(empty((string)$image));
         $this->assertTrue(is_string($image->__toString()));
     }
 
     /**
+     * @depends testPublicToStringMethodReturnsNonEmptyString
      * @testdox Public __toString() method returns <img> tag
      */
     public function testPublicToStringMethodReturnsImgTag()
     {
-        $image = new \StoreCore\StoreFront\Image();
+        $image = new \StoreCore\Image();
         $this->assertStringStartsWith('<img ', (string)$image);
         $this->assertEmpty(strip_tags((string)$image));
     }
@@ -64,7 +77,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicGetAltMethodExists()
     {
-        $class = new \ReflectionClass('\StoreCore\StoreFront\Image');
+        $class = new \ReflectionClass('\StoreCore\Image');
         $this->assertTrue($class->hasMethod('getAlt'));
     }
 
@@ -73,7 +86,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicGetAltMethodIsPublic()
     {
-        $method = new \ReflectionMethod('\StoreCore\StoreFront\Image', 'getAlt');
+        $method = new \ReflectionMethod('\StoreCore\Image', 'getAlt');
         $this->assertTrue($method->isPublic());
     }
 
@@ -82,7 +95,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicGetAltMethodReturnsEmptyStringByDefault()
     {
-        $image = new \StoreCore\StoreFront\Image();
+        $image = new \StoreCore\Image();
         $this->assertTrue(empty($image->getAlt()));
         $this->assertTrue(is_string($image->getAlt()));
     }
@@ -92,7 +105,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicGetHeightMethodExists()
     {
-        $class = new \ReflectionClass('\StoreCore\StoreFront\Image');
+        $class = new \ReflectionClass('\StoreCore\Image');
         $this->assertTrue($class->hasMethod('getHeight'));
     }
 
@@ -101,7 +114,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicGetHeightMethodIsPublic()
     {
-        $method = new \ReflectionMethod('\StoreCore\StoreFront\Image', 'getHeight');
+        $method = new \ReflectionMethod('\StoreCore\Image', 'getHeight');
         $this->assertTrue($method->isPublic());
     }
 
@@ -110,7 +123,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicGetWidthMethodExists()
     {
-        $class = new \ReflectionClass('\StoreCore\StoreFront\Image');
+        $class = new \ReflectionClass('\StoreCore\Image');
         $this->assertTrue($class->hasMethod('getWidth'));
     }
 
@@ -119,7 +132,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicGetWidthMethodIsPublic()
     {
-        $method = new \ReflectionMethod('\StoreCore\StoreFront\Image', 'getWidth');
+        $method = new \ReflectionMethod('\StoreCore\Image', 'getWidth');
         $this->assertTrue($method->isPublic());
     }
 
@@ -128,7 +141,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicSetAltMethodExists()
     {
-        $class = new \ReflectionClass('\StoreCore\StoreFront\Image');
+        $class = new \ReflectionClass('\StoreCore\Image');
         $this->assertTrue($class->hasMethod('setAlt'));
     }
 
@@ -137,7 +150,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicSetAltMethodIsPublic()
     {
-        $method = new \ReflectionMethod('\StoreCore\StoreFront\Image', 'setAlt');
+        $method = new \ReflectionMethod('\StoreCore\Image', 'setAlt');
         $this->assertTrue($method->isPublic());
     }
 
@@ -146,7 +159,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicSetHeightMethodExists()
     {
-        $class = new \ReflectionClass('\StoreCore\StoreFront\Image');
+        $class = new \ReflectionClass('\StoreCore\Image');
         $this->assertTrue($class->hasMethod('setHeight'));
     }
 
@@ -155,7 +168,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicSetHeightMethodIsPublic()
     {
-        $method = new \ReflectionMethod('\StoreCore\StoreFront\Image', 'setHeight');
+        $method = new \ReflectionMethod('\StoreCore\Image', 'setHeight');
         $this->assertTrue($method->isPublic());
     }
 
@@ -165,7 +178,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicSetHeightMethodThrowsDomainExceptionOnZero()
     {
-        $image = new \StoreCore\StoreFront\Image();
+        $image = new \StoreCore\Image();
         $image->setHeight(0);
     }
 
@@ -174,7 +187,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicSetSourceMethodExists()
     {
-        $class = new \ReflectionClass('\StoreCore\StoreFront\Image');
+        $class = new \ReflectionClass('\StoreCore\Image');
         $this->assertTrue($class->hasMethod('setSource'));
     }
 
@@ -183,7 +196,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicSetSourceMethodIsPublic()
     {
-        $method = new \ReflectionMethod('\StoreCore\StoreFront\Image', 'setSource');
+        $method = new \ReflectionMethod('\StoreCore\Image', 'setSource');
         $this->assertTrue($method->isPublic());
     }
 
@@ -192,7 +205,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicSetWidthMethodExists()
     {
-        $class = new \ReflectionClass('\StoreCore\StoreFront\Image');
+        $class = new \ReflectionClass('\StoreCore\Image');
         $this->assertTrue($class->hasMethod('setWidth'));
     }
 
@@ -201,7 +214,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicSetWidthMethodIsPublic()
     {
-        $method = new \ReflectionMethod('\StoreCore\StoreFront\Image', 'setWidth');
+        $method = new \ReflectionMethod('\StoreCore\Image', 'setWidth');
         $this->assertTrue($method->isPublic());
     }
 
@@ -211,7 +224,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
      */
     public function testPublicSetWidthMethodThrowsDomainExceptionOnZero()
     {
-        $image = new \StoreCore\StoreFront\Image();
+        $image = new \StoreCore\Image();
         $image->setWidth(0);
     }
 }

@@ -1,23 +1,23 @@
 <?php
-namespace StoreCore\StoreFront\AMP;
+namespace StoreCore\AMP;
 
 /**
  * AMP Image <amp-img>
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2017 StoreCore
+ * @copyright Copyright © 2017–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
  * @see       https://www.ampproject.org/docs/reference/components/amp-img
  * @version   0.1.0
  */
-class Image extends \StoreCore\StoreFront\Image implements LayoutInterface
+class Image extends \StoreCore\Image implements LayoutInterface
 {
     /** @var string VERSION Semantic Version (SemVer) */
     const VERSION = '0.1.0';
 
     /**
-     * @var \StoreCore\StoreFront\AMP\FallbackImage|null $Fallback
+     * @var \StoreCore\AMP\FallbackImage|null $Fallback
      *   Optional AMP fallback image.
      */
     private $Fallback;
@@ -81,7 +81,7 @@ class Image extends \StoreCore\StoreFront\Image implements LayoutInterface
     /**
      * Add a fallback image.
      *
-     * @param \StoreCore\StoreFront\AMP\FallbackImage $amp_fallback_image
+     * @param \StoreCore\AMP\FallbackImage $amp_fallback_image
      *   AMP fallback image.
      *
      * @return void
