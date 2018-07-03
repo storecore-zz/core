@@ -92,17 +92,29 @@ class Location extends \StoreCore\AbstractModel implements \StoreCore\Types\Stri
         // Enforce lowercase URLs
         $uri = mb_strtolower($uri, 'UTF-8');
 
+        // Protocol prefixes
+        $uri = str_ireplace(array('http://', 'https://'), '//', $uri);
+
         // Drop common webserver directory indexes
-        $uri = str_replace(array('default.aspx', 'default.asp', 'index.html', 'index.htm', 'index.shtml', 'index.php'), null, $uri);
+        $uri = str_replace(array('default.aspx', 'default.asp', 'default.html', 'default.htm'), null, $uri);
+        $uri = str_replace(array('home.html', 'home.htm'), null, $uri);
+        $uri = str_replace(array('index.cgi', 'index.dhtml', 'index.html', 'index.htm', 'index.shtml', 'index.php', 'index.pl'), null, $uri);
+
         // Strip common extensions
-        $uri = str_replace(array('.aspx', '.asp', '.html', '.htm', '.jsp', '.php'), null, $uri);
+        $uri = str_replace(array('.aspx', '.asp', '.dhtml', '.html', '.htm', '.jsp', '.php', '.pl', '.shtml'), null, $uri);
 
         // Replace special characters
-        $uri = preg_replace('~[^\\pL\d.]+~u', '-', $uri);
-        $uri = trim($uri, '-');
-        $uri = iconv('UTF-8', 'US-ASCII//TRANSLIT//IGNORE', $uri);
-        $uri = str_ireplace(array('"', '`', '^', '~'), null, $uri);
-        $uri = urlencode($uri);
+        $uri = str_ireplace(array(' \\ ', '\\ ', ' \\', '\\', ' > ', '> ', ' >', '>', ' » ', '» ', ' »', '»', ' | ', '| ', ' |', '|', ' / ', '/ ', ' /'), '/', $uri);
+        $uri = str_ireplace(array('(', ')'), null, $uri);
+        $uri = iconv('UTF-8', 'ASCII//TRANSLIT', $uri);
+        $uri = str_ireplace(array('"', '\'', '`', '^', '~', '(', ')'), null, $uri);
+        $uri = str_ireplace(' ', '-', $uri);
+        $uri = rawurlencode($uri);
+
+        // Slashes
+        $uri = str_replace('%2F', '/', $uri);
+        $uri = preg_replace('~/+~', '/', $uri);
+        $uri = '//' . ltrim($uri, '/');
 
         $this->Location = $uri;
     }
