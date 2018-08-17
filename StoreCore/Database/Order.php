@@ -12,7 +12,10 @@ namespace StoreCore\Database;
  */
 class Order extends \StoreCore\Database\AbstractModel
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -45,7 +48,10 @@ class Order extends \StoreCore\Database\AbstractModel
      * Count the total number of items in the order or cart.
      *
      * @param void
+     *
      * @return int
+     *   Number of distinct items in the cart or.  If a cart or order contains
+     *   2 apples and 3 bananas, this method will return the integer `5`.
      */
     public function count()
     {
@@ -67,7 +73,11 @@ class Order extends \StoreCore\Database\AbstractModel
      * Create and save a new order.
      *
      * @param int|null $store_id
+     *   Optional store identifier.
+     *
      * @param int|null $customer_id
+     *   Optional customer identifier.
+     *
      * @return int
      */
     public function create($store_id = null, $customer_id = null)
@@ -158,6 +168,7 @@ class Order extends \StoreCore\Database\AbstractModel
      * Get a new pseudo-random order number.
      *
      * @param void
+     *
      * @return int
      */
     private function getRandomOrderID()
@@ -178,7 +189,10 @@ class Order extends \StoreCore\Database\AbstractModel
      * Get the shopping cart ID.
      *
      * @param void
+     *
      * @return \StoreCore\Types\CartID|null
+     *   Returns a cart identifier data object or null if the order has no cart
+     *   identifier.
      */
     public function getCartID()
     {
@@ -202,7 +216,9 @@ class Order extends \StoreCore\Database\AbstractModel
     /**
      * Set the customer identifier.
      *
-     * @param int $customer_id
+     * @param int|string $customer_id
+     *   Unique customer identifier and customer number.
+     *
      * @return void
      */
     public function setCustomerID($customer_id)
@@ -213,7 +229,9 @@ class Order extends \StoreCore\Database\AbstractModel
     /**
      * Set the order number.
      *
-     * @param int $order_id
+     * @param int|string $order_id
+     *   Unique order identifier, used as the primary key for orders.
+     *
      * @return void
      */
     public function setOrderID($order_id)
@@ -225,6 +243,8 @@ class Order extends \StoreCore\Database\AbstractModel
      * Set the store identifier.
      *
      * @param \StoreCore\Types\StoreID $order_id
+     *   Store identifier data object.
+     *
      * @return void
      */
     public function setStoreID(\StoreCore\Types\StoreID $store_id)
