@@ -9,13 +9,17 @@ namespace StoreCore\Database;
  * clients and servers, unlocks a previously saved order.
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015-2018 StoreCore™
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
 class CartMapper extends \StoreCore\Database\AbstractModel
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
