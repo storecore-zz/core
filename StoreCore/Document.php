@@ -53,7 +53,10 @@ class Document implements \StoreCore\Types\StringableInterface
     protected $Style = '';
     protected $Title = 'StoreCore';
 
-    /** @var array $MetaData */
+    /**
+     * @var array $MetaData
+     *   Key/value pairs for `<meta name="..." content="...">` meta tags.
+     */
     protected $MetaData = array(
         'generator' => 'StoreCore',
         'rating' => 'general',
@@ -139,10 +142,14 @@ class Document implements \StoreCore\Types\StringableInterface
     }
 
     /**
-     * Add meta data for a <meta name="..."  content="..."> tag.
+     * Add meta data for a <meta name="..." content="..."> meta tag.
      *
      * @param string $name
+     *   Case-insensitive name (or key) of the meta tag.
+     *
      * @param string $content
+     *   Content (or value) of the meta tag.
+     *
      * @return $this
      */
     public function addMetaData($name, $content)
@@ -154,10 +161,14 @@ class Document implements \StoreCore\Types\StringableInterface
     }
 
     /**
-     * Add meta property data for a <meta property="..." content="..."> tag.
+     * Add meta property data for a <meta property="..." content="..."> meta tag.
      *
      * @param string $property
+     *   Case-insensitive property name (or key) of the meta property tag.
+     *
      * @param string $content
+     *   Content (or value) of the meta tag.
+     *
      * @return $this
      */
     public function addMetaProperty($property, $content)
