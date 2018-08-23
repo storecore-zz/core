@@ -5,14 +5,17 @@ namespace StoreCore;
  * HTML5 Document with AMP Support
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015-2018 StoreCore™
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-class Document
+class Document implements \StoreCore\Types\StringableInterface
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -50,11 +53,16 @@ class Document
     protected $Style = '';
     protected $Title = 'StoreCore';
 
-    /** @var array $MetaData */
+    /**
+     * @var array $MetaData
+     *   Key/value pairs for `<meta name="..." content="...">` meta tags.
+     */
     protected $MetaData = array(
         'generator' => 'StoreCore',
         'rating' => 'general',
         'robots' => 'index,follow',
+        'handheldfriendly' => 'true',
+        'mobileoptimized' => '320',
         'viewport' => 'width=device-width,initial-scale=1,minimum-scale=1',
         'apple-mobile-web-app-capable' => 'yes',
         'apple-mobile-web-app-status-bar-style' => 'black-translucent',
@@ -76,8 +84,13 @@ class Document
     }
 
     /**
+     * Convert the document to an HTML string.
+     *
      * @param void
+     *
      * @return string
+     *   Returns the document in HTML5 or AMP HTML.
+     *
      * @uses getDocument()
      */
     public function __toString()
@@ -131,10 +144,14 @@ class Document
     }
 
     /**
-     * Add meta data for a <meta name="..."  content="..."> tag.
+     * Add meta data for a <meta name="..." content="..."> meta tag.
      *
      * @param string $name
+     *   Case-insensitive name (or key) of the meta tag.
+     *
      * @param string $content
+     *   Content (or value) of the meta tag.
+     *
      * @return $this
      */
     public function addMetaData($name, $content)
@@ -146,10 +163,14 @@ class Document
     }
 
     /**
-     * Add meta property data for a <meta property="..." content="..."> tag.
+     * Add meta property data for a <meta property="..." content="..."> meta tag.
      *
      * @param string $property
+     *   Case-insensitive property name (or key) of the meta property tag.
+     *
      * @param string $content
+     *   Content (or value) of the meta tag.
+     *
      * @return $this
      */
     public function addMetaProperty($property, $content)
@@ -388,8 +409,6 @@ class Document
         $head .= '<meta charset="utf-8">';
         if ($this->AcceleratedMobilePage) {
             $head .= '<script async src="https://cdn.ampproject.org/v0.js"></script>';
-        } else {
-            $head .= '<script defer src="/scripts/material.min.js"></script>';
         }
 
         $head .= '<title>' . $this->Title . '</title>';

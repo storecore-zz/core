@@ -5,22 +5,29 @@ namespace StoreCore;
  * Asset Management
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015-2017 StoreCore
- * @internal
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
  * @version   0.1.0
  */
 class Asset
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
      * @var string $FileName
-     * @var string $FileType
+     *   File name of the cacheable asset file.
      */
     private $FileName;
+
+    /**
+     * @var string $FileType
+     *   File type of the asset file.
+     */
     private $FileType;
 
     /**
@@ -66,6 +73,14 @@ class Asset
             $this->setFileType(pathinfo($filename, PATHINFO_EXTENSION));
         } else {
             $this->setFileType($filetype);
+        }
+
+        // Match generic favicon.ico to a domain-specific icon.
+        if ($this->FileName === 'favicon.ico') {
+            $this->setFileName(strip_tags($_SERVER['HTTP_HOST']) . '.ico');
+            if (false === $this->fileExists()) {
+                $this->setFileName('blank.ico');
+            }
         }
 
         if ($this->fileExists()) {

@@ -1,8 +1,8 @@
 /**
  * Service Worker
  *
- * @author    Ward van der Put <ward.vanderput@storecore.org>
- * @copyright Copyright © 2017 StoreCore
+ * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
+ * @copyright Copyright © 2017–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
  * @version   0.1.0
@@ -21,7 +21,6 @@ self.addEventListener('install', function(e) {
         '/admin/',
         '/admin/StoreCore.webmanifest',
         '/styles/admin.min.css',
-        '/scripts/material.min.js',
         '/images/StoreCore-icon-144x144.png',
         '/images/StoreCore-icon-192x192.png',
         '/images/StoreCore-icon-256x256.png',

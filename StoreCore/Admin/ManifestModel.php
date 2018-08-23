@@ -5,7 +5,7 @@ namespace StoreCore\Admin;
  * Administration Web App Manifest Model
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2017 StoreCore
+ * @copyright Copyright © 2017–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
  * @version   0.1.0
@@ -15,10 +15,16 @@ namespace StoreCore\Admin;
  *
  * @see https://developer.chrome.com/extensions/manifest
  *      Google Chrome Manifest File Format
+ *
+ * @see https://developers.google.com/web/updates/2015/08/using-manifest-to-set-sitewide-theme-color
+ *      Using the web app manifest to specify a site wide theme colour
  */
 class ManifestModel extends \StoreCore\AbstractModel
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -49,9 +55,9 @@ class ManifestModel extends \StoreCore\AbstractModel
     /**
      * @var string $ThemeColor
      *   Default theme color for an application context.  Defaults to #33691e
-     *   for Material Design Light Green 900.
+     *   for Material Design Light Green 600.
      */
-    private $ThemeColor = '#33691e';
+    private $ThemeColor = '#7cb342';
 
     /**
      * Get the splash screen background color.
