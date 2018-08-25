@@ -5,7 +5,7 @@ namespace StoreCore\Types;
  * Schema.org Offer
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2016 StoreCore
+ * @copyright Copyright © 2016–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @see       https://schema.org/Offer
@@ -13,6 +13,10 @@ namespace StoreCore\Types;
  */
 class Offer extends Intangible
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -55,7 +59,7 @@ class Offer extends Intangible
      * Set the offer availability.
      *
      * @param ItemAvailability|string $availability
-     * @return $this
+     * @return void
      * @see https://schema.org/ItemAvailability
      * @throws \InvalidArgumentException
      * @throws \OutOfRangeException
@@ -87,14 +91,14 @@ class Offer extends Intangible
         }
 
         $this->Data['availability'] = $availability;
-        return $this;
     }
 
     /**
      * Set the offered item's condition.
      *
      * @param OfferItemCondition|string $item_condition
-     * @returm $this
+     *
+     * @returm void
      */
     public function setItemCondition($item_condition)
     {
@@ -119,19 +123,18 @@ class Offer extends Intangible
         }
 
         $this->Data['itemCondition'] = $item_condition;
-        return $this;
     }
 
     /**
      * Set the price.
      *
      * @param float $price
-     * @return $this
+     *
+     * @return void
      */
     public function setPrice($price)
     {
         $this->Data['price'] = $price;
-        return $this;
     }
 
     /**
@@ -139,7 +142,9 @@ class Offer extends Intangible
      *
      * @param string $price_currency
      *
-     * @return $this
+     * @return void
+     *
+     * @throws \InvalidArgumentException
      */
     public function setPriceCurrency($price_currency)
     {
@@ -154,7 +159,6 @@ class Offer extends Intangible
         }
 
         $this->Data['priceCurrency'] = $price_currency;
-        return $this;
     }
 
     /**
@@ -165,27 +169,27 @@ class Offer extends Intangible
      *   longer be available.  Note that a Google product snippet MAY not
      *   display if the `priceValidUtil` property indicates a past date.
      *
-     * @return $this
+     * @return void
      */
     public function setPriceValidUntil($price_valid_until)
     {
         $this->setDateProperty('priceValidUntil', $price_valid_until);
-        return $this;
     }
 
     /**
      * Set the seller of an offered product.
      *
      * @param Organization|Person $seller
-     * @return $this
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException
      */
     public function setSeller($seller)
     {
         if (!$seller instanceof Organization && !$seller instanceof Person) {
             throw new \InvalidArgumentException();
         }
-
         $this->Data['seller'] = $seller;
-        return $this;
     }
 }

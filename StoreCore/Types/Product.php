@@ -46,12 +46,11 @@ class Product extends Thing implements StringableInterface
      *   The overall rating, based on a collection of reviews or ratings, of
      *   the product.
      *
-     * @return $this
+     * @return void
      */
     public function setAggregateRating(AggregateRating $aggregate_rating)
     {
         $this->Data['aggregateRating'] = $aggregate_rating;
-        return $this;
     }
 
     /**
@@ -62,9 +61,9 @@ class Product extends Thing implements StringableInterface
      *   Organization object.  Google however, only seems to use the brand
      *   name as a text value.  This method therefore accepts an instance of
      *   an Organization object, but only uses its name through the inherited
-     *   Thing::getName() method.
+     *   `Thing::getName()` method.
      *
-     * @return $this
+     * @return void
      *
      * @throws \InvalidArgumentException
      */
@@ -85,15 +84,13 @@ class Product extends Thing implements StringableInterface
         } else {
             throw new \InvalidArgumentException();
         }
-
-        return $this;
     }
 
     /**
      * Set the Global Trade Item Number (GTIN).
      *
      * @param InternationalArticleNumber|string $gtin
-     * @return $this
+     * @return void
      * @throws \InvalidArgumentException
      * @throws \LengthException
      */
@@ -120,27 +117,26 @@ class Product extends Thing implements StringableInterface
         } else {
             throw new \LengthException();
         }
-
-        return $this;
     }
 
     /**
      * Set the Manufacturer Part Number (MPN).
      *
      * @param mixed $mpn
-     * @return $this
+     *
+     * @return void
      */
     public function setMPN($mpn)
     {
         $this->Data['mpn'] = $mpn;
-        return $this;
     }
 
     /**
      * Set an offer to provide this item.
      *
      * @param Offer|float|int $offers
-     * @return $this
+     *
+     * @return void
      */
     public function setOffers($offers)
     {
@@ -148,19 +144,17 @@ class Product extends Thing implements StringableInterface
             $offers = new Offer($offers);
         }
         $this->Data['offers'] = $offers;
-        return $this;
     }
 
     /**
      * Set the Stock Keeping Unit (SKU).
      *
      * @param mixed $sku
-     * @return $this
+     *
+     * @return void
      */
     public function setSKU($sku)
     {
         $this->Data['sku'] = $sku;
-        return $this;
     }
-
 }
