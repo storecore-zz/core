@@ -5,7 +5,7 @@ namespace StoreCore\Types;
  * Schema.org Action
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2016 StoreCore
+ * @copyright Copyright © 2016–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @see       https://schema.org/Action
@@ -13,6 +13,10 @@ namespace StoreCore\Types;
  */
 class Action extends Thing
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -48,11 +52,11 @@ class Action extends Thing
      * Set the target EntryPoint for an Action.
      *
      * @param string $target
-     * @return $this
+     *
+     * @return void
      */
     public function setTarget($target)
     {
         $this->setProperty('target', $target);
-        return $this;
     }
 }

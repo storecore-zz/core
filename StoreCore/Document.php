@@ -104,7 +104,8 @@ class Document implements \StoreCore\Types\StringableInterface
      * @param string $type
      * @param string $media
      * @param string $hreflang
-     * @return $this
+     *
+     * @return void
      *
      * @see http://www.w3.org/TR/html5/links.html
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link
@@ -139,8 +140,6 @@ class Document implements \StoreCore\Types\StringableInterface
         $key = mb_strtolower($key, 'UTF-8');
         $key = md5($key);
         $this->Links[$key] = $link;
-
-        return $this;
     }
 
     /**
@@ -152,14 +151,13 @@ class Document implements \StoreCore\Types\StringableInterface
      * @param string $content
      *   Content (or value) of the meta tag.
      *
-     * @return $this
+     * @return void
      */
     public function addMetaData($name, $content)
     {
         $name = trim($name);
         $name = strtolower($name);
         $this->MetaData[$name] = $content;
-        return $this;
     }
 
     /**
@@ -171,14 +169,13 @@ class Document implements \StoreCore\Types\StringableInterface
      * @param string $content
      *   Content (or value) of the meta tag.
      *
-     * @return $this
+     * @return void
      */
     public function addMetaProperty($property, $content)
     {
         $name = trim($property);
         $name = strtolower($property);
         $this->MetaProperties[$property] = $content;
-        return $this;
     }
 
     /**
@@ -192,7 +189,7 @@ class Document implements \StoreCore\Types\StringableInterface
      *   the script to the end of the HTML document.  This RECOMMENDED setting
      *   usually speeds op client-side page rendering.
      *
-     * @return $this
+     * @return void
      */
     public function addScript($script, $defer = true)
     {
@@ -201,7 +198,6 @@ class Document implements \StoreCore\Types\StringableInterface
         } else {
             $this->Scripts[] = $script;
         }
-        return $this;
     }
 
     /**
@@ -220,7 +216,7 @@ class Document implements \StoreCore\Types\StringableInterface
      *   `$async` parameter is ignored (and the `async` attribute is reset
      *   to the default value false).
      *
-     * @return $this
+     * @return void
      */
     public function addScriptLink($src, $defer = true, $async = false)
     {
@@ -237,8 +233,6 @@ class Document implements \StoreCore\Types\StringableInterface
             'defer' => $defer,
             'async' => $async,
         );
-
-        return $this;
     }
 
     /**
@@ -254,7 +248,7 @@ class Document implements \StoreCore\Types\StringableInterface
      *   be set to null, to false or to an empty string if the parent container
      *   is to be omitted.
      *
-     * @return $this
+     * @return void
      */
     public function addSection($content, $container = 'section')
     {
@@ -272,15 +266,14 @@ class Document implements \StoreCore\Types\StringableInterface
         } else {
             $this->Sections[] = '<' . $container . '>' . $content . '</' . $container . '>';
         }
-
-        return $this;
     }
 
     /**
      * Add internal (embedded) CSS code.
      *
      * @param string $css
-     * @return $this
+     *
+     * @return void
      */
     public function addStyle($css)
     {
@@ -295,7 +288,6 @@ class Document implements \StoreCore\Types\StringableInterface
         $css = str_ireplace('; ', ';', $css);
         $css = str_ireplace(';}', '}', $css);
         $this->Style .= $css;
-        return $this;
     }
 
     /**
@@ -499,21 +491,22 @@ class Document implements \StoreCore\Types\StringableInterface
      * Add a document description.
      *
      * @param string $description
-     * @return $this
+     * @return void
+     *
      * @uses \StoreCore\Document::addMetaData()
      */
     public function setDescription($description)
     {
         $description = trim($description);
         $this->addMetaData('description', $description);
-        return $this;
     }
 
     /**
      * Set the document language.
      *
      * @param string $language_code
-     * @return $this
+     *
+     * @return void
      */
     public function setLanguage($language_code)
     {
@@ -523,33 +516,32 @@ class Document implements \StoreCore\Types\StringableInterface
             $language_code = strtolower($language_codes[0]) . '-' . strtoupper($language_codes[1]);
         }
         $this->Language = $language_code;
-        return $this;
     }
 
     /**
      * Set the theme color.
      *
      * @param string $color
-     * @return $this
+     *
+     * @return void
      */
     public function setThemeColor($color)
     {
         $this->addMetaData('msapplication-navbutton-color', $color);
         $this->addMetaData('theme-color', $color);
-        return $this;
     }
 
     /**
      * Set the document title.
      *
      * @param string $title
-     * @return $this
+     *
+     * @return void
      */
     public function setTitle($title)
     {
         $title = trim($title);
         $this->Title = $title;
         $this->addMetaProperty('og:title', $title);
-        return $this;
     }
 }

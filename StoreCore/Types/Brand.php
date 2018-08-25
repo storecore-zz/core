@@ -5,7 +5,7 @@ namespace StoreCore\Types;
  * Schema.org Brand
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2016 StoreCore
+ * @copyright Copyright © 2016–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @see       https://schema.org/Brand
@@ -13,6 +13,10 @@ namespace StoreCore\Types;
  */
 class Brand extends Intangible
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -34,12 +38,12 @@ class Brand extends Intangible
      * Set the overall rating of the brand.
      *
      * @param AggregateRating $aggregate_rating
-     * @return $this
+     *
+     * @return void
      */
     public function setAggregateRating(AggregateRating $aggregate_rating)
     {
         $this->Data['aggregateRating'] = $aggregate_rating;
-        return $this;
     }
 
     /**
@@ -48,11 +52,10 @@ class Brand extends Intangible
      * @param ImageObject|string
      *   The fully-qualified URL of the logo image file or an ImageObject.
      *
-     * @return $this
+     * @return void
      */
     public function setLogo($logo)
     {
         $this->Data['logo'] = $logo;
-        return $this;
     }
 }

@@ -5,7 +5,7 @@ namespace StoreCore\Types;
  * Schema.org Contact Point
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2016 StoreCore
+ * @copyright Copyright © 2016–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @see       https://schema.org/ContactPoint
@@ -13,6 +13,10 @@ namespace StoreCore\Types;
  */
 class ContactPoint extends StructuredValue
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -35,7 +39,8 @@ class ContactPoint extends StructuredValue
      * Set an e-mail address.
      *
      * @param EmailAddress|string $email
-     * @return $this
+     *
+     * @return void
      */
     public function setEmail($email)
     {
@@ -43,30 +48,29 @@ class ContactPoint extends StructuredValue
             $email = (string)$email;
         }
         $this->setStringProperty('email', $email);
-        return $this;
     }
 
     /**
      * Set a fax number.
      *
      * @param string $fax_number
-     * @return $this
+     *
+     * @return void
      */
     public function setFaxNumber($fax_number)
     {
         $this->setStringProperty('faxNumber', $fax_number);
-        return $this;
     }
 
     /**
      * Set the telephone number.
      *
      * @param string $telephone
-     * @return $this
+     *
+     * @return void
      */
     public function setTelephone($telephone)
     {
         $this->setStringProperty('telephone', $telephone);
-        return $this;
     }
 }

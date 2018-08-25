@@ -35,24 +35,23 @@ class EcommerceItemHit extends Hit
      *   hierarchical content groups with an optional group index through the
      *   parent GoogleAnalyticsHit::setContentGroup() method.
      *
-     * @return $this
+     * @return void
      */
     public function setItemCategory($item_category)
     {
         $this->Data['iv'] = $item_category;
-        return $this;
     }
 
     /**
      * Set the SKU or item code (ic).
      *
      * @param string $item_code
-     * @return $this
+     *
+     * @return void
      */
     public function setItemCode($item_code)
     {
         $this->Data['ic'] = $item_code;
-        return $this;
     }
 
     /**
@@ -62,35 +61,34 @@ class EcommerceItemHit extends Hit
      *   The name of the product or service.  This is the only parameter that
      *   is required for the 'item' hit type.
      *
-     * @return $this
+     * @return void
      */
     public function setItemName($item_name)
     {
         $this->Data['in'] = $item_name;
-        return $this;
     }
 
     /**
      * Set the item price (ip).
      *
      * @param float $item_price
-     * @return $this
+     *
+     * @return void
      */
     public function setItemPrice($item_price)
     {
         $this->Data['ip'] = $item_price;
-        return $this;
     }
 
     /**
      * Set the item quantity (iq).
      *
      * @param int $item_quantity
-     * @return $this
+     *
+     * @return void
      */
     public function setItemQuantity($item_quantity)
     {
         $this->Data['iq'] = $item_quantity;
-        return $this;
     }
 }

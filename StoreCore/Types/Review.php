@@ -5,7 +5,7 @@ namespace StoreCore\Types;
  * Schema.org Review
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2016 StoreCore
+ * @copyright Copyright © 2016–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @see       https://schema.org/Review
@@ -13,6 +13,10 @@ namespace StoreCore\Types;
  */
 class Review extends CreativeWork
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -35,24 +39,24 @@ class Review extends CreativeWork
      * Set the reviewed item.
      *
      * @param Thing $item_reviewed
-     * @return $this
+     *
+     * @return void
      */
     public function setItemReviewed(Thing $item_reviewed)
     {
         $this->Data['itemReviewed'] = $item_reviewed;
-        return $this;
     }
 
     /**
      * Set the text of the review.
      *
      * @param string $review_body
-     * @return $this
+     *
+     * @return void
      */
     public function setReviewBody($review_body)
     {
         $this->setStringProperty('reviewBody', $review_body);
-        return $this;
     }
 
     /**
@@ -63,7 +67,7 @@ class Review extends CreativeWork
      *   rated.  The `reviewRating` applies to rating given by the review.  The
      *   `aggregateRating` applies to the review itself, as a creative work.
      *
-     * @return $this
+     * @return void
      */
     public function setReviewRating(Rating $review_rating)
     {
@@ -74,6 +78,5 @@ class Review extends CreativeWork
         ) {
             $this->Data['author'] = $review_rating->author;
         }
-        return $this;
     }
 }

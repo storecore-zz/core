@@ -5,7 +5,7 @@ namespace StoreCore\Types;
  * Schema.org Media Object
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2016 StoreCore
+ * @copyright Copyright © 2016–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @see       https://schema.org/MediaObject
@@ -13,6 +13,10 @@ namespace StoreCore\Types;
  */
 class MediaObject extends CreativeWork
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -43,7 +47,11 @@ class MediaObject extends CreativeWork
      *   via HTTP.  Metafiles that require a download of the source via
      *   streaming protocols, such as RTMP, are not supported by Google.
      *
-     * @return $this
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     *   Throws a Standard PHP Library (SPL) invalid argument logic exception
+     *   if the `$content_url` parameter is not a valid URL.
      */
     public function setContentURL($content_url)
     {
@@ -53,7 +61,6 @@ class MediaObject extends CreativeWork
         }
 
         $this->setStringProperty('contentUrl', $content_url);
-        return $this;
     }
 
     /**
@@ -63,12 +70,11 @@ class MediaObject extends CreativeWork
      *   The duration of the item (movie, audio recording, event, etc.) in
      *   ISO 8601 date format.
      *
-     * @return $this
+     * @return void
      */
     public function setDuration($duration)
     {
         $this->setStringProperty('duration', $duration);
-        return $this;
     }
 
     /**
@@ -78,7 +84,7 @@ class MediaObject extends CreativeWork
      *   A URL pointing to a player for the specific media.  Usually this is
      *   the information in the `src` element of an `<embed>` tag.
      *
-     * @return $this
+     * @return void
      */
     public function setEmbedUrl($embed_url)
     {
@@ -88,14 +94,20 @@ class MediaObject extends CreativeWork
         }
 
         $this->setStringProperty('embedUrl', $embed_url);
-        return $this;
     }
 
     /**
      * Set the URL of a thumbnail image.
      *
      * @param string $thumbnail_url
-     * @return $this
+     *   URL of the thumbnail image file.
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     *   Throws an invalid argument logic exception if the `$thumbnail_url` is
+     *   not a valid URL.  Note that this method does not check if the
+     *   thumbnail file actually exists.
      */
     public function setThumbnailURL($thumbnail_url)
     {
@@ -105,18 +117,17 @@ class MediaObject extends CreativeWork
         }
 
         $this->setStringProperty('thumbnailUrl', $thumbnail_url);
-        return $this;
     }
 
     /**
      * Set the date the media object was first uploaded.
      *
      * @param DateTime|string $upload_date
-     * @return $this
+     *
+     * @return void
      */
     public function setUploadDate($upload_date)
     {
         $this->setDateProperty('uploadDate', $upload_date);
-        return $this;
     }
 }

@@ -14,7 +14,10 @@ namespace Google\Analytics;
  */
 class Hit
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -93,12 +96,11 @@ class Hit
      * @param bool $anonymize_ip
      *   Anonymize (default true) or publish (false) the client IP address.
      *
-     * @return $this
+     * @return void
      */
     public function anonymizeIP($anonymize_ip = true)
     {
         $this->AnonymizeIP = (bool)$anonymize_ip;
-        return $this;
     }
 
     /**
@@ -181,25 +183,26 @@ class Hit
      * Enable debug mode.
      *
      * @param void
-     * @return $this
+     *
+     * @return void
      */
     public function debug()
     {
         $this->Debug = true;
-        return $this;
     }
 
     /**
      * Set the client ID (cid).
      *
      * @param \StoreCore\Types\ClientID $client_id
-     * @return $this
+     *
+     * @return void
+     *
      * @uses \StoreCore\Types\ClientID::__toString()
      */
     public function setClientID(\StoreCore\Types\ClientID $client_id)
     {
         $this->Data['cid'] = strval($client_id);
-        return $this;
     }
 
     /**
@@ -215,6 +218,8 @@ class Hit
      *   optional parameter is not set, the index is derived from the content
      *   group hierarchy.  For example, 'news/sports' will have an index of 2,
      *   assuming that 'news' has index 1 one level up in the hierarchy.
+     *
+     * @return void
      */
     public function setContentGroup($content_group, $index = null)
     {
@@ -230,7 +235,6 @@ class Hit
 
         $index = 'cg' . $index;
         $this->Data[$index] = $content_group;
-        return $this;
     }
 
     /**
@@ -239,7 +243,7 @@ class Hit
      * @param string $currency_code.
      *   Optional ISO 4217 currency code.  Defaults to 'EUR' for European euro.
      *
-     * @return $this
+     * @return void
      *
      * @throws \InvalidArgumentException
      */
@@ -256,7 +260,6 @@ class Hit
 
         $currency_code = strtoupper($currency_code);
         $this->Data['cu'] = $currency_code;
-        return $this;
     }
 
 
@@ -264,7 +267,8 @@ class Hit
      * Set a custom dimension text (cd).
      *
      * @param string $custom_dimension_text
-     * @return $this
+     *
+     * @return void
      */
     public function setCustomDimension($custom_dimension_text, $index = null)
     {
@@ -277,14 +281,14 @@ class Hit
         } else {
             $this->CustomDimensions[$index] = $custom_dimension_text;
         }
-        return $this;
     }
 
     /**
      * Set a custom metric number (cm).
      *
      * @param float|int $custom_metric_number
-     * @return $this
+     *
+     * @return void
      */
     public function setCustomMetric($custom_metric_number, $index = null)
     {
@@ -297,7 +301,6 @@ class Hit
         } else {
             $this->CustomMetrics[$index] = $custom_metric_number;
         }
-        return $this;
     }
 
     /**
@@ -308,62 +311,62 @@ class Hit
      *   'web'; hits sent from one of the mobile SDKs will have data source set
      *   to 'app'.  Other data sources are allowed, for example 'crm'.
      *
-     * @return $this
+     * @return void
      */
     public function setDataSource($data_source)
     {
         $this->Data['ds'] = $data_source;
-        return $this;
     }
 
     /**
      * Set the document host name (dh).
      *
      * @param string $document_hostname
-     * @return $this
+     *
+     * @return void
      */
     public function setDocumentHostname($document_hostname)
     {
         $this->Data['dh'] = $document_hostname;
-        return $this;
     }
 
     /**
      * Set the HTTP document referrer (dr).
      *
      * @param string $document_referrer
-     * @return $this
+     *
+     * @return void
      */
     public function setDocumentReferrer($document_referrer)
     {
         if (filter_var($document_referrer, FILTER_VALIDATE_URL) !== false) {
             $this->Data['dr'] = $document_referrer;
         }
-        return $this;
     }
 
     /**
      * Set the document path (dp).
      *
-     * @param string
+     * @param string $document_path
      *   The path portion of the page URL.  Should begin with '/'.
      *
-     * @return $this
+     * @return void
      */
     public function setDocumentPath($document_path)
     {
         $document_path = trim($document_path);
         $document_path = '/' . ltrim($document_path, '/');
         $this->Data['dp'] = $document_path;
-        return $this;
     }
 
     /**
      * Set an exception (exd) that may be fatal (exf).
      *
      * @param string $exception
+     *
      * @param bool $fatal
-     * @return $this
+     *
+     * @return void
      */
     public function setException($exception, $fatal = false)
     {
@@ -371,21 +374,21 @@ class Hit
         if ($fatal === true) {
             $this->Data['exf'] = 1;
         }
-        return $this;
     }
 
     /**
      * Set an experiment (xid) and the experiment variant (xvar).
      *
      * @param mixed $experiment_id
+     *
      * @param mixed $experiment_variant
-     * @return $this
+     *
+     * @return void
      */
     public function setExperiment($experiment_id, $experiment_variant)
     {
         $this->Data['xid']  = $experiment_id;
         $this->Data['xvar'] = $experiment_variant;
-        return $this;
     }
 
     /**
@@ -396,7 +399,7 @@ class Hit
      *   may be set to one of the HIT_TYPE_ class constants.  The default type
      *   is 'pageview' and HIT_TYPE_PAGEVIEW.
      *
-     * @return $this
+     * @return void
      */
     public function setHitType($hit_type)
     {
@@ -406,19 +409,18 @@ class Hit
         if (in_array($hit_type, $hit_types)) {
             $this->Data['t'] = $hit_type;
         }
-        return $this;
     }
 
     /**
      * Specify a non-interaction hit (ni).
      *
      * @param void
-     * @return $this
+     *
+     * @return void
      */
     public function setNonInteractionHit()
     {
         $this->Data['ni'] = 1;
-        return $this;
     }
 
     /**
@@ -426,12 +428,11 @@ class Hit
      *
      * @param int $milliseconds
      *
-     * @return $this
+     * @return void
      */
     public function setQueueTime($milliseconds)
     {
         $this->Data['qt'] = $milliseconds;
-        return $this;
     }
 
     /**
@@ -440,11 +441,10 @@ class Hit
      * @param string $tracking_id
      *   Tracking ID or property ID (UA-XXXXX-Y).
      *
-     * @return $this
+     * @return void
      */
     public function setTrackingID($tracking_id)
     {
         $this->Data['tid'] = $tracking_id;
-        return $this;
     }
 }

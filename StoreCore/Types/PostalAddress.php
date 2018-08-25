@@ -5,7 +5,7 @@ namespace StoreCore\Types;
  * Schema.org Postal Address
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2016 StoreCore
+ * @copyright Copyright © 2016–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @see       https://schema.org/PostalAddress
@@ -13,6 +13,10 @@ namespace StoreCore\Types;
  */
 class PostalAddress extends ContactPoint
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -29,7 +33,7 @@ class PostalAddress extends ContactPoint
      * @param string $address_country
      *   Two-letter ISO 3166-1 alpha-2 country code.
      *
-     * @return $this
+     * @return void
      *
      * @throws \InvalidArgumentException
      */
@@ -46,38 +50,35 @@ class PostalAddress extends ContactPoint
 
         $address_country = strtoupper($address_country);
         $this->setStringProperty('addressCountry', $address_country);
-        return $this;
     }
 
     /**
      * Set the address locality.
      *
      * @param string $address_locality
-     * @return $this
+     * @return void
      */
     public function setAddressLocality($address_locality)
     {
         $this->setStringProperty('addressLocality', $address_locality);
-        return $this;
     }
 
     /**
      * Set the address region.
      *
      * @param string $address_region
-     * @return $this
+     * @return void
      */
     public function setAddressRegion($address_region)
     {
         $this->setStringProperty('addressRegion', $address_region);
-        return $this;
     }
 
     /**
      * Set the address postcode.
      *
      * @param string $postal_code
-     * @return $this
+     * @return void
      * @throws \InvalidArgumentException
      */
     public function setPostalCode($postal_code)
@@ -87,6 +88,5 @@ class PostalAddress extends ContactPoint
         }
         $postal_code = strtoupper($postal_code);
         $this->setStringProperty('postalCode', $postal_code);
-        return $this;
     }
 }

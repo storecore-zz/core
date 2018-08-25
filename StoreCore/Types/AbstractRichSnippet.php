@@ -8,8 +8,10 @@ namespace StoreCore\Types;
  * @copyright Copyright © 2016–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @see       https://developers.google.com/search/docs/guides/intro-structured-data
  * @version   0.1.0
+ *
+ * @see https://developers.google.com/search/docs/guides/intro-structured-data
+ *      Introduction to Structured Data - Google Search Guides
  */
 abstract class AbstractRichSnippet implements StringableInterface
 {
@@ -44,7 +46,7 @@ abstract class AbstractRichSnippet implements StringableInterface
      * @return mixed|null
      *   Returns the property value or null if the property does not exist.
      *   Note that this method therefore does not throw an exception if the
-     *   requested is undefined.
+     *   requested property is undefined.
      */
     public function __get($name) {
         if (array_key_exists($name, $this->Data)) {
@@ -122,11 +124,11 @@ abstract class AbstractRichSnippet implements StringableInterface
      *
      * @param string $name
      *
-     * @param DateTime|string $date
+     * @param \DateTime|string $date
      *   Date value as a DateTime object or a string in the ISO 8601 date
      *   format yyyy-mm-dd (the PHP date format 'Y-m-d').
      *
-     * @return $this
+     * @return void
      *
      * @throws \InvalidArgumentException
      *   Throws an invalid argument exception if the `$date` parameter is not
@@ -156,8 +158,6 @@ abstract class AbstractRichSnippet implements StringableInterface
         } else {
             throw new \InvalidArgumentException();
         }
-
-        return $this;
     }
 
     /**
@@ -169,7 +169,7 @@ abstract class AbstractRichSnippet implements StringableInterface
      * @param mixed $value
      *   Value of the property.
      *
-     * @return $this
+     * @return void
      *
      * @throws \InvalidArgumentException
      *   Throws an invalid argument exception if the `$name` parameter is not
@@ -195,7 +195,6 @@ abstract class AbstractRichSnippet implements StringableInterface
         }
 
         $this->Data[$name] = $value;
-        return $this;
     }
 
     /**
@@ -207,7 +206,7 @@ abstract class AbstractRichSnippet implements StringableInterface
      * @param string $value
      *   Value of the property as a string.
      *
-     * @return $this
+     * @return void
      *
      * @throws \InvalidArgumentException
      *   Throws an invalid argument exception if the `$value` is not a string
@@ -225,7 +224,6 @@ abstract class AbstractRichSnippet implements StringableInterface
         }
 
         $this->Data[$name] = $value;
-        return $this;
     }
 
     /**

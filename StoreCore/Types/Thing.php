@@ -38,7 +38,9 @@ class Thing extends AbstractRichSnippet implements StringableInterface
      * Get the item name.
      *
      * @param void
+     *
      * @return string|null
+     *   Returns a name of the thing or null if no name is set.
      */
     public function getName()
     {
@@ -55,24 +57,24 @@ class Thing extends AbstractRichSnippet implements StringableInterface
      * Set the alternate name of an item.
      *
      * @param string $alternate_name
-     * @return $this
+     *
+     * @return void
      */
     public function setAlternateName($alternate_name)
     {
         $this->setStringProperty('alternateName', $alternate_name);
-        return $this;
     }
 
     /**
      * Set a description of the item.
      *
      * @param string $description
-     * @return $this
+     *
+     * @return void
      */
     public function setDescription($description)
     {
         $this->setStringProperty('description', $description);
-        return $this;
     }
 
     /**
@@ -82,12 +84,11 @@ class Thing extends AbstractRichSnippet implements StringableInterface
      *   An image of the item.  This can be a URL or a fully described
      *   Schema.org ImageObject.
      *
-     * @return $this
+     * @return void
      */
     public function setImage($image)
     {
         $this->Data['image'] = $image;
-        return $this;
     }
 
     /**
@@ -99,7 +100,7 @@ class Thing extends AbstractRichSnippet implements StringableInterface
      * @param string $alternate_name
      *   An optional alias for the item.
      *
-     * @return $this
+     * @return void
      */
     public function setName($name, $alternate_name = null)
     {
@@ -111,21 +112,19 @@ class Thing extends AbstractRichSnippet implements StringableInterface
         ) {
             $this->setAlternateName($alternate_name);
         }
-
-        return $this;
     }
 
     /**
      * Set a potential action on the item.
      *
      * @param \StoreCore\Types\Action $action
-     * @return $this
+     *
+     * @return void
      */
     public function setPotentialAction(Action $action)
     {
         $action = (string)$action;
         $this->Data['potentialAction'] = $action;
-        return $this;
     }
 
     /**
@@ -140,12 +139,13 @@ class Thing extends AbstractRichSnippet implements StringableInterface
      *   profiles as well, but they aren't currently included in Google Search
      *   results.
      *
-     * @return $this
+     * @return void
      *
      * @see https://developers.google.com/search/docs/data-types/social-profile-links
+     *      Social Profile - Google Search Guides at Google Developers
      *
      * @throws \InvalidArgumentException
-     *   Throws an invalid argument logic exception if the $same_as argument
+     *   Throws an invalid argument logic exception if the `$same_as` argument
      *   is not a string or an empty string.  This method currently does not
      *   check if the argument is a valid URL nor does it check if the URL
      *   exists.
@@ -169,14 +169,16 @@ class Thing extends AbstractRichSnippet implements StringableInterface
         } else {
             $this->Data['sameAs'][] = $same_as;
         }
-        return $this;
     }
 
     /**
      * Set the URL of the item.
      *
      * @param string $url
-     * @return $this
+     *   Uniform resource locator (URL) of the thing.
+     *
+     * @return void
+     *
      * @throws \InvalidArgumentException
      */
     public function setURL($url)
@@ -192,6 +194,5 @@ class Thing extends AbstractRichSnippet implements StringableInterface
         }
 
         $this->Data['url'] = $url;
-        return $this;
     }
 }
