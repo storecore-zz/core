@@ -116,19 +116,6 @@ class CartID implements StringableInterface
     }
 
     /**
-     * Get the shopping cart UUID.
-     *
-     * @param void
-     *
-     * @return string
-     *   Universally unique identifier (UUID).
-     */
-    public function getUUID()
-    {
-        return $this->CartID[1];
-    }
-
-    /**
      * Get the shopping cart ID token.
      *
      * @param void
@@ -140,6 +127,19 @@ class CartID implements StringableInterface
     public function getToken()
     {
         return $this->CartID[2];
+    }
+
+    /**
+     * Get the shopping cart UUID.
+     *
+     * @param void
+     *
+     * @return string
+     *   Universally unique identifier (UUID).
+     */
+    public function getUUID()
+    {
+        return $this->CartID[1];
     }
 
     /**
