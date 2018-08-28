@@ -134,7 +134,8 @@ class CartID implements StringableInterface
      * @param void
      *
      * @return string
-     *   Random cart token.
+     *   Returns the random cart token as a string with a fixed length
+     *   of 192 ASCII characters.
      */
     public function getToken()
     {
@@ -149,10 +150,13 @@ class CartID implements StringableInterface
      */
     public function resetToken()
     {
-        $this->CartID[2]
-            = base_convert(bin2hex(openssl_random_pseudo_bytes(128)), 16, 36)
-            . base_convert(bin2hex(openssl_random_pseudo_bytes(128)), 16, 36)
-            . base_convert(bin2hex(openssl_random_pseudo_bytes(128)), 16, 36);
+        $characters = '0123456789abcdefghijklmnopqrstuvwzyzABCDEFGHIJKLMNOPQRSTUVWZYZ';
+        $characters = str_shuffle($characters);
+        $token = (string)null;
+        for ($i = 1; $i <= 192; $i++) {
+            $token .= substr($characters, mt_rand(0, 61), 1);
+        }
+        $this->CartID[2] = $token;
     }
 
     /**
