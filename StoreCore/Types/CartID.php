@@ -10,7 +10,7 @@ namespace StoreCore\Types;
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-class CartID
+class CartID implements StringableInterface
 {
     /**
      * @var string VERSION

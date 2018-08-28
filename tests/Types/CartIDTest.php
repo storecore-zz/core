@@ -12,6 +12,25 @@ class CartIDTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group distro
+     * @testdox Implemented Stringable interface file exists
+     */
+    public function testImplementedStringableInterfaceFileExists()
+    {
+        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Types' . DIRECTORY_SEPARATOR .  'StringableInterface.php');
+    }
+
+    /**
+     * @group hmvc
+     * @testdox Class implements \StoreCore\Types\StringableInterface
+     */
+    public function testClassImplementsStoreCoreTypesStringableInterface()
+    {
+        $cart_id = new \StoreCore\Types\CartID();
+        $this->assertTrue($cart_id instanceof \StoreCore\Types\StringableInterface);
+    }
+
+    /**
+     * @group distro
      */
     public function testVersionConstantIsDefined()
     {
@@ -62,6 +81,15 @@ class CartIDTest extends PHPUnit_Framework_TestCase
     {
         $class = new \ReflectionClass('\StoreCore\Types\CartID');
         $this->assertTrue($class->hasMethod('__toString'));
+    }
+
+    /**
+     * @testdox Public __toString() method is public
+     */
+    public function testPublicToStringMethodIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Types\CartID', '__toString');
+        $this->assertTrue($method->isPublic());
     }
 
     /**
