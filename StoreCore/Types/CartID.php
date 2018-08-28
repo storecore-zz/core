@@ -10,7 +10,7 @@ namespace StoreCore\Types;
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-class CartID
+class CartID implements StringableInterface
 {
     /**
      * @var string VERSION
@@ -116,6 +116,20 @@ class CartID
     }
 
     /**
+     * Get the shopping cart ID token.
+     *
+     * @param void
+     *
+     * @return string
+     *   Returns the random cart token as a string with a fixed length
+     *   of 192 ASCII characters.
+     */
+    public function getToken()
+    {
+        return $this->CartID[2];
+    }
+
+    /**
      * Get the shopping cart UUID.
      *
      * @param void
@@ -129,19 +143,6 @@ class CartID
     }
 
     /**
-     * Get the shopping cart ID token.
-     *
-     * @param void
-     *
-     * @return string
-     *   Random cart token.
-     */
-    public function getToken()
-    {
-        return $this->CartID[2];
-    }
-
-    /**
      * Regenerate the random shopping cart token.
      *
      * @param void
@@ -149,10 +150,13 @@ class CartID
      */
     public function resetToken()
     {
-        $this->CartID[2]
-            = base_convert(bin2hex(openssl_random_pseudo_bytes(128)), 16, 36)
-            . base_convert(bin2hex(openssl_random_pseudo_bytes(128)), 16, 36)
-            . base_convert(bin2hex(openssl_random_pseudo_bytes(128)), 16, 36);
+        $characters = '0123456789abcdefghijklmnopqrstuvwzyzABCDEFGHIJKLMNOPQRSTUVWZYZ';
+        $characters = str_shuffle($characters);
+        $token = (string)null;
+        for ($i = 1; $i <= 192; $i++) {
+            $token .= substr($characters, mt_rand(0, 61), 1);
+        }
+        $this->CartID[2] = $token;
     }
 
     /**
