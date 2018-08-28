@@ -98,8 +98,8 @@ class CartIDTest extends PHPUnit_Framework_TestCase
     function testPublicToStringMethodReturnsNonEmptyString()
     {
         $cart_id = new \StoreCore\Types\CartID();
-        $this->assertTrue(is_string((string)$cart_id));
+        $this->assertNotEmpty((string)$cart_id);
         $cart_id = new \StoreCore\Types\CartID();
-        $this->assertFalse(empty((string)$cart_id));
+        $this->assertInternalType('string', (string)$cart_id);
     }
 }
