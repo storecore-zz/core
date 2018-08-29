@@ -112,7 +112,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     public function testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault()
     {
         $user = new \StoreCore\User();
-        $this->assertTrue($user->getDateTimeZone() instanceof \DateTimeZone);
+        $this->assertInstanceOf(\DateTimeZone::class, $user->getDateTimeZone());
     }
 
     /**

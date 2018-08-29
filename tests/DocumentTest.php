@@ -15,7 +15,7 @@ class DocumentTest extends PHPUnit_Framework_TestCase
     public function testClassImplementsStringableInterface()
     {
         $object = new \StoreCore\Document();
-        $this->assertTrue($object instanceof \StoreCore\Types\StringableInterface);
+        $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $object);
     }
 
     /**

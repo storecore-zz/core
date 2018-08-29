@@ -15,7 +15,7 @@ class ManifestModelTest extends PHPUnit_Framework_TestCase
     public function testManifestModelClassExtendsAbstractModel()
     {
         $object = new \StoreCore\Admin\ManifestModel(\StoreCore\Registry::getInstance());
-        $this->assertTrue($object instanceof \StoreCore\AbstractModel);
+        $this->assertInstanceOf(\StoreCore\AbstractModel::class, $object);
     }
 
     /**

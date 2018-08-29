@@ -12,7 +12,7 @@ class CartIDTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group distro
-     * @testdox Implemented Stringable interface file exists
+     * @testdox Implemented StringableInterface file exists
      */
     public function testImplementedStringableInterfaceFileExists()
     {
@@ -26,11 +26,12 @@ class CartIDTest extends PHPUnit_Framework_TestCase
     public function testClassImplementsStoreCoreTypesStringableInterface()
     {
         $cart_id = new \StoreCore\Types\CartID();
-        $this->assertTrue($cart_id instanceof \StoreCore\Types\StringableInterface);
+        $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $cart_id);
     }
 
     /**
      * @group distro
+     * @testdox VERSION constant is defined
      */
     public function testVersionConstantIsDefined()
     {
@@ -39,6 +40,27 @@ class CartIDTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     * @testdox VERSION constant is not empty
+     */
+    public function testVersionConstantIsNotEmpty()
+    {
+        $this->assertNotEmpty(\StoreCore\Types\CartID::VERSION);
+    }
+
+    /**
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     * @testdox VERSION constant is string
+     */
+    public function testVersionConstantIsString()
+    {
+        $this->assertInternalType('string', \StoreCore\Types\CartID::VERSION);
+    }
+
+    /**
+     * @depends testVersionConstantIsDefined
      * @group distro
      */
     public function testVersionMatchesDevelopmentBranch()
@@ -57,6 +79,39 @@ class CartIDTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @testdox Public decode() method public
+     */
+    public function testPublicDecodeMethodIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Types\CartID', 'decode');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @testdox Public decode() method has one parameter
+     */
+    public function testPublicDecodeMethodHasOneParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Types\CartID', 'decode');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+    }
+
+    /**
+     * @testdox Public decode() method returns false on errors
+     */
+    public function testPublicDecodeMethodReturnsFalseOnErrors()
+    {
+        $cart_id = new \StoreCore\Types\CartID();
+
+        $nothing_to_decode = (string)null;
+        $this->assertFalse($cart_id->decode($nothing_to_decode));
+
+        $cannot_decode_integer = 12345;
+        $this->assertFalse($cart_id->decode($cannot_decode_integer));
+    }
+
+
+    /**
      * @testdox Public encode() method exists
      */
     public function testPublicEncodeMethodExists()
@@ -66,13 +121,32 @@ class CartIDTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @testdox Public encode() method public
+     */
+    public function testPublicEncodeMethodIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Types\CartID', 'encode');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @testdox Public encode() method has no parameters
+     */
+    public function testPublicEncodeMethodHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Types\CartID', 'encode');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+    /**
      * @testdox Public encode() method returns non-empty string
      */
     function testPublicEncodeMethodReturnsNonEmptyString()
     {
         $cart_id = new \StoreCore\Types\CartID();
-        $this->assertTrue(is_string($cart_id->encode()));
-        $this->assertFalse(empty($cart_id->encode()));
+        $this->assertNotEmpty($cart_id->encode());
+        $cart_id = new \StoreCore\Types\CartID();
+        $this->assertInternalType('string', $cart_id->encode());
     }
 
 
@@ -103,6 +177,16 @@ class CartIDTest extends PHPUnit_Framework_TestCase
         $this->assertNotEmpty((string)$cart_id);
         $cart_id = new \StoreCore\Types\CartID();
         $this->assertInternalType('string', (string)$cart_id);
+    }
+
+    /**
+     * @testdox Public __toString() type cast equals encode() return value
+     */
+    function testPublicToStringTypeCastEqualsEncodeReturnValue()
+    {
+        $cart_id = new \StoreCore\Types\CartID();
+        $encoded_cart_id = $cart_id->encode();
+        $this->assertEquals($encoded_cart_id, (string)$cart_id);
     }
 
 

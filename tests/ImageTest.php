@@ -18,7 +18,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
     public function testClassImplementsStoreCoreTypesStringableInterface()
     {
         $image = new \StoreCore\Image();
-        $this->assertTrue($image instanceof \StoreCore\Types\StringableInterface);
+        $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $image);
     }
 
     /**

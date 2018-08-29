@@ -25,7 +25,7 @@ class AdminDocumentTest extends PHPUnit_Framework_TestCase
     public function testAdminDocumentExtendsDocument()
     {
         $object = new \StoreCore\Admin\Document();
-        $this->assertTrue($object instanceof \StoreCore\Document);
+        $this->assertInstanceOf(\StoreCore\Document::class, $object);
     }
 
     /**
@@ -34,7 +34,7 @@ class AdminDocumentTest extends PHPUnit_Framework_TestCase
     public function testClassImplementsStringableInterface()
     {
         $object = new \StoreCore\Admin\Document();
-        $this->assertTrue($object instanceof \StoreCore\Types\StringableInterface);
+        $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $object);
     }
 
     /**

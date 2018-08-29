@@ -19,20 +19,22 @@ class ProductThingTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group hmvc
+     * @testdox Class extends Thing
      */
     public function testClassExtendsThing()
     {
         $thing = new \StoreCore\Types\Thing();
-        $this->assertTrue($thing instanceof \StoreCore\Types\Thing);
+        $this->assertInstanceOf(\StoreCore\Types\Thing::class, $thing);
     }
 
     /**
      * @group hmvc
+     * @testdox Class implements StringableInterface
      */
     public function testClassImplementsStringableInterface()
     {
         $object = new \StoreCore\Types\Product();
-        $this->assertTrue($object instanceof \StoreCore\Types\StringableInterface);
+        $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $object);
     }
 
     /**

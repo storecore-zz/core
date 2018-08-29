@@ -16,7 +16,7 @@ class LockScreenTest extends PHPUnit_Framework_TestCase
     {
         ob_start();
         $object = new \StoreCore\Admin\LockScreen(\StoreCore\Registry::getInstance());
-        $this->assertTrue($object instanceof \StoreCore\AbstractController);
+        $this->assertInstanceOf(\StoreCore\AbstractController::class, $object);
         ob_end_clean();
     }
 
