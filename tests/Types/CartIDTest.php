@@ -26,7 +26,7 @@ class CartIDTest extends PHPUnit_Framework_TestCase
     public function testClassImplementsStoreCoreTypesStringableInterface()
     {
         $cart_id = new \StoreCore\Types\CartID();
-        $this->assertTrue($cart_id instanceof \StoreCore\Types\StringableInterface);
+        $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $cart_id);
     }
 
     /**

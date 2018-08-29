@@ -19,20 +19,22 @@ class ThingTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group hmvc
+     * @testdox Class extends AbstractRichSnippet
      */
     public function testClassExtendsAbstractRichSnippet()
     {
         $thing = new \StoreCore\Types\Thing();
-        $this->assertTrue($thing instanceof \StoreCore\Types\AbstractRichSnippet);
+        $this->assertInstanceOf(\StoreCore\Types\AbstractRichSnippet::class, $thing);
     }
 
     /**
      * @group hmvc
+     * @testdox Class implements StringableInterface
      */
     public function testClassImplementsStringableInterface()
     {
         $thing = new \StoreCore\Types\Thing();
-        $this->assertTrue($thing instanceof \StoreCore\Types\StringableInterface);
+        $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $thing);
     }
 
     /**

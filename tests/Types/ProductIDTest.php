@@ -26,7 +26,7 @@ class ProductIDTest extends PHPUnit_Framework_TestCase
     public function testProductIdIsAMediumintUnsigned()
     {
         $product_id = new \StoreCore\Types\ProductID(12345);
-        $this->assertTrue($product_id instanceof \StoreCore\Types\MediumintUnsigned);
+        $this->assertInstanceOf(\StoreCore\Types\MediumintUnsigned::class, $product_id);
     }
 
     /**
@@ -36,7 +36,7 @@ class ProductIDTest extends PHPUnit_Framework_TestCase
     public function testProductIdImplementsTypeInterface()
     {
         $product_id = new \StoreCore\Types\ProductID(12345);
-        $this->assertTrue($product_id instanceof \StoreCore\Types\TypeInterface);
+        $this->assertInstanceOf(\StoreCore\Types\TypeInterface::class, $product_id);
     }
 
     /**
@@ -46,7 +46,7 @@ class ProductIDTest extends PHPUnit_Framework_TestCase
     public function testProductIdImplementsStringableInterface()
     {
         $product_id = new \StoreCore\Types\ProductID(12345);
-        $this->assertTrue($product_id instanceof \StoreCore\Types\StringableInterface);
+        $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $product_id);
     }
 
     /**
@@ -87,7 +87,7 @@ class ProductIDTest extends PHPUnit_Framework_TestCase
     {
         $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Types\ProductID::VERSION);
     }
-    
+
     /**
      * @expectedException \ErrorException
      * @testdox Constructor requires at least one paramater

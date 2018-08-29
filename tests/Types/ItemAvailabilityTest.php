@@ -16,7 +16,7 @@ class ItemAvailabilityTest extends PHPUnit_Framework_TestCase
     public function testItemAvailabilityIsAVarchar()
     {
         $item_availability = new \StoreCore\Types\ItemAvailability();
-        $this->assertTrue($item_availability instanceof \StoreCore\Types\Varchar);
+        $this->assertInstanceOf(\StoreCore\Types\Varchar::class, $item_availability);
     }
 
     /**
@@ -26,7 +26,7 @@ class ItemAvailabilityTest extends PHPUnit_Framework_TestCase
     public function testItemAvailabilityImplementsTypeInterface()
     {
         $item_availability = new \StoreCore\Types\ItemAvailability();
-        $this->assertTrue($item_availability instanceof \StoreCore\Types\TypeInterface);
+        $this->assertInstanceOf(\StoreCore\Types\TypeInterface::class, $item_availability);
     }
 
     /**
@@ -36,7 +36,7 @@ class ItemAvailabilityTest extends PHPUnit_Framework_TestCase
     public function testItemAvailabilityImplementsStringableInterface()
     {
         $item_availability = new \StoreCore\Types\ItemAvailability();
-        $this->assertTrue($item_availability instanceof \StoreCore\Types\StringableInterface);
+        $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $item_availability);
     }
 
     /**

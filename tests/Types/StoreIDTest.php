@@ -20,20 +20,22 @@ class StoreIDTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group hmvc
+     * @testdox Class implements StringableInterface
      */
     public function testClassImplementsStringableInterface()
     {
         $object = new \StoreCore\Types\StoreID();
-        $this->assertTrue($object instanceof \StoreCore\Types\StringableInterface);
+        $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $object);
     }
 
     /**
      * @group hmvc
+     * @testdox Class implements TypeInterface
      */
     public function testClassImplementsTypeInterface()
     {
         $object = new \StoreCore\Types\StoreID();
-        $this->assertTrue($object instanceof \StoreCore\Types\TypeInterface);
+        $this->assertInstanceOf(\StoreCore\Types\TypeInterface::class, $object);
     }
 
     /**
