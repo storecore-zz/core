@@ -363,7 +363,17 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_USERS', 'fr-FR', 'utilisateurs', 0),
     ('NOUN_USERS', 'it-IT', 'utenti', 0),
     ('NOUN_USERS', 'nl-NL', 'gebruikers', 0),
-    ('NOUN_USERS', 'pt-PT', 'utilizadores', 0);
+    ('NOUN_USERS', 'pt-PT', 'utilizadores', 0),
+
+    ('NOUN_WISH_LIST', 'ca-AD', 'llista de desitjos', 0),
+    ('NOUN_WISH_LIST', 'de-DE', 'Wunschliste', 0),
+    ('NOUN_WISH_LIST', 'en-GB', 'wish list', 0),
+    ('NOUN_WISH_LIST', 'es-ES', 'lista de deseos', 0),
+    ('NOUN_WISH_LIST', 'fr-FR', 'liste de souhaits', 0),
+    ('NOUN_WISH_LIST', 'it-IT', 'lista dei desideri', 0),
+    ('NOUN_WISH_LIST', 'nl-NL', 'verlanglijst', 0),
+    ('NOUN_WISH_LIST', 'pt-PT', 'lista de desejos', 0);
+
 
 -- Verbs
 INSERT IGNORE INTO sc_translation_memory
