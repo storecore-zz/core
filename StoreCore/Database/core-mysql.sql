@@ -1722,6 +1722,7 @@ CREATE TABLE IF NOT EXISTS sc_orders (
 CREATE TABLE IF NOT EXISTS sc_order_products (
   order_id       INT(10) UNSIGNED       NOT NULL,
   product_id     MEDIUMINT(8) UNSIGNED  NOT NULL,
+  sort_order     TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 0,
   units          SMALLINT(5) UNSIGNED   NOT NULL  DEFAULT 1,
   unit_price     DECIMAL(18,9)          NOT NULL  DEFAULT 0,
   date_added     DATETIME               NOT NULL  DEFAULT CURRENT_TIMESTAMP,
@@ -1729,7 +1730,8 @@ CREATE TABLE IF NOT EXISTS sc_order_products (
   date_deleted   DATETIME               NULL  DEFAULT NULL,
   PRIMARY KEY pk_order_products_id (order_id, product_id),
   FOREIGN KEY fk_order_products_orders (order_id) REFERENCES sc_orders (order_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_order_products_products (product_id) REFERENCES sc_products (product_id) ON DELETE NO ACTION ON UPDATE CASCADE
+  FOREIGN KEY fk_order_products_products (product_id) REFERENCES sc_products (product_id) ON DELETE NO ACTION ON UPDATE CASCADE,
+  INDEX ix_order_products_sort_order (sort_order ASC, date_added ASC)
 ) ENGINE=InnoDB  DEFAULT CHARSET=ascii  COLLATE=ascii_bin;
 
 CREATE TABLE IF NOT EXISTS sc_shipping_carriers (
