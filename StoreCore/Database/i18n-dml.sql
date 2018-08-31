@@ -423,6 +423,15 @@ INSERT IGNORE INTO sc_translation_memory
 INSERT IGNORE INTO sc_translation_memory
     (translation_id, language_id, translation)
   VALUES
+    ('COMMAND_ADD_TO_WISH_LIST', 'ca-AD', 'Afegir a la llista de desitjos'),
+    ('COMMAND_ADD_TO_WISH_LIST', 'de-DE', 'Zur Wunschliste hinzufügen'),
+    ('COMMAND_ADD_TO_WISH_LIST', 'en-GB', 'Add to wish list'),
+    ('COMMAND_ADD_TO_WISH_LIST', 'es-ES', 'Agregar a la lista de deseos'),
+    ('COMMAND_ADD_TO_WISH_LIST', 'fr-FR', 'Ajouter à la liste de souhaits'),
+    ('COMMAND_ADD_TO_WISH_LIST', 'it-IT', 'Aggiungi a elenco preferenze'),
+    ('COMMAND_ADD_TO_WISH_LIST', 'nl-NL', 'Aan verlanglijst toevoegen'),
+    ('COMMAND_ADD_TO_WISH_LIST', 'pt-PT', 'Adicionar à lista de desejos'),
+
     ('COMMAND_CANCEL', 'ca-AD', 'Cancel·la'),
     ('COMMAND_CANCEL', 'de-DE', 'Abbrechen'),
     ('COMMAND_CANCEL', 'en-GB', 'Cancel'),
