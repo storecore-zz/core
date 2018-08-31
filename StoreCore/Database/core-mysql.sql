@@ -1700,6 +1700,7 @@ CREATE TABLE IF NOT EXISTS sc_orders (
   order_id        INT(10) UNSIGNED     NOT NULL,
   store_id        TINYINT(3) UNSIGNED  NOT NULL  DEFAULT 1,
   customer_id     INT(10) UNSIGNED     NULL  DEFAULT NULL,
+  wishlist_flag   TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
   backorder_flag  TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
   cart_uuid       CHAR(36)             NOT NULL,
   cart_rand       CHAR(192)            NOT NULL,
