@@ -220,10 +220,14 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_GERMAN', 'nl-NL', 'Duits', 0),
     ('NOUN_GERMAN', 'pt-PT', 'alemão', 0),
 
+    ('NOUN_GOOGLE_PRODUCT_TAXONOMY', 'ca-AD', 'taxonomia de productes de Google', 1),
     ('NOUN_GOOGLE_PRODUCT_TAXONOMY', 'de-DE', 'Google-Produkt-Taxonomie', 1),
     ('NOUN_GOOGLE_PRODUCT_TAXONOMY', 'en-GB', 'Google product taxonomy', 1),
+    ('NOUN_GOOGLE_PRODUCT_TAXONOMY', 'es-ES', 'taxonomía de productos de Google', 1),
     ('NOUN_GOOGLE_PRODUCT_TAXONOMY', 'fr-FR', 'classification des produits Google', 1),
+    ('NOUN_GOOGLE_PRODUCT_TAXONOMY', 'it-IT', 'tassonomia dei prodotti di Google', 1),
     ('NOUN_GOOGLE_PRODUCT_TAXONOMY', 'nl-NL', 'Google-producttaxonomie', 1),
+    ('NOUN_GOOGLE_PRODUCT_TAXONOMY', 'pt-PT', 'taxonomia do produto do Google', 1),
 
     ('NOUN_IMPRESSUM', 'de-DE', 'Impressum', 0),
     ('NOUN_IMPRESSUM', 'en-GB', 'legal disclosure', 0),
