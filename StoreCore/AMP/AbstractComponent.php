@@ -46,8 +46,8 @@ abstract class AbstractComponent implements LayoutInterface
         LayoutInterface::LAYOUT_FILL,
         LayoutInterface::LAYOUT_FIXED,
         LayoutInterface::LAYOUT_FIXED_HEIGHT,
-        LayoutInterface::LAYOUT_INTRINSIC,
         LayoutInterface::LAYOUT_FLEX_ITEM,
+        LayoutInterface::LAYOUT_INTRINSIC,
         LayoutInterface::LAYOUT_NODISPLAY,
         LayoutInterface::LAYOUT_RESPONSIVE,
     );
