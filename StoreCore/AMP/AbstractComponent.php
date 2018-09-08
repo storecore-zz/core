@@ -4,6 +4,7 @@ namespace StoreCore\AMP;
 /**
  * Abstract AMP Component
  *
+ * @api
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
  * @copyright Copyright © 2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
@@ -64,7 +65,7 @@ abstract class AbstractComponent implements LayoutInterface
     {
         $name = strtolower($name);
         if (array_key_exists($name, $this->Attributes)) {
-            return $this->Attributes['name'];
+            return $this->Attributes[$name];
         } else {
             return null;
         }
