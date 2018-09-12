@@ -394,9 +394,8 @@ class Document implements \StoreCore\Types\StringableInterface
 
         /*
          * In an AMP page the charset definition MUST be the first child of the
-         * <head> tag and the AMP runtime MUST be loaded as the second child of
-         * the <head> tag.  If this document is not an AMP page, the minified
-         * JavaScript voor Material Design Lite (MDL) is loaded but deferred.
+         * `<head>` tag and the AMP runtime MUST be loaded as the second child
+         * of the `<head>` tag.
          */
         $head .= '<meta charset="utf-8">';
         if ($this->AcceleratedMobilePage) {
