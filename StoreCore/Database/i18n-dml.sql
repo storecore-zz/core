@@ -408,7 +408,18 @@ INSERT IGNORE INTO sc_translation_memory
     ('VERB_SAVE', 'fr-FR', 'enregistrer'),
     ('VERB_SAVE', 'it-IT', 'salvare'),
     ('VERB_SAVE', 'nl-NL', 'opslaan'),
-    ('VERB_SAVE', 'pt-PT', 'guardar');
+    ('VERB_SAVE', 'pt-PT', 'guardar'),
+
+    ('VERB_SEARCH', 'ca-AD', 'buscar'),
+    ('VERB_SEARCH', 'de-DE', 'suchen'),
+    ('VERB_SEARCH', 'en-GB', 'search'),
+    ('VERB_SEARCH', 'es-ES', 'buscar'),
+    ('VERB_SEARCH', 'fr-FR', 'chercher'),
+    ('VERB_SEARCH', 'it-IT', 'cercare'),
+    ('VERB_SEARCH', 'lb-LU', 'sichen'),
+    ('VERB_SEARCH', 'nl-NL', 'zoeken'),
+    ('VERB_SEARCH', 'pt-BR', 'pesquisar'),
+    ('VERB_SEARCH', 'pt-PT', 'procurar');
 
 
  /*
