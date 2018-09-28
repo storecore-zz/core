@@ -66,6 +66,7 @@ class Document implements \StoreCore\Types\StringableInterface
         'viewport' => 'width=device-width,initial-scale=1,minimum-scale=1',
         'apple-mobile-web-app-capable' => 'yes',
         'apple-mobile-web-app-status-bar-style' => 'black-translucent',
+        'format-detection' => 'telephone=no',
     );
 
     /**
