@@ -103,7 +103,7 @@ class Blacklist extends AbstractModel
      *
      * This method removes an IP ban by setting the end date to the current
      * time in UTC.  The blacklisted IP address and optional notes are kept
-     * for reference purposes, but MAY be deleted with the clear() method.
+     * for reference purposes, but MAY be deleted with the `clear()` method.
      *
      * @param string $ip_address
      *   IPv4 or IPv6 address to remove from the blacklist.
