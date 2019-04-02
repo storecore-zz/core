@@ -6,25 +6,30 @@ namespace StoreCore\Database;
  *
  * @api
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015–2018 StoreCore™
+ * @copyright Copyright © 2015–2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
  * @version   0.1.0
  */
 class Blacklist extends AbstractModel
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer)
+     */
     const VERSION = '0.1.0';
 
     /**
      * Clear IP bans that are no longer in use.
      *
      * @param void
+     *
      * @return bool
+     *   Returns true on success or false on failure.
      */
     public function clear()
     {
         try {
-            $this->Database->exec('DELETE FROM sc_ip_blacklist_comments WHERE ip_address IN (SELECT ip_address FROM sc_ip_blacklist WHERE thru_date IS NOT NULL AND thru_date < UTC_TIMESTAMP())');
             $this->Database->exec('DELETE FROM sc_ip_blacklist WHERE thru_date IS NOT NULL AND thru_date < UTC_TIMESTAMP()');
             return true;
         } catch (\PDOException $e) {
@@ -37,20 +42,26 @@ class Blacklist extends AbstractModel
      * Blacklist an IP address with an optional comment.
      *
      * @param string $ip_address
+     *   IPv4 or IPv6 address to blacklist.  To allow for easy database, 
+     *   blocklists, and server maintenance, IP addresses are handled and
+     *   stored as text in dot-decimal notation (IPv4) or text with hexadecimal
+     *   digits (IPv6).
      *
-     * @param string| $reason
+     * @param string|null $reason
+     *   Optional short comment describing the reason for blacklisting the
+     *   given IP address.
      *
      * @return bool
      *   Returns true on success and false on a failure.
      *
      * @throws \InvalidArgumentException
      *   An SPL invalid argument logic exception is throw if the first
-     *   parameter ip_address is not a valid IP address or if the optional
-     *   second parameter reason is not a string.
+     *   parameter `$ip_address` is not a valid IP address or if the optional
+     *   second parameter `$reason` is not a string.
      *
      * @throws \LengthException
-     *   Throws a length logic exception if the $reason string parameter has
-     *   string length of over 255 characters.
+     *   Throws a length logic exception if the `$reason` string parameter has
+     *   a string length of over 255 characters.
      */
     public function create($ip_address, $reason = null)
     {
@@ -95,8 +106,13 @@ class Blacklist extends AbstractModel
      * for reference purposes, but MAY be deleted with the clear() method.
      *
      * @param string $ip_address
+     *   IPv4 or IPv6 address to remove from the blacklist.
+     *
      * @return bool
+     *   Returns true on success or false on failure.
+     *
      * @throws \InvalidArgumentException
+     *   Throws an invalid argument exception on an invalid IP address.
      */
     public function delete($ip_address)
     {
