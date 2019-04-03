@@ -8,18 +8,19 @@ use \StoreCore\Registry as Registry;
 /**
  * IP Blacklist
  *
+ * @api
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @copyright Copyright © 2015-2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
  * @version   0.1.0
- *
- * @api
- * @method static bool exists ( string $ip_address )
- * @method bool flush ( void )
  */
 class Blacklist extends AbstractController
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer)
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -31,7 +32,8 @@ class Blacklist extends AbstractController
      * @return bool
      *   Returns true if the IP address is blacklisted, otherwise false.  This
      *   method will also return false if the cache file does not exist,
-     *   is empty, or somehow could not be processed.
+     *   the cache file is empty, or the cache file somehow could not be
+     *   processed.
      */
     public static function exists($ip_address)
     {
@@ -62,7 +64,9 @@ class Blacklist extends AbstractController
      * Recreate the blacklist file cache.
      *
      * @param void
+     *
      * @return bool
+     *   Returns true on success or false on failure.
      */
     public function flush()
     {
