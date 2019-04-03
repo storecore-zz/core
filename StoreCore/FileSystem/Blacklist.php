@@ -42,7 +42,7 @@ class Blacklist extends AbstractController
             return false;
         }
 
-        $filename = STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR . 'blacklist.json';
+        $filename = STORECORE_FILESYSTEM_CACHE_DATA_DIR . 'blacklist.json';
         if (!is_file($filename)) {
             return false;
         }
