@@ -42,7 +42,7 @@ class Blacklist extends AbstractModel
      * Blacklist an IP address with an optional comment.
      *
      * @param string $ip_address
-     *   IPv4 or IPv6 address to blacklist.  To allow for easy database, 
+     *   IPv4 or IPv6 address to blacklist.  To allow for easy database,
      *   blocklists, and server maintenance, IP addresses are handled and
      *   stored as text in dot-decimal notation (IPv4) or text with hexadecimal
      *   digits (IPv6).
@@ -89,10 +89,17 @@ class Blacklist extends AbstractModel
                 throw new \LengthException();
             }
 
-            $stmt = $this->Database->prepare('INSERT INTO sc_ip_blacklist_comments (ip_address, comments) VALUES (:ip_address, :comments)');
-            $stmt->bindParam(':ip_address', $ip_address, \PDO::PARAM_STR);
-            $stmt->bindParam(':comments', $reason, \PDO::PARAM_STR);
-            $stmt->execute();
+            if (!empty($reason)) {
+                try {
+                    $stmt = $this->Database->prepare('INSERT INTO sc_ip_blacklist_comments (ip_address, comments) VALUES (:ip_address, :comments)');
+                    $stmt->bindParam(':ip_address', $ip_address, \PDO::PARAM_STR);
+                    $stmt->bindParam(':comments', $reason, \PDO::PARAM_STR);
+                    $stmt->execute();
+                } catch (\PDOException $e) {
+                    $this->Logger->error($e->getMessage());
+                    return false;
+                }
+            }
         }
 
         return true;
