@@ -29,6 +29,7 @@ class CartIDTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $cart_id);
     }
 
+
     /**
      * @group distro
      * @testdox VERSION constant is defined
@@ -42,28 +43,19 @@ class CartIDTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
-     * @testdox VERSION constant is not empty
+     * @testdox VERSION constant is non-empty string
      */
-    public function testVersionConstantIsNotEmpty()
+    public function testVersionConstantIsNonEmptyString()
     {
         $this->assertNotEmpty(\StoreCore\Types\CartID::VERSION);
-    }
-
-    /**
-     * @depends testVersionConstantIsDefined
-     * @group distro
-     * @testdox VERSION constant is string
-     */
-    public function testVersionConstantIsString()
-    {
         $this->assertInternalType('string', \StoreCore\Types\CartID::VERSION);
     }
 
     /**
-     * @depends testVersionConstantIsDefined
+     * @depends testVersionConstantIsNonEmptyString
      * @group distro
      */
-    public function testVersionMatchesDevelopmentBranch()
+    public function testVersionMatchesMasterBranch()
     {
         $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Types\CartID::VERSION);
     }

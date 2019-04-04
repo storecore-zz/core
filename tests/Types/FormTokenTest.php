@@ -10,8 +10,10 @@ class FormTokenTest extends PHPUnit_Framework_TestCase
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Types' . DIRECTORY_SEPARATOR .  'FormToken.php');
     }
 
+
     /**
      * @group distro
+     * @testdox VERSION constant is defined
      */
     public function testVersionConstantIsDefined()
     {
@@ -20,22 +22,25 @@ class FormTokenTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @group distro
      * @depends testVersionConstantIsDefined
+     * @group distro
+     * @testdox VERSION constant is non-empty string
      */
-    public function testVersionConstantIsString()
+    public function testVersionConstantIsNonEmptyString()
     {
+        $this->assertNotEmpty(\StoreCore\Types\FormToken::VERSION);
         $this->assertInternalType('string', \StoreCore\Types\FormToken::VERSION);
     }
 
     /**
      * @group distro
-     * @depends testVersionConstantIsDefined
+     * @depends testVersionConstantIsNonEmptyString
      */
-    public function testVersionMatchesDevelopmentBranch()
+    public function testVersionMatchesMasterBranch()
     {
         $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Types\FormToken::VERSION);
     }
+
 
     /**
      * @testdox Public static getInstance() method exists

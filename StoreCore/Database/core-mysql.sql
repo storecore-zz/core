@@ -2,7 +2,7 @@
 -- MySQL Data Definition
 --
 -- @author    Ward van der Put <Ward.van.der.Put@storecore.org>
--- @copyright Copyright © 2014–2018 StoreCore™
+-- @copyright Copyright © 2014–2019 StoreCore™
 -- @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
 -- @package   StoreCore\Database
 -- @version   0.1.0
@@ -286,12 +286,13 @@ CREATE TABLE IF NOT EXISTS sc_ip_blacklist (
   INDEX ix_thru_date (thru_date)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
--- Optional IP blacklist comments (without a foreign key to archive records)
+-- Optional IP blacklist comments
 CREATE TABLE IF NOT EXISTS sc_ip_blacklist_comments (
   ip_address     VARCHAR(255)  NOT NULL,
   date_modified  TIMESTAMP     NOT NULL  DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP,
   comments       VARCHAR(255)  NULL  DEFAULT NULL  COMMENT 'Reason, source or other internal memo',
   PRIMARY KEY pk_ip_blacklist_comment_id (ip_address, date_modified),
+  FOREIGN KEY fk_ip_blacklist_comments_ip_blacklist (ip_address) REFERENCES sc_ip_blacklist (ip_address) ON DELETE CASCADE ON UPDATE CASCADE,
   INDEX ix_date_modified (date_modified DESC)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
