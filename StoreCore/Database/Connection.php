@@ -8,14 +8,18 @@ use \StoreCore\Registry as Registry;
  * Database Connection
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015-2017 StoreCore
+ * @copyright Copyright © 2015–2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
+ * @see       https://www.php.net/manual/en/pdo.construct.php
  * @version   1.0.0
  */
 class Connection extends \PDO
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer)
+     */
     const VERSION = '1.0.0';
 
     /**
