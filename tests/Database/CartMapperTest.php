@@ -10,6 +10,16 @@ class CartMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group hmvc
+     */
+    public function testCartMapperIsAnAbstractModel()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\CartMapper');
+        $this->assertTrue($class->isSubclassOf('\StoreCore\Database\AbstractModel'));
+    }
+
+
+    /**
      * @group distro
      * @testdox VERSION constant is defined
      */
