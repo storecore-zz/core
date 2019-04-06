@@ -95,6 +95,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_PAYSAFECARD', 'paysafecard', 0),
     ('NOUN_PHP', 'PHP', 1),
     ('NOUN_PINTEREST', 'Pinterest', 0),
+    ('NOUN_SENDCLOUD', 'SendCloud', 1),
     ('NOUN_SOFORT', 'SOFORT', 0),
     ('NOUN_SOFORT_BANKING', 'SOFORT Banking', 0),
     ('NOUN_STORECORE', 'StoreCore', 0),
