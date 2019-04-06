@@ -6,7 +6,7 @@ namespace StoreCore\AMP;
  *
  * @api
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2018 StoreCore™
+ * @copyright Copyright © 2018–2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
  * @see       https://www.ampproject.org/docs/reference/components
@@ -58,7 +58,7 @@ abstract class AbstractComponent implements LayoutInterface
      * @param string $name
      *   Name of the attribute to get.
      *
-     * @return mixed
+     * @return string|int|null
      *   Returns the attribute or null of the attribute does not exist.
      */
     public function __get($name)
