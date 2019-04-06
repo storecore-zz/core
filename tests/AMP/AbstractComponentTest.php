@@ -224,6 +224,7 @@ class AbstractComponentTest extends PHPUnit_Framework_TestCase
     public function testPublicSetLayoutMethodThrowsInvalidArgumentExceptionOnEmptyString()
     {
         $empty_string = (string)null;
+        $this->assertEmpty($empty_string);
         $mock = $this->getMockForAbstractClass('\StoreCore\AMP\AbstractComponent');
         $mock->setLayout($empty_string);
     }
