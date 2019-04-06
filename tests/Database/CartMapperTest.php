@@ -10,7 +10,18 @@ class CartMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group hmvc
+     */
+    public function testCartMapperIsAnAbstractModel()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\CartMapper');
+        $this->assertTrue($class->isSubclassOf('\StoreCore\Database\AbstractModel'));
+    }
+
+
+    /**
      * @group distro
+     * @testdox VERSION constant is defined
      */
     public function testVersionConstantIsDefined()
     {
@@ -19,12 +30,25 @@ class CartMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     * @testdox VERSION constant is non-empty string
+     */
+    public function testVersionConstantIsNonEmptyString()
+    {
+        $this->assertNotEmpty(\StoreCore\Database\CartMapper::VERSION);
+        $this->assertInternalType('string', \StoreCore\Database\CartMapper::VERSION);
+    }
+
+    /**
+     * @depends testVersionConstantIsNonEmptyString
      * @group distro
      */
-    public function testVersionMatchesDevelopmentBranch()
+    public function testVersionMatchesMasterBranch()
     {
         $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Database\CartMapper::VERSION);
     }
+
 
     /**
      * @testdox Public getOrder() method exists

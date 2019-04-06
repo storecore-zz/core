@@ -2,7 +2,7 @@
 /**
  * StoreCore Store Front Application
  *
- * @copyright Copyright © 2015–2018 StoreCore™
+ * @copyright Copyright © 2015–2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @version   1.0.0-alpha.1
  *
@@ -32,20 +32,6 @@ if (!defined('STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR')) {
     define('STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR', STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'StoreCore' . DIRECTORY_SEPARATOR);
 }
 require STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'bootloader.php';
-
-// Cache directory and subdirectories
-if (!defined('STORECORE_FILESYSTEM_CACHE_DIR')) {
-    define('STORECORE_FILESYSTEM_CACHE_DIR', STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'cache' . DIRECTORY_SEPARATOR);
-}
-if (!defined('STORECORE_FILESYSTEM_CACHE_DATA_DIR')) {
-    define('STORECORE_FILESYSTEM_CACHE_DATA_DIR', STORECORE_FILESYSTEM_CACHE_DIR . 'data' . DIRECTORY_SEPARATOR);
-}
-if (!defined('STORECORE_FILESYSTEM_CACHE_OBJECTS_DIR')) {
-    define('STORECORE_FILESYSTEM_CACHE_OBJECTS_DIR', STORECORE_FILESYSTEM_CACHE_DIR . 'objects' . DIRECTORY_SEPARATOR);
-}
-if (!defined('STORECORE_FILESYSTEM_CACHE_PAGES_DIR')) {
-    define('STORECORE_FILESYSTEM_CACHE_PAGES_DIR', STORECORE_FILESYSTEM_CACHE_DIR . 'pages' . DIRECTORY_SEPARATOR);
-}
 
 // Refuse requests from a blacklisted client IP address.
 $request = $registry->get('Request');

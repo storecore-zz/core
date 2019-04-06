@@ -3,7 +3,7 @@
  * StoreCore Framework Bootloader
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015–2018 StoreCore™
+ * @copyright Copyright © 2015–2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   1.0.0-alpha.1
@@ -84,7 +84,10 @@ require __DIR__ . DIRECTORY_SEPARATOR . 'Route.php';
 // Load and populate the global service locator.
 $registry = \StoreCore\Registry::getInstance();
 $registry->set('Request', new \StoreCore\Request());
+$registry->set('Autoloader', $loader);
+unset($loader);
 
+// Start logging
 if (!defined('STORECORE_NULL_LOGGER')) {
     define('STORECORE_NULL_LOGGER', false);
 }

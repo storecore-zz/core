@@ -9,16 +9,37 @@ class FileSystemBackupTest extends PHPUnit_Framework_TestCase
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'FileSystem/Backup.php');
     }
 
+
+    /**
+     * @group distro
+     * @testdox VERSION constant is defined
+     */
     public function testVersionConstantIsDefined()
     {
         $class = new \ReflectionClass('\StoreCore\FileSystem\Backup');
         $this->assertTrue($class->hasConstant('VERSION'));
     }
 
-    public function testVersionMatchesDevelopmentBranch()
+    /**
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     * @testdox VERSION constant is non-empty string
+     */
+    public function testVersionConstantIsNonEmptyString()
+    {
+        $this->assertNotEmpty(\StoreCore\FileSystem\Backup::VERSION);
+        $this->assertInternalType('string', \StoreCore\FileSystem\Backup::VERSION);
+    }
+
+    /**
+     * @depends testVersionConstantIsNonEmptyString
+     * @group distro
+     */
+    public function testVersionMatchesMasterBranch()
     {
         $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\FileSystem\Backup::VERSION);
     }
+
 
     public function testSaveMethodIsPublic()
     {

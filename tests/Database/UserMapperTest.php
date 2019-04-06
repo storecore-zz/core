@@ -21,6 +21,15 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group hmvc
+     */
+    public function testUserMapperIsAnAbstractDataAccessObject()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\UserMapper');
+        $this->assertTrue($class->isSubclassOf('\StoreCore\Database\AbstractDataAccessObject'));
+    }
+
+    /**
      * @group distro
      * @testdox VERSION constant is defined
      */

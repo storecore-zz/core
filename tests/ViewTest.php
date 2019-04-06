@@ -14,6 +14,7 @@ class ViewTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group distro
+     * @testdox VERSION constant is defined
      */
     public function testVersionConstantIsDefined()
     {
@@ -24,29 +25,23 @@ class ViewTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
+     * @testdox VERSION constant is non-empty string
      */
-    public function testVersionConstantIsString()
+    public function testVersionConstantIsNonEmptyString()
     {
+        $this->assertNotEmpty(\StoreCore\View::VERSION);
         $this->assertInternalType('string', \StoreCore\View::VERSION);
     }
 
     /**
-     * @depends testVersionConstantIsDefined
+     * @depends testVersionConstantIsNonEmptyString
      * @group distro
      */
-    public function testVersionConstantIsNotEmpty()
-    {
-        $this->assertNotEmpty(\StoreCore\View::VERSION);
-    }
-
-    /**
-     * @depends testVersionConstantIsDefined
-     * @group distro
-     */
-    public function testVersionMatchesDevelopmentBranch()
+    public function testVersionMatchesMasterBranch()
     {
         $this->assertGreaterThanOrEqual('1.0.0', \StoreCore\View::VERSION);
     }
+
 
     /**
      * @testdox Constructor exists
