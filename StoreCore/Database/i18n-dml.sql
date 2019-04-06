@@ -18,7 +18,7 @@
     +------------+------------+------------+-----------------------+
 
     @author    Ward van der Put <Ward.van.der.Put@storecore.org>
-    @copyright Copyright © 2014–2018 StoreCore™
+    @copyright Copyright © 2014–2019 StoreCore™
     @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
     @package   StoreCore\I18N
     @version   0.1.0
@@ -743,6 +743,13 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_SETTINGS', 'it-IT', 'Impostazioni', 1),
     ('HEADING_SETTINGS', 'nl-NL', 'Instellingen', 1),
     ('HEADING_SETTINGS', 'pt-PT', 'Definições', 1);
+
+-- Text
+INSERT IGNORE INTO sc_translation_memory
+    (translation_id, language_id, translation, admin_only_flag)
+  VALUES
+    ('TEXT_POWERED_BY_STORECORE', 'en-GB', 'Powered by StoreCore™', 0);
+
 
 /*
     Google Product Taxonomy
