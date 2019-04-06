@@ -1,5 +1,5 @@
 <?php
-class AMPAbstractComponentTest extends PHPUnit_Framework_TestCase
+class AbstractComponentTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @group distro
@@ -57,29 +57,20 @@ class AMPAbstractComponentTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
-     * @testdox VERSION constant is not empty
+     * @testdox VERSION constant is non-empty string
      */
-    public function testVersionConstantIsNotEmpty()
+    public function testVersionConstantIsNonEmptyString()
     {
         $this->assertNotEmpty(\StoreCore\AMP\AbstractComponent::VERSION);
-    }
-
-    /**
-     * @depends testVersionConstantIsDefined
-     * @group distro
-     * @testdox VERSION constant is string
-     */
-    public function testVersionConstantIsString()
-    {
         $this->assertInternalType('string', \StoreCore\AMP\AbstractComponent::VERSION);
     }
 
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
-     * @testdox VERSION constant matches development branch
+     * @testdox VERSION constant matches master branch
      */
-    public function testVersionConstantMatchesDevelopmentBranch()
+    public function testVersionConstantMatchesMasterBranch()
     {
         $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\AMP\AbstractComponent::VERSION);
     }
@@ -217,12 +208,13 @@ class AMPAbstractComponentTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @testdox Public setLayout() method has one parameter
+     * @testdox Public setLayout() method has one required parameter
      */
-    public function testPublicSetLayoutMethodHasOneParameter()
+    public function testPublicSetLayoutMethodHasOneRequiredParameter()
     {
         $method = new \ReflectionMethod('\StoreCore\AMP\AbstractComponent', 'setLayout');
         $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
     }
 
     /**
