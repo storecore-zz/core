@@ -1228,7 +1228,7 @@ CREATE TABLE IF NOT EXISTS sc_store_categories (
 
 --
 -- Schema.org item availability attributes
--- @see http://schema.org/ItemAvailability
+-- @see https://schema.org/ItemAvailability
 --
 CREATE TABLE IF NOT EXISTS sc_product_availability_types (
   availability_id    TINYINT(3) UNSIGNED  NOT NULL,
@@ -1239,15 +1239,15 @@ CREATE TABLE IF NOT EXISTS sc_product_availability_types (
 INSERT IGNORE INTO sc_product_availability_types
     (availability_id, item_availability)
   VALUES
-    (1, 'http://schema.org/Discontinued'),
-    (2, 'http://schema.org/InStock'),
-    (3, 'http://schema.org/InStoreOnly'),
-    (4, 'http://schema.org/LimitedAvailability'),
-    (5, 'http://schema.org/OnlineOnly'),
-    (6, 'http://schema.org/OutOfStock'),
-    (7, 'http://schema.org/PreOrder'),
-    (8, 'http://schema.org/PreSale'),
-    (9, 'http://schema.org/SoldOut');
+    (1, 'https://schema.org/Discontinued'),
+    (2, 'https://schema.org/InStock'),
+    (3, 'https://schema.org/InStoreOnly'),
+    (4, 'https://schema.org/LimitedAvailability'),
+    (5, 'https://schema.org/OnlineOnly'),
+    (6, 'https://schema.org/OutOfStock'),
+    (7, 'https://schema.org/PreOrder'),
+    (8, 'https://schema.org/PreSale'),
+    (9, 'https://schema.org/SoldOut');
 
 
 -- Products

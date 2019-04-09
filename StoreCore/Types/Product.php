@@ -5,7 +5,7 @@ namespace StoreCore\Types;
  * Schema.org Product
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2016–2018 StoreCore™
+ * @copyright Copyright © 2016–2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @see       https://schema.org/Product

@@ -5,7 +5,7 @@ namespace StoreCore;
  * StoreCore Product Model
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2018 StoreCore™
+ * @copyright Copyright © 2018–2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
@@ -21,7 +21,7 @@ class Product extends AbstractModel
     /**
      * @var \StoreCore\Types\ItemAvailability $Availability
      *   Schema.org item availability as an ItemAvailability object.  Defaults
-     *   to a 'http://schema.org/InStock' product availability to prevent any
+     *   to a `https://schema.org/InStock` product availability to prevent any
      *   disruption of ongoing product sales.
      */
     protected $Availability;
@@ -80,7 +80,7 @@ class Product extends AbstractModel
     public function __construct(Registry $registry)
     {
         parent::__construct($registry);
-        $this->Availability = new \StoreCore\Types\ItemAvailability('http://schema.org/InStock', true);
+        $this->Availability = new \StoreCore\Types\ItemAvailability('https://schema.org/InStock', true);
         $this->setModificationDate();
     }
 
@@ -268,7 +268,7 @@ class Product extends AbstractModel
      * Set the product’s sales discontinuation date.
      *
      * Products MAY be discontinued without removing them entirely by simply
-     * setting a sales discontinuation date and time.  
+     * setting a sales discontinuation date and time.
      *
      * @param \DateTime|string $date_and_time
      *   The date and time the product is no longer for sale.  If this optional
