@@ -2,7 +2,7 @@
 -- MySQL Data Definition
 --
 -- @author    Ward van der Put <Ward.van.der.Put@storecore.org>
--- @copyright Copyright © 2014–2018 StoreCore™
+-- @copyright Copyright © 2014–2019 StoreCore™
 -- @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
 -- @package   StoreCore\Database
 -- @version   0.1.0
@@ -286,12 +286,13 @@ CREATE TABLE IF NOT EXISTS sc_ip_blacklist (
   INDEX ix_thru_date (thru_date)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
--- Optional IP blacklist comments (without a foreign key to archive records)
+-- Optional IP blacklist comments
 CREATE TABLE IF NOT EXISTS sc_ip_blacklist_comments (
   ip_address     VARCHAR(255)  NOT NULL,
   date_modified  TIMESTAMP     NOT NULL  DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP,
   comments       VARCHAR(255)  NULL  DEFAULT NULL  COMMENT 'Reason, source or other internal memo',
   PRIMARY KEY pk_ip_blacklist_comment_id (ip_address, date_modified),
+  FOREIGN KEY fk_ip_blacklist_comments_ip_blacklist (ip_address) REFERENCES sc_ip_blacklist (ip_address) ON DELETE CASCADE ON UPDATE CASCADE,
   INDEX ix_date_modified (date_modified DESC)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8  COLLATE=utf8_general_ci;
 
@@ -1697,19 +1698,22 @@ CREATE TABLE IF NOT EXISTS sc_product_media_texts (
 -- Order Management
 --
 CREATE TABLE IF NOT EXISTS sc_orders (
-  order_id        INT(10) UNSIGNED     NOT NULL,
-  store_id        TINYINT(3) UNSIGNED  NOT NULL  DEFAULT 1,
-  customer_id     INT(10) UNSIGNED     NULL  DEFAULT NULL,
-  backorder_flag  TINYINT(1) UNSIGNED  NOT NULL  DEFAULT 0,
-  cart_uuid       CHAR(36)             NOT NULL,
-  cart_rand       CHAR(192)            NOT NULL,
-  date_created    DATETIME             NOT NULL  DEFAULT CURRENT_TIMESTAMP,
-  date_modified   DATETIME             NULL  DEFAULT NULL  ON UPDATE CURRENT_TIMESTAMP,
-  date_confirmed  DATETIME             NULL  DEFAULT NULL,
-  date_cancelled  DATETIME             NULL  DEFAULT NULL,
-  date_deleted    DATETIME             NULL  DEFAULT NULL,
+  order_id        INT(10) UNSIGNED      NOT NULL,
+  store_id        TINYINT(3) UNSIGNED   NOT NULL  DEFAULT 1,
+  currency_id     SMALLINT(3) UNSIGNED  NOT NULL  DEFAULT 978,
+  customer_id     INT(10) UNSIGNED      NULL  DEFAULT NULL,
+  wishlist_flag   TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
+  backorder_flag  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
+  cart_uuid       CHAR(36)              NOT NULL,
+  cart_rand       CHAR(192)             NOT NULL,
+  date_created    DATETIME              NOT NULL  DEFAULT CURRENT_TIMESTAMP,
+  date_modified   DATETIME              NULL  DEFAULT NULL  ON UPDATE CURRENT_TIMESTAMP,
+  date_confirmed  DATETIME              NULL  DEFAULT NULL,
+  date_cancelled  DATETIME              NULL  DEFAULT NULL,
+  date_deleted    DATETIME              NULL  DEFAULT NULL,
   PRIMARY KEY pk_order_id (order_id),
   FOREIGN KEY fk_orders_stores (store_id) REFERENCES sc_stores (store_id) ON DELETE NO ACTION ON UPDATE CASCADE,
+  FOREIGN KEY fk_orders_currencies (currency_id) REFERENCES sc_currencies (currency_id) ON DELETE NO ACTION ON UPDATE CASCADE,
   FOREIGN KEY fk_orders_customers (customer_id) REFERENCES sc_customers (customer_id) ON DELETE NO ACTION ON UPDATE CASCADE,
   INDEX ix_cart (cart_uuid, cart_rand),
   INDEX ix_date_confirmed (date_confirmed DESC),
@@ -1719,13 +1723,16 @@ CREATE TABLE IF NOT EXISTS sc_orders (
 CREATE TABLE IF NOT EXISTS sc_order_products (
   order_id       INT(10) UNSIGNED       NOT NULL,
   product_id     MEDIUMINT(8) UNSIGNED  NOT NULL,
+  sort_order     TINYINT(3) UNSIGNED    NOT NULL  DEFAULT 0,
   units          SMALLINT(5) UNSIGNED   NOT NULL  DEFAULT 1,
   unit_price     DECIMAL(18,9)          NOT NULL  DEFAULT 0,
   date_added     DATETIME               NOT NULL  DEFAULT CURRENT_TIMESTAMP,
   date_modified  DATETIME               NULL  DEFAULT NULL  ON UPDATE CURRENT_TIMESTAMP,
+  date_deleted   DATETIME               NULL  DEFAULT NULL,
   PRIMARY KEY pk_order_products_id (order_id, product_id),
   FOREIGN KEY fk_order_products_orders (order_id) REFERENCES sc_orders (order_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_order_products_products (product_id) REFERENCES sc_products (product_id) ON DELETE NO ACTION ON UPDATE CASCADE
+  FOREIGN KEY fk_order_products_products (product_id) REFERENCES sc_products (product_id) ON DELETE NO ACTION ON UPDATE CASCADE,
+  INDEX ix_order_products_sort_order (sort_order ASC, date_added ASC)
 ) ENGINE=InnoDB  DEFAULT CHARSET=ascii  COLLATE=ascii_bin;
 
 CREATE TABLE IF NOT EXISTS sc_shipping_carriers (

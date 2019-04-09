@@ -5,14 +5,17 @@ namespace StoreCore;
  * HTML5 Document with AMP Support
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015-2018 StoreCore™
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-class Document
+class Document implements \StoreCore\Types\StringableInterface
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -50,14 +53,20 @@ class Document
     protected $Style = '';
     protected $Title = 'StoreCore';
 
-    /** @var array $MetaData */
+    /**
+     * @var array $MetaData
+     *   Key/value pairs for `<meta name="..." content="...">` meta tags.
+     */
     protected $MetaData = array(
         'generator' => 'StoreCore',
         'rating' => 'general',
         'robots' => 'index,follow',
+        'handheldfriendly' => 'true',
+        'mobileoptimized' => '320',
         'viewport' => 'width=device-width,initial-scale=1,minimum-scale=1',
         'apple-mobile-web-app-capable' => 'yes',
         'apple-mobile-web-app-status-bar-style' => 'black-translucent',
+        'format-detection' => 'telephone=no',
     );
 
     /**
@@ -76,8 +85,13 @@ class Document
     }
 
     /**
+     * Convert the document to an HTML string.
+     *
      * @param void
+     *
      * @return string
+     *   Returns the document in HTML5 or AMP HTML.
+     *
      * @uses getDocument()
      */
     public function __toString()
@@ -91,7 +105,8 @@ class Document
      * @param string $type
      * @param string $media
      * @param string $hreflang
-     * @return $this
+     *
+     * @return void
      *
      * @see http://www.w3.org/TR/html5/links.html
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link
@@ -126,38 +141,42 @@ class Document
         $key = mb_strtolower($key, 'UTF-8');
         $key = md5($key);
         $this->Links[$key] = $link;
-
-        return $this;
     }
 
     /**
-     * Add meta data for a <meta name="..."  content="..."> tag.
+     * Add meta data for a <meta name="..." content="..."> meta tag.
      *
      * @param string $name
+     *   Case-insensitive name (or key) of the meta tag.
+     *
      * @param string $content
-     * @return $this
+     *   Content (or value) of the meta tag.
+     *
+     * @return void
      */
     public function addMetaData($name, $content)
     {
         $name = trim($name);
         $name = strtolower($name);
         $this->MetaData[$name] = $content;
-        return $this;
     }
 
     /**
-     * Add meta property data for a <meta property="..." content="..."> tag.
+     * Add meta property data for a <meta property="..." content="..."> meta tag.
      *
      * @param string $property
+     *   Case-insensitive property name (or key) of the meta property tag.
+     *
      * @param string $content
-     * @return $this
+     *   Content (or value) of the meta tag.
+     *
+     * @return void
      */
     public function addMetaProperty($property, $content)
     {
         $name = trim($property);
         $name = strtolower($property);
         $this->MetaProperties[$property] = $content;
-        return $this;
     }
 
     /**
@@ -171,7 +190,7 @@ class Document
      *   the script to the end of the HTML document.  This RECOMMENDED setting
      *   usually speeds op client-side page rendering.
      *
-     * @return $this
+     * @return void
      */
     public function addScript($script, $defer = true)
     {
@@ -180,7 +199,6 @@ class Document
         } else {
             $this->Scripts[] = $script;
         }
-        return $this;
     }
 
     /**
@@ -199,7 +217,7 @@ class Document
      *   `$async` parameter is ignored (and the `async` attribute is reset
      *   to the default value false).
      *
-     * @return $this
+     * @return void
      */
     public function addScriptLink($src, $defer = true, $async = false)
     {
@@ -216,8 +234,6 @@ class Document
             'defer' => $defer,
             'async' => $async,
         );
-
-        return $this;
     }
 
     /**
@@ -233,7 +249,7 @@ class Document
      *   be set to null, to false or to an empty string if the parent container
      *   is to be omitted.
      *
-     * @return $this
+     * @return void
      */
     public function addSection($content, $container = 'section')
     {
@@ -251,15 +267,14 @@ class Document
         } else {
             $this->Sections[] = '<' . $container . '>' . $content . '</' . $container . '>';
         }
-
-        return $this;
     }
 
     /**
      * Add internal (embedded) CSS code.
      *
      * @param string $css
-     * @return $this
+     *
+     * @return void
      */
     public function addStyle($css)
     {
@@ -274,7 +289,6 @@ class Document
         $css = str_ireplace('; ', ';', $css);
         $css = str_ireplace(';}', '}', $css);
         $this->Style .= $css;
-        return $this;
     }
 
     /**
@@ -381,15 +395,12 @@ class Document
 
         /*
          * In an AMP page the charset definition MUST be the first child of the
-         * <head> tag and the AMP runtime MUST be loaded as the second child of
-         * the <head> tag.  If this document is not an AMP page, the minified
-         * JavaScript voor Material Design Lite (MDL) is loaded but deferred.
+         * `<head>` tag and the AMP runtime MUST be loaded as the second child
+         * of the `<head>` tag.
          */
         $head .= '<meta charset="utf-8">';
         if ($this->AcceleratedMobilePage) {
             $head .= '<script async src="https://cdn.ampproject.org/v0.js"></script>';
-        } else {
-            $head .= '<script defer src="/scripts/material.min.js"></script>';
         }
 
         $head .= '<title>' . $this->Title . '</title>';
@@ -480,21 +491,22 @@ class Document
      * Add a document description.
      *
      * @param string $description
-     * @return $this
+     * @return void
+     *
      * @uses \StoreCore\Document::addMetaData()
      */
     public function setDescription($description)
     {
         $description = trim($description);
         $this->addMetaData('description', $description);
-        return $this;
     }
 
     /**
      * Set the document language.
      *
      * @param string $language_code
-     * @return $this
+     *
+     * @return void
      */
     public function setLanguage($language_code)
     {
@@ -504,33 +516,32 @@ class Document
             $language_code = strtolower($language_codes[0]) . '-' . strtoupper($language_codes[1]);
         }
         $this->Language = $language_code;
-        return $this;
     }
 
     /**
      * Set the theme color.
      *
      * @param string $color
-     * @return $this
+     *
+     * @return void
      */
     public function setThemeColor($color)
     {
         $this->addMetaData('msapplication-navbutton-color', $color);
         $this->addMetaData('theme-color', $color);
-        return $this;
     }
 
     /**
      * Set the document title.
      *
      * @param string $title
-     * @return $this
+     *
+     * @return void
      */
     public function setTitle($title)
     {
         $title = trim($title);
         $this->Title = $title;
         $this->addMetaProperty('og:title', $title);
-        return $this;
     }
 }

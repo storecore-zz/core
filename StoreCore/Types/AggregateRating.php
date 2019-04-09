@@ -5,7 +5,7 @@ namespace StoreCore\Types;
  * Schema.org Aggregate Rating
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2016 StoreCore
+ * @copyright Copyright © 2016–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @see       https://schema.org/AggregateRating
@@ -13,6 +13,10 @@ namespace StoreCore\Types;
  */
 class AggregateRating extends Rating
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -27,12 +31,12 @@ class AggregateRating extends Rating
      * Set the item that is being reviewed or rated.
      *
      * @param \StoreCore\Types\Thing $thing
-     * @return $this
+     *
+     * @return void
      */
     public function setItemReviewed(Thing $thing)
     {
         $this->Data['itemReviewed'] = $thing;
-        return $this;
     }
 
     /**
@@ -41,12 +45,11 @@ class AggregateRating extends Rating
      * @param int $rating_count
      *   The count of total number of ratings.
      *
-     * @return $this
+     * @return void
      */
     public function setRatingCount($rating_count)
     {
         $this->Data['ratingCount'] = $rating_count;
-        return $this;
     }
 
     /**
@@ -55,11 +58,10 @@ class AggregateRating extends Rating
      * @param int $review_count
      *   The count of total number of reviews.
      *
-     * @return $this
+     * @return void
      */
     public function setReviewCount($review_count)
     {
         $this->Data['reviewCount'] = $review_count;
-        return $this;
     }
 }

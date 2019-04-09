@@ -5,13 +5,17 @@ namespace StoreCore\Types;
  * Shopping Cart Identifier
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2016 StoreCore
+ * @copyright Copyright © 2016–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-class CartID
+class CartID implements StringableInterface
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -23,8 +27,15 @@ class CartID
     private $CartID;
 
     /**
+     * Construct a cart identifier.
+     *
      * @param string|null $uuid
+     *   Existing universally unique identifier (UUID) or null to create
+     *   a new UUID.
+     *
      * @param string|null $token
+     *   Existing token or null to generate a new random token.
+     *
      * @return void
      */
     public function __construct($uuid = null, $token = null)
@@ -35,8 +46,13 @@ class CartID
     }
 
     /**
+     * Convert the cart ID data object to a string.
+     *
      * @param void
+     *
      * @return string
+     *   Returns the cart identifier as an encoded string.
+     *
      * @uses \StoreCore\Types\CartID::encode()
      */
     public function __toString()
@@ -48,6 +64,7 @@ class CartID
      * Decode a Base64 and JSON encoded string to a shopping cart ID.
      *
      * @param string $from_string
+     *   Encoded string to decode to a cart identifier.
      *
      * @return bool
      *   Returns true on success, otherwise false.
@@ -87,7 +104,9 @@ class CartID
      * Get the shopping cart ID as a MIME Base64 and JSON encoded string.
      *
      * @param void
+     *
      * @return string
+     *   Cart identifier encoded to a string.
      */
     public function encode()
     {
@@ -97,25 +116,30 @@ class CartID
     }
 
     /**
-     * Get the shopping cart UUID.
-     *
-     * @param void
-     * @return string
-     */
-    public function getUUID()
-    {
-        return $this->CartID[1];
-    }
-
-    /**
      * Get the shopping cart ID token.
      *
      * @param void
+     *
      * @return string
+     *   Returns the random cart token as a string with a fixed length
+     *   of 192 ASCII characters.
      */
     public function getToken()
     {
         return $this->CartID[2];
+    }
+
+    /**
+     * Get the shopping cart UUID.
+     *
+     * @param void
+     *
+     * @return string
+     *   Universally unique identifier (UUID).
+     */
+    public function getUUID()
+    {
+        return $this->CartID[1];
     }
 
     /**
@@ -126,10 +150,13 @@ class CartID
      */
     public function resetToken()
     {
-        $this->CartID[2]
-            = base_convert(bin2hex(openssl_random_pseudo_bytes(128)), 16, 36)
-            . base_convert(bin2hex(openssl_random_pseudo_bytes(128)), 16, 36)
-            . base_convert(bin2hex(openssl_random_pseudo_bytes(128)), 16, 36);
+        $characters = '0123456789abcdefghijklmnopqrstuvwzyzABCDEFGHIJKLMNOPQRSTUVWZYZ';
+        $characters = str_shuffle($characters);
+        $token = (string)null;
+        for ($i = 1; $i <= 192; $i++) {
+            $token .= substr($characters, mt_rand(0, 61), 1);
+        }
+        $this->CartID[2] = $token;
     }
 
     /**
@@ -176,6 +203,9 @@ class CartID
      * Set the shopping cart UUID.
      *
      * @param string|null $uuid
+     *   Universally unique identifier (UUID) as a string or null to generate
+     *   a new and random UUID.
+     *
      * @return void
      *
      * @throws \UnexpectedValueException

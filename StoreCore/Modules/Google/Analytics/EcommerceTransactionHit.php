@@ -33,24 +33,23 @@ class EcommerceTransactionHit extends Hit
      * @param mixed $transaction_affiliation
      *   Affiliation or store name.
      *
-     * @return $this
+     * @return void
      */
     public function setTransactionAffiliation($transaction_affiliation)
     {
         $this->Data['ta'] = $transaction_affiliation;
-        return $this;
     }
 
     /**
      * Set the transaction ID (ti).
      *
      * @param mixed $transaction_id
-     * @return $this
+     *
+     * @return void
      */
     public function setTransactionID($transaction_id)
     {
         $this->Data['ti'] = strval($transaction_id);
-        return $this;
     }
 
     /**
@@ -60,12 +59,11 @@ class EcommerceTransactionHit extends Hit
      *   The total revenue associated with the transaction.  This value SHOULD
      *   include any shipping or tax costs.
      *
-     * @return $this
+     * @return void
      */
     public function setTransactionRevenue($transaction_revenue)
     {
         $this->Data['tr'] = strval($transaction_id);
-        return $this;
     }
 
     /**
@@ -74,12 +72,11 @@ class EcommerceTransactionHit extends Hit
      * @param float $transaction_revenue
      *   The total shipping cost of the transaction.
      *
-     * @return $this
+     * @return void
      */
     public function setTransactionShipping($transaction_shipping)
     {
         $this->Data['ts'] = $transaction_shipping;
-        return $this;
     }
 
     /**
@@ -88,11 +85,10 @@ class EcommerceTransactionHit extends Hit
      * @param float $transaction_revenue
      *   The total tax of the transaction.
      *
-     * @return $this
+     * @return void
      */
     public function setTransactionTax($transaction_tax)
     {
         $this->Data['tt'] = $transaction_tax;
-        return $this;
     }
 }

@@ -5,14 +5,17 @@ namespace StoreCore;
  * Currency Model
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2017 StoreCore
+ * @copyright Copyright © 2017–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
 class Currency
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -71,6 +74,7 @@ class Currency
      * @param void
      *
      * @return string
+     *   Returns a currency symbol as a string.
      */
     public function getCurrencySymbol()
     {
@@ -94,7 +98,7 @@ class Currency
      * @param string $iso_currency_code
      *   Three-letter alphanumeric ISO 4217 currency code.
      *
-     * @return $this
+     * @return void
      *
      * @throws \InvalidArgumentException
      *   Throws a Standard PHP Library (SPL) invalid argument logic exception
@@ -113,7 +117,6 @@ class Currency
 
         $iso_currency_code = strtoupper($iso_currency_code);
         $this->CurrencyCode = $iso_currency_code;
-        return $this;
     }
 
     /**
@@ -123,7 +126,7 @@ class Currency
      *   ISO 4217 currency number as an integer or a three-digit numeric
      *   string.
      *
-     * @return $this
+     * @return void
      *
      * @throws \InvalidArgumentException
      *   Throws an invalid argument logic exception if the currency identifier
@@ -140,7 +143,6 @@ class Currency
         }
 
         $this->CurrencyID = $iso_currency_number;
-        return $this;
     }
 
     /**
@@ -151,12 +153,11 @@ class Currency
      *   optional parameter is omitted, the universal currency symbol '¤' is
      *   used.
      *
-     * @return $this
+     * @return void
      */
     public function setCurrencySymbol($currency_sign = '¤')
     {
         $this->CurrencySymbol = $currency_sign;
-        return $this;
     }
 
     /**
@@ -164,7 +165,7 @@ class Currency
      *
      * @param int $NumberOfDigits
      *
-     * @return $this
+     * @return void
      *
      * @throws \InvalidArgumentException
      *   Throws an invalid argument logic expection if the supplied parameter
@@ -182,6 +183,5 @@ class Currency
             throw new \DomainException();
         }
         $this->NumberOfDigits = $number_of_digits;
-        return $this;
     }
 }

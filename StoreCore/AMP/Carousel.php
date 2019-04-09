@@ -33,7 +33,7 @@ class Carousel implements LayoutInterface
     const TYPE_CAROUSEL = 'carousel';
 
     /**
-     * @var string TYPE_SLIDER
+     * @var string TYPE_SLIDES
      *   AMP `type="slides"` attribute turns a carousel into a slider.
      */
     const TYPE_SLIDES = 'slides';

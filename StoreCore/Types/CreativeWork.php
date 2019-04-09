@@ -5,7 +5,7 @@ namespace StoreCore\Types;
  * Schema.org Creative Work
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2016 StoreCore
+ * @copyright Copyright © 2016–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @see       https://schema.org/CreativeWork
@@ -13,6 +13,10 @@ namespace StoreCore\Types;
  */
 class CreativeWork extends Thing
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -76,20 +80,23 @@ class CreativeWork extends Thing
      *   The overall rating, based on a collection of reviews or ratings, of
      *   the item.
      *
-     * @return $this
+     * @return void
      */
     public function setAggregateRating(AggregateRating $aggregate_rating)
     {
         $this->Data['aggregateRating'] = $aggregate_rating;
-        return $this;
     }
 
     /**
      * Set the author of the creative work.
      *
      * @param Person|Organization $author
-     * @return $this
+     *
+     * @return void
+     *
      * @throws \InvalidArgumentException
+     *   Throws an invalid argument logic exception if the `$author` is not an
+     *   instance of `\StoreCore\Types\Person` or `\StoreCore\Types\Organization`.
      */
     public function setAuthor($author)
     {
@@ -98,19 +105,18 @@ class CreativeWork extends Thing
         } else {
             throw new \InvalidArgumentException();
         }
-        return $this;
     }
 
     /**
      * Indicate whether this content is family friendly.
      *
      * @param bool $is_family_friendly
-     * @return $this
+     *
+     * @return void
      */
     public function setIsFamilyFriendly($is_family_friendly = true)
     {
         $this->setProperty('isFamilyFriendly', (bool)$is_family_friendly);
-        return $this;
     }
 
     /**
@@ -122,7 +128,7 @@ class CreativeWork extends Thing
      *   be called repeatedly to add new keywords or tags to an existing
      *   keywords list; possible duplicates will then be removed.
      *
-     * @return $this
+     * @return void
      */
     public function setKeywords($keywords)
     {
@@ -145,7 +151,6 @@ class CreativeWork extends Thing
 
         $keywords = implode(', ', $keywords);
         $this->Data['keywords'] = $keywords;
-        return $this;
     }
 
     /**
@@ -157,7 +162,7 @@ class CreativeWork extends Thing
      *   schema version using an URL such as http://schema.org/version/2.0/ if
      *   precise indication of schema version was required by some application.
      *
-     * @return $this
+     * @return void
      *
      * @see http://schema.org/docs/releases.html
      */
@@ -165,6 +170,5 @@ class CreativeWork extends Thing
     public function setSchemaVersion($schema_version)
     {
         $this->setStringProperty('schemaVersion', $schema_version);
-        return $this;
     }
 }

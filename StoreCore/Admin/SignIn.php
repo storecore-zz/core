@@ -7,14 +7,17 @@ use \StoreCore\Response as Response;
  * Administration Sign-In
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015-2017 StoreCore
+ * @copyright Copyright © 2015–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
  * @version   0.1.0
  */
 class SignIn extends \StoreCore\AbstractController
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -148,6 +151,7 @@ class SignIn extends \StoreCore\AbstractController
 
         $response = new Response($this->Registry);
         $response->addHeader('Allow: GET, POST');
+        $response->addHeader('X-Robots-Tag: noindex');
         $response->setResponseBody($document);
         $response->output();
     }

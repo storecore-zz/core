@@ -5,7 +5,7 @@ namespace StoreCore\Types;
  * Schema.org Organization
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2016 StoreCore
+ * @copyright Copyright © 2016–2018 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @see       https://schema.org/Organization
@@ -13,6 +13,10 @@ namespace StoreCore\Types;
  */
 class Organization extends Thing
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -64,16 +68,16 @@ class Organization extends Thing
      * Set the postal address of an organization.
      *
      * This method sets the postal address of the organization, which MAY be a
-     * a physical address.  Use the setLocation() method if you need to include
+     * a physical address.  Use the `setLocation()` method if you need to include
      * the geographical coordinates of the location.
      *
      * @param PostalAddress $address
-     * @return $this
+     *
+     * @return void
      */
     public function setAddress(PostalAddress $address)
     {
         $this->Data['address'] = $address;
-        return $this;
     }
 
     /**
@@ -83,12 +87,11 @@ class Organization extends Thing
      *   The overall rating, based on a collection of reviews or ratings, of
      *   the organization.
      *
-     * @return $this
+     * @return void
      */
     public function setAggregateRating(AggregateRating $aggregate_rating)
     {
         $this->Data['aggregateRating'] = $aggregate_rating;
-        return $this;
     }
 
     /**
@@ -98,19 +101,18 @@ class Organization extends Thing
      *   The official name of the organization, for example the registered
      *   company name.
      *
-     * @return $this
+     * @return void
      */
     public function setLegalName($legal_name)
     {
         $this->setStringProperty('legalName', $legal_name);
-        return $this;
     }
 
     /**
      * Set the location of an organization.
      *
      * @param Place|PostalAddress|string $location
-     * @return $this
+     * @return void
      * @throws \InvalidArgumentException
      */
     public function setLocation($location)
@@ -124,7 +126,6 @@ class Organization extends Thing
         } else {
             throw new \InvalidArgumentException();
         }
-        return $this;
     }
 
     /**
@@ -135,23 +136,21 @@ class Organization extends Thing
      *
      * @see https://developers.google.com/search/docs/data-types/logo
      *
-     * @return $this
+     * @return void
      */
     public function setLogo($logo)
     {
         $this->Data['logo'] = $logo;
-        return $this;
     }
 
     /**
      * Set the telephone number.
      *
      * @param string $telephone
-     * @return $this
+     * @return void
      */
     public function setTelephone($telephone)
     {
         $this->setStringProperty('telephone', $telephone);
-        return $this;
     }
 }

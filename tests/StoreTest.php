@@ -20,7 +20,7 @@ class StoreTest extends PHPUnit_Framework_TestCase
     public function testStoreModelExtendsStoreCoreAbstractModel()
     {
         $store = new \StoreCore\Store(\StoreCore\Registry::getInstance());
-        $this->assertTrue($store instanceof \StoreCore\AbstractModel);
+        $this->assertInstanceOf(\StoreCore\AbstractModel::class, $store);
     }
 
     /**
@@ -106,7 +106,7 @@ class StoreTest extends PHPUnit_Framework_TestCase
     {
         $object = new \StoreCore\Store(\StoreCore\Registry::getInstance());
         $return = $object->getDateTimeZone();
-        $this->assertTrue($return instanceof \DateTimeZone);
+        $this->assertInstanceOf(\DateTimeZone::class, $return);
     }
 
     /**

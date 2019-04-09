@@ -23,7 +23,7 @@ class InternationalArticleNumberTest extends PHPUnit_Framework_TestCase
     public function testClassImplementsStringableInterface()
     {
         $object = new \StoreCore\Types\InternationalArticleNumber('9789043017121');
-        $this->assertTrue($object instanceof \StoreCore\Types\StringableInterface);
+        $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $object);
     }
 
     /**
@@ -32,7 +32,7 @@ class InternationalArticleNumberTest extends PHPUnit_Framework_TestCase
     public function testClassImplementsTypeInterface()
     {
         $object = new \StoreCore\Types\InternationalArticleNumber('9789043017121');
-        $this->assertTrue($object instanceof \StoreCore\Types\TypeInterface);
+        $this->assertInstanceOf(\StoreCore\Types\TypeInterface::class, $object);
     }
 
     /**
@@ -41,7 +41,7 @@ class InternationalArticleNumberTest extends PHPUnit_Framework_TestCase
     public function testClassImplementsValidateInterface()
     {
         $object = new \StoreCore\Types\InternationalArticleNumber('9789043017121');
-        $this->assertTrue($object instanceof \StoreCore\Types\ValidateInterface);
+        $this->assertInstanceOf(\StoreCore\Types\ValidateInterface::class, $object);
     }
 
     /**
@@ -258,7 +258,7 @@ class InternationalArticleNumberTest extends PHPUnit_Framework_TestCase
     {
         $current_ean = new \StoreCore\Types\InternationalArticleNumber('4006381333931');
         $next_ean = $current_ean->getNextNumber();
-        $this->assertTrue($next_ean instanceof \StoreCore\Types\InternationalArticleNumber);
+        $this->assertInstanceOf(\StoreCore\Types\InternationalArticleNumber::class, $next_ean);
     }
 
     /**
@@ -310,7 +310,7 @@ class InternationalArticleNumberTest extends PHPUnit_Framework_TestCase
     public function testPublicStaticGetRandomNumberReturnsInternationalArticleNumberObject()
     {
         $ean = \StoreCore\Types\InternationalArticleNumber::getRandomNumber();
-        $this->assertTrue($ean instanceof \StoreCore\Types\InternationalArticleNumber);
+        $this->assertInstanceOf(\StoreCore\Types\InternationalArticleNumber::class, $ean);
     }
 
     /**
