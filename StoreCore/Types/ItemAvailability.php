@@ -5,11 +5,12 @@ namespace StoreCore\Types;
  * Schema.org ItemAvailability.
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2018 StoreCore™
+ * @copyright Copyright © 2018–2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @see       http://schema.org/ItemAvailability
+ * @see       https://schema.org/ItemAvailability
  * @see       https://developers.google.com/search/docs/data-types/product
+ * @see       https://support.google.com/merchants/answer/7353427?hl=en
  * @version   0.1.0
  */
 class ItemAvailability extends Varchar implements TypeInterface, StringableInterface
@@ -25,21 +26,21 @@ class ItemAvailability extends Varchar implements TypeInterface, StringableInter
      *   Fixed list of possible item availability options as schema.org URLs.
      */
     private $EnumerationMembers = array(
-        1 => 'http://schema.org/Discontinued',
-        2 => 'http://schema.org/InStock',
-        3 => 'http://schema.org/InStoreOnly',
-        4 => 'http://schema.org/LimitedAvailability',
-        5 => 'http://schema.org/OnlineOnly',
-        6 => 'http://schema.org/OutOfStock',
-        7 => 'http://schema.org/PreOrder',
-        8 => 'http://schema.org/PreSale',
-        9 => 'http://schema.org/SoldOut',
+        1 => 'https://schema.org/Discontinued',
+        2 => 'https://schema.org/InStock',
+        3 => 'https://schema.org/InStoreOnly',
+        4 => 'https://schema.org/LimitedAvailability',
+        5 => 'https://schema.org/OnlineOnly',
+        6 => 'https://schema.org/OutOfStock',
+        7 => 'https://schema.org/PreOrder',
+        8 => 'https://schema.org/PreSale',
+        9 => 'https://schema.org/SoldOut',
     );
 
     /**
      * @inheritDoc
      */
-    public function __construct($initial_value = 'http://schema.org/InStock', $strict = true)
+    public function __construct($initial_value = 'https://schema.org/InStock', $strict = true)
     {
         if (!$strict) {
             // Accept numbers if not in strict mode.
@@ -52,8 +53,8 @@ class ItemAvailability extends Varchar implements TypeInterface, StringableInter
                 }
             } else {
                 // Accept https:// instead of http:// if not in strict mode.
-                if (substr($initial_value, 0, 8) === 'https://') {
-                    $initial_value = str_replace('https://', 'http://', $initial_value);
+                if (substr($initial_value, 0, 7) === 'http://') {
+                    $initial_value = str_replace('http://', 'https://', $initial_value);
                 }
             }
         }
