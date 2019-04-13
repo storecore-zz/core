@@ -25,7 +25,7 @@ class ProductTest extends PHPUnit_Framework_TestCase
     public function testProductExtendsStoreCoreAbstractModel()
     {
         $product = new \StoreCore\Product(\StoreCore\Registry::getInstance());
-        $this->assertTrue($product instanceof \StoreCore\AbstractModel);
+        $this->assertInstanceOf('\StoreCore\AbstractModel', $product);
     }
 
     /**
@@ -89,16 +89,17 @@ class ProductTest extends PHPUnit_Framework_TestCase
 
     /**
      * @depends publicSetAvailabilityMethodExists
-     * @testdox Public setAvailability() method has one parameter
+     * @testdox Public setAvailability() method has only one required parameter
      */
-    public function testPublicSetAvailabilityMethodHasOneParameter()
+    public function testPublicSetAvailabilityMethodHasOnlyOneRequiredParameter()
     {
         $method = new \ReflectionMethod('\StoreCore\Product', 'setAvailability');
         $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
     }
 
     /**
-     * @depends publicSetAvailabilityMethodExists
+     * @depends testPublicSetAvailabilityMethodHasOnlyOneRequiredParameter
      * @expectedException \ErrorException
      * @testdox Public setAvailability() method requires \StoreCore\Types\ItemAvailability object
      */
@@ -145,9 +146,8 @@ class ProductTest extends PHPUnit_Framework_TestCase
     public function testPublicGetAvailabilityMethodReturnsStoreCoreTypesItemAvailabilityObject()
     {
         $product = new \StoreCore\Product(\StoreCore\Registry::getInstance());
-        $this->assertTrue($product->getAvailability() instanceof \StoreCore\Types\ItemAvailability);
+        $this->assertInstanceOf('\StoreCore\Types\ItemAvailability', $product->getAvailability());
     }
-
 
 
     /**

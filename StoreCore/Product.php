@@ -20,8 +20,9 @@ class Product extends AbstractModel
 
     /**
      * @var \StoreCore\Types\ItemAvailability $Availability
-     *   Schema.org item availability as an ItemAvailability object.  Defaults
-     *   to a `https://schema.org/InStock` product availability to prevent any
+     *   Schema.org item availability as an `ItemAvailability` object
+     *   (https://schema.org/ItemAvailability).  Defaults to a
+     *   `https://schema.org/InStock` product availability to prevent any
      *   disruption of ongoing product sales.
      */
     protected $Availability;
@@ -90,7 +91,7 @@ class Product extends AbstractModel
      * @param void
      *
      * @return \StoreCore\Types\ItemAvailability
-     *   Returns the product availability as a schema.org ItemAvailability
+     *   Returns the product availability as a schema.org `ItemAvailability`
      *   data object.
      */
     public function getAvailability()
@@ -200,7 +201,7 @@ class Product extends AbstractModel
      * Set the product availability.
      *
      * @param \StoreCore\Types\ItemAvailability
-     *   The product availability as a schema.org ItemAvailability object.
+     *   The product availability as a schema.org `ItemAvailability` object.
      *
      * @return void
      */
