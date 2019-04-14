@@ -5,14 +5,17 @@ namespace StoreCore\Types;
  * Cache Key
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015–2018 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @copyright Copyright © 2015–2019 StoreCore™
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
 class CacheKey implements StringableInterface
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /** @var string $Key */
@@ -46,7 +49,9 @@ class CacheKey implements StringableInterface
      * Get the cache key.
      *
      * @param void
+     *
      * @return string
+     *   Returns a string containing the cache key as lowercase hexits.
      */
     public function get()
     {
@@ -57,8 +62,13 @@ class CacheKey implements StringableInterface
      * Derive the cache key from a string.
      *
      * @param string $str
+     *   Case-insensitive string to convert to a cache key.
+     *
      * @return void
+     *
      * @throws \InvalidArgumentException
+     *   Throws an invalid argument exception if the `$str` parameter is not
+     *   a string or an empty string.
      */
     public function set($str)
     {
@@ -66,7 +76,7 @@ class CacheKey implements StringableInterface
             throw new \InvalidArgumentException();
         }
         $str = mb_strtolower($str, 'UTF-8');
-        $str = md5($str);
+        $str = hash('sha256', $str);
         $this->Key = $str;
     }
 }
