@@ -5,7 +5,7 @@ namespace StoreCore;
  * HTML5 Document with AMP Support
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015–2018 StoreCore™
+ * @copyright Copyright © 2015–2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
@@ -392,14 +392,10 @@ class Document implements \StoreCore\Types\StringableInterface
     public function getHead()
     {
         $head  = '<head>';
-
-        /*
-         * In an AMP page the charset definition MUST be the first child of the
-         * `<head>` tag and the AMP runtime MUST be loaded as the second child
-         * of the `<head>` tag.
-         */
         $head .= '<meta charset="utf-8">';
+
         if ($this->AcceleratedMobilePage) {
+            $head .= '<link rel="preload" as="script" href="https://cdn.ampproject.org/v0.js">';
             $head .= '<script async src="https://cdn.ampproject.org/v0.js"></script>';
         }
 
