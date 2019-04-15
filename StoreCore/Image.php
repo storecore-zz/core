@@ -5,7 +5,7 @@ namespace StoreCore;
  * HTML Image.
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2017–2018 StoreCore™
+ * @copyright Copyright © 2017–2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
  * @version   0.1.0
@@ -54,8 +54,7 @@ class Image implements \StoreCore\Types\StringableInterface
      */
     public function __toString()
     {
-        $str  = '<img';
-        $str .= ' alt="'. htmlentities($this->getAlt()) . '"';
+        $str = '<img alt="' . htmlentities($this->getAlt()) . '"';
 
         if ($this->getHeight() !== null) {
             $str .= ' height="' . $this->getHeight() . '"';
@@ -185,7 +184,7 @@ class Image implements \StoreCore\Types\StringableInterface
         $image_url = filter_var($image_url, FILTER_SANITIZE_URL);
         $this->Source = $image_url;
     }
-    
+
     /**
      * Set the image width.
      *
