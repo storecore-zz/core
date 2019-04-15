@@ -161,6 +161,34 @@ class ImageTest extends PHPUnit_Framework_TestCase
 
 
     /**
+     * @testdox Public getSource() method exists
+     */
+    public function testPublicGetSourceMethodExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Image');
+        $this->assertTrue($class->hasMethod('getSource'));
+    }
+
+    /**
+     * @testdox Public getSource() method is public
+     */
+    public function testPublicGetSourceMethodIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Image', 'getSource');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @testdox Public getSource() method has no parameters
+     */
+    public function testPublicGetSourceMethodHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Image', 'getSource');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+
+    /**
      * @testdox Public getWidth() method exists
      */
     public function testPublicGetWidthMethodExists()

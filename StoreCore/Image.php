@@ -6,7 +6,7 @@ namespace StoreCore;
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
  * @copyright Copyright © 2017–2019 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
  * @version   0.1.0
  */
@@ -60,7 +60,7 @@ class Image implements \StoreCore\Types\StringableInterface
             $str .= ' height="' . $this->getHeight() . '"';
         }
 
-        $str .= ' src="' . $this->Source . '"';
+        $str .= ' src="' . $this->getSource() . '"';
 
         if ($this->getWidth() !== null) {
             $str .= ' width="' . $this->getWidth() . '"';
@@ -95,6 +95,19 @@ class Image implements \StoreCore\Types\StringableInterface
     public function getHeight()
     {
         return $this->Height;
+    }
+
+    /**
+     * Get the image source (src).
+     *
+     * @param void
+     *
+     * @return string
+     *   Returns the source URL of the image file.
+     */
+    public function getSource()
+    {
+        return $this->Source;
     }
 
     /**
