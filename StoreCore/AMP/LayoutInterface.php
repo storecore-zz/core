@@ -24,6 +24,7 @@ interface LayoutInterface
      * @var string LAYOUT_FIXED
      * @var string LAYOUT_FIXED_HEIGHT
      * @var string LAYOUT_FLEX_ITEM
+     * @var string LAYOUT_INTRINSIC
      * @var string LAYOUT_NODISPLAY
      * @var string LAYOUT_RESPONSIVE
      */
@@ -32,6 +33,7 @@ interface LayoutInterface
     const LAYOUT_FIXED        = 'fixed';
     const LAYOUT_FIXED_HEIGHT = 'fixed-height';
     const LAYOUT_FLEX_ITEM    = 'flex-item';
+    const LAYOUT_INTRINSIC    = 'intrinsic';
     const LAYOUT_NODISPLAY    = 'nodisplay';
     const LAYOUT_RESPONSIVE   = 'responsive';
 

@@ -6,29 +6,50 @@ class ImageTest extends PHPUnit_Framework_TestCase
      */
     public function testImageClassFileExists()
     {
-        $this->assertFileExists(
-            STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Image.php'
-        );
+        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Image.php');
     }
 
     /**
      * @group hmvc
-     * @testdox Class implements \StoreCore\Types\StringableInterface
+     * @testdox \StoreCore\Image implements \StoreCore\Types\StringableInterface
      */
-    public function testClassImplementsStoreCoreTypesStringableInterface()
+    public function testStoreCoreImageImplementsStoreCoreTypesStringableInterface()
     {
         $image = new \StoreCore\Image();
         $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $image);
     }
 
+
     /**
      * @group distro
+     * @testdox VERSION constant is defined
      */
     public function testVersionConstantIsDefined()
     {
         $class = new \ReflectionClass('\StoreCore\Image');
         $this->assertTrue($class->hasConstant('VERSION'));
     }
+
+    /**
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     * @testdox VERSION constant is non-empty string
+     */
+    public function testVersionConstantIsNonEmptyString()
+    {
+        $this->assertNotEmpty(\StoreCore\Image::VERSION);
+        $this->assertInternalType('string', \StoreCore\Image::VERSION);
+    }
+
+    /**
+     * @depends testVersionConstantIsNonEmptyString
+     * @group distro
+     */
+    public function testVersionMatchesMasterBranch()
+    {
+        $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Image::VERSION);
+    }
+
 
     /**
      * @testdox Public __toString() method exists
@@ -72,6 +93,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $this->assertEmpty(strip_tags((string)$image));
     }
 
+
     /**
      * @testdox Public getAlt() method exists
      */
@@ -91,14 +113,24 @@ class ImageTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @testdox Public getAlt() method has no parameters
+     */
+    public function testPublicGetAltMethodHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Image', 'getAlt');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+    /**
      * @testdox Public getAlt() method returns empty string by default
      */
     public function testPublicGetAltMethodReturnsEmptyStringByDefault()
     {
         $image = new \StoreCore\Image();
-        $this->assertTrue(empty($image->getAlt()));
-        $this->assertTrue(is_string($image->getAlt()));
+        $this->assertEmpty($image->getAlt());
+        $this->assertInternalType('string', $image->getAlt());
     }
+
 
     /**
      * @testdox Public getHeight() method exists
@@ -119,6 +151,44 @@ class ImageTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @testdox Public getHeight() method has no parameters
+     */
+    public function testPublicGetHeightMethodHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Image', 'getHeight');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+
+    /**
+     * @testdox Public getSource() method exists
+     */
+    public function testPublicGetSourceMethodExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Image');
+        $this->assertTrue($class->hasMethod('getSource'));
+    }
+
+    /**
+     * @testdox Public getSource() method is public
+     */
+    public function testPublicGetSourceMethodIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Image', 'getSource');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @testdox Public getSource() method has no parameters
+     */
+    public function testPublicGetSourceMethodHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Image', 'getSource');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+
+    /**
      * @testdox Public getWidth() method exists
      */
     public function testPublicGetWidthMethodExists()
@@ -135,6 +205,16 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $method = new \ReflectionMethod('\StoreCore\Image', 'getWidth');
         $this->assertTrue($method->isPublic());
     }
+
+    /**
+     * @testdox Public getWidth() method has no parameters
+     */
+    public function testPublicGetWidthMethodHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Image', 'getWidth');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
 
     /**
      * @testdox Public setAlt() method exists
@@ -155,6 +235,16 @@ class ImageTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @testdox Public setAlt() method has one required parameter
+     */
+    public function testPublicSetAltMethodHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Image', 'setAlt');
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+
+    /**
      * @testdox Public setHeight() method exists
      */
     public function testPublicSetHeightMethodExists()
@@ -173,6 +263,15 @@ class ImageTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @testdox Public setHeight() method has one required parameter
+     */
+    public function testPublicSetHeightMethodHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Image', 'setHeight');
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+    /**
      * @expectedException \DomainException
      * @testdox Public setHeight() method throws \DomainException on 0 (zero)
      */
@@ -181,6 +280,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $image = new \StoreCore\Image();
         $image->setHeight(0);
     }
+
 
     /**
      * @testdox Public setSource() method exists
@@ -201,6 +301,16 @@ class ImageTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @testdox Public setSource() method has one required parameter
+     */
+    public function testPublicSetSourceMethodHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Image', 'setSource');
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+
+    /**
      * @testdox Public setWidth() method exists
      */
     public function testPublicSetWidthMethodExists()
@@ -219,6 +329,15 @@ class ImageTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @testdox Public setWidth() method has one required parameter
+     */
+    public function testPublicSetWidthMethodHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Image', 'setWidth');
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+    /**
      * @expectedException \DomainException
      * @testdox Public setWidth() method throws \DomainException on 0 (zero)
      */
@@ -226,5 +345,38 @@ class ImageTest extends PHPUnit_Framework_TestCase
     {
         $image = new \StoreCore\Image();
         $image->setWidth(0);
+    }
+
+
+    /**
+     * @testdox Supports 8K UHD image resolutions
+     */
+    public function testSupports8KUhdImageResolutions()
+    {
+        $image = new \StoreCore\Image();
+        $image->setWidth(7680);
+        $image->setHeight(4320);
+        $this->assertSame(7680, $image->getWidth());
+        $this->assertSame(4320, $image->getHeight());
+    }
+    
+    /**
+     * @expectedException \DomainException
+     * @testdox Public setWidth() method throws \DomainException on width over 7680
+     */
+    public function testPublicSetWidthMethodThrowsDomainExceptionOnWidthOver7680()
+    {
+        $image = new \StoreCore\Image();
+        $image->setWidth(7680 + 1);
+    }
+
+    /**
+     * @expectedException \DomainException
+     * @testdox Public setHeight() method throws \DomainException on height over 4320
+     */
+    public function testPublicSetHeightMethodThrowsDomainExceptionOnHeightOver4320()
+    {
+        $image = new \StoreCore\Image();
+        $image->setHeight(4320 + 1);
     }
 }

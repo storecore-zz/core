@@ -5,15 +5,19 @@ namespace StoreCore\AMP;
  * AMP Image <amp-img>
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2017–2018 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @copyright Copyright © 2017–2019 StoreCore™
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
- * @see       https://www.ampproject.org/docs/reference/components/amp-img
+ * @see       https://amp.dev/documentation/components/amp-img
+ * @see       https://amp.dev/documentation/examples/components/amp-img/
  * @version   0.1.0
  */
 class Image extends \StoreCore\Image implements LayoutInterface
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -52,7 +56,7 @@ class Image extends \StoreCore\Image implements LayoutInterface
     public function __toString()
     {
         $str = '<amp-img alt="' . $this->getAlt() . '" layout="'. $this->getLayout()
-            . '" height="' . $this->getHeight() . '" src="' . $this->Source . '" width="'
+            . '" height="' . $this->getHeight() . '" src="' . $this->getSource() . '" width="'
             . $this->getWidth() . '">';
 
         if ($this->Fallback !== null) {
