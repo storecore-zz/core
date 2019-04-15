@@ -180,8 +180,6 @@ class Image implements \StoreCore\Types\StringableInterface
         if (!is_string($image_url)) {
             throw new \InvalidArgumentException();
         }
-
-        $image_url = filter_var($image_url, FILTER_SANITIZE_URL);
         $this->Source = $image_url;
     }
 
