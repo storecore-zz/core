@@ -346,4 +346,37 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $image = new \StoreCore\Image();
         $image->setWidth(0);
     }
+
+
+    /**
+     * @testdox Supports 8K UHD image resolutions
+     */
+    public function testSupports8KUhdImageResolutions()
+    {
+        $image = new \StoreCore\Image();
+        $image->setWidth(7680);
+        $image->setHeight(4320);
+        $this->assertSame(7680, $image->getWidth());
+        $this->assertSame(4320, $image->getHeight());
+    }
+    
+    /**
+     * @expectedException \DomainException
+     * @testdox Public setWidth() method throws \DomainException on width over 7680
+     */
+    public function testPublicSetWidthMethodThrowsDomainExceptionOnWidthOver7680()
+    {
+        $image = new \StoreCore\Image();
+        $image->setWidth(7680 + 1);
+    }
+
+    /**
+     * @expectedException \DomainException
+     * @testdox Public setHeight() method throws \DomainException on height over 4320
+     */
+    public function testPublicSetHeightMethodThrowsDomainExceptionOnHeightOver4320()
+    {
+        $image = new \StoreCore\Image();
+        $image->setHeight(4320 + 1);
+    }
 }

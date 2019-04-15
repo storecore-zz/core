@@ -157,8 +157,7 @@ class Image implements \StoreCore\Types\StringableInterface
      *
      * @throws \DomainException
      *   Throws a domain exception if the height is smaller than 1 or greater
-     *   than 2160, the default height of a 3840 × 2160 Ultra HD (UHD-1) or
-     *   “4K” image.
+     *   than 4320, the default height a 7680 × 4320 pixels 8K UHD image.
      *
      * @throws \InvalidArgumentException
      *   Throws an invalid argument exception if the height is not a number.
@@ -173,7 +172,7 @@ class Image implements \StoreCore\Types\StringableInterface
             }
         }
 
-        if ($height_in_pixels < 1 || $height_in_pixels > 2160) {
+        if ($height_in_pixels < 1 || $height_in_pixels > 4320) {
             throw new \DomainException();
         }
 
@@ -206,7 +205,7 @@ class Image implements \StoreCore\Types\StringableInterface
      *
      * @throws \DomainException
      *   Throws a domain exception if the width is smaller than 1 or greater
-     *   than 3840, the default width of a 3840 × 2160 Ultra HD image.
+     *   than 7680, the default width of a 7680 × 4320 pixels 8K UHD image.
      *
      * @throws \InvalidArgumentException
      *   Throws an invalid argument exception if the width is not a number.
@@ -221,7 +220,7 @@ class Image implements \StoreCore\Types\StringableInterface
             }
         }
 
-        if ($width_in_pixels < 1 || $width_in_pixels > 3840) {
+        if ($width_in_pixels < 1 || $width_in_pixels > 7680) {
             throw new \DomainException();
         }
 
