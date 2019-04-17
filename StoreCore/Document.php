@@ -25,12 +25,6 @@ class Document implements \StoreCore\Types\StringableInterface
     protected $AcceleratedMobilePage = false;
 
     /**
-     * @var bool $jQuery
-     *   Include the jQuery JavaScript library (true) or not (default false).
-     */
-    protected $jQuery = false;
-
-    /**
      * @var string $Direction
      * @var string $Language
      * @var null|array $Links
@@ -344,37 +338,10 @@ class Document implements \StoreCore\Types\StringableInterface
         $html .= $this->getHead();
         $html .= $this->getBody();
 
-        /*
-         * jQuery
-         *
-         * Load jQuery from Google CDN with a fallback for Microsoft Internet
-         * Explorer (MSIE) <= 8.  If the CDN is not available, jQuery is loaded
-         * from the local /js/ assets.
-         *
-         * @see https://code.jquery.com/
-         * @see https://developers.google.com/speed/libraries/
-         * @see https://www.asp.net/ajax/cdn#jQuery_Releases_on_the_CDN_0
-         */
-        if (!$this->AcceleratedMobilePage) {
-            if ($this->jQuery) {
-                if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/(?i)msie [4-8]/', $_SERVER['HTTP_USER_AGENT'])) {
-                    $html .= '<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>';
-                    $html .= '<script>';
-                    $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-1.12.4.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
-                    $html .= '</script>';
-                } else {
-                    $html .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>';
-                    $html .= '<script>';
-                    $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-3.1.1.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
-                    $html .= '</script>';
-                }
-            }
-
-            if ($this->ScriptsDeferred !== null) {
-                $html .= '<script>';
-                $html .= implode($this->ScriptsDeferred);
-                $html .= '</script>';
-            }
+        if (!$this->AcceleratedMobilePage && $this->ScriptsDeferred !== null) {
+            $html .= '<script>';
+            $html .= implode($this->ScriptsDeferred);
+            $html .= '</script>';
         }
 
         $html .= '</html>';
@@ -465,22 +432,6 @@ class Document implements \StoreCore\Types\StringableInterface
 
         $head .= '</head>';
         return $head;
-    }
-
-    /**
-     * Enable or disable jQuery.
-     *
-     * @param bool $use_jquery
-     *   Use the jQuery JavaScript library (default true) or not (false).
-     *   By default jQuery is not included, so you must explicitly call
-     *   `jquerify()` or `jquerify(true)` if a document needs to support
-     *   jQuery JavaScript.
-     *
-     * @return void
-     */
-    public function jquerify($use_jquery = true)
-    {
-        $this->jQuery = (bool)$use_jquery;
     }
 
     /**
