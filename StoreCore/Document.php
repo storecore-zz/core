@@ -438,14 +438,19 @@ class Document implements \StoreCore\Types\StringableInterface
      * Add a document description.
      *
      * @param string $description
+     *   Short description of the document.
+     *
      * @return void
      *
      * @uses \StoreCore\Document::addMetaData()
+     *
+     * @uses \StoreCore\Document::addMetaProperty()
      */
     public function setDescription($description)
     {
         $description = trim($description);
         $this->addMetaData('description', $description);
+        $this->addMetaProperty('og:description', $description);
     }
 
     /**
