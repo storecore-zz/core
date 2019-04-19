@@ -49,18 +49,21 @@ class Document implements \StoreCore\Types\StringableInterface
 
     /**
      * @var array $MetaData
-     *   Key/value pairs for `<meta name="..." content="...">` meta tags.
+     *   Key/value pairs for `<meta name="…" content="…">` meta tags.
+     *   The recommended `viewport` for AMP pages is parsed first.
+     *   Other meta tags are listed in alphabetical order.
      */
     protected $MetaData = array(
-        'generator' => 'StoreCore',
-        'rating' => 'general',
-        'robots' => 'index,follow',
-        'handheldfriendly' => 'true',
-        'mobileoptimized' => '320',
         'viewport' => 'width=device-width,initial-scale=1,minimum-scale=1',
+
         'apple-mobile-web-app-capable' => 'yes',
         'apple-mobile-web-app-status-bar-style' => 'black-translucent',
         'format-detection' => 'telephone=no',
+        'generator' => 'StoreCore',
+        'handheldfriendly' => 'true',
+        'mobileoptimized' => '320',
+        'rating' => 'general',
+        'robots' => 'index,follow',
     );
 
     /**
@@ -354,15 +357,21 @@ class Document implements \StoreCore\Types\StringableInterface
      * @param void
      *
      * @return string
-     *   Returns the `<head>...</head>` container as a string.
+     *   Returns the `<head>…</head>` container as a string.
      */
     public function getHead()
     {
         $head  = '<head>';
+
+        // The first tag should be the `meta charset` tag, followed by any remaining `meta` tags.
         $head .= '<meta charset="utf-8">';
+        foreach ($this->MetaData as $name => $content) {
+            $head .= '<meta name="' . $name . '" content="' . $content . '">';
+        }
 
         if ($this->AcceleratedMobilePage) {
             $head .= '<link rel="preload" as="script" href="https://cdn.ampproject.org/v0.js">';
+            $head .= '<link rel="preconnect dns-prefetch" href="https://fonts.gstatic.com/" crossorigin>';
             $head .= '<script async src="https://cdn.ampproject.org/v0.js"></script>';
         }
 
@@ -370,22 +379,15 @@ class Document implements \StoreCore\Types\StringableInterface
 
         if ($this->Links !== null) {
             $links = (string)null;
-            $dns_prefetch = false;
             foreach ($this->Links as $link) {
                 $links .= '<link';
                 foreach ($link as $attribute => $value) {
                     $links .= ' ' . $attribute . '="' . $value . '"';
-                    if ($dns_prefetch === false && $attribute == 'rel' && $value == 'dns-prefetch') {
-                        $dns_prefetch = true;
-                    }
                 }
                 $links .= '>';
             }
-            if ($dns_prefetch) {
-                $head .= '<meta http-equiv="x-dns-prefetch-control" content="on">';
-            }
             $head .= $links;
-            unset($attribute, $dns_prefetch, $link, $links, $value);
+            unset($attribute, $link, $links, $value);
         }
 
         if ($this->ScriptLinks !== null) {
@@ -412,10 +414,6 @@ class Document implements \StoreCore\Types\StringableInterface
         }
         if ($this->AcceleratedMobilePage) {
             $head .= '<style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>';
-        }
-
-        foreach ($this->MetaData as $name => $content) {
-            $head .= '<meta name="' . $name . '" content="' . $content . '">';
         }
 
         if ($this->MetaProperties !== null) {
@@ -457,6 +455,8 @@ class Document implements \StoreCore\Types\StringableInterface
      * Set the document language.
      *
      * @param string $language_code
+     *   BCP 47 language tag as a string, for example 'de' for German or
+     *   'en-US' for American English.
      *
      * @return void
      */
@@ -474,6 +474,7 @@ class Document implements \StoreCore\Types\StringableInterface
      * Set the theme color.
      *
      * @param string $color
+     *   Color definition as a string.
      *
      * @return void
      */
@@ -487,6 +488,7 @@ class Document implements \StoreCore\Types\StringableInterface
      * Set the document title.
      *
      * @param string $title
+     *   Title of the document as a string.
      *
      * @return void
      */
