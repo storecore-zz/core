@@ -23,7 +23,7 @@ class LinkTest extends PHPUnit_Framework_TestCase
      * @group hmvc
      * @testdox Link implements \Psr\Link\LinkInterface
      */
-    public function testsLinkImplementsPsrLinkLinkInterface()
+    public function testLinkImplementsPsrLinkLinkInterface()
     {
         $link = new \StoreCore\Types\Link();
         $this->assertInstanceOf(\Psr\Link\LinkInterface::class, $link);
