@@ -152,6 +152,30 @@ class LinkTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($method->getNumberOfParameters() === 0);
     }
 
+    /**
+     * @testdox Link::getHref() returns string
+     * @depends testLinkGetHrefHasNoParameters
+     */
+    public function testLinkGetHrefReturnsString()
+    {
+        $link = new \StoreCore\Types\Link();
+        $this->assertInternalType('string', $link->getHref());
+    }
+
+    /**
+     * @testdox Link::getHref() returns set URL
+     * @depends testLinkGetHrefHasNoParameters
+     */
+    public function testLinkGetHrefReturnsSetUrl()
+    {
+        $link = new \StoreCore\Types\Link();
+        $link->set('href', 'https://www.storecore.io/');
+        $this->assertSame('https://www.storecore.io/', $link->getHref());
+
+        $link = new \StoreCore\Types\Link('https://github.com/storecore');
+        $this->assertSame('https://github.com/storecore', $link->getHref());
+    }
+
 
     /**
      * @testdox Link::set() exists
