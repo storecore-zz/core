@@ -62,7 +62,7 @@ class LinkTest extends PHPUnit_Framework_TestCase
     /**
      * @testdox Link::__set() exists
      */
-    public function testLinkOverloadingSetExists()
+    public function testLinkSetExists()
     {
         $class = new \ReflectionClass('\StoreCore\Types\Link');
         $this->assertTrue($class->hasMethod('__set'));
@@ -71,7 +71,7 @@ class LinkTest extends PHPUnit_Framework_TestCase
     /**
      * @testdox Link::__set() is public
      */
-    public function testLinkOverloadingSetIsPublic()
+    public function testLinkSetIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\Types\Link', '__set');
         $this->assertTrue($method->isPublic());
@@ -80,7 +80,7 @@ class LinkTest extends PHPUnit_Framework_TestCase
     /**
      * @testdox Link::__set() has two required parameters
      */
-    public function testLinkOverloadingSetHasTwoRequiredParameters()
+    public function testLinkSetHasTwoRequiredParameters()
     {
         $method = new \ReflectionMethod('\StoreCore\Types\Link', '__set');
         $this->assertTrue($method->getNumberOfRequiredParameters() === 2);
@@ -178,29 +178,29 @@ class LinkTest extends PHPUnit_Framework_TestCase
 
 
     /**
-     * @testdox Link::set() exists
+     * @testdox Link::setAttribute() exists
      */
-    public function testLinkSetExists()
+    public function testLinkSetAttributeExists()
     {
         $class = new \ReflectionClass('\StoreCore\Types\Link');
-        $this->assertTrue($class->hasMethod('set'));
+        $this->assertTrue($class->hasMethod('setAttribute'));
     }
 
     /**
-     * @testdox Link::set() is public
+     * @testdox Link::setAttribute() is public
      */
-    public function testLinkSetIsPublic()
+    public function testLinkSetAttributeIsPublic()
     {
-        $method = new \ReflectionMethod('\StoreCore\Types\Link', 'set');
+        $method = new \ReflectionMethod('\StoreCore\Types\Link', 'setAttribute');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Link::set() has two required parameters
+     * @testdox Link::setAttribute() has two required parameters
      */
-    public function testLinkSetHasTwoRequiredParameters()
+    public function testLinkSetAttributeHasTwoRequiredParameters()
     {
-        $method = new \ReflectionMethod('\StoreCore\Types\Link', 'set');
+        $method = new \ReflectionMethod('\StoreCore\Types\Link', 'setAttribute');
         $this->assertTrue($method->getNumberOfRequiredParameters() === 2);
     }
 }

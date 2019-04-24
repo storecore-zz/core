@@ -10,6 +10,8 @@ use \Psr\Link\LinkInterface as LinkInterface;
  * @copyright Copyright © 2019 StoreCore™
  * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
+ * @see       https://www.w3.org/TR/html5/links.html Links in HTML 5.2
+ * @see       https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link <link>: The External Resource Link element
  * @see       https://www.php-fig.org/psr/psr-13/ PSR-13: Link definition interfaces
  * @version   0.1.0
  */
@@ -65,11 +67,13 @@ class Link implements LinkInterface
     public function __construct($href = null, $rel = null, $attributes = null)
     {
         if ($href !== null) {
-            $this->set('href', $href);
+            $this->setAttribute('href', $href);
             if ($rel !== null) {
-                $this->set('rel', $href);
+                $this->setAttribute('rel', $rel);
                 if ($attributes !== null) {
-                    $this->set('rel', $href);
+                    foreach ($attributes as $name => $value) {
+                        $this->setAttribute($name, $value);
+                    }
                 }
             }
         }
@@ -86,11 +90,11 @@ class Link implements LinkInterface
      *
      * @return void
      *
-     * @uses set()
+     * @uses setAttribute()
      */
     public function __set($name, $value)
     {
-        $this->set($name, $value);
+        $this->setAttribute($name, $value);
     }
 
     /**
@@ -136,11 +140,13 @@ class Link implements LinkInterface
      *
      * @return void
      *
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute
+     *
      * @throws \InvalidArgumentException
      *   Throws an invalid argument exception if the attribute name is not a
      *   a string or an empty string.
      */
-    public function set($name, $value)
+    public function setAttribute($name, $value)
     {
         if (!is_string($name)) {
             throw new \InvalidArgumentException();
