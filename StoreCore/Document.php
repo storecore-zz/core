@@ -97,42 +97,17 @@ class Document implements \StoreCore\Types\StringableInterface
     }
 
     /**
-     * @param string $href
-     * @param string $rel
-     * @param string $type
-     * @param string $media
-     * @param string $hreflang
+     * Add a link to an external resource.
+     *
+     * @param \StoreCore\Types\Link $link
+     *   Link object to add as a `<link>` to the `<head>…</head>` container.
      *
      * @return void
-     *
-     * @see http://www.w3.org/TR/html5/links.html
-     * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link
      */
-    public function addLink($href, $rel = null, $type = null, $media = null, $hreflang = null)
+    public function addLink(\StoreCore\Types\Link $link)
     {
-        $link = array('href' => $href);
-
-        if ($rel !== null) {
-            $rel = strtolower($rel);
-            $link['rel'] = $rel;
-        }
-
-        if ($type !== null) {
-            $type = strtolower($type);
-            $link['type'] = $type;
-        }
-
-        if ($media !== null) {
-            $media = strtolower($media);
-            $link['media'] = $media;
-        }
-
-        if ($hreflang !== null) {
-            $link['hreflang'] = $hreflang;
-        }
-
         // MD5 hash key of the lowercase URL, where https:// ≡ http:// ≡ //
-        $key = $href;
+        $key = $link->getHref();
         $key = str_ireplace('https://', '//', $key);
         $key = str_ireplace('http://', '//', $key);
         $key = mb_strtolower($key, 'UTF-8');
@@ -375,20 +350,13 @@ class Document implements \StoreCore\Types\StringableInterface
             $head .= '<script async src="https://cdn.ampproject.org/v0.js"></script>';
         }
 
-        $head .= '<title>' . $this->Title . '</title>';
-
         if ($this->Links !== null) {
-            $links = (string)null;
             foreach ($this->Links as $link) {
-                $links .= '<link';
-                foreach ($link as $attribute => $value) {
-                    $links .= ' ' . $attribute . '="' . $value . '"';
-                }
-                $links .= '>';
+                $head .= (string)$link;
             }
-            $head .= $links;
-            unset($attribute, $link, $links, $value);
         }
+
+        $head .= '<title>' . $this->Title . '</title>';
 
         if ($this->ScriptLinks !== null) {
             foreach ($this->ScriptLinks as $link) {
