@@ -29,6 +29,16 @@ class LinkTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(\Psr\Link\LinkInterface::class, $link);
     }
 
+    /**
+     * @group hmvc
+     * @testdox Link implements \StoreCore\Types\StringableInterface
+     */
+    public function testLinkImplementsStoreCoreTypesStringableInterfacee()
+    {
+        $link = new \StoreCore\Types\Link();
+        $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $link);
+    }
+
 
     /**
      * @testdox Link::__construct() exists

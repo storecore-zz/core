@@ -15,7 +15,7 @@ use \Psr\Link\LinkInterface as LinkInterface;
  * @see       https://www.php-fig.org/psr/psr-13/ PSR-13: Link definition interfaces
  * @version   0.1.0
  */
-class Link implements LinkInterface
+class Link implements LinkInterface, StringableInterface
 {
     /**
      * @var string VERSION
@@ -98,6 +98,35 @@ class Link implements LinkInterface
     }
 
     /**
+     * Convert link object to HTML <link> tag.
+     *
+     * @param void
+     *
+     * @return string
+     *   Converts this Link data object to an HTML `<link>` resource link.
+     */
+    public function __toString()
+    {
+        $link = '<link href="' . $this->getHref() . '"';
+
+        if (!empty($this->getRels())) {
+            $link .= ' rel="' . implode(' ', $this->getRels()) . '"';
+        }
+
+        if (!empty($this->getAttributes())) {
+            foreach ($this->getAttributes() as $attribute => $value) {
+                $link .= ' ' . $attribute;
+                if ($value !== '') {
+                    $link .= '="' . (string)$value . '"';
+                }
+            }
+        }
+
+        $link .= '>';
+        return $link;
+    }
+
+    /**
      * @inheritDoc
      */
     public function getAttributes()
@@ -136,7 +165,9 @@ class Link implements LinkInterface
      *   Case-insensitive name of the attribute to set.
      *
      * @param mixed $value
-     *   Value of the attribute to set.
+     *   Value of the attribute to set.  This parameter MAY explicitly be set
+     *   to an empty string for HTML link attributes without values, like
+     *   `crossorigin` in conjunction with `rel="preconnect"`.
      *
      * @return void
      *
@@ -161,12 +192,15 @@ class Link implements LinkInterface
         if ($name === 'href') {
             $this->HypertextReference = $value;
         } elseif ($name === 'rel') {
-            $relations = explode(' ', $value);
+            $relations = trim($value);
+            $relations = preg_replace('!\s+!', ' ', $relations);
+            $relations = explode(' ', $relations);
             foreach ($relations as $relation) {
                 $this->Relations[] = $relation;
             }
+            $this->Relations = array_unique($this->Relations);
         } else {
-            $this->$Attributes[$name] = $value;
+            $this->Attributes[$name] = $value;
         }
     }
 }
