@@ -179,7 +179,7 @@ class LinkTest extends PHPUnit_Framework_TestCase
     public function testLinkGetHrefReturnsSetUrl()
     {
         $link = new \StoreCore\Types\Link();
-        $link->set('href', 'https://www.storecore.io/');
+        $link->setAttribute('href', 'https://www.storecore.io/');
         $this->assertSame('https://www.storecore.io/', $link->getHref());
 
         $link = new \StoreCore\Types\Link('https://github.com/storecore');
