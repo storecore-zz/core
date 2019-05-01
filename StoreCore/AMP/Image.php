@@ -10,6 +10,8 @@ namespace StoreCore\AMP;
  * @package   StoreCore\CMS
  * @see       https://amp.dev/documentation/components/amp-img
  * @see       https://amp.dev/documentation/examples/components/amp-img/
+ * @see       https://amp.dev/documentation/guides-and-tutorials/start/create/include_image
+ * @see       https://amp.dev/documentation/examples/style-layout/how_to_support_images_with_unknown_dimensions/
  * @version   0.1.0
  */
 class Image extends \StoreCore\Image implements LayoutInterface
