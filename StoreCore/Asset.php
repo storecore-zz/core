@@ -5,8 +5,8 @@ namespace StoreCore;
  * Asset Management
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015–2018 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @copyright Copyright © 2015–2019 StoreCore™
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
  * @version   0.1.0
  */
@@ -122,7 +122,7 @@ class Asset
         header('Cache-Control: public, max-age=31536000', true);
         header('Pragma: cache', true);
         header('Content-Type: ' . $this->Types[$this->FileType], true);
-        header('X-Powered-By: StoreCore/' . STORECORE_VERSION, true);
+        header('X-Powered-By: StoreCore', true);
 
         $file = STORECORE_FILESYSTEM_STOREFRONT_ROOT_DIR . 'assets' . DIRECTORY_SEPARATOR . $this->FileType . DIRECTORY_SEPARATOR . $this->FileName;
 
