@@ -18,6 +18,7 @@ class PaymentReferenceTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $object);
     }
 
+
     /**
      * @group distro
      */
@@ -45,5 +46,14 @@ class PaymentReferenceTest extends PHPUnit_Framework_TestCase
     {
         $class = new \ReflectionClass('\StoreCore\Types\PaymentReference');
         $this->assertTrue(is_string($class->getConstant('VERSION')));
+    }
+
+    /**
+     * @depends testVersionConstantIsNotEmpty
+     * @group distro
+     */
+    public function testVersionMatchesMasterBranch()
+    {
+        $this->assertGreaterThanOrEqual('1.0.0', \StoreCore\Types\PaymentReference::VERSION);
     }
 }
