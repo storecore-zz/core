@@ -11,6 +11,7 @@ class PaymentReferenceTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group hmvc
+     * @testdox Class implements StringableInterface
      */
     public function testClassImplementsStringableInterface()
     {
@@ -122,13 +123,55 @@ class PaymentReferenceTest extends PHPUnit_Framework_TestCase
 
     /**
      * @depends testPaymentReferenceToStringReturnsNumericString
-     * @testdox PaymentReference::__toString() returns 16 digits
+     * @testdox PaymentReference::__toString() returns at least 7 digits
      */
-    public function testPaymentReferenceToStringReturnsSixteenDigits()
+    public function testPaymentReferenceToStringReturnsAtLeastSevenDigits()
+    {
+        $data_object = new \StoreCore\Types\PaymentReference();
+        $data = (string)$data_object;
+        $this->assertTrue(ctype_digit($data));
+        $this->assertTrue(strlen($data) >= 7);
+    }
+
+    /**
+     * @depends testPaymentReferenceToStringReturnsNumericString
+     * @testdox PaymentReference::__toString() returns 16 digits by default
+     */
+    public function testPaymentReferenceToStringReturnsSixteenDigitsByDefault()
     {
         $data_object = new \StoreCore\Types\PaymentReference();
         $data = (string)$data_object;
         $this->assertTrue(ctype_digit($data));
         $this->assertTrue(strlen($data) === 16);
+    }
+
+
+    /**
+     * @testdox PaymentReference::setTransactionID() exists
+     */
+    public function testPaymentReferenceSetTransactionIdExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Types\PaymentReference');
+        $this->assertTrue($class->hasMethod('setTransactionID'));
+    }
+
+    /**
+     * @depends testPaymentReferenceSetTransactionIdExists
+     * @testdox PaymentReference::setTransactionID() is public
+     */
+    public function testPaymentReferenceSetTransactionIdIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Types\PaymentReference', 'setTransactionID');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testPaymentReferenceSetTransactionIdExists
+     * @testdox PaymentReference::setTransactionID() has one required parameter
+     */
+    public function testPaymentReferenceSetTransactionIdHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Types\PaymentReference', 'setTransactionID');
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
     }
 }
