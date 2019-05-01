@@ -5,10 +5,10 @@ namespace StoreCore\Types;
  * Numeric Payment Reference
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2017–2018 StoreCore™
+ * @copyright Copyright © 2017–2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\OML
- * @version   0.1.0
+ * @version   1.0.0
  */
  class PaymentReference implements StringableInterface
 {
@@ -16,7 +16,7 @@ namespace StoreCore\Types;
      * @var string VERSION
      *   Semantic Version (SemVer).
      */
-    const VERSION = '0.1.0';
+    const VERSION = '1.0.0';
 
     /**
      * @var string $Prefix
@@ -60,7 +60,7 @@ namespace StoreCore\Types;
      * @param void
      *
      * @return string
-     *   Returns the payment reference as a numeric string.
+     *   Returns the payment reference as a numeric string with 16 digits.
      */
     public function __toString()
     {
