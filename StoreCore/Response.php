@@ -6,8 +6,8 @@ namespace StoreCore;
  *
  * @api
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015–2018 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @copyright Copyright © 2015–2019 StoreCore™
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
@@ -31,7 +31,6 @@ class Response extends AbstractController
      *   HTTP response headers.
      */
     protected $Headers = array();
-
 
     /**
      * @var string $ResponseBody
@@ -137,7 +136,7 @@ class Response extends AbstractController
             header('X-Content-Type-Options: nosniff', true);
             header('X-DNS-Prefetch-Control: on', true);
             header('X-Frame-Options: SAMEORIGIN', true);
-            header('X-Powered-By: StoreCore/' . STORECORE_VERSION, true);
+            header('X-Powered-By: StoreCore', true);
             header('X-UA-Compatible: IE=edge', true);
             header('X-XSS-Protection: 1; mode=block', true);
 

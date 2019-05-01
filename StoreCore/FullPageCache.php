@@ -5,14 +5,17 @@ namespace StoreCore;
  * Full-Page Cache
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2017 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @copyright Copyright © 2017–2019 StoreCore™
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
  * @version   0.1.0
  */
 class FullPageCache
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -74,7 +77,7 @@ class FullPageCache
         header('ETag: "' . $etag . '"', true);
         header('Last-Modified: ' . gmdate('D, d M Y H:i:s T', $last_modified), true);
         header('Pragma: cache', true);
-        header('X-Powered-By: StoreCore/' . STORECORE_VERSION, true);
+        header('X-Powered-By: StoreCore', true);
 
         if (isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
             $http_if_none_match = strip_tags($_SERVER['HTTP_IF_NONE_MATCH']);
