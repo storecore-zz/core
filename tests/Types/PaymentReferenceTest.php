@@ -56,4 +56,79 @@ class PaymentReferenceTest extends PHPUnit_Framework_TestCase
     {
         $this->assertGreaterThanOrEqual('1.0.0', \StoreCore\Types\PaymentReference::VERSION);
     }
+
+
+    /**
+     * @testdox PaymentReference::__construct() exists
+     */
+    public function testPaymentReferenceConstructExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Types\PaymentReference');
+        $this->assertTrue($class->hasMethod('__construct'));
+    }
+
+    /**
+     * @depends testPaymentReferenceConstructExists
+     * @testdox PaymentReference::__construct() is public
+     */
+    public function testPaymentReferenceConstructIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Types\PaymentReference', '__construct');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testPaymentReferenceConstructExists
+     * @testdox PaymentReference::__construct() has one optional parameter
+     */
+    public function testPaymentReferenceConstructHasOneOptionalParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Types\PaymentReference', '__construct');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 0);
+    }
+
+
+    /**
+     * @testdox PaymentReference::__toString() exists
+     */
+    public function testPaymentReferenceToStringExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Types\PaymentReference');
+        $this->assertTrue($class->hasMethod('__toString'));
+    }
+
+    /**
+     * @testdox PaymentReference::__toString() returns non-empty string
+     */
+    public function testPaymentReferenceToStringReturnsNonEmptyString()
+    {
+        $data_object = new \StoreCore\Types\PaymentReference();
+        $data = (string)$data_object;
+        $this->assertNotEmpty($data);
+        $this->assertInternalType('string', $data);
+    }
+
+    /**
+     * @depends testPaymentReferenceToStringReturnsNonEmptyString
+     * @testdox PaymentReference::__toString() returns numeric string
+     */
+    public function testPaymentReferenceToStringReturnsNumericString()
+    {
+        $data_object = new \StoreCore\Types\PaymentReference();
+        $data = (string)$data_object;
+        $this->assertTrue(is_numeric($data));
+    }
+
+    /**
+     * @depends testPaymentReferenceToStringReturnsNumericString
+     * @testdox PaymentReference::__toString() returns 16 digits
+     */
+    public function testPaymentReferenceToStringReturnsSixteenDigits()
+    {
+        $data_object = new \StoreCore\Types\PaymentReference();
+        $data = (string)$data_object;
+        $this->assertTrue(ctype_digit($data));
+        $this->assertTrue(strlen($data) === 16);
+    }
 }
