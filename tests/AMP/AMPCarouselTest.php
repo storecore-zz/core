@@ -22,14 +22,6 @@ class AMPCarouselTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($class->hasConstant('VERSION'));
     }
 
-    /**
-     * @testdox REQUIRED_SCRIPT constant is defined
-     */
-    public function testRequiredScriptConstantIsDefined()
-    {
-        $class = new \ReflectionClass('\StoreCore\AMP\Carousel');
-        $this->assertTrue($class->hasConstant('REQUIRED_SCRIPT'));
-    }
 
     /**
      * @testdox Class has Autoplay property

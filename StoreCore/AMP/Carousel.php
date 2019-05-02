@@ -22,12 +22,6 @@ class Carousel implements LayoutInterface
     const VERSION = '0.1.0';
 
     /**
-     * @var string REQUIRED_SCRIPT
-     *   JavaScript source code that MUST be imported in the header for a carousel component.
-     */
-    const REQUIRED_SCRIPT = '<script async custom-element="amp-carousel" src="https://cdn.ampproject.org/v0/amp-carousel-0.1.js"></script>';
-
-    /**
      * @var string TYPE_CAROUSEL
      *   AMP carousel `type="carousel"` attribute (default).
      */
