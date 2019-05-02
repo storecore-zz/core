@@ -1,10 +1,9 @@
 [![Slack](https://storecore-slack.herokuapp.com/badge.svg)](https://storecore-slack.herokuapp.com)
 [![Build Status](https://travis-ci.org/storecore/core.svg?branch=develop)](https://travis-ci.org/storecore/core)
 [![codecov](https://codecov.io/gh/storecore/core/branch/develop/graph/badge.svg)](https://codecov.io/gh/storecore/core)
-[![StyleCI](https://styleci.io/repos/32453510/shield?branch=develop)](https://styleci.io/repos/32453510)
 
 
-# [StoreCore](http://storecore.io)
+# [StoreCore™](https://www.storecore.io/)
 
 ## Table of Contents
 
@@ -70,19 +69,18 @@ directory when you are executing the `/install/index.php` application.
 [`config.php` configuration file]: https://github.com/storecore/core/blob/develop/config.php
 
 
-
 ## Contributing
 
 Please read through our [contributing guidelines].  Included are directions for
 opening issues, posting feature requests, coding standards, and notes on
 development.
 
-[contributing guidelines]: https://github.com/storecore/core/blob/master/CONTRIBUTING.md "StoreCore Developer Guide"
+[contributing guidelines]: https://github.com/storecore/core/blob/develop/CONTRIBUTING.md "StoreCore Developer Guide"
 
 Editor preferences are available in the [editor config] for easy use in common
 text editors.  Read more and download plugins at <http://editorconfig.org>.
 
-[editor config]: https://github.com/storecore/core/blob/master/.editorconfig "Editor configuration"
+[editor config]: https://github.com/storecore/core/blob/develop/.editorconfig "Editor configuration"
 
 
 ## Versioning
@@ -91,7 +89,7 @@ For transparency into our release cycle and in striving to maintain backward
 compatibility, StoreCore is maintained under the [Semantic Versioning (SemVer) guidelines]
 Sometimes we may screw up, but we’ll adhere to those rules whenever possible.
 
-[Semantic Versioning (SemVer) guidelines]: http://semver.org/ "Semantic Versioning 2.0.0"
+[Semantic Versioning (SemVer) guidelines]: https://semver.org/ "Semantic Versioning 2.0.0"
 
 
 ## Creators
@@ -107,6 +105,6 @@ Sometimes we may screw up, but we’ll adhere to those rules whenever possible.
 
 ## Copyright and License
 
-Code copyright © 2015-2017 StoreCore™.
+Code copyright © 2015–2019 StoreCore™.
 All code is released as **Free and Open-Source Software (FOSS)**
-under the [GNU General Public License](https://github.com/storecore/core/blob/master/LICENSE.txt).
+under the [GNU General Public License](https://www.gnu.org/licenses/gpl.html).
