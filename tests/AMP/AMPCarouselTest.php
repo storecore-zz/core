@@ -12,6 +12,7 @@ class AMPCarouselTest extends PHPUnit_Framework_TestCase
         );
     }
 
+
     /**
      * @group distro
      * @testdox VERSION constant is defined
@@ -22,45 +23,75 @@ class AMPCarouselTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($class->hasConstant('VERSION'));
     }
 
+    /**
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     * @testdox VERSION constant is not empty
+     */
+    public function testVersionConstantIsNotEmpty()
+    {
+        $this->assertNotEmpty(\StoreCore\AMP\Carousel::VERSION);
+    }
 
     /**
-     * @testdox Class has Autoplay property
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     * @testdox VERSION constant is string
      */
-    public function testClassHasAutoplayProperty()
+    public function testVersionConstantIsString()
+    {
+        $this->assertInternalType('string', \StoreCore\AMP\Carousel::VERSION);
+    }
+
+    /**
+     * @depends testVersionConstantIsNotEmpty
+     * @group distro
+     */
+    public function testVersionMatchesMasterBranch()
+    {
+        $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\AMP\Carousel::VERSION);
+    }
+
+
+    /**
+     * @testdox Carousel has Autoplay property
+     */
+    public function testCarouselHasAutoplayProperty()
     {
         $this->assertClassHasAttribute('Autoplay', '\StoreCore\AMP\Carousel');
     }
 
     /**
-     * @testdox Public setAutoplay() method exists
+     * @testdox Carousel::setAutoplay() exists
      */
-    public function testPublicSetAutoplayMethodExists()
+    public function testCarouselSetAutoplayExists()
     {
         $class = new \ReflectionClass('\StoreCore\AMP\Carousel');
         $this->assertTrue($class->hasMethod('setAutoplay'));
     }
 
     /**
-     * @testdox Public setAutoplay() method is public
+     * @testdox Carousel::setAutoplay() is public
      */
-    public function testPublicSetAutoplayMethodIsPublic()
+    public function testCarouselSetAutoplayIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\AMP\Carousel', 'setAutoplay');
         $this->assertTrue($method->isPublic());
     }
 
+
     /**
-     * @testdox Class has Children property
+     * @testdox Carousel has Children property
      */
-    public function testClassHasChildrenProperty()
+    public function testCarouselHasChildrenProperty()
     {
         $this->assertClassHasAttribute('Children', '\StoreCore\AMP\Carousel');
     }
 
     /**
-     * @testdox Public appendChild() method exists
+     * @testdox Carousel::appendChild() method exists
      */
-    public function testPublicAppendChildMethodExists()
+    public function testCarouselAppendChildMethodExists()
     {
         $class = new \ReflectionClass('\StoreCore\AMP\Carousel');
         $this->assertTrue($class->hasMethod('appendChild'));
@@ -87,10 +118,11 @@ class AMPCarouselTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(3, $carousel->appendChild($child_node));
     }
 
+
     /**
-     * @testdox Class has Delay property
+     * @testdox Carousel has Delay property
      */
-    public function testClassHasDelayProperty()
+    public function testCarouselHasDelayProperty()
     {
         $this->assertClassHasAttribute('Delay', '\StoreCore\AMP\Carousel');
     }
@@ -105,71 +137,104 @@ class AMPCarouselTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @testdox Public setDelay() method is public
+     * @testdox Carousel::setDelay() is public
      */
-    public function testPublicSetDelayMethodIsPublic()
+    public function testCarouselSetDelayIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\AMP\Carousel', 'setDelay');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Class has Height property
+     * @testdox Carousel::setDelay() has one required parameter
      */
-    public function testClassHasHeightProperty()
+    public function testCarouselSetDelayHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\AMP\Carousel', 'setDelay');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+
+    /**
+     * @testdox Carousel has Height property
+     */
+    public function testCarouselHasHeightProperty()
     {
         $this->assertClassHasAttribute('Height', '\StoreCore\AMP\Carousel');
     }
 
     /**
-     * @testdox Public setHeight() method exists
+     * @testdox Carousel::setHeight() exists
      */
-    public function testPublicSetHeightMethodExists()
+    public function testCarouselSetHeightExists()
     {
         $class = new \ReflectionClass('\StoreCore\AMP\Carousel');
         $this->assertTrue($class->hasMethod('setHeight'));
     }
 
     /**
-     * @testdox Public setHeight() method is public
+     * @testdox Carousel::setHeight() is public
      */
-    public function testPublicSetHeightMethodIsPublic()
+    public function testCarouselSetHeightIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\AMP\Carousel', 'setHeight');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Class has Type property
+     * @testdox Carousel::setHeight() has one required parameter
      */
-    public function testClassHasTypeProperty()
+    public function testCarouselSetHeightHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\AMP\Carousel', 'setHeight');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+
+    /**
+     * @testdox Carousel has Type property
+     */
+    public function testCarouselHasTypeProperty()
     {
         $this->assertClassHasAttribute('Type', '\StoreCore\AMP\Carousel');
     }
 
     /**
-     * @testdox Public setType() method exists
+     * @testdox Carousel::setType() exists
      */
-    public function testPublicSetTypeMethodExists()
+    public function testCarouselSetTypeExists()
     {
         $class = new \ReflectionClass('\StoreCore\AMP\Carousel');
         $this->assertTrue($class->hasMethod('setType'));
     }
 
     /**
-     * @testdox Public setType() method is public
+     * @testdox Carousel::setType() is public
      */
-    public function testPublicSetTypeMethodIsPublic()
+    public function testCarouselSetTypeIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\AMP\Carousel', 'setType');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @testdox Public setType() method throws \InvalidArgumentException on empty string
+     * @depends testCarouselSetTypeExists
+     * @testdox Carousel::setType() has one required parameter
      */
-    public function testPublicSetTypeMethodThrowsInvalidArgumentExceptionOnEmptyString()
+    public function testCarouselSetTypeHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\AMP\Carousel', 'setType');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @testdox Carousel::setType() throws \InvalidArgumentException on empty string
+     */
+    public function testCarouselSetTypeThrowsInvalidArgumentExceptionOnEmptyString()
     {
         $empty_string = (string)null;
         $carousel = new \StoreCore\AMP\Carousel();
@@ -177,29 +242,42 @@ class AMPCarouselTest extends PHPUnit_Framework_TestCase
         $carousel->setType($empty_string);
     }
 
+
     /**
-     * @testdox Class has Width property
+     * @testdox Carousel has Width property
      */
-    public function testClassHasWidthProperty()
+    public function testCarouselHasWidthProperty()
     {
         $this->assertClassHasAttribute('Width', '\StoreCore\AMP\Carousel');
     }
 
     /**
-     * @testdox Public setWidth() method exists
+     * @testdox Carousel::setWidth() exists
      */
-    public function testPublicSetWidthMethodExists()
+    public function testCarouselSetWidthExists()
     {
         $class = new \ReflectionClass('\StoreCore\AMP\Carousel');
         $this->assertTrue($class->hasMethod('setWidth'));
     }
 
     /**
-     * @testdox Public setWidth() method is public
+     * @depends testCarouselSetWidthExists
+     * @testdox Carousel::setWidth() is public
      */
-    public function testPublicSetWidthMethodIsPublic()
+    public function testCarouselSetWidthIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\AMP\Carousel', 'setWidth');
         $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testCarouselSetWidthExists
+     * @testdox Carousel::setWidth() has one required parameter
+     */
+    public function testCarouselSetWidthHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\AMP\Carousel', 'setWidth');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
     }
 }
