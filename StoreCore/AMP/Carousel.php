@@ -13,7 +13,7 @@ namespace StoreCore\AMP;
  * @see       https://amp.dev/documentation/examples/multimedia-animations/image_galleries_with_amp-carousel/
  * @version   0.1.0
  */
-class Carousel implements LayoutInterface
+class Carousel implements LayoutInterface, LightboxGalleryInterface
 {
     /**
      * @var string VERSION
@@ -69,6 +69,12 @@ class Carousel implements LayoutInterface
     protected $Layout;
 
     /**
+     * @var bool $Lightbox
+     *   The carousel is a lightbox gallery (true) or not (default false).
+     */
+    protected $Lightbox = false;
+
+    /**
      * @var string $Type
      *   AMP carousel `type` HTML attribute, defaults to `carousel`.
      */
@@ -121,6 +127,14 @@ class Carousel implements LayoutInterface
     public function getLayout()
     {
         return $this->Layout;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isLightbox()
+    {
+        return $this->Lightbox;
     }
 
     /**
@@ -202,6 +216,14 @@ class Carousel implements LayoutInterface
     public function setLayout($layout)
     {
         $this->Layout = $layout;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setLightbox($lightbox = true)
+    {
+        $this->Lightbox = (bool)$lightbox;
     }
 
     /**

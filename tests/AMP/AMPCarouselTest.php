@@ -15,6 +15,50 @@ class AMPCarouselTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group distro
+     * @testdox Implemented \StoreCore\AMP\LayoutInterface interface file exists
+     */
+    public function testImplementedStoreCoreAmpLayoutInterfaceInterfaceFileExists()
+    {
+        $this->assertFileExists(
+            STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'AMP' . DIRECTORY_SEPARATOR . 'LayoutInterface.php'
+        );
+    }
+
+    /**
+     * @group hmvc
+     * @testdox AMP carousel implements \StoreCore\AMP\LayoutInterface
+     */
+    public function testAmpImageImplementsStoreCoreAmpLayoutInterface()
+    {
+        $object = new \StoreCore\AMP\Carousel();
+        $this->assertInstanceOf(\StoreCore\AMP\LayoutInterface::class, $object);
+    }
+
+
+    /**
+     * @group distro
+     * @testdox Implemented \StoreCore\AMP\LightboxGalleryInterface interface file exists
+     */
+    public function testImplementedStoreCoreAmpLightboxGalleryInterfaceInterfaceFileExists()
+    {
+        $this->assertFileExists(
+            STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'AMP' . DIRECTORY_SEPARATOR . 'LightboxGalleryInterface.php'
+        );
+    }
+
+    /**
+     * @group hmvc
+     * @testdox AMP carousel implements \StoreCore\AMP\LightboxGalleryInterface
+     */
+    public function testAmpCarouselImplementsStoreCoreAmpLightboxGalleryInterface()
+    {
+        $object = new \StoreCore\AMP\Carousel();
+        $this->assertInstanceOf(\StoreCore\AMP\LightboxGalleryInterface::class, $object);
+    }
+
+
+    /**
+     * @group distro
      * @testdox VERSION constant is defined
      */
     public function testVersionConstantIsDefined()
