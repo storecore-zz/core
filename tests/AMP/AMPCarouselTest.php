@@ -133,33 +133,45 @@ class AMPCarouselTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @testdox Carousel::appendChild() method exists
+     * @testdox Carousel::append() exists
      */
-    public function testCarouselAppendChildMethodExists()
+    public function testCarouselAppendExists()
     {
         $class = new \ReflectionClass('\StoreCore\AMP\Carousel');
-        $this->assertTrue($class->hasMethod('appendChild'));
+        $this->assertTrue($class->hasMethod('append'));
     }
 
     /**
-     * @testdox Public appendChild() method is public
+     * @depends testCarouselAppendExists
+     * @testdox Carousel::append() is public
      */
-    public function testPublicAppendChildMethodIsPublic()
+    public function testCarouselAppendIsPublic()
     {
-        $method = new \ReflectionMethod('\StoreCore\AMP\Carousel', 'appendChild');
+        $method = new \ReflectionMethod('\StoreCore\AMP\Carousel', 'append');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public appendChild() method returns node count
+     * @testdox Carousel::append() has one required parameter
      */
-    public function testPublicAppendChildMethodReturnsNodeCount()
+    public function testCarouselAppendHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\AMP\Carousel', 'append');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+    /**
+     * @depends testCarouselAppendExists
+     * @testdox Carousel::append() returns node count
+     */
+    public function testCarouselAppendReturnsNodeCount()
     {
         $child_node = '<div>...</div>';
         $carousel = new \StoreCore\AMP\Carousel();
-        $this->assertEquals(1, $carousel->appendChild($child_node));
-        $this->assertEquals(2, $carousel->appendChild($child_node));
-        $this->assertEquals(3, $carousel->appendChild($child_node));
+        $this->assertEquals(1, $carousel->append($child_node));
+        $this->assertEquals(2, $carousel->append($child_node));
+        $this->assertEquals(3, $carousel->append($child_node));
     }
 
 

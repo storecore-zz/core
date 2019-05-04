@@ -111,7 +111,7 @@ class Carousel implements LayoutInterface, LightboxGalleryInterface
      * @return int
      *   Returns the number of nodes in the carousel.
      */
-    public function appendChild($node)
+    public function append($node)
     {
         return array_push($this->Children, (string)$node);
     }
