@@ -43,10 +43,13 @@ interface LayoutInterface
      *
      * @param void
      *
-     * @return string
-     *   Returns the currently set AMP layout attribute as a string.
+     * @return string|null
+     *   Returns the currently set AMP `layout` attribute as a string.  This
+     *   method MAY return null if the `layout` attribute of an AMP component
+     *   is not yet set, but MUST return a string if the component has a
+     *   default `layout`.
      */
-    public function getLayout();
+    public function getlayout();
 
     /**
      * Set the AMP layout attribute.
