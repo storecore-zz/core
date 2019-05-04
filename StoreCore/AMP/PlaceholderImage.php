@@ -5,10 +5,10 @@ namespace StoreCore\AMP;
  * AMP Placeholder Image
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2017–2018 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @copyright Copyright © 2017–2019 StoreCore™
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
- * @see       https://www.ampproject.org/docs/guides/responsive/placeholders
+ * @see       https://amp.dev/documentation/guides-and-tutorials/develop/style_and_layout/placeholders
  * @version   0.1.0
  */
 class PlaceholderImage extends Image
@@ -47,7 +47,7 @@ class PlaceholderImage extends Image
     public function __toString()
     {
         return
-            '<amp-img placeholder src="' . $this->Source 
+            '<amp-img placeholder src="' . $this->getSource()
             . '" layout="' . $this->getLayout() . '"></amp-img>';
     }
 }

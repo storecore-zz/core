@@ -52,22 +52,14 @@ class ItemAvailabilityTest extends PHPUnit_Framework_TestCase
      * @depends testVersionConstantIsDefined
      * @group distro
      */
-    public function testVersionConstantIsNotEmpty()
+    public function testVersionConstantIsNonEmptyString()
     {
         $this->assertNotEmpty(\StoreCore\Types\ItemAvailability::VERSION);
+        $this->assertInternalType('string', \StoreCore\Types\ItemAvailability::VERSION);
     }
 
     /**
-     * @depends testVersionConstantIsDefined
-     * @group distro
-     */
-    public function testVersionConstantIsString()
-    {
-        $this->assertTrue(is_string(\StoreCore\Types\ItemAvailability::VERSION));
-    }
-
-    /**
-     * @depends testVersionConstantIsDefined
+     * @depends testVersionConstantIsNonEmptyString
      * @group distro
      */
     public function testVersionMatchesMasterBranch()
@@ -77,13 +69,13 @@ class ItemAvailabilityTest extends PHPUnit_Framework_TestCase
 
     /**
      * @depends testItemAvailabilityImplementsStringableInterface
-     * @testdox ItemAvailability is http://schema.org/InStock by default
+     * @testdox ItemAvailability is https://schema.org/InStock by default
      */
-    public function testItemAvailabilityIsHttpSchemaOrgInStockByDefault()
+    public function testItemAvailabilityIsHttpsSchemaOrgInStockByDefault()
     {
         $item_availability = new \StoreCore\Types\ItemAvailability();
         $string = (string)$item_availability;
-        $this->assertSame('http://schema.org/InStock', $string);
+        $this->assertSame('https://schema.org/InStock', $string);
     }
 
     /**
@@ -111,15 +103,15 @@ class ItemAvailabilityTest extends PHPUnit_Framework_TestCase
     public function testItemAvailabilityAcceptsNumericStringsIfNotInStrictMode()
     {
         $keys_and_values = array(
-            1 => 'http://schema.org/Discontinued',
-            2 => 'http://schema.org/InStock',
-            3 => 'http://schema.org/InStoreOnly',
-            4 => 'http://schema.org/LimitedAvailability',
-            5 => 'http://schema.org/OnlineOnly',
-            6 => 'http://schema.org/OutOfStock',
-            7 => 'http://schema.org/PreOrder',
-            8 => 'http://schema.org/PreSale',
-            9 => 'http://schema.org/SoldOut',
+            1 => 'https://schema.org/Discontinued',
+            2 => 'https://schema.org/InStock',
+            3 => 'https://schema.org/InStoreOnly',
+            4 => 'https://schema.org/LimitedAvailability',
+            5 => 'https://schema.org/OnlineOnly',
+            6 => 'https://schema.org/OutOfStock',
+            7 => 'https://schema.org/PreOrder',
+            8 => 'https://schema.org/PreSale',
+            9 => 'https://schema.org/SoldOut',
         );
 
         foreach ($keys_and_values as $key => $value) {
