@@ -498,6 +498,15 @@ INSERT IGNORE INTO sc_translation_memory
     ('COMMAND_NEXT', 'pt-BR', 'Avançar'),
     ('COMMAND_NEXT', 'pt-PT', 'Seguinte'),
 
+    ('COMMAND_PREVIOUS', 'ca-AD', 'Anterior'),
+    ('COMMAND_PREVIOUS', 'de-DE', 'Zurück'),
+    ('COMMAND_PREVIOUS', 'en-GB', 'Previous'),
+    ('COMMAND_PREVIOUS', 'es-ES', 'Anterior'),
+    ('COMMAND_PREVIOUS', 'fr-FR', 'Précédent'),
+    ('COMMAND_PREVIOUS', 'it-IT', 'Indietro'),
+    ('COMMAND_PREVIOUS', 'nl-NL', 'Vorige'),
+    ('COMMAND_PREVIOUS', 'pt-PT', 'Anterior'),
+
     ('COMMAND_PRINT', 'ca-AD', 'Imprimeix…'),
     ('COMMAND_PRINT', 'de-DE', 'Drucken…'),
     ('COMMAND_PRINT', 'en-GB', 'Print…'),
