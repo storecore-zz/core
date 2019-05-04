@@ -59,6 +59,28 @@ class AMPCarouselTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group distro
+     * @testdox Implemented \StoreCore\Types\StringableInterface interface file exists
+     */
+    public function testImplementedStoreCoreTypesStringableInterfaceInterfaceFileExists()
+    {
+        $this->assertFileExists(
+            STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Types' . DIRECTORY_SEPARATOR . 'StringableInterface.php'
+        );
+    }
+
+    /**
+     * @group hmvc
+     * @testdox AMP carousel implements \StoreCore\Types\StringableInterface
+     */
+    public function testAmpCarouselImplementsStoreCoreTypesStringableInterface()
+    {
+        $object = new \StoreCore\AMP\Carousel();
+        $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $object);
+    }
+
+
+    /**
+     * @group distro
      * @testdox VERSION constant is defined
      */
     public function testVersionConstantIsDefined()
@@ -94,6 +116,57 @@ class AMPCarouselTest extends PHPUnit_Framework_TestCase
     public function testVersionMatchesMasterBranch()
     {
         $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\AMP\Carousel::VERSION);
+    }
+
+
+    /**
+     * @group hmvc
+     * @testdox Carousel::__toString() exists
+     */
+    public function testCarouselToStringExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\AMP\Carousel');
+        $this->assertTrue($class->hasMethod('__toString'));
+    }
+
+    /**
+     * @depends testCarouselToStringExists
+     * @group hmvc
+     * @testdox Carousel::__toString() returns non-empty string
+     */
+    public function testCarouselToStringReturnsNonEmptyString()
+    {
+        $object = new \StoreCore\AMP\Carousel();
+        $html = (string)$object;
+        $this->assertNotEmpty($html);
+        $this->assertInternalType('string', $html);
+    }
+
+    /**
+     * @depends testCarouselToStringReturnsNonEmptyString
+     * @group hmvc
+     * @testdox Carousel::__toString() returns HTML tag
+     */
+    public function testCarouselToStringReturnsHtmlTag()
+    {
+        $object = new \StoreCore\AMP\Carousel();
+        $html = (string)$object;
+        $this->assertNotEmpty($html);
+        $html = strip_tags($html);
+        $this->assertEmpty($html);
+    }
+
+    /**
+     * @depends testCarouselToStringReturnsNonEmptyString
+     * @group hmvc
+     * @testdox Carousel::__toString() returns <amp-carousel> tag
+     */
+    public function testCarouselToStringReturnsAmpCarouselTag()
+    {
+        $object = new \StoreCore\AMP\Carousel();
+        $html = (string)$object;
+        $this->assertStringStartsWith('<amp-carousel ', $html);
+        $this->assertStringEndsWith('</amp-carousel>', $html);
     }
 
 

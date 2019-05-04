@@ -1,6 +1,8 @@
 <?php
 namespace StoreCore\AMP;
 
+use \StoreCore\Types\StringableInterface as StringableInterface;
+
 /**
  * AMP Carousel <amp-carousel>
  *
@@ -13,7 +15,7 @@ namespace StoreCore\AMP;
  * @see       https://amp.dev/documentation/examples/multimedia-animations/image_galleries_with_amp-carousel/
  * @version   0.1.0
  */
-class Carousel implements LayoutInterface, LightboxGalleryInterface
+class Carousel implements LayoutInterface, LightboxGalleryInterface, StringableInterface
 {
     /**
      * @var string VERSION
@@ -103,6 +105,41 @@ class Carousel implements LayoutInterface, LightboxGalleryInterface
     }
 
     /**
+     * Get the <amp-carousel> AMP carousel element.
+     *
+     * @param void
+     *
+     * @return string
+     *   Returns the AMP tag `<amp-carousel …>…</amp-carousel>` as a string.
+     */
+    public function __toString()
+    {
+        $html = '<amp-carousel type="' . $this->Type . '"';
+
+        if ($this->getLayout() !== null) {
+            $html .= ' layout="' . $this->getLayout() . '"';
+        }
+
+        if ($this->Width !== null) {
+            $html .= ' width="' . $this->Width . '"';
+        }
+        if ($this->Height !== null) {
+            $html .= ' height="' . $this->Height . '"';
+        }
+
+        $html .= '>';
+
+        if (!empty($this->Children)) {
+            foreach ($this->Children as $child_node) {
+                $html .= $child_node;
+            }
+        }
+
+        $html .= '</amp-carousel>';
+        return $html;
+    }
+
+    /**
      * Add a photo, image, slide, or other node.
      *
      * @param string $node
@@ -121,8 +158,9 @@ class Carousel implements LayoutInterface, LightboxGalleryInterface
      *
      * @param void
      *
-     * @return string
-     *   Returns the currently set AMP layout attribute as a string.
+     * @return string|null
+     *   Returns the currently set AMP `layout` attribute as a string or null
+     *   if the attribute is not set.
      */
     public function getLayout()
     {
