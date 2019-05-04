@@ -121,6 +121,28 @@ class AMPCarouselTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group hmvc
+     * @testdox Carousel::__construct() exists
+     */
+    public function testCarouselConstructorExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\AMP\Carousel');
+        $this->assertTrue($class->hasMethod('__construct'));
+    }
+
+    /**
+     * @depends testCarouselConstructorExists
+     * @testdox Carousel::__construct() has one optional parameter
+     */
+    public function testCarouselConstructorHasOneOptionalParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\AMP\Carousel', '__construct');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 0);
+    }
+
+
+    /**
+     * @group hmvc
      * @testdox Carousel::__toString() exists
      */
     public function testCarouselToStringExists()
