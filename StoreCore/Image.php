@@ -5,8 +5,8 @@ namespace StoreCore;
  * HTML Image.
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2017–2018 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @copyright Copyright © 2017–2019 StoreCore™
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
  * @version   0.1.0
  */
@@ -54,14 +54,13 @@ class Image implements \StoreCore\Types\StringableInterface
      */
     public function __toString()
     {
-        $str  = '<img';
-        $str .= ' alt="'. htmlentities($this->getAlt()) . '"';
+        $str = '<img alt="' . htmlentities($this->getAlt()) . '"';
 
         if ($this->getHeight() !== null) {
             $str .= ' height="' . $this->getHeight() . '"';
         }
 
-        $str .= ' src="' . $this->Source . '"';
+        $str .= ' src="' . $this->getSource() . '"';
 
         if ($this->getWidth() !== null) {
             $str .= ' width="' . $this->getWidth() . '"';
@@ -96,6 +95,19 @@ class Image implements \StoreCore\Types\StringableInterface
     public function getHeight()
     {
         return $this->Height;
+    }
+
+    /**
+     * Get the image source (src).
+     *
+     * @param void
+     *
+     * @return string
+     *   Returns the source URL of the image file.
+     */
+    public function getSource()
+    {
+        return $this->Source;
     }
 
     /**
@@ -145,8 +157,7 @@ class Image implements \StoreCore\Types\StringableInterface
      *
      * @throws \DomainException
      *   Throws a domain exception if the height is smaller than 1 or greater
-     *   than 2160, the default height of a 3840 × 2160 Ultra HD (UHD-1) or
-     *   “4K” image.
+     *   than 4320, the default height a 7680 × 4320 pixels 8K UHD image.
      *
      * @throws \InvalidArgumentException
      *   Throws an invalid argument exception if the height is not a number.
@@ -161,7 +172,7 @@ class Image implements \StoreCore\Types\StringableInterface
             }
         }
 
-        if ($height_in_pixels < 1 || $height_in_pixels > 2160) {
+        if ($height_in_pixels < 1 || $height_in_pixels > 4320) {
             throw new \DomainException();
         }
 
@@ -181,11 +192,9 @@ class Image implements \StoreCore\Types\StringableInterface
         if (!is_string($image_url)) {
             throw new \InvalidArgumentException();
         }
-
-        $image_url = filter_var($image_url, FILTER_SANITIZE_URL);
         $this->Source = $image_url;
     }
-    
+
     /**
      * Set the image width.
      *
@@ -196,7 +205,7 @@ class Image implements \StoreCore\Types\StringableInterface
      *
      * @throws \DomainException
      *   Throws a domain exception if the width is smaller than 1 or greater
-     *   than 3840, the default width of a 3840 × 2160 Ultra HD image.
+     *   than 7680, the default width of a 7680 × 4320 pixels 8K UHD image.
      *
      * @throws \InvalidArgumentException
      *   Throws an invalid argument exception if the width is not a number.
@@ -211,7 +220,7 @@ class Image implements \StoreCore\Types\StringableInterface
             }
         }
 
-        if ($width_in_pixels < 1 || $width_in_pixels > 3840) {
+        if ($width_in_pixels < 1 || $width_in_pixels > 7680) {
             throw new \DomainException();
         }
 
