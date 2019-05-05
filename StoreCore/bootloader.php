@@ -45,6 +45,7 @@ $loader->register();
 // Link namespaces to directories.
 $loader->addNamespace('Psr\Cache', __DIR__ . DIRECTORY_SEPARATOR . 'Psr' . DIRECTORY_SEPARATOR . 'Cache');
 $loader->addNamespace('Psr\Container', __DIR__ . DIRECTORY_SEPARATOR . 'Psr' . DIRECTORY_SEPARATOR . 'Container');
+$loader->addNamespace('Psr\EventDispatcher', __DIR__ . DIRECTORY_SEPARATOR . 'Psr' . DIRECTORY_SEPARATOR . 'EventDispatcher');
 $loader->addNamespace('Psr\Link', __DIR__ . DIRECTORY_SEPARATOR . 'Psr' . DIRECTORY_SEPARATOR . 'Link');
 $loader->addNamespace('Psr\Log', __DIR__ . DIRECTORY_SEPARATOR . 'Psr' . DIRECTORY_SEPARATOR . 'Log');
 $loader->addNamespace('Psr\SimpleCache', __DIR__ . DIRECTORY_SEPARATOR . 'Psr' . DIRECTORY_SEPARATOR . 'SimpleCache');
