@@ -306,6 +306,50 @@ class AMPCarouselTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
     }
 
+    /**
+     * @testdox Carousel::setDelay() accepts integers
+     */
+    public function testCarouselSetDelayAcceptsIntegers()
+    {
+        $carousel = new \StoreCore\AMP\Carousel();
+        $carousel->setDelay(2500);
+
+        $reflection_class = new \ReflectionClass($carousel);
+        $reflection_property = $reflection_class->getProperty('Delay');
+        $reflection_property->setAccessible(true);
+        $this->assertSame(2500, $reflection_property->getValue($carousel));
+    }
+
+    /**
+     * @testdox Carousel::setDelay() accepts \DateInterval in seconds
+     */
+    public function testCarouselSetDelayAcceptsDateIntervalInSeconds()
+    {
+        $three_seconds = new \DateInterval('PT3S');
+        $carousel = new \StoreCore\AMP\Carousel();
+        $carousel->setDelay($three_seconds);
+
+        $reflection_class = new \ReflectionClass($carousel);
+        $reflection_property = $reflection_class->getProperty('Delay');
+        $reflection_property->setAccessible(true);
+        $this->assertSame(3000, $reflection_property->getValue($carousel));
+    }
+
+    /**
+     * @testdox Carousel::setDelay() accepts \DateInterval in minutes
+     */
+    public function testCarouselSetDelayAcceptsDateIntervalInMinutes()
+    {
+        $one_minute = new \DateInterval('PT1M');
+        $carousel = new \StoreCore\AMP\Carousel();
+        $carousel->setDelay($one_minute);
+
+        $reflection_class = new \ReflectionClass($carousel);
+        $reflection_property = $reflection_class->getProperty('Delay');
+        $reflection_property->setAccessible(true);
+        $this->assertSame(60000, $reflection_property->getValue($carousel));
+    }
+
 
     /**
      * @testdox Carousel has Height property

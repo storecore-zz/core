@@ -178,12 +178,13 @@ class Carousel implements LayoutInterface, LightboxGalleryInterface, StringableI
     /**
      * Enable autoplay on sliders.
      *
-     * @param int|null $delay
-     *   Optional delay in milliseconds.  Defaults to 5000 for a 5 seconds delay.
+     * @param \DateInterval|int $delay
+     *   Optional delay in milliseconds or a DateInterval for minutes and/or seconds.
+     *   Defaults to 5000 for a 5 seconds delay.
      *
      * @return void
      */
-    public function setAutoplay($delay_in_milliseconds = 5000)
+    public function setAutoplay($delay = 5000)
     {
         $this->Autoplay = true;
         $this->setDelay($delay);
@@ -192,25 +193,29 @@ class Carousel implements LayoutInterface, LightboxGalleryInterface, StringableI
     /**
      * Change the slider delay.
      *
-     * @param int $delay_in_milliseconds
-     *   Slider delay in milliseconds.
+     * @param \DateInterval|int $delay
+     *   Slider delay as an integer in milliseconds or a DateInterval in
+     *   minutes and/or seconds.
      *
      * @return void
      *
      * @throws \InvalidArgumentException
      *   Throws an invalid argument exception if the delay is not a number.
      */
-    public function setDelay($delay_in_milliseconds)
+    public function setDelay($delay)
     {
-        if (!is_int($delay_in_milliseconds)) {
-            if (is_numeric($delay_in_milliseconds)) {
-                $delay_in_milliseconds = (int)$delay_in_milliseconds;
+        if (!is_int($delay)) {
+            if ($delay instanceof \DateInterval) {
+                $seconds = 60 * (int)$delay->format('%i') + (int)$delay->format('%s');
+                $delay = 1000 * $seconds;
+            } elseif (is_numeric($delay)) {
+                $delay = (int)$delay;
             } else {
                 throw new \InvalidArgumentException();
             }
         }
 
-        $this->Delay = $delay_in_milliseconds;
+        $this->Delay = $delay;
     }
 
     /**
