@@ -31,11 +31,12 @@ class Drawer extends Sidebar implements LayoutInterface, StringableInterface
     /**
      * @var array $Attributes
      *   AMP HTML attributes of the `<amp-sidebar>` component.  Defaults to
-     *   `<amp-sidebar id="drawer" layout="nodisplay" on="tap:drawer.close"
-     *   side="left">`.  Please note that the unique DOM object ID is set to
-     *   `id="drawer"` for a navigation drawer.
+     *   `<amp-sidebar class="mdc-drawer" id="drawer" layout="nodisplay"
+     *   on="tap:drawer.close" side="left">`.  Please note that the unique DOM
+     *   object ID is set to `id="drawer"` for a navigation drawer.
      */
     protected $Attributes = array(
+        'class' => 'mdc-drawer',
         'id' => 'drawer',
         'layout' => LayoutInterface::LAYOUT_NODISPLAY,
         'on' => 'tap:drawer.close',
