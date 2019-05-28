@@ -16,6 +16,7 @@ use \StoreCore\Types\StringableInterface as StringableInterface;
  * @package   StoreCore\CMS
  * @see       https://material.io/design/components/navigation-drawer.html
  * @see       https://material.io/develop/web/components/drawers/
+ * @see       https://material-components.github.io/material-components-web-catalog/#/component/drawer
  * @see       https://github.com/material-components/material-components-web/tree/master/packages/mdc-drawer
  * @version   0.1.0
  */
