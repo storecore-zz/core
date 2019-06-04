@@ -1044,16 +1044,16 @@ class IconLibrary
     /**
      * Get an icon as a data URI.
      *
-     * @param string $name
+     * @param string $icon_name
      *   Name of the icon.
      *
      * @return string|null
      *   Returns the icon as a Base64 encoded data URI, which may be used in
      *   HTML as well as CSS, or null if the icon does not exist.
      */
-    public function getDataURI($name)
+    public function getDataURI($icon_name)
     {
-        $svg = $this->getSVG($name);
+        $svg = $this->getSVG($icon_name);
         if ($svg === null) {
             return null;
         } else {
@@ -1064,23 +1064,23 @@ class IconLibrary
     /**
      * Get an icon as an SVG image.
      *
-     * @param string $name
+     * @param string $icon_name
      *   Case-insensitive name of the icon.
      *
      * @return string|null
      *   Returns the icon as an embeddable Scalable Vector Graphics (SVG) image
      *   tag in XML or null if the icon was not found.
      */
-    public function getSVG($name)
+    public function getSVG($icon_name)
     {
-        $name = trim($name);
-        $name = strtolower($name);
+        $icon_name = trim($icon_name);
+        $icon_name = strtolower($icon_name);
 
-        if (array_key_exists($name, $this->Paths)) {
+        if (array_key_exists($icon_name, $this->Paths)) {
             return
                 '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">'
                 . '<path d="M0 0h24v24H0z" fill="none"/>'
-                . $this->Paths[$name] . '</svg>';
+                . $this->Paths[$icon_name] . '</svg>';
         } else {
             return null;
         }
