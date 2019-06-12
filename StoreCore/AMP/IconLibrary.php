@@ -1042,6 +1042,31 @@ class IconLibrary
     );
 
     /**
+     * Get HTML entity character.
+     *
+     * @param string $icon_name
+     *   Case-insensitive name of the icon.
+     *
+     * @return string
+     *   Returns the icon as an escaped hexadecimal character code.
+     *
+     * @throws \OutOfRangeException
+     *   Throws an out of range logic exception if the icon does not exist.
+     */
+    public function getCharacter($icon_name)
+    {
+        $icon_name = trim($icon_name);
+        $icon_name = strtolower($icon_name);
+        $icon_name = str_replace(' ', '_', $icon_name);
+
+        if (array_key_exists($icon_name, $this->CodePoints)) {
+            return '&#x' . strtoupper($this->CodePoints[$icon_name]) . ';';
+        } else {
+            throw new \OutOfRangeException();
+        }
+    }
+
+    /**
      * Get an icon as a data URI.
      *
      * @param string $icon_name
