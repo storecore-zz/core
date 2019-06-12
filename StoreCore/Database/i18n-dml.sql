@@ -321,6 +321,15 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_RELATED_PRODUCTS', 'nl-NL', 'gerelateerde producten', 0),
     ('NOUN_RELATED_PRODUCTS', 'pt-PT', 'produtos relacionados', 0),
 
+    ('NOUN_SHOPPING_BASKET', 'ca-AD', 'cistell de la compra', 0),
+    ('NOUN_SHOPPING_BASKET', 'de-DE', 'Einkaufskorb', 0),
+    ('NOUN_SHOPPING_BASKET', 'en-GB', 'shopping basket', 0),
+    ('NOUN_SHOPPING_BASKET', 'es-ES', 'cesta de la compra', 0),
+    ('NOUN_SHOPPING_BASKET', 'fr-FR', 'panier de course', 0),
+    ('NOUN_SHOPPING_BASKET', 'it-IT', 'cestino della spesa', 0),
+    ('NOUN_SHOPPING_BASKET', 'nl-NL', 'winkelmandje', 0),
+    ('NOUN_SHOPPING_BASKET', 'pt-PT', 'carrinho de compras', 0),
+
     ('NOUN_SHOPPING_CART', 'ca-AD', 'carret de compra', 0),
     ('NOUN_SHOPPING_CART', 'de-DE', 'Einkaufswagen', 0),
     ('NOUN_SHOPPING_CART', 'en-GB', 'shopping cart', 0),
