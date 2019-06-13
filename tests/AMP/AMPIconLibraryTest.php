@@ -54,6 +54,25 @@ class AMPIconLibraryTest extends PHPUnit_Framework_TestCase
 
 
     /**
+     * @testdox IconLibrary class has CodePoints property
+     */
+    public function testIconLibraryClassHasCodePointsProperty()
+    {
+        $this->assertClassHasAttribute('CodePoints', \StoreCore\AMP\IconLibrary::class);
+    }
+
+    /**
+     * @depends testIconLibraryClassHasCodePointsProperty
+     * @testdox IconLibrary CodePoints property is protected
+     */
+    public function testIconLibraryCodePointsPropertyIsProtected()
+    {
+        $property = new \ReflectionProperty(\StoreCore\AMP\IconLibrary::class, 'CodePoints');
+        $this->assertTrue($property->isProtected());
+    }
+
+
+    /**
      * @testdox IconLibrary class has Paths property
      */
     public function testIconLibraryClassHasPathsProperty()
@@ -69,6 +88,98 @@ class AMPIconLibraryTest extends PHPUnit_Framework_TestCase
     {
         $property = new \ReflectionProperty(\StoreCore\AMP\IconLibrary::class, 'Paths');
         $this->assertTrue($property->isProtected());
+    }
+
+
+    /**
+     * @testdox getCharacter() method exists
+     */
+    public function testGetCharacterMethodExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\AMP\IconLibrary');
+        $this->assertTrue($class->hasMethod('getCharacter'));
+    }
+
+    /**
+     * @depends testGetCharacterMethodExists
+     * @testdox getCharacter() method is public
+     */
+    public function testGetgetCharacterMethodIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\AMP\IconLibrary', 'getCharacter');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testGetCharacterMethodExists
+     * @testdox getCharacter() method has one parameter
+     */
+    public function testGetCharacterMethodHasOneParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\AMP\IconLibrary', 'getCharacter');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+    }
+
+    /**
+     * @depends testGetCharacterMethodHasOneParameter
+     * @testdox getCharacter() method parameter is required
+     */
+    public function testGetCharacterMethodParameterIsRequired()
+    {
+        $method = new \ReflectionMethod('\StoreCore\AMP\IconLibrary', 'getCharacter');
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+    /**
+     * @depends testGetCharacterMethodHasOneParameter
+     * @testdox getCharacter() method returns non-empty string
+     */
+    public function testGetCharacterMethodReturnsNonEmptyString()
+    {
+        $icon_library = new \StoreCore\AMP\IconLibrary();
+        $this->assertNotEmpty($icon_library->getCharacter('home'));
+        $this->assertInternalType('string', $icon_library->getCharacter('home'));
+    }
+
+    /**
+     * @depends testGetCharacterMethodReturnsNonEmptyString
+     * @testdox getCharacter() method returns HTML character entity
+     */
+    public function testGetCharacterMethodReturnsHtmlCharacterEntity()
+    {
+        $charmap = array(
+            'home'          => '&#xE88A;',
+            'search'        => '&#xE8B6;',
+            'shopping_cart' => '&#xE8CC;',
+        );
+
+        $icon_library = new \StoreCore\AMP\IconLibrary();
+        foreach ($charmap as $input => $output) {
+            $this->assertSame($output, $icon_library->getCharacter($input));
+        }
+    }
+
+    /**
+     * @depends testGetCharacterMethodReturnsNonEmptyString
+     * @testdox getCharacter() method is case-insensitive
+     */
+    public function testGetCharacterMethodIsCaseInsensitive()
+    {
+        $icon_library = new \StoreCore\AMP\IconLibrary();
+        $this->assertSame($icon_library->getCharacter('Shopping_Cart'), $icon_library->getCharacter('shopping_cart'));
+        $this->assertSame($icon_library->getCharacter('SHOPPING_CART'), $icon_library->getCharacter('Shopping_Cart'));
+        $this->assertSame($icon_library->getCharacter('shopping_cart'), $icon_library->getCharacter('SHOPPING_CART'));
+    }
+
+    /**
+     * @depends testGetCharacterMethodReturnsNonEmptyString
+     * @testdox getCharacter() method accepts underscores and spaces
+     */
+    public function testGetCharacterMethodAcceptsUnderscoresAndSpaces()
+    {
+        $icon_library = new \StoreCore\AMP\IconLibrary();
+        $this->assertSame($icon_library->getCharacter('shopping basket'), $icon_library->getCharacter('shopping_basket'));
+        $this->assertSame($icon_library->getCharacter('shopping cart'), $icon_library->getCharacter('shopping_cart'));
     }
 
 
