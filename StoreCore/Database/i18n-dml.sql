@@ -340,6 +340,17 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_SHOPPING_CART', 'nl-NL', 'winkelwagen', 0),
     ('NOUN_SHOPPING_CART', 'pt-PT', 'carrinho de compras', 0),
 
+    ('NOUN_TAGS', 'ca-AD', 'etiquetes', 0),
+    ('NOUN_TAGS', 'da-DK', 'tags', 0),
+    ('NOUN_TAGS', 'de-DE', 'Stichworte', 0),
+    ('NOUN_TAGS', 'en-GB', 'tags', 0),
+    ('NOUN_TAGS', 'es-ES', 'etiquetas', 0),
+    ('NOUN_TAGS', 'fr-CA', 'mots clés', 0),
+    ('NOUN_TAGS', 'fr-FR', 'balises', 0),
+    ('NOUN_TAGS', 'it-IT', 'etichette', 0),
+    ('NOUN_TAGS', 'nl-NL', 'labels', 0),
+    ('NOUN_TAGS', 'pt-PT', 'rótulos', 0),
+
     ('NOUN_TERMS_AND_CONDITIONS', 'ca-AD', 'termes i condicions', 0),
     ('NOUN_TERMS_AND_CONDITIONS', 'de-DE', 'Geschäftsbedingungen', 0),
     ('NOUN_TERMS_AND_CONDITIONS', 'en-GB', 'terms and conditions', 0),
