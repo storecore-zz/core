@@ -119,6 +119,7 @@ INSERT IGNORE INTO sc_translation_memory
     (translation_id, language_id, translation, admin_only_flag)
   VALUES
     ('NOUN_BRANDS', 'ca-AD', 'marques', 0),
+    ('NOUN_BRANDS', 'da-DK', 'mærker', 0),
     ('NOUN_BRANDS', 'de-DE', 'Marken', 0),
     ('NOUN_BRANDS', 'en-GB', 'brands', 0),
     ('NOUN_BRANDS', 'es-ES', 'marcas', 0),
