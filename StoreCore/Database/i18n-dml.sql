@@ -202,6 +202,18 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_ENERGY_EFFICIENCY_CLASS', 'nl-NL', 'energieklasse', 0),
     ('NOUN_ENERGY_EFFICIENCY_CLASS', 'pt-PT', 'classe eficiência energética', 0),
 
+    ('NOUN_FAVORITES', 'ca-AD', 'favorits', 0),
+    ('NOUN_FAVORITES', 'da-DK', 'favoritter', 0),
+    ('NOUN_FAVORITES', 'de-DE', 'Favoriten', 0),
+    ('NOUN_FAVORITES', 'en-GB', 'favourites', 0),
+    ('NOUN_FAVORITES', 'en-US', 'favorites', 0),
+    ('NOUN_FAVORITES', 'es-ES', 'favoritos', 0),
+    ('NOUN_FAVORITES', 'fr-FR', 'favoris', 0),
+    ('NOUN_FAVORITES', 'it-IT', 'preferiti', 0),
+    ('NOUN_FAVORITES', 'lb-LU', 'Favoritten', 0),
+    ('NOUN_FAVORITES', 'nl-NL', 'favorieten', 0),
+    ('NOUN_FAVORITES', 'pt-PT', 'favoritos', 0),
+
     ('NOUN_FRENCH', 'ca-AD', 'francès', 0),
     ('NOUN_FRENCH', 'de-DE', 'Französisch', 0),
     ('NOUN_FRENCH', 'en-GB', 'French', 0),
