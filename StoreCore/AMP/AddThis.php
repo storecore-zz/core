@@ -8,14 +8,22 @@ use \StoreCore\Types\StringableInterface as StringableInterface;
  * AMP AddThis <amp-addthis>
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2018 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @copyright Copyright © 2018–2019 StoreCore™
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
- * @see       https://www.ampproject.org/docs/reference/components/amp-addthis
+ * @see       https://amp.dev/documentation/components/amp-addthis
+ * @see       https://www.addthis.com/academy/how-to-install-addthis-inline-share-buttons-on-amp-accelerated-mobile-pages/
+ * @see       https://blog.amp.dev/2018/07/30/addthis-is-now-available-for-amp/
  * @version   0.1.0
  */
 class AddThis extends AbstractComponent implements LayoutInterface, StringableInterface
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
+    const VERSION = '0.1.0';
+
     /**
      * @param array $Attributes
      *   HTML5 and AMP HTML attributes of the component.
@@ -29,7 +37,7 @@ class AddThis extends AbstractComponent implements LayoutInterface, StringableIn
     /**
      * Construct an AMP component for AddThis
      *
-     * @param string|null $p ublisher_id
+     * @param string|null $publisher_id
      *   Optional AddThis publisher ID.
      *
      * @param string|null $widget_id

@@ -16,6 +16,7 @@ use \StoreCore\Types\StringableInterface as StringableInterface;
  * @package   StoreCore\CMS
  * @see       https://material.io/design/components/navigation-drawer.html
  * @see       https://material.io/develop/web/components/drawers/
+ * @see       https://material-components.github.io/material-components-web-catalog/#/component/drawer
  * @see       https://github.com/material-components/material-components-web/tree/master/packages/mdc-drawer
  * @version   0.1.0
  */
@@ -31,11 +32,12 @@ class Drawer extends Sidebar implements LayoutInterface, StringableInterface
     /**
      * @var array $Attributes
      *   AMP HTML attributes of the `<amp-sidebar>` component.  Defaults to
-     *   `<amp-sidebar id="drawer" layout="nodisplay" on="tap:drawer.close"
-     *   side="left">`.  Please note that the unique DOM object ID is set to
-     *   `id="drawer"` for a navigation drawer.
+     *   `<amp-sidebar class="mdc-drawer" id="drawer" layout="nodisplay"
+     *   on="tap:drawer.close" side="left">`.  Please note that the unique DOM
+     *   object ID is set to `id="drawer"` for a navigation drawer.
      */
     protected $Attributes = array(
+        'class' => 'mdc-drawer',
         'id' => 'drawer',
         'layout' => LayoutInterface::LAYOUT_NODISPLAY,
         'on' => 'tap:drawer.close',

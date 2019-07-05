@@ -7,9 +7,9 @@ namespace StoreCore\AMP;
  * @api
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
  * @copyright Copyright © 2018–2019 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
- * @see       https://www.ampproject.org/docs/reference/components
+ * @see       https://amp.dev/documentation/components/ AMP component catalogue
  * @version   0.1.0
  */
 abstract class AbstractComponent implements LayoutInterface

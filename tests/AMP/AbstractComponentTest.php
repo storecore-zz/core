@@ -57,11 +57,20 @@ class AbstractComponentTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
-     * @testdox VERSION constant is non-empty string
+     * @testdox VERSION constant is not empty
      */
     public function testVersionConstantIsNonEmptyString()
     {
         $this->assertNotEmpty(\StoreCore\AMP\AbstractComponent::VERSION);
+    }
+
+    /**
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     * @testdox VERSION constant is string
+     */
+    public function testVersionConstantIsString()
+    {
         $this->assertInternalType('string', \StoreCore\AMP\AbstractComponent::VERSION);
     }
 
@@ -115,36 +124,36 @@ class AbstractComponentTest extends PHPUnit_Framework_TestCase
 
 
     /**
-     * @testdox Public getLayout() method exists
+     * @testdox AbstractComponent::getLayout() exists
      */
-    public function testPublicGetLayoutMethodExists()
+    public function testAbstractComponentGetLayoutExists()
     {
         $class = new \ReflectionClass('\StoreCore\AMP\AbstractComponent');
         $this->assertTrue($class->hasMethod('getLayout'));
     }
 
     /**
-     * @testdox Public getLayout() method is public
+     * @testdox AbstractComponent::getLayout() is public
      */
-    public function testPublicGetLayoutMethodIsPublic()
+    public function testAbstractComponentGetLayoutIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\AMP\AbstractComponent', 'getLayout');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public getLayout() method has no parameters
+     * @testdox AbstractComponent::getLayout() has no parameters
      */
-    public function testPublicGetLayoutMethodHasNoParameters()
+    public function testAbstractComponentGetLayoutHasNoParameters()
     {
         $method = new \ReflectionMethod('\StoreCore\AMP\AbstractComponent', 'getLayout');
         $this->assertTrue($method->getNumberOfParameters() === 0);
     }
 
     /**
-     * @testdox Public getLayout() method returns non-empty string
+     * @testdox AbstractComponent::getLayout() returns non-empty string
      */
-    public function testPublicGetLayoutMethodReturnsNonEmptyString()
+    public function testAbstractComponentGetLayoutReturnsNonEmptyString()
     {
         $mock = $this->getMockForAbstractClass('\StoreCore\AMP\AbstractComponent');
         $this->assertNotEmpty($mock->getLayout());
@@ -152,9 +161,10 @@ class AbstractComponentTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @testdox Public getLayout() method returns string "responsive" by default
+     * @depends testAbstractComponentGetLayoutReturnsNonEmptyString
+     * @testdox AbstractComponent::getLayout() returns string "responsive" by default
      */
-    public function testPublicGetLayoutMethodReturnsStringResponsiveByDefault()
+    public function testAbstractComponentGetLayoutReturnsStringResponsiveByDefault()
     {
         $mock = $this->getMockForAbstractClass('\StoreCore\AMP\AbstractComponent');
         $this->assertEquals('responsive', $mock->getLayout());
@@ -162,55 +172,56 @@ class AbstractComponentTest extends PHPUnit_Framework_TestCase
 
 
     /**
-     * @testdox Public insert() method exists
+     * @testdox AbstractComponent::insert() exists
      */
-    public function testPublicInsertMethodExists()
+    public function testAbstractComponentInsertExists()
     {
         $class = new \ReflectionClass('\StoreCore\AMP\AbstractComponent');
         $this->assertTrue($class->hasMethod('insert'));
     }
 
     /**
-     * @testdox Public insert() method is public
+     * @testdox AbstractComponent::insert() is public
      */
-    public function testPublicInsertMethodIsPublic()
+    public function testAbstractComponentInsertIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\AMP\AbstractComponent', 'insert');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public insert() method has one parameter
+     * @testdox AbstractComponent::insert() has one required parameter
      */
-    public function testPublicGetLayoutMethodHasOneParameter()
+    public function testAbstractComponentInsertHasOneRequiredParameter()
     {
         $method = new \ReflectionMethod('\StoreCore\AMP\AbstractComponent', 'insert');
         $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
     }
 
 
     /**
-     * @testdox Public setLayout() method exists
+     * @testdox AbstractComponent::setLayout() exists
      */
-    public function testPublicSetLayoutMethodExists()
+    public function testAbstractComponentSetLayoutExists()
     {
         $class = new \ReflectionClass('\StoreCore\AMP\AbstractComponent');
         $this->assertTrue($class->hasMethod('setLayout'));
     }
 
     /**
-     * @testdox Public setLayout() method is public
+     * @testdox AbstractComponent::setLayout() is public
      */
-    public function testPublicSetLayoutMethodIsPublic()
+    public function testAbstractComponentSetLayoutIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\AMP\AbstractComponent', 'setLayout');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public setLayout() method has one required parameter
+     * @testdox AbstractComponent::setLayout() has one required parameter
      */
-    public function testPublicSetLayoutMethodHasOneRequiredParameter()
+    public function testAbstractComponentSetLayoutHasOneRequiredParameter()
     {
         $method = new \ReflectionMethod('\StoreCore\AMP\AbstractComponent', 'setLayout');
         $this->assertTrue($method->getNumberOfParameters() === 1);
@@ -219,9 +230,9 @@ class AbstractComponentTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @testdox Public setLayout() method throws \InvalidArgumentException on empty string
+     * @testdox AbstractComponent::setLayout() throws \InvalidArgumentException on empty string
      */
-    public function testPublicSetLayoutMethodThrowsInvalidArgumentExceptionOnEmptyString()
+    public function testAbstractComponentSetLayoutThrowsInvalidArgumentExceptionOnEmptyString()
     {
         $empty_string = (string)null;
         $this->assertEmpty($empty_string);
