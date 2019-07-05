@@ -470,7 +470,7 @@ INSERT IGNORE INTO sc_translation_memory
     controls: `COMMAND_` for menu commands and command buttons, `ERROR_` for
     error messages, and `HEADING_` for headlines, table headings, and labels
     that accompany input controls.  The fourth prefix `TEXT_` may be used for
-    any other text.  The user interface language strings MAY contains
+    any other text.  The user interface language strings MAY contain
     placeholders (for example for counters) and formatted HTML5 (for icons,
     CSS classes, et cetera).
   */
