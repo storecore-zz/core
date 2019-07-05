@@ -9,10 +9,10 @@ use \StoreCore\Types\StringableInterface as StringableInterface;
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
  * @copyright Copyright © 2019 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
- * @see       https://www.ampproject.org/docs/reference/components/amp-sidebar
- * @see       https://ampbyexample.com/components/amp-sidebar/
+ * @see       https://amp.dev/documentation/components/amp-sidebar
+ * @see       https://amp.dev/documentation/examples/components/amp-sidebar/
  * @version   0.1.0
  */
 class Sidebar extends AbstractComponent implements LayoutInterface, StringableInterface

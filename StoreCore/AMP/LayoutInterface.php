@@ -10,10 +10,11 @@ namespace StoreCore\AMP;
  * setter and getter `setLayout()` and `getLayout()`.
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2017–2018 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @copyright Copyright © 2017–2019 StoreCore™
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
- * @see       https://www.ampproject.org/docs/guides/responsive/control_layout#the-layout-attribute
+ * @see       https://amp.dev/documentation/guides-and-tutorials/develop/style_and_layout/control_layout
+ * @see       https://amp.dev/documentation/guides-and-tutorials/learn/amp-html-layout/layouts_demonstrated
  * @version   1.0.0
  */
 interface LayoutInterface
@@ -42,10 +43,13 @@ interface LayoutInterface
      *
      * @param void
      *
-     * @return string
-     *   Returns the currently set AMP layout attribute as a string.
+     * @return string|null
+     *   Returns the currently set AMP `layout` attribute as a string.  This
+     *   method MAY return null if the `layout` attribute of an AMP component
+     *   is not yet set, but MUST return a string if the component has a
+     *   default `layout`.
      */
-    public function getLayout();
+    public function getlayout();
 
     /**
      * Set the AMP layout attribute.

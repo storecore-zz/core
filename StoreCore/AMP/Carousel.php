@@ -1,30 +1,27 @@
 <?php
 namespace StoreCore\AMP;
 
+use \StoreCore\Types\StringableInterface as StringableInterface;
+
 /**
  * AMP Carousel <amp-carousel>
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2017–2018 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @copyright Copyright © 2017–2019 StoreCore™
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
- * @see       https://www.ampproject.org/docs/reference/components/amp-carousel
- * @see       https://ampbyexample.com/components/amp-carousel/
+ * @see       https://amp.dev/documentation/components/amp-carousel
+ * @see       https://amp.dev/documentation/examples/components/amp-carousel/
+ * @see       https://amp.dev/documentation/examples/multimedia-animations/image_galleries_with_amp-carousel/
  * @version   0.1.0
  */
-class Carousel implements LayoutInterface
+class Carousel implements LayoutInterface, LightboxGalleryInterface, StringableInterface
 {
     /**
      * @var string VERSION
      *   Semantic Version (SemVer).
      */
     const VERSION = '0.1.0';
-
-    /**
-     * @var string REQUIRED_SCRIPT
-     *   JavaScript source code that MUST be imported in the header for a carousel component.
-     */
-    const REQUIRED_SCRIPT = '<script async custom-element="amp-carousel" src="https://cdn.ampproject.org/v0/amp-carousel-0.1.js"></script>';
 
     /**
      * @var string TYPE_CAROUSEL
@@ -74,6 +71,12 @@ class Carousel implements LayoutInterface
     protected $Layout;
 
     /**
+     * @var bool $Lightbox
+     *   The carousel is a lightbox gallery (true) or not (default false).
+     */
+    protected $Lightbox = false;
+
+    /**
      * @var string $Type
      *   AMP carousel `type` HTML attribute, defaults to `carousel`.
      */
@@ -102,6 +105,41 @@ class Carousel implements LayoutInterface
     }
 
     /**
+     * Get the <amp-carousel> AMP carousel element.
+     *
+     * @param void
+     *
+     * @return string
+     *   Returns the AMP tag `<amp-carousel …>…</amp-carousel>` as a string.
+     */
+    public function __toString()
+    {
+        $html = '<amp-carousel type="' . $this->Type . '"';
+
+        if ($this->getLayout() !== null) {
+            $html .= ' layout="' . $this->getLayout() . '"';
+        }
+
+        if ($this->Width !== null) {
+            $html .= ' width="' . $this->Width . '"';
+        }
+        if ($this->Height !== null) {
+            $html .= ' height="' . $this->Height . '"';
+        }
+
+        $html .= '>';
+
+        if (!empty($this->Children)) {
+            foreach ($this->Children as $child_node) {
+                $html .= $child_node;
+            }
+        }
+
+        $html .= '</amp-carousel>';
+        return $html;
+    }
+
+    /**
      * Add a photo, image, slide, or other node.
      *
      * @param string $node
@@ -110,7 +148,7 @@ class Carousel implements LayoutInterface
      * @return int
      *   Returns the number of nodes in the carousel.
      */
-    public function appendChild($node)
+    public function append($node)
     {
         return array_push($this->Children, (string)$node);
     }
@@ -120,8 +158,9 @@ class Carousel implements LayoutInterface
      *
      * @param void
      *
-     * @return string
-     *   Returns the currently set AMP layout attribute as a string.
+     * @return string|null
+     *   Returns the currently set AMP `layout` attribute as a string or null
+     *   if the attribute is not set.
      */
     public function getLayout()
     {
@@ -129,14 +168,23 @@ class Carousel implements LayoutInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function isLightbox()
+    {
+        return $this->Lightbox;
+    }
+
+    /**
      * Enable autoplay on sliders.
      *
-     * @param int|null $delay
-     *   Optional delay in milliseconds.  Defaults to 5000 for a 5 seconds delay.
+     * @param \DateInterval|int $delay
+     *   Optional delay in milliseconds or a DateInterval for minutes and/or seconds.
+     *   Defaults to 5000 for a 5 seconds delay.
      *
      * @return void
      */
-    public function setAutoplay($delay_in_milliseconds = 5000)
+    public function setAutoplay($delay = 5000)
     {
         $this->Autoplay = true;
         $this->setDelay($delay);
@@ -145,25 +193,29 @@ class Carousel implements LayoutInterface
     /**
      * Change the slider delay.
      *
-     * @param int $delay_in_milliseconds
-     *   Slider delay in milliseconds.
+     * @param \DateInterval|int $delay
+     *   Slider delay as an integer in milliseconds or a DateInterval in
+     *   minutes and/or seconds.
      *
      * @return void
      *
      * @throws \InvalidArgumentException
      *   Throws an invalid argument exception if the delay is not a number.
      */
-    public function setDelay($delay_in_milliseconds)
+    public function setDelay($delay)
     {
-        if (!is_int($delay_in_milliseconds)) {
-            if (is_numeric($delay_in_milliseconds)) {
-                $delay_in_milliseconds = (int)$delay_in_milliseconds;
+        if (!is_int($delay)) {
+            if ($delay instanceof \DateInterval) {
+                $seconds = 60 * (int)$delay->format('%i') + (int)$delay->format('%s');
+                $delay = 1000 * $seconds;
+            } elseif (is_numeric($delay)) {
+                $delay = (int)$delay;
             } else {
                 throw new \InvalidArgumentException();
             }
         }
 
-        $this->Delay = $delay_in_milliseconds;
+        $this->Delay = $delay;
     }
 
     /**
@@ -207,6 +259,14 @@ class Carousel implements LayoutInterface
     public function setLayout($layout)
     {
         $this->Layout = $layout;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setLightbox($lightbox = true)
+    {
+        $this->Lightbox = (bool)$lightbox;
     }
 
     /**

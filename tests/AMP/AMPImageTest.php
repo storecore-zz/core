@@ -12,15 +12,48 @@ class AMPImageTest extends PHPUnit_Framework_TestCase
         );
     }
 
+
     /**
      * @group distro
-     * @testdox Implemented LayoutInterface interface file exists
+     * @testdox Implemented \StoreCore\AMP\LayoutInterface interface file exists
      */
-    public function testImplementedLayoutInterfaceInterfaceFileExists()
+    public function testImplementedStoreCoreAmpLayoutInterfaceInterfaceFileExists()
     {
         $this->assertFileExists(
             STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'AMP' . DIRECTORY_SEPARATOR . 'LayoutInterface.php'
         );
+    }
+
+    /**
+     * @group hmvc
+     * @testdox AMP image implements \StoreCore\AMP\LayoutInterface
+     */
+    public function testAmpImageImplementsStoreCoreAmpLayoutInterface()
+    {
+        $object = new \StoreCore\AMP\Image();
+        $this->assertInstanceOf(\StoreCore\AMP\LayoutInterface::class, $object);
+    }
+
+
+    /**
+     * @group distro
+     * @testdox Implemented \StoreCore\Types\StringableInterface interface file exists
+     */
+    public function testImplementedStoreCoreTypesStringableInterfaceInterfaceFileExists()
+    {
+        $this->assertFileExists(
+            STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Types' . DIRECTORY_SEPARATOR . 'StringableInterface.php'
+        );
+    }
+
+    /**
+     * @group hmvc
+     * @testdox AMP image implements \StoreCore\Types\StringableInterface
+     */
+    public function testAmpImageImplementsStoreCoreTypesStringableInterface()
+    {
+        $object = new \StoreCore\AMP\Image();
+        $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $object);
     }
 
 
@@ -37,16 +70,25 @@ class AMPImageTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
-     * @testdox VERSION constant is non-empty string
+     * @testdox VERSION constant is not empty
      */
-    public function testVersionConstantIsNonEmptyString()
+    public function testVersionConstantIsNotEmpty()
     {
         $this->assertNotEmpty(\StoreCore\AMP\Image::VERSION);
+    }
+
+    /**
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     * @testdox VERSION constant is string
+     */
+    public function testVersionConstantIsString()
+    {
         $this->assertInternalType('string', \StoreCore\AMP\Image::VERSION);
     }
 
     /**
-     * @depends testVersionConstantIsNonEmptyString
+     * @depends testVersionConstantIsNotEmpty
      * @group distro
      */
     public function testVersionMatchesMasterBranch()
@@ -56,83 +98,136 @@ class AMPImageTest extends PHPUnit_Framework_TestCase
 
 
     /**
-     * @testdox Public __toString() method exists
+     * @testdox Image::__toString() exists
      */
-    public function testPublicToStringMethodExists()
+    public function testImageToStringExists()
     {
         $class = new \ReflectionClass('\StoreCore\AMP\Image');
         $this->assertTrue($class->hasMethod('__toString'));
     }
 
     /**
-     * @testdox Public __toString() method is public
+     * @testdox Image::__toString() is public
      */
-    public function testPublicToStringMethodIsPublic()
+    public function testImageToStringIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\AMP\Image', '__toString');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public __toString() method returns <amp-img> tag
+     * @testdox Image::__toString() returns <amp-img> tag
      */
-    public function testPublicToStringMethodIsPublicReturnsAmpImgTag()
+    public function testImageToStringReturnsAmpImgTag()
     {
         $img = new \StoreCore\AMP\Image();
         $this->assertStringStartsWith('<amp-img ', (string)$img);
+        $this->assertStringEndsWith('</amp-img>', (string)$img);
     }
 
     /**
-     * @testdox Public __toString() method returns layout="responsive" attribute by default
+     * @testdox Image::__toString() returns layout="responsive" attribute by default
      */
-    public function testPublicToStringMethodIsPublicReturnsLayoutIsResponsiveAttributeByDefault()
+    public function testImageToStringReturnsLayoutIsResponsiveAttributeByDefault()
     {
         $img = new \StoreCore\AMP\Image();
         $this->assertContains(' layout="responsive"', (string)$img);
     }
 
+
     /**
-     * @testdox Public getLayout() method exists
+     * @testdox Image::getLayout() exists
      */
-    public function testPublicGetLayoutMethodExists()
+    public function testImageGetLayoutExists()
     {
         $class = new \ReflectionClass('\StoreCore\AMP\Image');
         $this->assertTrue($class->hasMethod('getLayout'));
     }
 
     /**
-     * @testdox Public getLayout() method is public
+     * @testdox Image::getLayout() is public
      */
-    public function testPublicGetLayoutMethodIsPublic()
+    public function testImageGetLayoutIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\AMP\Image', 'getLayout');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public getLayout() method returns 'responsive' by default
+     * @testdox Image::getLayout() has no parameters
      */
-    public function testPublicGetLayoutMethodReturnsResponsiveByDefault()
+    public function testImageGetLayoutHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\AMP\Image', 'getLayout');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+    /**
+     * @testdox Image::getLayout() returns 'responsive' by default
+     */
+    public function testImageGetLayoutReturnsResponsiveByDefault()
     {
         $image = new \StoreCore\AMP\Image();
         $this->assertEquals('responsive', $image->getLayout());
     }
 
+
     /**
-     * @testdox Public setFallback() method exists
+     * @testdox Image::setFallback() exists
      */
-    public function testPublicSetFallbackMethodExists()
+    public function testImageSetFallbackExists()
     {
         $class = new \ReflectionClass('\StoreCore\AMP\Image');
         $this->assertTrue($class->hasMethod('setFallback'));
     }
 
     /**
-     * @testdox Public setFallback() method is public
+     * @testdox Image::setFallback() is public
      */
-    public function testPublicSetFallbackMethodIsPublic()
+    public function testImageSetFallbackIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\AMP\Image', 'setFallback');
         $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @testdox Image::setFallback() has one required parameter
+     */
+    public function testImageSetFallbackHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\AMP\Image', 'setFallback');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+
+    /**
+     * @testdox Image::setLightbox() exists
+     */
+    public function testImageSetLightboxExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\AMP\Image');
+        $this->assertTrue($class->hasMethod('setLightbox'));
+    }
+
+    /**
+     * @depends testImageSetLightboxExists
+     * @testdox Image::setLightbox() is public
+     */
+    public function testImageSetLightboxIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\AMP\Image', 'setLightbox');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testImageSetLightboxExists
+     * @testdox Image::setLightbox() has one optional parameter
+     */
+    public function testImageSetFallbackHasOneOptionalParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\AMP\Image', 'setLightbox');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 0);
     }
 }

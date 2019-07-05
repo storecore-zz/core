@@ -1,6 +1,8 @@
 <?php
 namespace StoreCore\AMP;
 
+use \StoreCore\Types\StringableInterface as StringableInterface;
+
 /**
  * AMP Image <amp-img>
  *
@@ -10,9 +12,11 @@ namespace StoreCore\AMP;
  * @package   StoreCore\CMS
  * @see       https://amp.dev/documentation/components/amp-img
  * @see       https://amp.dev/documentation/examples/components/amp-img/
+ * @see       https://amp.dev/documentation/guides-and-tutorials/start/create/include_image
+ * @see       https://amp.dev/documentation/examples/style-layout/how_to_support_images_with_unknown_dimensions/
  * @version   0.1.0
  */
-class Image extends \StoreCore\Image implements LayoutInterface
+class Image extends \StoreCore\Image implements LayoutInterface, LightboxGalleryInterface, StringableInterface
 {
     /**
      * @var string VERSION
@@ -29,8 +33,15 @@ class Image extends \StoreCore\Image implements LayoutInterface
     /**
      * @var string $Layout
      *   The `layout` attribute of the `<amp-img>` element.
+     *   Defaults to `responsive`.
      */
     protected $Layout = LayoutInterface::LAYOUT_RESPONSIVE;
+
+    /**
+     * @var bool $Lightbox
+     *   The image is part of a lightbox gallery (true) or not (default false).
+     */
+    protected $Lightbox = false;
 
     /**
      * @var array $SupportedLayouts
@@ -55,7 +66,13 @@ class Image extends \StoreCore\Image implements LayoutInterface
      */
     public function __toString()
     {
-        $str = '<amp-img alt="' . $this->getAlt() . '" layout="'. $this->getLayout()
+        $str = '<amp-img ';
+
+        if ($this->isLightbox()) {
+            $str .= 'lightbox ';
+        }
+
+        $str .= 'alt="' . $this->getAlt() . '" layout="'. $this->getLayout()
             . '" height="' . $this->getHeight() . '" src="' . $this->getSource() . '" width="'
             . $this->getWidth() . '">';
 
@@ -80,6 +97,14 @@ class Image extends \StoreCore\Image implements LayoutInterface
     public function getLayout()
     {
         return $this->Layout;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isLightbox()
+    {
+        return $this->Lightbox;
     }
 
     /**
@@ -120,5 +145,13 @@ class Image extends \StoreCore\Image implements LayoutInterface
         }
 
         $this->Layout = $layout;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setLightbox($lightbox = true)
+    {
+        $this->Lightbox = (bool)$lightbox;
     }
 }

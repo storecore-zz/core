@@ -5,10 +5,10 @@ namespace StoreCore\AMP;
  * AMP Layout Component <amp-layout>
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2018 StoreCore™
+ * @copyright Copyright © 2018–2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
- * @see       https://www.ampproject.org/docs/reference/components/amp-layout
+ * @see       https://amp.dev/documentation/components/amp-layout
  * @version   0.1.0
  */
 class Layout extends AbstractComponent implements LayoutInterface

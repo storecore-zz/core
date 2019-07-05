@@ -25,12 +25,6 @@ class Document implements \StoreCore\Types\StringableInterface
     protected $AcceleratedMobilePage = false;
 
     /**
-     * @var bool $jQuery
-     *   Include the jQuery JavaScript library (true) or not (default false).
-     */
-    protected $jQuery = false;
-
-    /**
      * @var string $Direction
      * @var string $Language
      * @var null|array $Links
@@ -55,18 +49,21 @@ class Document implements \StoreCore\Types\StringableInterface
 
     /**
      * @var array $MetaData
-     *   Key/value pairs for `<meta name="..." content="...">` meta tags.
+     *   Key/value pairs for `<meta name="…" content="…">` meta tags.
+     *   The recommended `viewport` for AMP pages is parsed first.
+     *   Other meta tags are listed in alphabetical order.
      */
     protected $MetaData = array(
-        'generator' => 'StoreCore',
-        'rating' => 'general',
-        'robots' => 'index,follow',
-        'handheldfriendly' => 'true',
-        'mobileoptimized' => '320',
         'viewport' => 'width=device-width,initial-scale=1,minimum-scale=1',
+
         'apple-mobile-web-app-capable' => 'yes',
         'apple-mobile-web-app-status-bar-style' => 'black-translucent',
         'format-detection' => 'telephone=no',
+        'generator' => 'StoreCore',
+        'handheldfriendly' => 'true',
+        'mobileoptimized' => '320',
+        'rating' => 'general',
+        'robots' => 'index,follow',
     );
 
     /**
@@ -100,42 +97,17 @@ class Document implements \StoreCore\Types\StringableInterface
     }
 
     /**
-     * @param string $href
-     * @param string $rel
-     * @param string $type
-     * @param string $media
-     * @param string $hreflang
+     * Add a link to an external resource.
+     *
+     * @param \StoreCore\Types\Link $link
+     *   Link object to add as a `<link>` to the `<head>…</head>` container.
      *
      * @return void
-     *
-     * @see http://www.w3.org/TR/html5/links.html
-     * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link
      */
-    public function addLink($href, $rel = null, $type = null, $media = null, $hreflang = null)
+    public function addLink(\StoreCore\Types\Link $link)
     {
-        $link = array('href' => $href);
-
-        if ($rel !== null) {
-            $rel = strtolower($rel);
-            $link['rel'] = $rel;
-        }
-
-        if ($type !== null) {
-            $type = strtolower($type);
-            $link['type'] = $type;
-        }
-
-        if ($media !== null) {
-            $media = strtolower($media);
-            $link['media'] = $media;
-        }
-
-        if ($hreflang !== null) {
-            $link['hreflang'] = $hreflang;
-        }
-
         // MD5 hash key of the lowercase URL, where https:// ≡ http:// ≡ //
-        $key = $href;
+        $key = $link->getHref();
         $key = str_ireplace('https://', '//', $key);
         $key = str_ireplace('http://', '//', $key);
         $key = mb_strtolower($key, 'UTF-8');
@@ -344,37 +316,10 @@ class Document implements \StoreCore\Types\StringableInterface
         $html .= $this->getHead();
         $html .= $this->getBody();
 
-        /*
-         * jQuery
-         *
-         * Load jQuery from Google CDN with a fallback for Microsoft Internet
-         * Explorer (MSIE) <= 8.  If the CDN is not available, jQuery is loaded
-         * from the local /js/ assets.
-         *
-         * @see https://code.jquery.com/
-         * @see https://developers.google.com/speed/libraries/
-         * @see https://www.asp.net/ajax/cdn#jQuery_Releases_on_the_CDN_0
-         */
-        if (!$this->AcceleratedMobilePage) {
-            if ($this->jQuery) {
-                if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/(?i)msie [4-8]/', $_SERVER['HTTP_USER_AGENT'])) {
-                    $html .= '<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>';
-                    $html .= '<script>';
-                    $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-1.12.4.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
-                    $html .= '</script>';
-                } else {
-                    $html .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>';
-                    $html .= '<script>';
-                    $html .= 'if (typeof jQuery == \'undefined\') { document.write(unescape("%3Cscript src=\'/js/jquery-3.1.1.min.js\' type=\'text/javascript\'%3E%3C/script%3E")); } ';
-                    $html .= '</script>';
-                }
-            }
-
-            if ($this->ScriptsDeferred !== null) {
-                $html .= '<script>';
-                $html .= implode($this->ScriptsDeferred);
-                $html .= '</script>';
-            }
+        if (!$this->AcceleratedMobilePage && $this->ScriptsDeferred !== null) {
+            $html .= '<script>';
+            $html .= implode($this->ScriptsDeferred);
+            $html .= '</script>';
         }
 
         $html .= '</html>';
@@ -387,39 +332,31 @@ class Document implements \StoreCore\Types\StringableInterface
      * @param void
      *
      * @return string
-     *   Returns the `<head>...</head>` container as a string.
+     *   Returns the `<head>…</head>` container as a string.
      */
     public function getHead()
     {
         $head  = '<head>';
+
+        // The first tag should be the `meta charset` tag, followed by any remaining `meta` tags.
         $head .= '<meta charset="utf-8">';
+        foreach ($this->MetaData as $name => $content) {
+            $head .= '<meta name="' . $name . '" content="' . $content . '">';
+        }
 
         if ($this->AcceleratedMobilePage) {
             $head .= '<link rel="preload" as="script" href="https://cdn.ampproject.org/v0.js">';
+            $head .= '<link rel="preconnect dns-prefetch" href="https://fonts.gstatic.com/" crossorigin>';
             $head .= '<script async src="https://cdn.ampproject.org/v0.js"></script>';
         }
 
-        $head .= '<title>' . $this->Title . '</title>';
-
         if ($this->Links !== null) {
-            $links = (string)null;
-            $dns_prefetch = false;
             foreach ($this->Links as $link) {
-                $links .= '<link';
-                foreach ($link as $attribute => $value) {
-                    $links .= ' ' . $attribute . '="' . $value . '"';
-                    if ($dns_prefetch === false && $attribute == 'rel' && $value == 'dns-prefetch') {
-                        $dns_prefetch = true;
-                    }
-                }
-                $links .= '>';
+                $head .= (string)$link;
             }
-            if ($dns_prefetch) {
-                $head .= '<meta http-equiv="x-dns-prefetch-control" content="on">';
-            }
-            $head .= $links;
-            unset($attribute, $dns_prefetch, $link, $links, $value);
         }
+
+        $head .= '<title>' . $this->Title . '</title>';
 
         if ($this->ScriptLinks !== null) {
             foreach ($this->ScriptLinks as $link) {
@@ -447,10 +384,6 @@ class Document implements \StoreCore\Types\StringableInterface
             $head .= '<style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>';
         }
 
-        foreach ($this->MetaData as $name => $content) {
-            $head .= '<meta name="' . $name . '" content="' . $content . '">';
-        }
-
         if ($this->MetaProperties !== null) {
             foreach ($this->MetaProperties as $property => $content) {
                 $head .= '<meta property="' . $property . '" content="' . $content . '">';
@@ -468,39 +401,30 @@ class Document implements \StoreCore\Types\StringableInterface
     }
 
     /**
-     * Enable or disable jQuery.
-     *
-     * @param bool $use_jquery
-     *   Use the jQuery JavaScript library (default true) or not (false).
-     *   By default jQuery is not included, so you must explicitly call
-     *   `jquerify()` or `jquerify(true)` if a document needs to support
-     *   jQuery JavaScript.
-     *
-     * @return void
-     */
-    public function jquerify($use_jquery = true)
-    {
-        $this->jQuery = (bool)$use_jquery;
-    }
-
-    /**
      * Add a document description.
      *
      * @param string $description
+     *   Short description of the document.
+     *
      * @return void
      *
      * @uses \StoreCore\Document::addMetaData()
+     *
+     * @uses \StoreCore\Document::addMetaProperty()
      */
     public function setDescription($description)
     {
         $description = trim($description);
         $this->addMetaData('description', $description);
+        $this->addMetaProperty('og:description', $description);
     }
 
     /**
      * Set the document language.
      *
      * @param string $language_code
+     *   BCP 47 language tag as a string, for example 'de' for German or
+     *   'en-US' for American English.
      *
      * @return void
      */
@@ -518,6 +442,7 @@ class Document implements \StoreCore\Types\StringableInterface
      * Set the theme color.
      *
      * @param string $color
+     *   Color definition as a string.
      *
      * @return void
      */
@@ -531,6 +456,7 @@ class Document implements \StoreCore\Types\StringableInterface
      * Set the document title.
      *
      * @param string $title
+     *   Title of the document as a string.
      *
      * @return void
      */
