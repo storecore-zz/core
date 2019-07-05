@@ -18,7 +18,7 @@
     +------------+------------+------------+-----------------------+
 
     @author    Ward van der Put <Ward.van.der.Put@storecore.org>
-    @copyright Copyright © 2014–2018 StoreCore™
+    @copyright Copyright © 2014–2019 StoreCore™
     @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
     @package   StoreCore\I18N
     @version   0.1.0
@@ -74,6 +74,7 @@ INSERT IGNORE INTO sc_translation_memory
     (translation_id, translation, admin_only_flag)
   VALUES
     ('NOUN_AMERICAN_EXPRESS', 'American Express', 0),
+    ('NOUN_ARIAL', 'Arial', 1),
     ('NOUN_BANCONTACT', 'Bancontact', 0),
     ('NOUN_BELFIUS_PAY_BUTTON', 'Belfius Pay Button', 0),
     ('NOUN_BITCOIN', 'Bitcoin', 0),
@@ -84,17 +85,24 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_GOOGLE_ANALYTICS', 'Google Analytics', 1),
     ('NOUN_GOOGLE_PLUS', 'Google+', 0),
     ('NOUN_GOOGLE_SHOPPING', 'Google Shopping', 1),
+    ('NOUN_HELVETICA_NEUE', 'Helvetica Neue', 1),
     ('NOUN_IDEAL', 'iDEAL', 0),
     ('NOUN_ING_HOME_PAY', 'ING Home’Pay', 0),
     ('NOUN_INSTAGRAM', 'Instagram', 0),
     ('NOUN_LINKEDIN', 'LinkedIn', 0),
+    ('NOUN_MERRIWEATHER', 'Merriweather', 1),
     ('NOUN_MOLLIE', 'Mollie', 1),
     ('NOUN_MYSPACE', 'Myspace', 1),
     ('NOUN_MYSQL', 'MySQL', 1),
+    ('NOUN_NOTO_SANS', 'Noto Sans', 1),
+    ('NOUN_NOTO_SERIF', 'Noto Serif', 1),
+    ('NOUN_OPEN_SANS', 'Open Sans', 1),
     ('NOUN_PAYPAL', 'PayPal', 0),
     ('NOUN_PAYSAFECARD', 'paysafecard', 0),
     ('NOUN_PHP', 'PHP', 1),
     ('NOUN_PINTEREST', 'Pinterest', 0),
+    ('NOUN_ROBOTO', 'Roboto', 1),
+    ('NOUN_SENDCLOUD', 'SendCloud', 1),
     ('NOUN_SOFORT', 'SOFORT', 0),
     ('NOUN_SOFORT_BANKING', 'SOFORT Banking', 0),
     ('NOUN_STORECORE', 'StoreCore', 0),
@@ -111,6 +119,7 @@ INSERT IGNORE INTO sc_translation_memory
     (translation_id, language_id, translation, admin_only_flag)
   VALUES
     ('NOUN_BRANDS', 'ca-AD', 'marques', 0),
+    ('NOUN_BRANDS', 'da-DK', 'mærker', 0),
     ('NOUN_BRANDS', 'de-DE', 'Marken', 0),
     ('NOUN_BRANDS', 'en-GB', 'brands', 0),
     ('NOUN_BRANDS', 'es-ES', 'marcas', 0),
@@ -193,6 +202,18 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_ENERGY_EFFICIENCY_CLASS', 'nl-NL', 'energieklasse', 0),
     ('NOUN_ENERGY_EFFICIENCY_CLASS', 'pt-PT', 'classe eficiência energética', 0),
 
+    ('NOUN_FAVORITES', 'ca-AD', 'favorits', 0),
+    ('NOUN_FAVORITES', 'da-DK', 'favoritter', 0),
+    ('NOUN_FAVORITES', 'de-DE', 'Favoriten', 0),
+    ('NOUN_FAVORITES', 'en-GB', 'favourites', 0),
+    ('NOUN_FAVORITES', 'en-US', 'favorites', 0),
+    ('NOUN_FAVORITES', 'es-ES', 'favoritos', 0),
+    ('NOUN_FAVORITES', 'fr-FR', 'favoris', 0),
+    ('NOUN_FAVORITES', 'it-IT', 'preferiti', 0),
+    ('NOUN_FAVORITES', 'lb-LU', 'Favoritten', 0),
+    ('NOUN_FAVORITES', 'nl-NL', 'favorieten', 0),
+    ('NOUN_FAVORITES', 'pt-PT', 'favoritos', 0),
+
     ('NOUN_FRENCH', 'ca-AD', 'francès', 0),
     ('NOUN_FRENCH', 'de-DE', 'Französisch', 0),
     ('NOUN_FRENCH', 'en-GB', 'French', 0),
@@ -220,10 +241,14 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_GERMAN', 'nl-NL', 'Duits', 0),
     ('NOUN_GERMAN', 'pt-PT', 'alemão', 0),
 
+    ('NOUN_GOOGLE_PRODUCT_TAXONOMY', 'ca-AD', 'taxonomia de productes de Google', 1),
     ('NOUN_GOOGLE_PRODUCT_TAXONOMY', 'de-DE', 'Google-Produkt-Taxonomie', 1),
     ('NOUN_GOOGLE_PRODUCT_TAXONOMY', 'en-GB', 'Google product taxonomy', 1),
+    ('NOUN_GOOGLE_PRODUCT_TAXONOMY', 'es-ES', 'taxonomía de productos de Google', 1),
     ('NOUN_GOOGLE_PRODUCT_TAXONOMY', 'fr-FR', 'classification des produits Google', 1),
+    ('NOUN_GOOGLE_PRODUCT_TAXONOMY', 'it-IT', 'tassonomia dei prodotti di Google', 1),
     ('NOUN_GOOGLE_PRODUCT_TAXONOMY', 'nl-NL', 'Google-producttaxonomie', 1),
+    ('NOUN_GOOGLE_PRODUCT_TAXONOMY', 'pt-PT', 'taxonomia do produto do Google', 1),
 
     ('NOUN_IMPRESSUM', 'de-DE', 'Impressum', 0),
     ('NOUN_IMPRESSUM', 'en-GB', 'legal disclosure', 0),
@@ -309,6 +334,15 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_RELATED_PRODUCTS', 'nl-NL', 'gerelateerde producten', 0),
     ('NOUN_RELATED_PRODUCTS', 'pt-PT', 'produtos relacionados', 0),
 
+    ('NOUN_SHOPPING_BASKET', 'ca-AD', 'cistell de la compra', 0),
+    ('NOUN_SHOPPING_BASKET', 'de-DE', 'Einkaufskorb', 0),
+    ('NOUN_SHOPPING_BASKET', 'en-GB', 'shopping basket', 0),
+    ('NOUN_SHOPPING_BASKET', 'es-ES', 'cesta de la compra', 0),
+    ('NOUN_SHOPPING_BASKET', 'fr-FR', 'panier de course', 0),
+    ('NOUN_SHOPPING_BASKET', 'it-IT', 'cestino della spesa', 0),
+    ('NOUN_SHOPPING_BASKET', 'nl-NL', 'winkelmandje', 0),
+    ('NOUN_SHOPPING_BASKET', 'pt-PT', 'carrinho de compras', 0),
+
     ('NOUN_SHOPPING_CART', 'ca-AD', 'carret de compra', 0),
     ('NOUN_SHOPPING_CART', 'de-DE', 'Einkaufswagen', 0),
     ('NOUN_SHOPPING_CART', 'en-GB', 'shopping cart', 0),
@@ -317,6 +351,17 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_SHOPPING_CART', 'it-IT', 'carrello', 0),
     ('NOUN_SHOPPING_CART', 'nl-NL', 'winkelwagen', 0),
     ('NOUN_SHOPPING_CART', 'pt-PT', 'carrinho de compras', 0),
+
+    ('NOUN_TAGS', 'ca-AD', 'etiquetes', 0),
+    ('NOUN_TAGS', 'da-DK', 'tags', 0),
+    ('NOUN_TAGS', 'de-DE', 'Stichworte', 0),
+    ('NOUN_TAGS', 'en-GB', 'tags', 0),
+    ('NOUN_TAGS', 'es-ES', 'etiquetas', 0),
+    ('NOUN_TAGS', 'fr-CA', 'mots clés', 0),
+    ('NOUN_TAGS', 'fr-FR', 'balises', 0),
+    ('NOUN_TAGS', 'it-IT', 'etichette', 0),
+    ('NOUN_TAGS', 'nl-NL', 'labels', 0),
+    ('NOUN_TAGS', 'pt-PT', 'rótulos', 0),
 
     ('NOUN_TERMS_AND_CONDITIONS', 'ca-AD', 'termes i condicions', 0),
     ('NOUN_TERMS_AND_CONDITIONS', 'de-DE', 'Geschäftsbedingungen', 0),
@@ -363,7 +408,17 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_USERS', 'fr-FR', 'utilisateurs', 0),
     ('NOUN_USERS', 'it-IT', 'utenti', 0),
     ('NOUN_USERS', 'nl-NL', 'gebruikers', 0),
-    ('NOUN_USERS', 'pt-PT', 'utilizadores', 0);
+    ('NOUN_USERS', 'pt-PT', 'utilizadores', 0),
+
+    ('NOUN_WISH_LIST', 'ca-AD', 'llista de desitjos', 0),
+    ('NOUN_WISH_LIST', 'de-DE', 'Wunschliste', 0),
+    ('NOUN_WISH_LIST', 'en-GB', 'wish list', 0),
+    ('NOUN_WISH_LIST', 'es-ES', 'lista de deseos', 0),
+    ('NOUN_WISH_LIST', 'fr-FR', 'liste de souhaits', 0),
+    ('NOUN_WISH_LIST', 'it-IT', 'lista dei desideri', 0),
+    ('NOUN_WISH_LIST', 'nl-NL', 'verlanglijst', 0),
+    ('NOUN_WISH_LIST', 'pt-PT', 'lista de desejos', 0);
+
 
 -- Verbs
 INSERT IGNORE INTO sc_translation_memory
@@ -394,7 +449,18 @@ INSERT IGNORE INTO sc_translation_memory
     ('VERB_SAVE', 'fr-FR', 'enregistrer'),
     ('VERB_SAVE', 'it-IT', 'salvare'),
     ('VERB_SAVE', 'nl-NL', 'opslaan'),
-    ('VERB_SAVE', 'pt-PT', 'guardar');
+    ('VERB_SAVE', 'pt-PT', 'guardar'),
+
+    ('VERB_SEARCH', 'ca-AD', 'buscar'),
+    ('VERB_SEARCH', 'de-DE', 'suchen'),
+    ('VERB_SEARCH', 'en-GB', 'search'),
+    ('VERB_SEARCH', 'es-ES', 'buscar'),
+    ('VERB_SEARCH', 'fr-FR', 'chercher'),
+    ('VERB_SEARCH', 'it-IT', 'cercare'),
+    ('VERB_SEARCH', 'lb-LU', 'sichen'),
+    ('VERB_SEARCH', 'nl-NL', 'zoeken'),
+    ('VERB_SEARCH', 'pt-BR', 'pesquisar'),
+    ('VERB_SEARCH', 'pt-PT', 'procurar');
 
 
  /*
@@ -404,7 +470,7 @@ INSERT IGNORE INTO sc_translation_memory
     controls: `COMMAND_` for menu commands and command buttons, `ERROR_` for
     error messages, and `HEADING_` for headlines, table headings, and labels
     that accompany input controls.  The fourth prefix `TEXT_` may be used for
-    any other text.  The user interface language strings MAY contains
+    any other text.  The user interface language strings MAY contain
     placeholders (for example for counters) and formatted HTML5 (for icons,
     CSS classes, et cetera).
   */
@@ -413,6 +479,15 @@ INSERT IGNORE INTO sc_translation_memory
 INSERT IGNORE INTO sc_translation_memory
     (translation_id, language_id, translation)
   VALUES
+    ('COMMAND_ADD_TO_WISH_LIST', 'ca-AD', 'Afegir a la llista de desitjos'),
+    ('COMMAND_ADD_TO_WISH_LIST', 'de-DE', 'Zur Wunschliste hinzufügen'),
+    ('COMMAND_ADD_TO_WISH_LIST', 'en-GB', 'Add to wish list'),
+    ('COMMAND_ADD_TO_WISH_LIST', 'es-ES', 'Agregar a la lista de deseos'),
+    ('COMMAND_ADD_TO_WISH_LIST', 'fr-FR', 'Ajouter à la liste de souhaits'),
+    ('COMMAND_ADD_TO_WISH_LIST', 'it-IT', 'Aggiungi a elenco preferenze'),
+    ('COMMAND_ADD_TO_WISH_LIST', 'nl-NL', 'Aan verlanglijst toevoegen'),
+    ('COMMAND_ADD_TO_WISH_LIST', 'pt-PT', 'Adicionar à lista de desejos'),
+
     ('COMMAND_CANCEL', 'ca-AD', 'Cancel·la'),
     ('COMMAND_CANCEL', 'de-DE', 'Abbrechen'),
     ('COMMAND_CANCEL', 'en-GB', 'Cancel'),
@@ -431,6 +506,21 @@ INSERT IGNORE INTO sc_translation_memory
     ('COMMAND_DELETE', 'it-IT', 'Elimina'),
     ('COMMAND_DELETE', 'pt-PT', 'Eliminar'),
 
+    ('COMMAND_MENU', 'af-ZA', 'Kieslys'),
+    ('COMMAND_MENU', 'ca-AD', 'Menú'),
+    ('COMMAND_MENU', 'de-DE', 'Menü'),
+    ('COMMAND_MENU', 'en-GB', 'Menu'),
+    ('COMMAND_MENU', 'es-ES', 'Menú'),
+    ('COMMAND_MENU', 'fr-FR', 'Menu'),
+    ('COMMAND_MENU', 'lb-LU', 'Menü'),
+    ('COMMAND_MENU', 'nl-NL', 'Menu'),
+    ('COMMAND_MENU', 'it-IT', 'Menu'),
+    ('COMMAND_MENU', 'pl-PL', 'Menu'),
+    ('COMMAND_MENU', 'pt-BR', 'Menu'),
+    ('COMMAND_MENU', 'ru-RU', 'меню'),
+    ('COMMAND_MENU', 'sv-SE', 'Meny'),
+    ('COMMAND_MENU', 'sq-AL', 'Meny'),
+
     ('COMMAND_NEXT', 'ca-AD', 'Endavant'),
     ('COMMAND_NEXT', 'de-DE', 'Weiter'),
     ('COMMAND_NEXT', 'en-GB', 'Next'),
@@ -440,6 +530,15 @@ INSERT IGNORE INTO sc_translation_memory
     ('COMMAND_NEXT', 'it-IT', 'Avanti'),
     ('COMMAND_NEXT', 'pt-BR', 'Avançar'),
     ('COMMAND_NEXT', 'pt-PT', 'Seguinte'),
+
+    ('COMMAND_PREVIOUS', 'ca-AD', 'Anterior'),
+    ('COMMAND_PREVIOUS', 'de-DE', 'Zurück'),
+    ('COMMAND_PREVIOUS', 'en-GB', 'Previous'),
+    ('COMMAND_PREVIOUS', 'es-ES', 'Anterior'),
+    ('COMMAND_PREVIOUS', 'fr-FR', 'Précédent'),
+    ('COMMAND_PREVIOUS', 'it-IT', 'Indietro'),
+    ('COMMAND_PREVIOUS', 'nl-NL', 'Vorige'),
+    ('COMMAND_PREVIOUS', 'pt-PT', 'Anterior'),
 
     ('COMMAND_PRINT', 'ca-AD', 'Imprimeix…'),
     ('COMMAND_PRINT', 'de-DE', 'Drucken…'),
@@ -519,6 +618,20 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_CONFIRM_PASSWORD', 'it-IT', 'Conferma password'),
     ('HEADING_CONFIRM_PASSWORD', 'nl-NL', 'Wachtwoord bevestigen'),
     ('HEADING_CONFIRM_PASSWORD', 'pt-PT', 'Confirmar palavra-passe'),
+
+    ('HEADING_CUSTOMER_SERVICE', 'ca-AD', 'Atenció al client'),
+    ('HEADING_CUSTOMER_SERVICE', 'da-DK', 'Kundeservice'),
+    ('HEADING_CUSTOMER_SERVICE', 'de-DE', 'Kundendienst'),
+    ('HEADING_CUSTOMER_SERVICE', 'en-GB', 'Customer service'),
+    ('HEADING_CUSTOMER_SERVICE', 'es-ES', 'Servicio al cliente'),
+    ('HEADING_CUSTOMER_SERVICE', 'es-MX', 'Atención al cliente'),
+    ('HEADING_CUSTOMER_SERVICE', 'fr-FR', 'Service clientèle'),
+    ('HEADING_CUSTOMER_SERVICE', 'it-IT', 'Servizio clienti'),
+    ('HEADING_CUSTOMER_SERVICE', 'nl-BE', 'Klantendienst'),
+    ('HEADING_CUSTOMER_SERVICE', 'nl-NL', 'Klantenservice'),
+    ('HEADING_CUSTOMER_SERVICE', 'pl-PL', 'Obsługa klienta'),
+    ('HEADING_CUSTOMER_SERVICE', 'pt-BR', 'Atendimento ao cliente'),
+    ('HEADING_CUSTOMER_SERVICE', 'pt-PT', 'Suporte ao cliente'),
 
     ('HEADING_EMAIL_ADDRESS', 'ca-AD', 'Adreça electrònica'),
     ('HEADING_EMAIL_ADDRESS', 'de-DE', 'E-Mail-Adresse'),
@@ -693,6 +806,13 @@ INSERT IGNORE INTO sc_translation_memory
     ('HEADING_SETTINGS', 'it-IT', 'Impostazioni', 1),
     ('HEADING_SETTINGS', 'nl-NL', 'Instellingen', 1),
     ('HEADING_SETTINGS', 'pt-PT', 'Definições', 1);
+
+-- Text
+INSERT IGNORE INTO sc_translation_memory
+    (translation_id, language_id, translation, admin_only_flag)
+  VALUES
+    ('TEXT_POWERED_BY_STORECORE', 'en-GB', 'Powered by StoreCore™', 0);
+
 
 /*
     Google Product Taxonomy
