@@ -80,10 +80,14 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_CARTASI', 'CartaSi', 0),
     ('NOUN_CARTES_BANCAIRES', 'Cartes Bancaires', 0),
     ('NOUN_FACEBOOK', 'Facebook', 0),
+    ('NOUN_FONT_AWESOME', 'Font Awesome', 1),
+    ('NOUN_FONTS_COM', 'Fonts.com', 1),
     ('NOUN_GOOGLE', 'Google', 1),
     ('NOUN_GOOGLE_ANALYTICS', 'Google Analytics', 1),
+    ('NOUN_GOOGLE_FONTS', 'Google Fonts', 1),
     ('NOUN_GOOGLE_PLUS', 'Google+', 0),
     ('NOUN_GOOGLE_SHOPPING', 'Google Shopping', 1),
+    ('NOUN_HOEFLER_AND_CO', 'Hoefler&Co.', 1),
     ('NOUN_IDEAL', 'iDEAL', 0),
     ('NOUN_ING_HOME_PAY', 'ING Home’Pay', 0),
     ('NOUN_INSTAGRAM', 'Instagram', 0),
@@ -104,6 +108,7 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_TARGETPAY', 'TargetPay', 1),
     ('NOUN_TUMBLR', 'Tumblr', 0),
     ('NOUN_TWITTER', 'Twitter', 0),
+    ('NOUN_TYPEKIT', 'Typekit', 1),
     ('NOUN_WHATSAPP', 'WhatsApp', 0),
     ('NOUN_YOUTUBE', 'YouTube', 0);
 
