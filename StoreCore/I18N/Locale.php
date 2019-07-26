@@ -13,14 +13,17 @@ namespace StoreCore\I18N;
  *
  * @api
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015-2017 StoreCore
+ * @copyright Copyright © 2015–2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\I18N
  * @version   0.1.0
  */
 class Locale
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer)
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -36,9 +39,9 @@ class Locale
      *   Array in JSON (JavaScript Object Notation) linking ISO codes for
      *   supported languages to the status true or false.  Languages supported
      *   by default are `en-GB` and `en-US` (British and American English),
-     *   `de-DE` (German), `fr-FR` (French), and `nl-NL` (Dutch).
+     *   `de-DE` (German), `fr-FR` (French), and `nl-BE` and `nl-NL` (Dutch).
      */
-    const SUPPORTED_LANGUAGES = '{"en-GB":true,"en-US":true,"de-DE":true,"fr-FR":true,"nl-NL":true}';
+    const SUPPORTED_LANGUAGES = '{"en-GB":true,"en-US":true,"de-DE":true,"fr-FR":true,"nl-BE":true,"nl-NL":true}';
 
     /**
      * Load a negotiable locale from the file system cache.
