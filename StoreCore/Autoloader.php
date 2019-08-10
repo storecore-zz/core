@@ -50,7 +50,7 @@ class Autoloader
         $prefix = trim($prefix, '\\') . '\\';
 
         // Normalize the base directory with a trailing separator
-        $base_dir = rtrim($base_dir, DIRECTORY_SEPARATOR) . '/';
+        $base_dir = rtrim($base_dir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
         // Initialize the namespace prefix array
         if (isset($this->Prefixes[$prefix]) === false) {
