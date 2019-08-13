@@ -13,14 +13,18 @@ namespace StoreCore;
  *
  * @api
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2014-2016 StoreCore
+ * @copyright Copyright © 2014–2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @see       https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader-examples.md
- * @version   0.1.0
+ * @version   1.0.0-beta.1
  */
 class Autoloader
 {
-    const VERSION = '0.1.0';
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
+    const VERSION = '1.0.0-beta.1';
 
     /**
      * @var array $Prefixes
@@ -50,7 +54,7 @@ class Autoloader
         $prefix = trim($prefix, '\\') . '\\';
 
         // Normalize the base directory with a trailing separator
-        $base_dir = rtrim($base_dir, DIRECTORY_SEPARATOR) . '/';
+        $base_dir = rtrim($base_dir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
         // Initialize the namespace prefix array
         if (isset($this->Prefixes[$prefix]) === false) {
