@@ -1,26 +1,37 @@
 <?php
 namespace StoreCore;
 
+use \Psr\Container\ContainerInterface as ContainerInterface;
+use \Psr\Container\NotFoundException as NotFoundException;
+
 /**
  * Global Registry Singleton
  *
  * @api
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015-2017 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @copyright Copyright © 2015–2019 StoreCore™
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   1.0.0
  */
-final class Registry implements SingletonInterface
+final class Registry implements SingletonInterface, ContainerInterface
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer)
+     */
     const VERSION = '1.0.0';
 
     /**
      * @var array $Data
-     * @var object|null $Instance
-     */
+     *   Data stored in the global registry.
+     */ 
     private $Data = array();
+
+    /**
+     * @var object|null $Instance
+     *   Single instance of the global registry or null if there is no instance yet.
+     */
     private static $Instance = null;
 
     // Disable object instantiation and cloning
@@ -44,34 +55,51 @@ final class Registry implements SingletonInterface
     /**
      * Get a value from the global registry.
      *
-     * @param string $key
-     * @return mixed|null
+     * @param string $id
+     *   Unique identifier of the container element to fetch.
+     * 
+     * @return mixed
+     *   Data currently stored in the registry.
+     *
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     *   No entry was found for the requested identifier.
      */
-    public function get($key)
+    public function get($id)
     {
-        return (isset($this->Data[$key]) ? $this->Data[$key] : null);
+        if ($this->has($id)) {
+            return $this->Data[$id];
+        } else {
+            throw new NotFoundException();
+        }
     }
 
     /**
      * Check if something is stored in the registry.
      *
-     * @param string $key
+     * @param string $id
+     *   Unique identifier of data possibly stored in the registry.
+     * 
      * @return bool
+     *   Returns true if the data identifier exists, otherwise false.
      */
-    public function has($key)
+    public function has($id)
     {
-        return isset($this->Data[$key]);
+        return isset($this->Data[$id]);
     }
 
     /**
      * Set a shared value in the global registry.
      *
-     * @param string $key
+     * @param string $id
+     *   Unique identifier of data to store in the registry.
+     * 
      * @param mixed $value
+     *   Global data to store in the registry.
+     * 
      * @return void
      */
-    public function set($key, $value)
+    public function set($id, $value)
     {
-        $this->Data[$key] = $value;
+        $this->Data[$id] = $value;
     }
 }
