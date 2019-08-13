@@ -4,9 +4,9 @@
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
  * @copyright Copyright © 2015–2019 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @version   1.0.0-alpha.1
+ * @version   1.0.0-beta.1
  */
 
 // Global script/request timer start
@@ -37,10 +37,9 @@ if (!defined('STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR')) {
     define('STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR', __DIR__ . DIRECTORY_SEPARATOR);
 }
 
-// Load, instantiate, and register the StoreCore autoloader.
+// Load and instantiate the StoreCore autoloader.
 require __DIR__ . DIRECTORY_SEPARATOR . 'Autoloader.php';
 $loader = new \StoreCore\Autoloader();
-$loader->register();
 
 // Link namespaces to directories.
 $loader->addNamespace('Psr\Cache', __DIR__ . DIRECTORY_SEPARATOR . 'Psr' . DIRECTORY_SEPARATOR . 'Cache');
@@ -52,12 +51,19 @@ $loader->addNamespace('Psr\SimpleCache', __DIR__ . DIRECTORY_SEPARATOR . 'Psr' .
 
 $loader->addNamespace('StoreCore\Database', __DIR__ . DIRECTORY_SEPARATOR . 'Database', true);
 $loader->addNamespace('StoreCore\FileSystem', __DIR__ . DIRECTORY_SEPARATOR . 'FileSystem', true);
-$loader->addNamespace('StoreCore', __DIR__, true);
 
 $loader->addNamespace('StoreCore\AMP', __DIR__ . DIRECTORY_SEPARATOR . 'AMP');
 $loader->addNamespace('StoreCore\Admin', __DIR__ . DIRECTORY_SEPARATOR . 'Admin');
+$loader->addNamespace('StoreCore\I18N', __DIR__ . DIRECTORY_SEPARATOR . 'I18N');
 $loader->addNamespace('StoreCore\Modules', __DIR__ . DIRECTORY_SEPARATOR . 'Modules');
 $loader->addNamespace('StoreCore\Types', __DIR__ . DIRECTORY_SEPARATOR . 'Types');
+$loader->addNamespace('StoreCore', __DIR__);
+
+// Add vendor namespaces for modules.
+$loader->addNamespace('Google', __DIR__ . DIRECTORY_SEPARATOR . 'Modules' . DIRECTORY_SEPARATOR . 'Google');
+
+// Register the StoreCore autoloader.
+$loader->register();
 
 // Handle PHP errors as exceptions.
 function exception_error_handler($errno, $errstr, $errfile, $errline) {
