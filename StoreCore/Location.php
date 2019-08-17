@@ -1,22 +1,25 @@
 <?php
 namespace StoreCore;
 
+use StoreCore\Types\StringableInterface;
+
 /**
  * Uniform Resource Identifier (URI).
  *
+ * @api
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015–2018 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @copyright Copyright © 2015–2019 StoreCore™
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @version   0.1.0
+ * @version   0.2.0
  */
-class Location extends \StoreCore\AbstractModel implements \StoreCore\Types\StringableInterface
+class Location extends \StoreCore\AbstractModel implements StringableInterface
 {
     /**
      * @var string VERSION
      *   Semantic Version (SemVer).
      */
-    const VERSION = '0.1.0';
+    const VERSION = '0.2.0';
 
     /**
      * @var string $Location
