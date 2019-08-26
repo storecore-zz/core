@@ -381,6 +381,26 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_TIMEZONE', 'nl-NL', 'tijdzone', 1),
     ('NOUN_TIMEZONE', 'pt-PT', 'fuso horário', 1),
 
+    ('NOUN_TODAY', 'ca-AD', 'avui', 0),
+    ('NOUN_TODAY', 'da-DK', 'i dag', 0),
+    ('NOUN_TODAY', 'de-DE', 'Heute', 0),
+    ('NOUN_TODAY', 'en-GB', 'today', 0),
+    ('NOUN_TODAY', 'es-ES', 'hoy', 0),
+    ('NOUN_TODAY', 'fr-FR', 'aujourd’hui', 0),
+    ('NOUN_TODAY', 'it-IT', 'oggi', 0),
+    ('NOUN_TODAY', 'nl-NL', 'vandaag', 0),
+    ('NOUN_TODAY', 'pt-PT', 'hoje', 0),
+
+    ('NOUN_TOMORROW', 'ca-AD', 'demà', 0),
+    ('NOUN_TOMORROW', 'da-DK', 'i morgen', 0),
+    ('NOUN_TOMORROW', 'de-DE', 'Morgen', 0),
+    ('NOUN_TOMORROW', 'en-GB', 'tomorrow', 0),
+    ('NOUN_TOMORROW', 'es-ES', 'mañana', 0),
+    ('NOUN_TOMORROW', 'fr-FR', 'demain', 0),
+    ('NOUN_TOMORROW', 'it-IT', 'domani', 0),
+    ('NOUN_TOMORROW', 'nl-NL', 'morgen', 0),
+    ('NOUN_TOMORROW', 'pt-PT', 'amanhã', 0),
+
     ('NOUN_TRACKING_NUMBER', 'ca-AD', 'número de seguiment', 0),
     ('NOUN_TRACKING_NUMBER', 'de-DE', 'Nachverfolgungsnummer', 0),
     ('NOUN_TRACKING_NUMBER', 'en-GB', 'tracking number', 0),
@@ -415,7 +435,17 @@ INSERT IGNORE INTO sc_translation_memory
     ('NOUN_WISH_LIST', 'fr-FR', 'liste de souhaits', 0),
     ('NOUN_WISH_LIST', 'it-IT', 'lista dei desideri', 0),
     ('NOUN_WISH_LIST', 'nl-NL', 'verlanglijst', 0),
-    ('NOUN_WISH_LIST', 'pt-PT', 'lista de desejos', 0);
+    ('NOUN_WISH_LIST', 'pt-PT', 'lista de desejos', 0),
+
+    ('NOUN_YESTERDAY', 'ca-AD', 'ahir', 0),
+    ('NOUN_YESTERDAY', 'da-DK', 'i går', 0),
+    ('NOUN_YESTERDAY', 'de-DE', 'Gestern', 0),
+    ('NOUN_YESTERDAY', 'en-GB', 'yesterday', 0),
+    ('NOUN_YESTERDAY', 'es-ES', 'ayer', 0),
+    ('NOUN_YESTERDAY', 'fr-FR', 'hier', 0),
+    ('NOUN_YESTERDAY', 'it-IT', 'ieri', 0),
+    ('NOUN_YESTERDAY', 'nl-NL', 'gisteren', 0),
+    ('NOUN_YESTERDAY', 'pt-PT', 'ontem', 0);
 
 
 -- Verbs
