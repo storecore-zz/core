@@ -941,6 +941,18 @@ class LocationTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($method->getNumberOfParameters() === 0);
     }
 
+    /**
+     * @testdox Location::unsetPort() sets port to null
+     */
+    public function testLocationUnsetPortSetsPortToNull()
+    {
+        $location = new \StoreCore\Location();
+        $location->setPort(8080);
+        $this->assertEquals(8080, $location->getPort());
+        $location->unsetPort();
+        $this->assertNull($location->getPort());
+    }
+
 
     /**
      * @testdox Location::withFragment() exists
