@@ -391,7 +391,9 @@ class Location implements StringableInterface, UriInterface
      */
     public function setHost($host)
     {
-        $this->Host = trim($host);
+        $host = trim($host);
+        $host = strtolower($host);
+        $this->Host = $host;
     }
 
     /**

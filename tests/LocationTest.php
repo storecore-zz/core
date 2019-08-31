@@ -610,6 +610,19 @@ class LocationTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
     }
 
+    /**
+     * @depends testLocationSetHostHasOneRequiredParameter
+     * @testdox Location::setHost() is case insensitive
+     */
+    public function testLocationSetHostIsCaseInsensitive()
+    {
+        $location = new \StoreCore\Location();
+        $location->setHost('Example.com');
+        $this->assertEquals('example.com', $location->gethost());
+        $location->setHost('Example.NET');
+        $this->assertEquals('example.net', $location->getHost());
+    }
+
 
     /**
      * @testdox Location::setPath() exists
