@@ -36,6 +36,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsNonEmptyString
      * @group distro
+     * @testdox VERSION matches master branch
      */
     public function testVersionMatchesMasterBranch()
     {
