@@ -331,6 +331,9 @@ class Location implements StringableInterface, UriInterface
      *
      * @return void
      *
+     * @uses setHost()
+     *   Sets the `host` component.
+     * 
      * @uses setPort()
      *   Sets the optional `[:port]` component if it is present.
      *
@@ -390,12 +393,12 @@ class Location implements StringableInterface, UriInterface
     {
         $this->Host = trim($host);
     }
+
     /**
      * Set the URI path.
      *
      * @param string $path
-     *   An empty, absolute, or relative HTTP path.  Null is handled as an
-     *   empty string.
+     *   An empty, absolute, or relative HTTP path.
      *
      * @return void
      *
@@ -409,7 +412,6 @@ class Location implements StringableInterface, UriInterface
         }
 
         $path = trim($path);
-
         $this->Path = $path;
     }
 
