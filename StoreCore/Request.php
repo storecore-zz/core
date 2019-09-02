@@ -1,19 +1,24 @@
 <?php
 namespace StoreCore;
 
+use \StoreCore\Types\StringableInterface;
+
 /**
  * Client Request
  *
  * @api
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015-2017 StoreCore
+ * @copyright Copyright © 2015–2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
 class Request
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /** @var string $HostName */
@@ -22,8 +27,12 @@ class Request
     /** @var string $RequestMethod */
     private $RequestMethod = 'GET';
 
-    /** @var string $RequestPath */
-    private $RequestPath = '/';
+    /**
+     * @var string $RequestTarget
+     *   Target of the HTTP request.  Defaults to '/' for the root, the homepage,
+     *   or the front controller.
+     */
+    protected $RequestTarget = '/';
 
     /**
      * @var array|null $Cookies
@@ -83,11 +92,17 @@ class Request
 
         // Request path (URI without host)
         if (isset($_SERVER['REQUEST_URI'])) {
+            $request_target = $_SERVER['REQUEST_URI'];
             if ($magic_quotes_gpc !== false) {
-                $_SERVER['REQUEST_URI'] = stripslashes($_SERVER['REQUEST_URI']);
+                $request_target = stripslashes($request_target);
             }
-            $this->setRequestPath($_SERVER['REQUEST_URI']);
-            unset($this->Server['REQUEST_URI']);
+            if (strpos($request_target, '?') !== false) {
+                $request_target = strtok($request_target, '?');
+            }
+            $request_target = rawurldecode($request_target);
+            $request_target = mb_strtolower($request_target, 'UTF-8');
+            $request_target = str_ireplace('/index.php', '/', $request_target);
+            $this->setRequestTarget($request_target);
         }
 
         // Posted data
@@ -219,14 +234,19 @@ class Request
     }
 
     /**
-     * Get the current request path.
+     * Get the message’s request target.
      *
      * @param void
+     *
      * @return string
+     *   In most cases, this method will be the origin-form of the composed URI,
+     *   unless a value was provided to the concrete implementation.  If no URI
+     *   is available, and no request-target has been specifically provided,
+     *   this method will return the string '/'.
      */
-    public function getRequestPath()
+    public function getRequestTarget()
     {
-        return $this->RequestPath;
+        return $this->RequestTarget;
     }
 
     /**
@@ -305,17 +325,26 @@ class Request
     }
 
     /**
-     * Set the request path.
+     * Set the request target.
      *
-     * @param string $path
+     * @param string|\StoreCore\Types\StringableInterface $request_target
+     *   Target path of the current request as a string or an object that can
+     *   be converted to a string.
+     *
      * @return void
      */
-    private function setRequestPath($path)
+    public function setRequestTarget($request_target)
     {
-        $path = urldecode($path);
-        $path = strtok($path, '?');
-        $path = mb_strtolower($path, 'UTF-8');
-        $path = str_ireplace('/index.php', '/', $path);
-        $this->RequestPath = $path;
+        $this->RequestTarget = (string)$request_target;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function withRequestTarget($request_target)
+    {
+        $request = clone $this;
+        $request->setRequestTarget($request_target);
+        return $request;
     }
 }

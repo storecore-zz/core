@@ -86,4 +86,138 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $request = new \StoreCore\Request();
         $this->assertNull($request->getUserAgent());
     }
+
+
+    /**
+     * @testdox Request::getRequestTarget() exists
+     */
+    public function testRequestGetRequestTargetExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Request');
+        $this->assertTrue($class->hasMethod('getRequestTarget'));
+    }
+
+    /**
+     * @depends testRequestGetRequestTargetExists
+     * @testdox Request::getRequestTarget() is public
+     */
+    public function testRequestGetRequestTargetIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Request', 'getRequestTarget');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testRequestGetRequestTargetExists
+     * @testdox Request::getRequestTarget() has no parameters
+     */
+    public function testRequestGetRequestTargetHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Request', 'getRequestTarget');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+    /**
+     * @depends testRequestGetRequestTargetExists
+     * @depends testRequestGetRequestTargetIsPublic
+     * @depends testRequestGetRequestTargetHasNoParameters
+     * @testdox Request::getRequestTarget() returns string
+     */
+    public function testRequestGetRequestTargetReturnsString()
+    {
+        $request = new \StoreCore\Request();
+        $this->assertInternalType('string', $request->getRequestTarget());
+    }
+
+    /**
+     * @depends testRequestGetRequestTargetReturnsString
+     * @testdox Request::getRequestTarget() return is not empty
+     */
+    public function testRequestGetRequestTargetReturnIsNotEmpty()
+    {
+        $request = new \StoreCore\Request();
+        $this->assertNotEmpty($request->getRequestTarget());
+    }
+
+    /**
+     * @depends testRequestGetRequestTargetReturnsString
+     * @testdox Request::getRequestTarget() returns '/' by default
+     */
+    public function testRequestGetRequestTargetReturnSlashByDefault()
+    {
+        $request = new \StoreCore\Request();
+        $this->assertSame('/', $request->getRequestTarget());
+    }
+
+
+    /**
+     * @testdox Request::setRequestTarget() exists
+     */
+    public function testRequestSetRequestTargetExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Request');
+        $this->assertTrue($class->hasMethod('setRequestTarget'));
+    }
+
+    /**
+     * @depends testRequestSetRequestTargetExists
+     * @testdox Request::setRequestTarget() is public
+     */
+    public function testRequestSetRequestTargetIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Request', 'setRequestTarget');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testRequestSetRequestTargetExists
+     * @testdox Request::setRequestTarget() has one required parameter
+     */
+    public function testRequestSetRequestTargetHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Request', 'setRequestTarget');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+
+    /**
+     * @testdox Request::withRequestTarget() exists
+     */
+    public function testRequestWithRequestTargetExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Request');
+        $this->assertTrue($class->hasMethod('withRequestTarget'));
+    }
+
+    /**
+     * @depends testRequestWithRequestTargetExists
+     * @testdox Request::withRequestTarget() is public
+     */
+    public function testRequestWithRequestTargetIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Request', 'withRequestTarget');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testRequestWithRequestTargetExists
+     * @testdox Request::withRequestTarget() has one required parameter
+     */
+    public function testRequestWithRequestTargetHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Request', 'withRequestTarget');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+    /**
+     * @depends testRequestWithRequestTargetExists
+     * @testdox Request::withRequestTarget() returns instance of Request
+     */
+    public function testRequestWithRequestTargetReturnsInstanceOfRequest()
+    {
+        $request = new \StoreCore\Request();
+        $this->assertInstanceOf(\StoreCore\Request::class, $request->withRequestTarget('/admin/'));
+    }
 }

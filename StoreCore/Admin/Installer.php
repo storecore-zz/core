@@ -5,14 +5,17 @@ namespace StoreCore\Admin;
  * StoreCore Installer
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015–2018 StoreCore™
+ * @copyright Copyright © 2015–2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
 class Installer extends \StoreCore\AbstractController
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -98,7 +101,7 @@ class Installer extends \StoreCore\AbstractController
             $this->Registry->set('Database', $dbh);
         } catch (\PDOException $e) {
             $this->Logger->critical($e->getMessage());
-            if ($this->Request->getRequestPath() !== '/admin/settings/database/account/') {
+            if ($this->Request->getRequestTarget() !== '/admin/settings/database/account/') {
                 $response = new \StoreCore\Response($this->Registry);
                 $response->redirect('/admin/settings/database/account/');
             } else {
