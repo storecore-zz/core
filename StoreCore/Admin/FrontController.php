@@ -16,15 +16,18 @@ use \StoreCore\Session as Session;
  * Administration Front Controller
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015–2018 StoreCore™
+ * @copyright Copyright © 2015–2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
- * @version   1.0.0-alpha.1
+ * @version   1.0.0-beta.1
  */
 class FrontController extends AbstractController implements LoggerAwareInterface
 {
-    /** @var string VERSION Semantic Version (SemVer) */
-    const VERSION = '1.0.0-alpha.1';
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
+    const VERSION = '1.0.0-beta.1';
 
     /**
      * @param \StoreCore\Registry $registry
@@ -54,13 +57,13 @@ class FrontController extends AbstractController implements LoggerAwareInterface
 
         // Find a matching route or route collection.
         $route = false;
-        switch ($this->Request->getRequestPath()) {
+        switch ($this->Request->getRequestTarget()) {
             case '/admin/sign-out/':
                 $route = new Route('/admin/sign-out/', '\StoreCore\Admin\User', 'signOut');
                 break;
             default:
                 $router = new RouteFactory($this->Registry);
-                $route = $router->find($this->Request->getRequestPath());
+                $route = $router->find($this->Request->getRequestTarget());
                 if ($route === null) {
                     $route = false;
                 }
@@ -71,7 +74,7 @@ class FrontController extends AbstractController implements LoggerAwareInterface
             $this->Registry->set('Route', $route);
             $route->dispatch();
         } else {
-            $this->Logger->debug('Unknown admin route: ' . $this->Request->getRequestPath());
+            $this->Logger->debug('Unknown admin route: ' . $this->Request->getRequestTarget());
             $response = new Response($this->Registry);
             $response->addHeader('HTTP/1.1 404 Not Found');
             $response->output();
