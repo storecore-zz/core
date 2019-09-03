@@ -1,21 +1,24 @@
 <?php
 namespace StoreCore\Database;
 
-use \StoreCore\Route as Route;
-use \StoreCore\RouteCollection as RouteCollection;
+use \StoreCore\Route;
+use \StoreCore\RouteCollection;
 
 /**
  * Route Factory
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2017–2018 StoreCore™
+ * @copyright Copyright © 2017–2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
 class RouteFactory extends AbstractModel
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -34,12 +37,12 @@ class RouteFactory extends AbstractModel
      *   Throws an invalid argument logic exception if the $path parameter is
      *   not a string.
      *
-     * @uses \StoreCore\Request::getRequestPath()
+     * @uses \StoreCore\Request::getRequestTarget()
      */
     public function find($path = null)
     {
         if ($path === null) {
-            $path = $this->Request->getRequestPath();
+            $path = $this->Request->getRequestTarget();
         } elseif (!is_string($path)) {
             throw new \InvalidArgumentException();
         }

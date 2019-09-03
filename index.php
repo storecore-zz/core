@@ -4,7 +4,7 @@
  *
  * @copyright Copyright © 2015–2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
- * @version   1.0.0-alpha.1
+ * @version   1.0.0-beta.1
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -91,7 +91,7 @@ $registry->set('Session', $session);
 
 // Routing
 $route = false;
-switch ($request->getRequestPath()) {
+switch ($request->getRequestTarget()) {
     // Admin web app manifest:
     case '/admin/manifest.json':
     case '/admin/StoreCore.webmanifest':
@@ -118,7 +118,7 @@ switch ($request->getRequestPath()) {
     // Fallback to some other (admin) route or a fixed redirect:
     default:
         // Execute an administration route.
-        if (strpos($request->getRequestPath(), '/admin/', 0) === 0) {
+        if (strpos($request->getRequestTarget(), '/admin/', 0) === 0) {
             $route = new \StoreCore\Route('/admin/', '\StoreCore\Admin\FrontController');
             break;
         }
@@ -140,7 +140,7 @@ if ($route !== false) {
     $route->dispatch();
 } else {
     $logger = $registry->get('Logger');
-    $logger->notice('HTTP/1.1 404 Not Found: ' . $request->getRequestPath());
+    $logger->notice('HTTP/1.1 404 Not Found: ' . $request->getRequestTarget());
     $response = new \StoreCore\Response($registry);
     $response->addHeader('HTTP/1.1 404 Not Found');
     $response->output();

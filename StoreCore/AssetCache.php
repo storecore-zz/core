@@ -5,7 +5,7 @@ namespace StoreCore;
  * Asset Cache
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2017–2018 StoreCore™
+ * @copyright Copyright © 2017–2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
  * @version   0.1.0
@@ -39,7 +39,7 @@ class AssetCache
             return;
         }
 
-        $pathinfo = pathinfo($registry->get('Request')->getRequestPath());
+        $pathinfo = pathinfo($registry->get('Request')->getRequestTarget());
         if (array_key_exists('basename', $pathinfo) && array_key_exists('extension', $pathinfo)) {
             $asset = new \StoreCore\Asset($pathinfo['basename'], $pathinfo['extension']);
         }

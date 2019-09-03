@@ -25,7 +25,7 @@ class FullPageCache
      * @return void
      * @uses \StoreCore\Request::getMethod()
      * @uses \StoreCore\Request::getHostName()
-     * @uses \StoreCore\Request::getRequestPath()
+     * @uses \StoreCore\Request::getRequestTarget()
      * @uses \StoreCore\Types\CacheKey
      */
     public static function find(Registry $registry)
@@ -54,7 +54,7 @@ class FullPageCache
         // Generate a cache key.
         $cache_key = new \StoreCore\Types\CacheKey(
             $registry->get('Request')->getHostName()
-            . $registry->get('Request')->getRequestPath()
+            . $registry->get('Request')->getRequestTarget()
         );
 
 

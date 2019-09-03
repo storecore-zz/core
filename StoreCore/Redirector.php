@@ -12,7 +12,7 @@ namespace StoreCore;
  * manual addition and deletion of redirects by users.
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2016-2017 StoreCore
+ * @copyright Copyright © 2016–2019 StoreCore™
  * @internal
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
@@ -20,7 +20,10 @@ namespace StoreCore;
  */
 class Redirector
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -36,13 +39,13 @@ class Redirector
      * @param \StoreCore\Request $request
      * @return void
      * @uses \StoreCore\Request::getHostName()
-     * @uses \StoreCore\Request::getRequestPath()
+     * @uses \StoreCore\Request::getRequestTarget()
      * @uses \StoreCore\Types\CacheKey
      * @uses \StoreCore\FileSystem\Redirects
      */
     public static function find(\StoreCore\Request $request)
     {
-        $url = $request->getHostName() . $request->getRequestPath();
+        $url = $request->getHostName() . $request->getRequestTarget();
         $url = '//' . ltrim($url, '/');
         $cache_key = new \StoreCore\Types\CacheKey($url);
         $cache_key = (string)$cache_key;
