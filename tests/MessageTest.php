@@ -347,7 +347,7 @@ class MessageTest extends PHPUnit_Framework_TestCase
      */
     public function testMessageWithAddedHeaderAddsHeaderValues()
     {
-        $first_message = new \StoreCore\Request();
+        $first_message = new \StoreCore\Message();
         $first_message->setHeader('Accept-Encoding', 'deflate');
         $second_message = $first_message->withAddedHeader('Accept-Encoding', 'gzip');
 
