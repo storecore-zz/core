@@ -16,9 +16,15 @@ use Psr\Http\Message\StreamInterface;
 abstract class AbstractStream implements StreamInterface
 {
     /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
+    const VERSION = '0.1.0';
+
+    /**
      * @var bool $Readable
      *   Stream is readable (true) or not readable (default false).  Please use
-     *   the `isReadable()` method to determine if stream is readable.
+     *   the `isReadable()` method to determine if the stream is readable.
      */
     protected $Readable = false;
 
