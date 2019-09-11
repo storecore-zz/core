@@ -2,6 +2,7 @@
 namespace StoreCore;
 
 use Psr\Http\Message\StreamInterface;
+use StoreCore\Types\StringableInterface;
 
 /**
  * Abstract stream resource for HTTP messages.
@@ -13,12 +14,18 @@ use Psr\Http\Message\StreamInterface;
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-abstract class AbstractStream implements StreamInterface
+abstract class AbstractStream implements StreamInterface, StringableInterface
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
+    const VERSION = '0.1.0';
+
     /**
      * @var bool $Readable
      *   Stream is readable (true) or not readable (default false).  Please use
-     *   the `isReadable()` method to determine if stream is readable.
+     *   the `isReadable()` method to determine if the stream is readable.
      */
     protected $Readable = false;
 
