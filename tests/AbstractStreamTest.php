@@ -36,7 +36,7 @@ class AbstractStreamTest extends PHPUnit_Framework_TestCase
      */
     public function testAbstractStreamImplementsPsr7StreamInterface()
     {
-        $stub = $this->getMock(\StoreCore\AbstractStream::class);
+        $stub = $this->getMockForAbstractClass(\StoreCore\AbstractStream::class);
         $this->assertInstanceOf(\Psr\Http\Message\StreamInterface::class, $stub);
     }
 
@@ -56,7 +56,7 @@ class AbstractStreamTest extends PHPUnit_Framework_TestCase
      */
     public function testAbstractStreamImplementsStringableInterface()
     {
-        $stub = $this->getMock(\StoreCore\AbstractStream::class);
+        $stub = $this->getMockForAbstractClass(\StoreCore\AbstractStream::class);
         $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $stub);
     }
 
