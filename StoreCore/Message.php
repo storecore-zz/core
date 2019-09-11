@@ -20,7 +20,7 @@ class Message
     const VERSION = '0.1.0';
 
     /**
-     * @var string $Headers
+     * @var array $Headers
      *   HTTP message headers.
      */
     protected $Headers = array();
