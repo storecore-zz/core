@@ -2,6 +2,7 @@
 namespace StoreCore;
 
 use Psr\Http\Message\StreamInterface;
+use StoreCore\Types\StringableInterface;
 
 /**
  * Abstract stream resource for HTTP messages.
@@ -13,7 +14,7 @@ use Psr\Http\Message\StreamInterface;
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-abstract class AbstractStream implements StreamInterface
+abstract class AbstractStream implements StreamInterface, StringableInterface
 {
     /**
      * @var string VERSION

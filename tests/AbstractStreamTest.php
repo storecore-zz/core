@@ -31,13 +31,33 @@ class AbstractStreamTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @group distro
+     * @group hmvc
      * @testdox AbstractStream implements PSR-7 StreamInterface
      */
     public function testAbstractStreamImplementsPsr7StreamInterface()
     {
         $stub = $this->getMock(\StoreCore\AbstractStream::class);
         $this->assertInstanceOf(\Psr\Http\Message\StreamInterface::class, $stub);
+    }
+
+
+    /**
+     * @group distro
+     * @testdox Implemented StringableInterface interface file exists
+     */
+    public function testImplementedStringableInterfaceInterfaceFileExists()
+    {
+        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Types' . DIRECTORY_SEPARATOR . 'StringableInterface.php');
+    }
+
+    /**
+     * @group hmvc
+     * @testdox AbstractStream implements StringableInterface
+     */
+    public function testAbstractStreamImplementsStringableInterface()
+    {
+        $stub = $this->getMock(\StoreCore\AbstractStream::class);
+        $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $stub);
     }
 
 
@@ -70,5 +90,57 @@ class AbstractStreamTest extends PHPUnit_Framework_TestCase
     public function testVersionMatchesMasterBranch()
     {
         $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\AbstractStream::VERSION);
+    }
+
+
+    /**
+     * @group hmvc
+     * @testdox AbstractStream has Writable property
+     */
+    public function testAbstractStreamHasWritableProperty()
+    {
+        $this->assertClassHasAttribute('Writable', \StoreCore\AbstractStream::class);
+    }
+
+    /**
+     * @group hmvc
+     * @testdox AbstractStream Writable property is protected
+     */
+    public function testAbstractStreamWritablePropertyIsProtected()
+    {
+        $property = new \ReflectionProperty(\StoreCore\AbstractStream::class, 'Writable');
+        $this->assertTrue($property->isProtected());
+    }
+
+    /**
+     * @group hmvc
+     * @testdox AbstractStream Writable property is false by default
+     */
+    public function testAbstractStreamWritablePropertyIsFalseByDefault()
+    {
+        $stub = $this->getMockForAbstractClass(\StoreCore\AbstractStream::class);
+        $this->assertAttributeEquals(false, 'Writable', $stub);
+    }
+
+
+    /**
+     * @group hmvc
+     * @testdox AbstractStream::__toString() exists
+     */
+    public function testAbstractStreamToStringExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\AbstractStream');
+        $this->assertTrue($class->hasMethod('__toString'));
+    }
+
+    /**
+     * @depends testAbstractStreamToStringExists
+     * @group hmvc
+     * @testdox AbstractStream::__toString() is public
+     */
+    public function testAbstractStreamToStringIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\AbstractStream', '__toString');
+        $this->assertTrue($method->isPublic());
     }
 }
