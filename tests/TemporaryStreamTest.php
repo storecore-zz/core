@@ -94,6 +94,55 @@ class TemporaryStreamTest extends PHPUnit_Framework_TestCase
 
 
     /**
+     * @testdox TemporaryStream::__construct() exists
+     */
+    public function testTemporaryStreamConstructExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\TemporaryStream');
+        $this->assertTrue($class->hasMethod('__construct'));
+    }
+
+    /**
+     * @depends testTemporaryStreamConstructExists
+     * @testdox TemporaryStream::__construct() is public
+     */
+    public function testTemporaryStreamConstructIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\TemporaryStream', '__construct');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testTemporaryStreamConstructExists
+     * @testdox TemporaryStream::__construct() has one optional parameter
+     */
+    public function testTemporaryStreamConstructHasOneOptionalParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\TemporaryStream', '__construct');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 0);
+    }
+
+    /**
+     * @testdox TemporaryStream::__construct() creates readable stream
+     */
+    public function testTemporaryStreamConstructCreatesReadableStream()
+    {
+        $stream = new \StoreCore\TemporaryStream();
+        $this->assertTrue($stream->isReadable());
+    }
+
+    /**
+     * @testdox TemporaryStream::__construct() creates writable stream
+     */
+    public function testTemporaryStreamConstructCreatesWritableStream()
+    {
+        $stream = new \StoreCore\TemporaryStream();
+        $this->assertTrue($stream->isWritable());
+    }
+
+
+    /**
      * @testdox TemporaryStream::write() exists
      */
     public function testTemporaryStreamWriteExists()
