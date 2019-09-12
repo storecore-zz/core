@@ -33,7 +33,7 @@ abstract class AbstractStream implements StreamInterface, StringableInterface
      * @var int|null $Size
      *   Size of the stream in bytes if known, or null if unknown.
      */
-    protected $Size = null;
+    protected $Size;
 
     /**
      * @var resource $StreamResource
