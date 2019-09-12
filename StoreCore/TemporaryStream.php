@@ -36,6 +36,9 @@ class TemporaryStream extends AbstractStream implements StreamInterface
         if ($this->StreamResource !== false) {
             $this->Readable = true;
             $this->Writable = true;
+            if (!empty($content)) {
+                $this->Size = $this->write($content);
+            }
         }
     }
 
