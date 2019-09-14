@@ -125,6 +125,28 @@ class AbstractStreamTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group hmvc
+     * @testdox AbstractStream::__destruct() exists
+     */
+    public function testAbstractStreamDestructorExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\AbstractStream');
+        $this->assertTrue($class->hasMethod('__destruct'));
+    }
+
+    /**
+     * @depends testAbstractStreamDestructorExists
+     * @group hmvc
+     * @testdox AbstractStream::__destruct() is public
+     */
+    public function testAbstractStreamDestructorIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\AbstractStream', '__destruct');
+        $this->assertTrue($method->isPublic());
+    }
+
+
+    /**
+     * @group hmvc
      * @testdox AbstractStream::__toString() exists
      */
     public function testAbstractStreamToStringExists()

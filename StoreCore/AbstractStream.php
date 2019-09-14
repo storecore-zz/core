@@ -49,6 +49,17 @@ abstract class AbstractStream implements StreamInterface, StringableInterface
     protected $Writable = false;
 
     /**
+     * Close the stream resource on destruction.
+     *
+     * @param void
+     * @return void
+     */
+    public function __destruct()
+    {
+        $this->close();
+    }
+
+    /**
      * @inheritDoc
      */
     public function __toString()
@@ -70,7 +81,10 @@ abstract class AbstractStream implements StreamInterface, StringableInterface
      */
     public function close()
     {
-        if (is_resource($this->StreamResource) && get_resource_type($this->StreamResource) === 'stream') {
+        if (
+            is_resource($this->StreamResource)
+            && get_resource_type($this->StreamResource) === 'stream'
+        ) {
             fclose($this->StreamResource);
         }
     }
