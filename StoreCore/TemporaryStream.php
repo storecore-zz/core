@@ -17,6 +17,18 @@ use \StoreCore\AbstractStream;
 class TemporaryStream extends AbstractStream implements StreamInterface
 {
     /**
+     * @var string FILENAME
+     *   Stream filename for `fopen()`.
+     */
+    const FILENAME = 'php://temp';
+
+    /**
+     * @var string MODE
+     *   Stream I/O mode for `fopen()`.
+     */
+    const MODE = 'r+';
+
+    /**
      * @var string VERSION
      *   Semantic Version (SemVer).
      */
@@ -32,7 +44,7 @@ class TemporaryStream extends AbstractStream implements StreamInterface
      */
     public function __construct($content = null)
     {
-        $this->StreamResource = fopen('php://temp', 'r+');
+        $this->StreamResource = fopen(static::FILENAME, static::MODE);
         if ($this->StreamResource !== false) {
             $this->Readable = true;
             $this->Writable = true;
