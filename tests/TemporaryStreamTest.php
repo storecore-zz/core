@@ -51,13 +51,58 @@ class TemporaryStreamTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group hmvc
      * @depends testImplementedPsr7StreamInterfaceInterfaceFileExists
      * @testdox TemporaryStream implements PSR-7 StreamInterface
      */
     public function testTemporaryStreamImplementsPsr7StreamInterface()
     {
+        $class = new \ReflectionClass('\Psr\Http\Message\StreamInterface');
+        $this->assertTrue($class->isInterface());
+
         $stream = new \StoreCore\TemporaryStream();
         $this->assertInstanceOf(\Psr\Http\Message\StreamInterface::class, $stream);
+    }
+
+
+    /**
+     * @group hmvc
+     * @testdox FILENAME constant is defined
+     */
+    public function testFilenameConstantIsDefined()
+    {
+        $class = new \ReflectionClass('\StoreCore\TemporaryStream');
+        $this->assertTrue($class->hasConstant('FILENAME'));
+    }
+
+    /**
+     * @depends testFilenameConstantIsDefined
+     * @group hmvc
+     * @testdox FILENAME constant equals 'php://temp'
+     */
+    public function testFilenameConstantEqualsPhpTemp()
+    {
+        $this->assertEquals('php://temp', \StoreCore\TemporaryStream::FILENAME);
+    }
+
+    /**
+     * @group hmvc
+     * @testdox MODE constant is defined
+     */
+    public function testModeConstantIsDefined()
+    {
+        $class = new \ReflectionClass('\StoreCore\TemporaryStream');
+        $this->assertTrue($class->hasConstant('MODE'));
+    }
+
+    /**
+     * @depends testModeConstantIsDefined
+     * @group hmvc
+     * @testdox MODE constant equals 'r+' for read-write
+     */
+    public function testFilenameConstantEqualsRPlusForReadWrite()
+    {
+        $this->assertEquals('r+', \StoreCore\TemporaryStream::MODE);
     }
 
 
