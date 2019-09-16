@@ -10,6 +10,7 @@
 - [Installing StoreCore](#installing-storecore)
 - [Contributing](#contributing)
 - [Versioning](#versioning)
+- [GitHub issue tracking](#github-issue-tracking)
 - [Creators](#creators)
 - [Copyright and License](#copyright-and-license)
 
@@ -90,6 +91,47 @@ compatibility, StoreCore is maintained under the [Semantic Versioning (SemVer) g
 Sometimes we may screw up, but we’ll adhere to those rules whenever possible.
 
 [Semantic Versioning (SemVer) guidelines]: https://semver.org/ "Semantic Versioning 2.0.0"
+
+
+## GitHub issue tracking
+
+StoreCore repositories use three kinds of 
+[labels, or tags, to track issues on GitHub](https://github.com/storecore/core/labels):
+
+* Type
+* Priority
+* Status
+
+
+### Primary label: issue type tags in Material colors
+
+| Issue type      | Color           | Hex     |
+| --------------- | --------------- | ------- |
+| bug             | Red 500         | #f44336 |
+| documentation   | Deep Purple 500 | #673ab7 |
+| enhancement     | Teal 500        | #009688 |
+| feature request | Green 500       | #4caf50 |
+| question        | Pink 500        | #e91e63 |
+
+
+### Secondary label: priority tags with “priority” prefix in shades of amber
+
+| Issue priority    | MoSCoW         | Shade     | Hex     |
+| ----------------- | -------------- | --------- | ------- |
+| priority critical | P0 must have   | Amber 800 | #ff8f00 |
+| priority high     | P1 should have | Amber 600 | #ffb300 |
+| priority medium   | P2 could have  | Amber 400 | #ffca28 |
+| priority low      | P3 won’t have  | Amber 200 | #ffe082 |
+
+
+### Third label: current status in shades of grey
+
+| Current issue status | Shade    | Hex     |
+| -------------------- | -------- | ------- |
+| under consideration  | Grey 200 | #eeeeee |
+| planned              | Grey 400 | #bdbdbd |
+| work in progress     | Grey 600 | #757575 |
+| help wanted          | Grey 900 | #212121 |
 
 
 ## Creators
