@@ -99,15 +99,8 @@ ini_set('display_errors', 0);
 
 // Load core interfaces, abstract classes, and classes.
 require __DIR__ . DIRECTORY_SEPARATOR . 'SingletonInterface.php';
-require __DIR__ . DIRECTORY_SEPARATOR . 'Types' . DIRECTORY_SEPARATOR . 'TypeInterface.php';
-require __DIR__ . DIRECTORY_SEPARATOR . 'Types' . DIRECTORY_SEPARATOR . 'ValidateInterface.php';
-require __DIR__ . DIRECTORY_SEPARATOR . 'ObserverInterface.php';
-require __DIR__ . DIRECTORY_SEPARATOR . 'SubjectInterface.php';
-
 require __DIR__ . DIRECTORY_SEPARATOR . 'AbstractController.php';
 require __DIR__ . DIRECTORY_SEPARATOR . 'AbstractModel.php';
-require __DIR__ . DIRECTORY_SEPARATOR . 'Database' . DIRECTORY_SEPARATOR . 'AbstractModel.php';
-
 require __DIR__ . DIRECTORY_SEPARATOR . 'Registry.php';
 require __DIR__ . DIRECTORY_SEPARATOR . 'Request.php';
 require __DIR__ . DIRECTORY_SEPARATOR . 'Response.php';
