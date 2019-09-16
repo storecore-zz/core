@@ -75,8 +75,6 @@ class Request
      */
     public function __construct()
     {
-        $magic_quotes_gpc = get_magic_quotes_gpc();
-
         // Set internal character encoding to UTF-8
         mb_internal_encoding('UTF-8');
 
@@ -85,9 +83,6 @@ class Request
         foreach ($_SERVER as $key => $value) {
             if (is_string($value)) {
                 $value = trim($value);
-                if ($magic_quotes_gpc !== false) {
-                    $value = stripslashes($value);
-                }
                 if (!empty($value)) {
                     $key = mb_strtoupper($key);
                     $data[$key] = strip_tags($value);
@@ -108,18 +103,12 @@ class Request
             && ($_SERVER['REQUEST_METHOD'] !== $this->getMethod())
             && is_string($_SERVER['REQUEST_METHOD'])
         ) {
-            if ($magic_quotes_gpc !== false) {
-                $_SERVER['REQUEST_METHOD'] = stripslashes($_SERVER['REQUEST_METHOD']);
-            }
             $this->setMethod(strtoupper($_SERVER['REQUEST_METHOD']));
         }
 
         // Request path (URI without host)
         if (isset($_SERVER['REQUEST_URI'])) {
             $request_target = $_SERVER['REQUEST_URI'];
-            if ($magic_quotes_gpc !== false) {
-                $request_target = stripslashes($request_target);
-            }
             if (strpos($request_target, '?') !== false) {
                 $request_target = strtok($request_target, '?');
             }
@@ -135,10 +124,6 @@ class Request
             foreach ($_POST as $key => $value) {
                 if (is_string($value)) {
                     $value = trim($value);
-                    if ($magic_quotes_gpc !== false) {
-                        $key = stripslashes($key);
-                        $value = stripslashes($value);
-                    }
                     $value = strip_tags($value);
                     if (!empty($value)) {
                         $data[mb_strtolower($key)] = $value;
@@ -153,10 +138,6 @@ class Request
             $data = array();
             foreach ($_COOKIE as $name => $value) {
                 if (is_string($name) && !empty($value)) {
-                    if ($magic_quotes_gpc !== false) {
-                        $name = stripslashes($name);
-                        $value = stripslashes($value);
-                    }
                     $name = mb_strtolower($name);
                     $data[$name] = $value;
                 }
