@@ -99,12 +99,13 @@ class ThingTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group hmvc
-     * @testdox Public __toString() method returns non-empty string
+     * @testdox Thing::__toString() returns non-empty string
      */
-    public function testPublicToStringMethodReturnsNonEmptyString()
+    public function testThingToStringReturnsNonEmptyString()
     {
         $thing = new \StoreCore\Types\Thing();
         $thing = (string)$thing;
-        $this->assertFalse(empty($thing));
+        $this->assertNotEmpty($thing);
+        $this->assertInternalType('string', $thing);
     }
 }

@@ -72,21 +72,24 @@ class ImageTest extends PHPUnit_Framework_TestCase
 
     /**
      * @depends testPublicToStringMethodExists
-     * @testdox Public __toString() method returns non-empty string
+     * @testdox Image::__toString() returns non-empty string
      */
-    public function testPublicToStringMethodReturnsNonEmptyString()
+    public function testImageToStringReturnsNonEmptyString()
     {
         $image = new \StoreCore\Image();
-        $this->assertFalse(empty($image->__toString()));
-        $this->assertFalse(empty((string)$image));
-        $this->assertTrue(is_string($image->__toString()));
+
+        $this->assertNotEmpty($image->__toString());
+        $this->assertInternalType('string', $image->__toString());
+
+        $this->assertNotEmpty((string)$image);
+        $this->assertInternalType('string', (string)$image);
     }
 
     /**
-     * @depends testPublicToStringMethodReturnsNonEmptyString
-     * @testdox Public __toString() method returns <img> tag
+     * @depends testImageToStringReturnsNonEmptyString
+     * @testdox Image::__toString() returns <img> tag
      */
-    public function testPublicToStringMethodReturnsImgTag()
+    public function testImageToStringReturnsImgTag()
     {
         $image = new \StoreCore\Image();
         $this->assertStringStartsWith('<img ', (string)$image);
@@ -359,7 +362,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $this->assertSame(7680, $image->getWidth());
         $this->assertSame(4320, $image->getHeight());
     }
-    
+
     /**
      * @expectedException \DomainException
      * @testdox Public setWidth() method throws \DomainException on width over 7680

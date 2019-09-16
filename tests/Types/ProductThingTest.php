@@ -99,12 +99,13 @@ class ProductThingTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group hmvc
-     * @testdox Public __toString() method returns non-empty string
+     * @testdox Product::__toString() returns non-empty string
      */
-    public function testPublicToStringMethodReturnsNonEmptyString()
+    public function testProductToStringReturnsNonEmptyString()
     {
         $product = new \StoreCore\Types\Product();
         $product = (string)$product;
-        $this->assertFalse(empty($product));
+        $this->assertNotEmpty($product);
+        $this->assertInternalType('string', $product);
     }
 }
