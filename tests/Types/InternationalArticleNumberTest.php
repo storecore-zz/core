@@ -134,13 +134,13 @@ class InternationalArticleNumberTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @testdox Public __toString() method returns non-empty string
+     * @testdox InternationalArticleNumber::__toString() returns non-empty string
      */
-    public function testPublicToStringMethodReturnsNonEmptyString()
+    public function testInternationalArticleNumberToStringReturnsNonEmptyString()
     {
         $ean = new \StoreCore\Types\InternationalArticleNumber('0190198067098');
         $ean = (string)$ean;
-        $this->assertFalse(empty($ean));
+        $this->assertNotEmpty($ean);
     }
 
     /**
