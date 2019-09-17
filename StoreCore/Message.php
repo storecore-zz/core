@@ -1,6 +1,10 @@
 <?php
 namespace StoreCore;
 
+use \Psr\Http\Message\MessageInterface;
+use \Psr\Http\Message\StreamInterface;
+use \StoreCore\TemporaryStream;
+
 /**
  * HTTP Message
  *
@@ -11,13 +15,19 @@ namespace StoreCore;
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-class Message
+class Message implements \Psr\Http\Message\MessageInterface
 {
     /**
      * @var string VERSION
      *   Semantic Version (SemVer).
      */
     const VERSION = '0.1.0';
+
+    /**
+     * @var StreamInterface $Body
+     *   Body of the message as a stream.
+     */
+    protected $Body;
 
     /**
      * @var array $Headers
@@ -30,6 +40,17 @@ class Message
      *   HTTP version number (e.g., “1.1”, “1.0”).
      */
     private $ProtocolVersion;
+
+    /**
+     * @inheritDoc
+     */
+    public function getBody()
+    {
+        if ($this->Body === null) {
+            $this->setBody(new TemporaryStream(''));
+        }
+        return $this->Body;
+    }
 
     /**
      * @inheritDoc
@@ -100,6 +121,23 @@ class Message
     }
 
     /**
+     * Set the message body.
+     *
+     * @param StreamInterface $body
+     *   Body of the message as a stream.
+     *
+     * @throws \InvalidArgumentException
+     *   Throws an invalid argument exception when the body is not valid.
+     */
+    public function setBody(StreamInterface $body)
+    {
+        if (!($body instanceof StreamInterface)) {
+            throw new \InvalidArgumentException;
+        }
+        $this->Body = $body;
+    }
+
+    /**
      * Add an HTTP header to the message.
      *
      * @param string $name
@@ -164,6 +202,16 @@ class Message
         }
 
         $message->setHeader($name, $value);
+        return $message;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function withBody(StreamInterface $body)
+    {
+        $message = clone $this;
+        $message->setBody($body);
         return $message;
     }
 

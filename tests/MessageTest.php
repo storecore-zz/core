@@ -58,6 +58,48 @@ class MessageTest extends PHPUnit_Framework_TestCase
 
 
     /**
+     * @testdox Message::getBody() exists
+     */
+    public function testMessageGetBodyExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Message');
+        $this->assertTrue($class->hasMethod('getBody'));
+    }
+
+    /**
+     * @depends testMessageGetBodyExists
+     * @testdox Message::getBody() is public
+     */
+    public function testMessageGetBodyIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Message', 'getBody');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testMessageGetBodyExists
+     * @testdox Message::getBody() has no parameters
+     */
+    public function testMessageGetBodyHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Message', 'getBody');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+    /**
+     * @depends testMessageGetBodyExists
+     * @depends testMessageGetBodyIsPublic
+     * @depends testMessageGetBodyHasNoParameters
+     * @testdox Message::getBody() returns \Psr\Http\Message\StreamInterface
+     */
+    public function testMessageGetBodyReturnsPsrHttpMessageStreamInterface()
+    {
+        $message = new \StoreCore\Message();
+        $this->assertInstanceOf(\Psr\Http\Message\StreamInterface::class, $message->getBody());
+    }
+
+
+    /**
      * @testdox Message::getHeader() exists
      */
     public function testMessageGetHeaderExists()
@@ -357,6 +399,48 @@ class MessageTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('deflate', $first_message->getHeaderLine('Accept-Encoding'));
         $this->assertSame('deflate, gzip', $second_message->getHeaderLine('Accept-Encoding'));
+    }
+
+
+    /**
+     * @testdox Message::withBody() exists
+     */
+    public function testMessageWithBodyExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Message');
+        $this->assertTrue($class->hasMethod('withBody'));
+    }
+
+    /**
+     * @depends testMessageWithBodyExists
+     * @testdox Message::withBody() is public
+     */
+    public function testMessageWithBodyIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Message', 'withBody');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testMessageWithBodyExists
+     * @testdox Message::withBody() has one required parameter
+     */
+    public function testMessageWithBodyHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Message', 'withBody');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+    /**
+     * @depends testMessageWithBodyHasOneRequiredParameter
+     * @testdox Message::withBody() returns instance of Message
+     */
+    public function testMessageWithBodyReturnsInstanceOfMessage()
+    {
+        $message = new \StoreCore\Message();
+        $stream = new \StoreCore\TemporaryMemoryStream();
+        $this->assertInstanceOf(\StoreCore\Message::class, $message->withBody($stream));
     }
 
 
