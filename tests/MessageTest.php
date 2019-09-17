@@ -15,12 +15,13 @@ class MessageTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group hmvc
-     * @testdox Message class is not abstract
+     * @testdox Message class is concrete
      */
     public function testMessageClassIsAbstract()
     {
         $class = new \ReflectionClass('\StoreCore\Message');
         $this->assertFalse($class->isAbstract());
+        $this->assertTrue($class->isInstantiable());
     }
 
 
