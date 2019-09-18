@@ -1,6 +1,7 @@
 <?php
 namespace StoreCore;
 
+use \StoreCore\Message;
 use \StoreCore\Types\StringableInterface;
 
 /**
@@ -13,7 +14,7 @@ use \StoreCore\Types\StringableInterface;
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-class Request
+class Request extends Message
 {
     /**
      * @var string VERSION

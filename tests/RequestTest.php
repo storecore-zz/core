@@ -1,16 +1,46 @@
 <?php
-/**
- * @group hmvc
- */
 class RequestTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @group distro
+     * @testdox Request class file exists
      */
-    public function testCoreRequestClassFileExists()
+    public function testRequestClassFileExists()
     {
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Request.php');
     }
+
+    /**
+     * @group hmvc
+     * @testdox Request class is concrete
+     */
+    public function testRequestClassIsConcrete()
+    {
+        $class = new \ReflectionClass('\StoreCore\Request');
+        $this->assertFalse($class->isAbstract());
+        $this->assertTrue($class->isInstantiable());
+    }
+
+
+    /**
+     * @group distro
+     * @testdox Extended Message class file exists
+     */
+    public function testExtendedMessageClassFileExists()
+    {
+        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Message.php');
+    }
+
+    /**
+     * @group hmvc
+     * @testdox Request is a Message
+     */
+    public function testRequestIsAMessage()
+    {
+        $request = new \StoreCore\Request();
+        $this->assertInstanceOf(\StoreCore\Message::class, $request);
+    }
+
 
     /**
      * @group distro
