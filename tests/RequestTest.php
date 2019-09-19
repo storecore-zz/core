@@ -251,6 +251,54 @@ class RequestTest extends PHPUnit_Framework_TestCase
 
 
     /**
+     * @testdox Request::getUri() exists
+     */
+    public function testRequestGetUriExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Request');
+        $this->assertTrue($class->hasMethod('getUri'));
+    }
+
+    /**
+     * @depends testRequestGetUriExists
+     * @testdox Request::getUri() is public
+     */
+    public function testRequestGetUriIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Request', 'getUri');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testRequestGetUriExists
+     * @testdox Request::getUri() has no parameters
+     */
+    public function testRequestGetUriHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Request', 'getUri');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+    /**
+     * @depends testRequestGetUriExists
+     * @depends testRequestGetUriIsPublic
+     * @depends testRequestGetUriHasNoParameters
+     * @testdox Request::getUri() returns PSR-7 UriInterface
+     */
+    public function testRequestGetUriReturnsPsr7UriInterface()
+    {
+        // URI in PHP equals two server variables:
+        // $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
+        $_SERVER['HTTP_HOST']   = 'www.example.com';
+        $_SERVER['REQUEST_URI'] = '/foo-category/bar-product-name';
+        $_SERVER['SERVER_PORT'] = '80';
+
+        $request = new \StoreCore\Request();
+        $this->assertInstanceOf(\Psr\Http\Message\UriInterface::class, $request->getUri());
+    }
+
+
+    /**
      * @testdox Request::setMethod() exists
      */
     public function testRequestSetMethodExists()
@@ -353,6 +401,52 @@ class RequestTest extends PHPUnit_Framework_TestCase
 
 
     /**
+     * @testdox Request::setUri() exists
+     */
+    public function testRequestSetUriExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Request');
+        $this->assertTrue($class->hasMethod('setUri'));
+    }
+
+    /**
+     * @depends testRequestSetUriExists
+     * @testdox Request::setUri() is public
+     */
+    public function testRequestSetUriIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Request', 'setUri');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testRequestSetUriExists
+     * @testdox Request::setUri() has one required parameter
+     */
+    public function testRequestSetUriHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Request', 'setUri');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+    /**
+     * @depends testRequestSetUriHasOneRequiredParameter
+     * @testdox Request::setUri() sets UriInterface
+     */
+    public function testRequestSetUriSetsUriInterface()
+    {
+        $url = 'https://shop.example.com/foo/bar/baz-qux';
+        $factory = new \StoreCore\LocationFactory();
+        $uri = $factory->createUri($url);
+
+        $request = new \StoreCore\Request();
+        $request->setUri($uri);
+        $this->assertSame($uri, $request->getUri());
+    }
+
+
+    /**
      * @testdox Request::withMethod() exists
      */
     public function testRequestWithMethodExists()
@@ -448,5 +542,95 @@ class RequestTest extends PHPUnit_Framework_TestCase
     {
         $request = new \StoreCore\Request();
         $this->assertInstanceOf(\StoreCore\Request::class, $request->withRequestTarget('/admin/'));
+    }
+
+
+    /**
+     * @testdox Request::withUri() exists
+     */
+    public function testRequestWithUriExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Request');
+        $this->assertTrue($class->hasMethod('withUri'));
+    }
+
+    /**
+     * @depends testRequestWithUriExists
+     * @testdox Request::withUri() is public
+     */
+    public function testRequestWithUriIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Request', 'withUri');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testRequestWithUriExists
+     * @testdox Request::withUri() has two parameters
+     */
+    public function testRequestWithUriHasTwoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Request', 'withUri');
+        $this->assertTrue($method->getNumberOfParameters() === 2);
+    }
+
+    /**
+     * @depends testRequestWithUriHasTwoParameters
+     * @testdox Request::withUri() has one required parameter
+     */
+    public function testRequestWithUriHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Request', 'withUri');
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+    /**
+     * @depends testRequestWithUriExists
+     * @testdox Request::withUri() returns instance of PSR-7 RequestInterface
+     */
+    public function testRequestWithUriReturnsInstanceOfPsr7RequestInterface()
+    {
+        $factory = new \StoreCore\LocationFactory();
+        $uri = $factory->createUri('https://shop.example.com/foo/bar');
+        $request = new \StoreCore\Request();
+        $this->assertInstanceOf(\Psr\Http\Message\RequestInterface::class, $request->withUri($uri));
+    }
+
+    /**
+     * @depends testRequestWithUriExists
+     * @testdox Request::withUri() returns instance of Request
+     */
+    public function testRequestWithUriReturnsInstanceOfRequest()
+    {
+        $factory = new \StoreCore\LocationFactory();
+        $uri = $factory->createUri('https://shop.example.com/foo/bar');
+        $request = new \StoreCore\Request();
+        $this->assertInstanceOf(\StoreCore\Request::class, $request->withUri($uri));
+    }
+
+    /**
+     * @depends testRequestWithUriHasTwoParameters
+     * @testdox Request::withUri() $preserveHost test cases
+     */
+    public function testRequestWithUriPreserveHostTestCases()
+    {
+        $factory = new \StoreCore\LocationFactory();
+
+        $initial_uri  = $factory->createUri('https://www.example.nl/api/v1/stores');
+        $new_uri      = $factory->createUri('https://api.example.com/api/v2/stores');
+        $expected_uri = $factory->createUri('https://www.example.nl/api/v2/stores');
+
+        $initial_request = new \StoreCore\Request();
+        $initial_request->setUri($initial_uri);
+
+        // Replace host
+        $delegated_request = $initial_request->withUri($new_uri);
+        $this->assertNotSame($initial_request->getUri(), $delegated_request->getUri());
+        $this->assertSame($new_uri, $delegated_request->getUri());
+
+        // Preserve host
+        $delegated_request = $initial_request->withUri($new_uri, true);
+        $this->assertNotSame($initial_request->getUri(), $delegated_request->getUri());
+        $this->assertSame($expected_uri, (string) $delegated_request->getUri());
     }
 }

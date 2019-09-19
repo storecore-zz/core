@@ -1,6 +1,8 @@
 <?php
 namespace StoreCore;
 
+use \Psr\Http\Message\RequestInterface;
+use \Psr\Http\Message\UriInterface;
 use \StoreCore\Message;
 use \StoreCore\Types\StringableInterface;
 
@@ -14,7 +16,7 @@ use \StoreCore\Types\StringableInterface;
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-class Request extends Message
+class Request extends Message implements RequestInterface
 {
     /**
      * @var string VERSION
@@ -58,6 +60,12 @@ class Request extends Message
         'PUT'     => true,
         'TRACE'   => true,
     );
+
+    /**
+     * @var UriInterface $Uri
+     *   Uniform resource identifier (URI) with a UriInterface.
+     */
+    private $Uri;
 
     /**
      * @var array|null $Cookies
@@ -271,6 +279,18 @@ class Request extends Message
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getUri()
+    {
+        if ($this->Uri === null) {
+            $this->Uri = LocationFactory::getCurrentLocation();
+        }
+
+        return $this->Uri;
+    }
+
+    /**
      * Get the HTTP User-Agent request-header field.
      *
      * @param void
@@ -376,6 +396,31 @@ class Request extends Message
     }
 
     /**
+     * Set the request URI.
+     *
+     * @param string|UriInterface
+     *   Uniform resource identifier (URI) of the request as an URL string or
+     *   a PSR-7 compliant UriInterface object.
+     *
+     * @return void
+     */
+    public function setUri($uri)
+    {
+        if ($uri instanceof UriInterface) {
+            $this->Uri = $uri;
+        } elseif (is_string($uri)) {
+            try {
+                $factory = new LocationFactory();
+                $this->Uri = $factory->createUri($uri);
+            } catch (\Exception $e) {
+                throw $e;
+            }
+        } else {
+            throw new \InvalidArgumentException('Argument passed to ' .  __METHOD__ . ' must be UriInterface or URI string, ' . gettype($uri) . ' given');
+        }
+    }
+
+    /**
      * @inheritDoc
      */
     public function withMethod($method)
@@ -392,6 +437,42 @@ class Request extends Message
     {
         $request = clone $this;
         $request->setRequestTarget($request_target);
+        return $request;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function withUri(UriInterface $uri, $preserveHost = false)
+    {
+        if ($preserveHost) {
+            $current_uri = $this->getUri();
+            $current_host = $current_uri->getHost();
+
+            /* 
+             * Full decision tree if $preserveHost is true:
+
+                if (empty($current_host) && !empty($uri->getHost())) {
+                    // If the Host header is missing or empty, and the new URI
+                    // contains a host component, this method MUST update the
+                    // Host header in the returned request.
+                } elseif (empty($current_host) && empty($uri->getHost())) {
+                    // If the Host header is missing or empty, and the new URI
+                    // does not contain a host component, this method MUST NOT
+                    //  update the Host header in the returned request.
+                } elseif (!empty($current_host)) {
+                    // If a Host header is present and non-empty, this method
+                    // MUST NOT update the Host header in the returned request.
+                    $uri->setHost($current_host);
+                }
+            */
+            if (!empty($current_host)) {
+                $uri->setHost($current_host);
+            }
+        }
+
+        $request = clone $this;
+        $request->setUri($uri);
         return $request;
     }
 }
