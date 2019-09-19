@@ -84,37 +84,6 @@ class LocationTest extends PHPUnit_Framework_TestCase
 
 
     /**
-     * @testdox Location::__construct() exists
-     */
-    public function testLocationConstructExists()
-    {
-        $class = new \ReflectionClass('\StoreCore\Location');
-        $this->assertTrue($class->hasMethod('__construct'));
-    }
-
-    /**
-     * @depends testLocationConstructExists
-     * @testdox Location::__construct() is public
-     */
-    public function testLocationConstructIsPublic()
-    {
-        $method = new \ReflectionMethod('\StoreCore\Location', '__construct');
-        $this->assertTrue($method->isPublic());
-    }
-
-    /**
-     * @depends testLocationConstructExists
-     * @testdox Location::__construct() has one optional parameter
-     */
-    public function testLocationConstructHasOneOptionalParameter()
-    {
-        $method = new \ReflectionMethod('\StoreCore\Location', '__construct');
-        $this->assertTrue($method->getNumberOfParameters() === 1);
-        $this->assertTrue($method->getNumberOfRequiredParameters() === 0);
-    }
-
-
-    /**
      * @testdox Location::__toString() exists
      */
     public function testLocationToStringExists()
@@ -488,37 +457,6 @@ class LocationTest extends PHPUnit_Framework_TestCase
 
 
     /**
-     * @testdox Location::set() exists
-     */
-    public function testLocationSetExists()
-    {
-        $class = new \ReflectionClass('\StoreCore\Location');
-        $this->assertTrue($class->hasMethod('set'));
-    }
-
-    /**
-     * @depends testLocationSetExists
-     * @testdox Location::set() is public
-     */
-    public function testLocationSetIsPublic()
-    {
-        $method = new \ReflectionMethod('\StoreCore\Location', 'set');
-        $this->assertTrue($method->isPublic());
-    }
-
-    /**
-     * @depends testLocationSetExists
-     * @testdox Location::set() has one required parameter
-     */
-    public function testLocationSetHasOneRequiredParameter()
-    {
-        $method = new \ReflectionMethod('\StoreCore\Location', 'set');
-        $this->assertTrue($method->getNumberOfParameters() === 1);
-        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
-    }
-
-
-    /**
      * @testdox Location::setAuthority() exists
      */
     public function testLocationSetAuthorityExists()
@@ -664,19 +602,6 @@ class LocationTest extends PHPUnit_Framework_TestCase
     {
         $location =  new \StoreCore\Location();
         $location->setPath(true);
-    }
-
-    /**
-     * @depends testLocationSetPathExists
-     * @depends testLocationSetPathHasOneRequiredParameter
-     * @testdox Location::setPath() accepts empty path
-     */
-    public function testLocationSetPathAcceptsEmptyPath()
-    {
-        $location =  new \StoreCore\Location();
-        $location->set('');
-        $this->assertEmpty($location->getPath());
-        $this->assertInternalType('string', $location->getPath());
     }
 
 

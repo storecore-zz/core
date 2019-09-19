@@ -76,21 +76,6 @@ class Location implements StringableInterface, UriInterface
 
 
     /**
-     * Create a location data object
-     *
-     * @param string|null $uri
-     *   Optional uniform resource identifier (URI).
-     *
-     * @return self
-     */
-    public function __construct($uri = null)
-    {
-        if ($uri !== null) {
-            $this->set($uri);
-        }
-    }
-
-    /**
      * Convert the location to a URL string.
      *
      * @param void
@@ -274,53 +259,6 @@ class Location implements StringableInterface, UriInterface
             $user_info .= ':' . $this->Password;
         }
         return $user_info;
-    }
-
-    /**
-     * Set the location by URI or URL.
-     *
-     * @param string $uri
-     *   Uniform resource identifier (URI) or uniform resource locator (URL)
-     *   for the current location.
-     *
-     * @return void
-     */
-    public function set($uri)
-    {
-        if (!is_string($uri)) {
-            throw new \InvalidArgumentException();
-        }
-        $uri = trim($uri);
-
-        // Fragment
-        if (strpos($uri, '#') !== false) {
-            $uri = explode('#', $uri, 2);
-            $this->setFragment($uri[1]);
-            $uri = $uri[0];
-        }
-
-        // Query
-        if (strpos($uri, '?') !== false) {
-            $uri = explode('?', $uri, 2);
-            $this->setQuery($uri[1]);
-            $uri = $uri[0];
-        }
-
-        // Scheme
-        if (strpos($uri, '://') !== false) {
-            $uri = explode('://', $uri, 2);
-            $this->setQuery($uri[0]);
-            $uri = $uri[1];
-        }
-
-        // Authority and path
-        if (strpos($uri, '/') === false) {
-            $this->setAuthority($uri);
-        } else {
-            $uri = explode('/', $uri, 2);
-            $this->setAuthority($uri[0]);
-            $this->setPath($uri[1]);
-        }
     }
 
     /**
