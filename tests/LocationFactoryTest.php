@@ -10,6 +10,17 @@ class LocationFactoryTest extends PHPUnit_Framework_TestCase
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'LocationFactory.php');
     }
 
+    /**
+     * @group hmvc
+     * @testdox LocationFactory class is concrete
+     */
+    public function testLocationFactoryClassIsConcrete()
+    {
+        $class = new \ReflectionClass('\StoreCore\LocationFactory');
+        $this->assertFalse($class->isAbstract());
+        $this->assertTrue($class->isInstantiable());
+    }
+
 
     /**
      * @group distro
@@ -21,13 +32,14 @@ class LocationFactoryTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @depends testLocationFactoryClassIsConcrete
      * @group hmvc
      * @testdox LocationFactory implements PSR-17 UriFactoryInterface
      */
     public function testLocationFactoryImplementsPsr17UriFactoryInterface()
     {
-        $stub = $this->getMock(\StoreCore\LocationFactory::class);
-        $this->assertInstanceOf(\Psr\Http\Message\UriFactoryInterface::class, $stub);
+        $class = new \StoreCore\LocationFactory();
+        $this->assertInstanceOf(\Psr\Http\Message\UriFactoryInterface::class, $class);
     }
 
 
