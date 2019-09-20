@@ -62,15 +62,24 @@ class RegistryTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(\Psr\Container\ContainerInterface::class, $registry);
     }
 
-
+    /**
+     * @group hmvc
+     * @testdox Registry singleton cannot be instantiated
+     */
     public function testRegistrySingletonCannotBeInstantiated()
     {
         $reflection = new \ReflectionClass('\StoreCore\Registry');
+        $this->assertFalse($reflection->isInstantiable());
+
         $constructor = $reflection->getConstructor();
         $this->assertFalse($constructor->isPublic());
         $this->assertFalse($constructor->isProtected());
     }
 
+    /**
+     * @group hmvc
+     * @testdox Registry singleton cannot be cloned
+     */
     public function testRegistrySingletonCannotBeCloned()
     {
         $class = new \ReflectionClass('\StoreCore\Registry');
