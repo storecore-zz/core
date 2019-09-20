@@ -11,22 +11,26 @@ class ClientExceptionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @expectedException \Psr\Http\Client\ClientException
      * @group hmvc
      * @testdox ClientException is an Exception
      */
     public function testClientExceptionIsAnException()
     {
-        $stub = $this->getMock(\Psr\Http\Client\ClientException::class);
-        $this->assertInstanceOf(\Exception::class, $stub);
+        throw new \Psr\Http\Client\ClientException();
     }
 
     /**
+     * @depends testClientExceptionIsAnException
      * @group hmvc
      * @testdox ClientException implements ClientExceptionInterface
      */
     public function testClientExceptionImplementsClientExceptionInterface()
     {
-        $stub = $this->getMock(\Psr\Http\Client\ClientException::class);
-        $this->assertInstanceOf(\Psr\Http\Client\ClientExceptionInterface::class, $stub);
+        try {
+            throw new \Psr\Http\Client\ClientException();
+        } catch (\Exception $e) {
+            $this->assertInstanceOf(\Psr\Http\Client\ClientExceptionInterface::class, $e);
+        }
     }
 }

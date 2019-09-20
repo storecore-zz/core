@@ -10,6 +10,18 @@ class RequestStreamTest extends PHPUnit_Framework_TestCase
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'RequestStream.php');
     }
 
+    /**
+     * @depends testRequestStreamClassFileExists
+     * @group hmvc
+     * @testdox RequestStream class is concrete
+     */
+    public function testRequestStreamClassIsConcrete()
+    {
+        $class = new \ReflectionClass('\StoreCore\RequestStream');
+        $this->assertFalse($class->isAbstract());
+        $this->assertTrue($class->isInstantiable());
+    }
+
 
     /**
      * @group distro
@@ -21,13 +33,14 @@ class RequestStreamTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @depends testRequestStreamClassIsConcrete
      * @group hmvc
      * @testdox RequestStream extends AbstractStream
      */
     public function testRequestStreamExtendsAbstractStream()
     {
-        $stub = $this->getMock(\StoreCore\RequestStream::class);
-        $this->assertInstanceOf(\StoreCore\AbstractStream::class, $stub);
+        $class = new \StoreCore\RequestStream();
+        $this->assertInstanceOf(\StoreCore\AbstractStream::class, $class);
     }
 
 
@@ -41,13 +54,14 @@ class RequestStreamTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @depends testRequestStreamClassIsConcrete
      * @group hmvc
      * @testdox RequestStream implements PSR-7 StreamInterface
      */
     public function testRequestStreamImplementsPsr7StreamInterface()
     {
-        $stub = $this->getMock('\StoreCore\RequestStream');
-        $this->assertInstanceOf(\Psr\Http\Message\StreamInterface::class, $stub);
+        $object = new \StoreCore\RequestStream();
+        $this->assertInstanceOf(\Psr\Http\Message\StreamInterface::class, $object);
     }
 
 
