@@ -626,11 +626,12 @@ class RequestTest extends PHPUnit_Framework_TestCase
         // Replace host
         $delegated_request = $initial_request->withUri($new_uri);
         $this->assertNotSame($initial_request->getUri(), $delegated_request->getUri());
-        $this->assertSame($new_uri, $delegated_request->getUri());
+        $this->assertEquals($new_uri, $delegated_request->getUri());
 
         // Preserve host
         $delegated_request = $initial_request->withUri($new_uri, true);
         $this->assertNotSame($initial_request->getUri(), $delegated_request->getUri());
-        $this->assertSame($expected_uri, (string) $delegated_request->getUri());
+        $this->assertEquals($expected_uri, $delegated_request->getUri());
+        $this->assertEquals((string) $expected_uri, (string) $delegated_request->getUri());
     }
 }
