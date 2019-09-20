@@ -36,6 +36,7 @@ class RegistryTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsNonEmptyString
      * @group distro
+     * @testdox VERSION matches master branch
      */
     public function testVersionMatchesMasterBranch()
     {
@@ -89,6 +90,7 @@ class RegistryTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group distro
+     * @testdox Registry consuming abstract controller class file exists
      */
     public function testRegistryConsumingAbstractControllerClassFileExists()
     {
@@ -96,11 +98,32 @@ class RegistryTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group hmvc
+     * @testdox AbstractController class is abstract
+     */
+    public function testAbstractControllerClassIsAbstract()
+    {
+        $class = new \ReflectionClass('\StoreCore\AbstractController');
+        $this->assertTrue($class->isAbstract());
+    }
+
+    /**
      * @group distro
+     * @testdox Registry consuming abstract model class file exists
      */
     public function testRegistryConsumingAbstractModelClassFileExists()
     {
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'AbstractModel.php');
+    }
+
+    /**
+     * @group hmvc
+     * @testdox AbstractModel class is abstract
+     */
+    public function testAbstractModelClassIsAbstract()
+    {
+        $class = new \ReflectionClass('\StoreCore\AbstractModel');
+        $this->assertTrue($class->isAbstract());
     }
 
 
