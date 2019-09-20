@@ -41,6 +41,26 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(\StoreCore\Message::class, $request);
     }
 
+    /**
+     * @group distro
+     * @testdox Implemented RequestInterface interface file exists
+     */
+    public function testImplementedRequestInterfaceInterfaceFileExists()
+    {
+        $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Psr' . DIRECTORY_SEPARATOR . 'Http' . DIRECTORY_SEPARATOR . 'Message' . DIRECTORY_SEPARATOR . 'RequestInterface.php');
+    }
+
+    /**
+     * @depends testRequestClassIsConcrete
+     * @group hmvc
+     * @testdox Request implements PSR-7 RequestInterface
+     */
+    public function testRequestImplementsPsr7RequestInterface()
+    {
+        $class = new \StoreCore\Request();
+        $this->assertInstanceOf(\Psr\Http\Message\RequestInterface::class, $class);
+    }
+
 
     /**
      * @group distro
