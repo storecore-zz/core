@@ -15,7 +15,7 @@ use \StoreCore\TemporaryStream;
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-class Message implements \Psr\Http\Message\MessageInterface
+class Message implements MessageInterface
 {
     /**
      * @var string VERSION
