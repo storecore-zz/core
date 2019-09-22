@@ -1077,4 +1077,43 @@ class LocationTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
     }
 
+
+    /**
+     * @testdox Location::withUserInfo() exists
+     */
+    public function testLocationWithUserInfoExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Location');
+        $this->assertTrue($class->hasMethod('withUserInfo'));
+    }
+
+    /**
+     * @depends testLocationWithUserInfoExists
+     * @testdox Location::withUserInfo() is public
+     */
+    public function testLocationWithUserInfoIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Location', 'withUserInfo');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testLocationWithUserInfoExists
+     * @testdox Location::withUserInfo() has two parameters
+     */
+    public function testLocationWithUserInfoHasTwoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Location', 'withUserInfo');
+        $this->assertTrue($method->getNumberOfParameters() === 2);
+    }
+
+    /**
+     * @depends testLocationWithUserInfoExists
+     * @testdox Location::withUserInfo() has one required parameter
+     */
+    public function testLocationWithUserInfoHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Location', 'withUserInfo');
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
 }
