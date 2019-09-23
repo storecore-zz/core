@@ -177,16 +177,41 @@ class LocationFactoryTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @depends testLocationFactoryGetCurrentLocationExists
      * @group hmvc
      * @testdox LocationFactory::getCurrentLocation() returns instance of PSR-7 UriInterface
      */
     public function testLocationFactoryGetCurrentLocationReturnsInstanceOfPsr7UriInterface()
     {
-        $_SERVER['HTTP_HOST'] = 'www.example.com';
+        $_SERVER['HTTP_HOST']   = 'www.example.com';
         $_SERVER['REQUEST_URI'] = '/';
         $_SERVER['SERVER_PORT'] = '80';
 
         $current_location = \StoreCore\LocationFactory::getCurrentLocation();
         $this->assertInstanceOf(\Psr\Http\Message\UriInterface::class, $current_location);
+    }
+
+    /**
+     * @depends testLocationFactoryGetCurrentLocationExists
+     * @expectedException \RuntimeException
+     * @group hmvc
+     * @testdox LocationFactory::getCurrentLocation() throws runtime exception on missing $_SERVER
+     */
+    public function testLocationFactoryGetCurrentLocationThrowsRuntimeExceptionOnMissingServer()
+    {
+        unset($_SERVER);
+        $current_location = \StoreCore\LocationFactory::getCurrentLocation();
+    }
+
+    /**
+     * @depends testLocationFactoryGetCurrentLocationExists
+     * @expectedException \RuntimeException
+     * @group hmvc
+     * @testdox LocationFactory::getCurrentLocation() throws runtime exception on empty $_SERVER
+     */
+    public function testLocationFactoryGetCurrentLocationThrowsRuntimeExceptionOnEmptyServer()
+    {
+        $_SERVER = array();
+        $current_location = \StoreCore\LocationFactory::getCurrentLocation();
     }
 }
