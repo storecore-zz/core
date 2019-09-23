@@ -123,66 +123,6 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($method->getNumberOfParameters() === 0);
     }
 
-    /**
-     * @testdox HTTP request method GET is supported
-     */
-    public function testHttpRequestMethodGetIsSupported()
-    {
-        $_SERVER['REQUEST_METHOD'] = 'get';
-        $request = new \StoreCore\Request();
-        $this->assertEquals('GET', $request->getMethod());
-    }
-
-    /**
-     * @testdox HTTP request method HEAD is supported
-     */
-    public function testHttpRequestMethodHeadIsSupported()
-    {
-        $_SERVER['REQUEST_METHOD'] = 'head';
-        $request = new \StoreCore\Request();
-        $this->assertEquals('HEAD', $request->getMethod());
-    }
-
-    /**
-     * @testdox HTTP request method POST is supported
-     */
-    public function testHttpRequestMethodPostIsSupported()
-    {
-        $_SERVER['REQUEST_METHOD'] = 'post';
-        $request = new \StoreCore\Request();
-        $this->assertEquals('POST', $request->getMethod());
-    }
-
-    /**
-     * @testdox HTTP request method PUT is supported
-     */
-    public function testHttpRequestMethodPutIsSupported()
-    {
-        $_SERVER['REQUEST_METHOD'] = 'put';
-        $request = new \StoreCore\Request();
-        $this->assertEquals('PUT', $request->getMethod());
-    }
-
-    /**
-     * @testdox HTTP request method PATCH is supported
-     */
-    public function testHttpRequestMethodPatchIsSupported()
-    {
-        $_SERVER['REQUEST_METHOD'] = 'patch';
-        $request = new \StoreCore\Request();
-        $this->assertEquals('PATCH', $request->getMethod());
-    }
-
-    /**
-     * @testdox HTTP request method DELETE is supported
-     */
-    public function testHttpRequestMethodDeleteIsSupported()
-    {
-        $_SERVER['REQUEST_METHOD'] = 'delete';
-        $request = new \StoreCore\Request();
-        $this->assertEquals('DELETE', $request->getMethod());
-    }
-
 
     public function testKnownUserAgentsMatch()
     {
@@ -386,6 +326,49 @@ class RequestTest extends PHPUnit_Framework_TestCase
     {
         $request = new \StoreCore\Request();
         $request->setMethod('FOO');
+    }
+
+    /**
+     * @testdox HTTP request method GET is supported
+     */
+    public function testHttpRequestMethodGetIsSupported()
+    {
+        $request = new \StoreCore\Request();
+        $request->setMethod('GET');
+        $this->assertEquals('GET', $request->getMethod());
+    }
+
+    /**
+     * @testdox HTTP request supports REST API calls
+     */
+    public function testHttpRequestSupportsRestApiCalls()
+    {
+        $request = new \StoreCore\Request();
+
+        $request->setMethod('GET');
+        $this->assertEquals('GET', $request->getMethod());
+
+        $request->setMethod('POST');
+        $this->assertEquals('POST', $request->getMethod());
+
+        $request->setMethod('PUT');
+        $this->assertEquals('PUT', $request->getMethod());
+
+        $request->setMethod('PATCH');
+        $this->assertEquals('PATCH', $request->getMethod());
+
+        $request->setMethod('DELETE');
+        $this->assertEquals('DELETE', $request->getMethod());
+    }
+
+    /**
+     * @testdox HTTP request supports HEAD requests
+     */
+    public function testHttpRequestSupportsHeadRequests()
+    {
+        $request = new \StoreCore\Request();
+        $request->setMethod('HEAD');
+        $this->assertEquals('HEAD', $request->getMethod());
     }
 
 
