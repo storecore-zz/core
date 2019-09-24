@@ -92,17 +92,6 @@ class ProductTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testPublicSetAvailabilityMethodHasOnlyOneRequiredParameter
-     * @expectedException \ErrorException
-     * @testdox Public setAvailability() method requires \StoreCore\Types\ItemAvailability object
-     */
-    public function testPublicSetAvailabilityMethodRequiresStoreCoreTypesItemAvailabilityObject()
-    {
-        $product = new \StoreCore\Product(\StoreCore\Registry::getInstance());
-        $product->setAvailability(true);
-    }
-
-    /**
      * @testdox Public getAvailability() method exists
      */
     public function testPublicGetAvailabilityMethodExists()
