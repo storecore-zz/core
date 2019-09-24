@@ -82,6 +82,7 @@ class ProductIDTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
+     * @testdox VERSION matches master branch
      */
     public function testVersionMatchesMasterBranch()
     {
@@ -89,12 +90,12 @@ class ProductIDTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \ErrorException
      * @testdox Constructor requires at least one paramater
      */
     public function testConstructorRequiresAtLeastOneParameter()
     {
-        $failure = new \StoreCore\Types\ProductID();
+        $method = new \ReflectionMethod(\StoreCore\Types\ProductID::class, '__construct');
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
     }
 
     /**
