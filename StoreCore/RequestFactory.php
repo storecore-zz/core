@@ -28,7 +28,7 @@ class RequestFactory implements RequestFactoryInterface
      */
     public function createRequest($method, $uri)
     {
-        $request = new ServerRequest();
+        $request = new Request();
         try {
             $request->setMethod($method);
             $request->setUri($uri);
