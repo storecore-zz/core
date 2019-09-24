@@ -199,19 +199,6 @@ class LocationFactoryTest extends PHPUnit_Framework_TestCase
      */
     public function testLocationFactoryGetCurrentLocationThrowsRuntimeExceptionOnMissingServer()
     {
-        unset($_SERVER);
-        $current_location = \StoreCore\LocationFactory::getCurrentLocation();
-    }
-
-    /**
-     * @depends testLocationFactoryGetCurrentLocationExists
-     * @expectedException \RuntimeException
-     * @group hmvc
-     * @testdox LocationFactory::getCurrentLocation() throws runtime exception on empty $_SERVER
-     */
-    public function testLocationFactoryGetCurrentLocationThrowsRuntimeExceptionOnEmptyServer()
-    {
-        $_SERVER = array();
         $current_location = \StoreCore\LocationFactory::getCurrentLocation();
     }
 }
