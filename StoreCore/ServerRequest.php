@@ -127,6 +127,26 @@ class ServerRequest extends Request implements ServerRequestInterface
     }
 
     /**
+     * Check if HTTPS and SSL are used.
+     *
+     * @param void
+     *
+     * @return bool
+     *   Returns true if HTTPS and SSL are used, otherwise false.
+     */
+    public function isSecure()
+    {
+        if (
+            (!empty($this->ServerParams['HTTPS']) && $this->ServerParams['HTTPS'] !== 'off')
+            || ( isset($this->ServerParams['SERVER_PORT']) && $this->ServerParams['SERVER_PORT'] == 443)
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Add an attribute.
      *
      * @param string $name

@@ -259,6 +259,57 @@ class RequestTest extends PHPUnit_Framework_TestCase
 
 
     /**
+     * @testdox Request::isSecure() exists
+     */
+    public function testRequestIsSecureExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Request');
+        $this->assertTrue($class->hasMethod('isSecure'));
+    }
+
+    /**
+     * @depends testRequestIsSecureExists
+     * @testdox Request::isSecure() is public
+     */
+    public function testRequestIsSecureIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Request', 'isSecure');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testRequestIsSecureExists
+     * @testdox Request::isSecure() has no parameters
+     */
+    public function testRequestIsSecureHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Request', 'isSecure');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+    /**
+     * @depends testRequestIsSecureExists
+     * @depends testRequestIsSecureHasNoParameters
+     * @testdox Request::isSecure() returns boolean
+     */
+    public function testRequestIsSecureReturnsBoolean()
+    {
+        $request = new \StoreCore\Request();
+        $this->assertInternalType('bool', $request->isSecure());
+    }
+
+    /**
+     * @depends testRequestIsSecureReturnsBoolean
+     * @testdox Request::isSecure() returns false by default
+     */
+    public function testRequestIsSecureReturnsFalseByDefault()
+    {
+        $request = new \StoreCore\Request();
+        $this->assertFalse($request->isSecure());
+    }
+
+
+    /**
      * @testdox Request::setMethod() exists
      */
     public function testRequestSetMethodExists()

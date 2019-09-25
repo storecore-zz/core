@@ -288,16 +288,20 @@ class Request extends Message implements RequestInterface
     }
 
     /**
-     * Check if HTTP/S and SSL are used.
+     * Check if secure HTTPS is used.
      *
      * @param void
+     *
      * @return bool
+     *   Returns true if the request uses HTTPS, otherwise false.
      */
     public function isSecure()
     {
-        return
-            (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
-            || $_SERVER['SERVER_PORT'] == 443;
+        if ($this->Uri !== null && $this->Uri->getMethod() === 'https') {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

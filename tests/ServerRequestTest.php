@@ -350,6 +350,57 @@ class ServerRequestTest extends PHPUnit_Framework_TestCase
 
 
     /**
+     * @testdox ServerRequest::isSecure() exists
+     */
+    public function testServerRequestIsSecureExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\ServerRequest');
+        $this->assertTrue($class->hasMethod('isSecure'));
+    }
+
+    /**
+     * @depends testServerRequestIsSecureExists
+     * @testdox ServerRequest::isSecure() is public
+     */
+    public function testServerRequestIsSecureIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\ServerRequest', 'isSecure');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testServerRequestIsSecureExists
+     * @testdox ServerRequest::isSecure() has no parameters
+     */
+    public function testServerRequestIsSecureHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\ServerRequest', 'isSecure');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+    /**
+     * @depends testServerRequestIsSecureExists
+     * @depends testServerRequestIsSecureHasNoParameters
+     * @testdox ServerRequest::isSecure() returns boolean
+     */
+    public function testServerRequestIsSecureReturnsBoolean()
+    {
+        $request = new \StoreCore\ServerRequest();
+        $this->assertInternalType('bool', $request->isSecure());
+    }
+
+    /**
+     * @depends testServerRequestIsSecureReturnsBoolean
+     * @testdox ServerRequest::isSecure() returns false by default
+     */
+    public function testServerRequestIsSecureReturnsFalseByDefault()
+    {
+        $request = new \StoreCore\ServerRequest();
+        $this->assertFalse($request->isSecure());
+    }
+
+
+    /**
      * @testdox ServerRequest::setAttribute() exists
      */
     public function testServerRequestSetAttributeExists()
