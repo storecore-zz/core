@@ -22,10 +22,11 @@ class FullPageCache
      * Find a cached webpage.
      *
      * @param \StoreCore\Registry $registry
+     *
      * @return void
+     *
      * @uses \StoreCore\Request::getMethod()
-     * @uses \StoreCore\Request::getHostName()
-     * @uses \StoreCore\Request::getRequestTarget()
+     * @uses \StoreCore\Location::get()
      * @uses \StoreCore\Types\CacheKey
      */
     public static function find(Registry $registry)
@@ -53,10 +54,8 @@ class FullPageCache
 
         // Generate a cache key.
         $cache_key = new \StoreCore\Types\CacheKey(
-            $registry->get('Request')->getHostName()
-            . $registry->get('Request')->getRequestTarget()
+            $registry->get('Location')->get()
         );
-
 
         // Find the cache file.
         $filename = STORECORE_FILESYSTEM_CACHE_PAGES_DIR . $cache_key . '.tmp';

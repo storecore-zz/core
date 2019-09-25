@@ -24,9 +24,6 @@ class Request extends Message implements RequestInterface
      */
     const VERSION = '0.1.0';
 
-    /** @var string $HostName */
-    private $HostName;
-
     /**
      * @var string $Method
      *   HTTP method of the request.  Defaults to a `GET` request.
@@ -212,20 +209,6 @@ class Request extends Message implements RequestInterface
     }
 
     /**
-     * Get the host name.
-     *
-     * @return string
-     *   Returns the HTTP host being requested.
-     */
-    public function getHostName()
-    {
-        if ($this->HostName === null) {
-            $this->setHostName();
-        }
-        return $this->HostName;
-    }
-
-    /**
      * Get the current request method.
      *
      * @param void
@@ -315,24 +298,6 @@ class Request extends Message implements RequestInterface
         return
             (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
             || $_SERVER['SERVER_PORT'] == 443;
-    }
-
-    /**
-     * Set the requested host name.
-     *
-     * @param void
-     * @return void
-     */
-    private function setHostName()
-    {
-        if (array_key_exists('HTTP_HOST', $this->Server)) {
-            $host_name = $this->Server['HTTP_HOST'];
-        } else {
-            $host_name = gethostname();
-        }
-        $host_name = preg_replace('/:\d+$/', '', $host_name);
-        $host_name = mb_strtolower($host_name, 'UTF-8');
-        $this->HostName = $host_name;
     }
 
     /**

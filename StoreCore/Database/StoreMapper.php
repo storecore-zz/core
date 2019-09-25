@@ -5,8 +5,8 @@ namespace StoreCore\Database;
  * Store Mapper
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2017–2018 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @copyright Copyright © 2017–2019 StoreCore™
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
@@ -33,9 +33,10 @@ class StoreMapper extends AbstractDataAccessObject
      *   located elsewhere; StoreCore supports redirects to a specific URL,
      *   to a different host name, and to an IP address (in that order).
      *
-     * @uses \StoreCore\Request::getHostName()
+     * @uses \StoreCore\Location::getHost()
      *   If the `$host_name` parameter is omitted, the default host name
-     *   in the current HTTP request is used to match the request to a store.
+     *   in the current HTTP request location is used to match the request
+     *   to a store.
      *
      * @throws \InvalidArgumentException
      *   Throws an invalid argument exception if the `$host_name` parameter is
@@ -44,7 +45,7 @@ class StoreMapper extends AbstractDataAccessObject
     public function find($host_name = null)
     {
         if ($host_name === null) {
-            $host_name = $this->Request->getHostName();
+            $host_name = $this->Location->getHost();
         } elseif (!is_string($host_name) || empty($host_name) ) {
             throw new \InvalidArgumentException();
         } else {
