@@ -264,21 +264,6 @@ class Request extends Message implements RequestInterface
     }
 
     /**
-     * Retrieve server parameters.
-     *
-     * Retrieves data related to the incoming request environment,
-     * typically derived from PHP's $_SERVER superglobal. The data IS NOT
-     * REQUIRED to originate from $_SERVER.
-     *
-     * @param void
-     * @return array
-     */
-    public function getServerParams()
-    {
-        return $this->Server;
-    }
-
-    /**
      * @inheritDoc
      */
     public function getUri()
