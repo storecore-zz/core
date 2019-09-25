@@ -117,7 +117,51 @@ if (!defined('STORECORE_NULL_LOGGER')) {
     define('STORECORE_NULL_LOGGER', false);
 }
 if (STORECORE_NULL_LOGGER) {
-    $registry->set('Logger', new \Psr\Log\NullLogger());
+    $logger = new \Psr\Log\NullLogger();
 } else {
-    $registry->set('Logger', new \StoreCore\FileSystem\Logger());
+    $logger = new \StoreCore\FileSystem\Logger();
 }
+
+try {
+    $location = \StoreCore\LocationFactory::getCurrentLocation();
+    $registry->set('Location', $location);
+
+    if (isset($_SERVER) && !empty($_SERVER)) {
+        $server_params = $_SERVER;
+        $server_params = array_change_key_case($server_params, CASE_UPPER);
+
+        if (isset($server_params['REQUEST_METHOD'])) {
+            $request_method = $server_params['REQUEST_METHOD'];
+        } else {
+            $request_method = 'GET';
+        }
+
+        $factory = new \StoreCore\RequestFactory();
+        $request = $factory->createRequest($request_method, $location);
+        $registry->set('Request', $request);
+
+        $factory = new \StoreCore\ServerRequestFactory();
+        $request = $factory->createServerRequest($request_method, $location, $server_params);
+        unset($factory, $request_method, $location, $server_params);
+
+        if (isset($_COOKIE) && !empty($_COOKIE)) {
+            $request->setCookieParams($_COOKIE);
+        }
+        if (isset($_GET) && !empty($_GET)) {
+            $request->setQueryParams($_GET);
+        }
+        if (isset($_POST) && !empty($_POST)) {
+            $request->setParsedBody($_POST);
+        }
+        $registry->set('Server', $request);
+
+        $registry->set('Cookies', new \StoreCore\CookieContainer($request->getCookieParams()));
+
+        unset($request);
+    }
+} catch (\RuntimeException $e) {
+    $logger->notice('Runtime exception ' . $e->getCode() . ': ' . $e->getMessage());
+}
+
+$registry->set('Logger', $logger);
+unset($logger);
