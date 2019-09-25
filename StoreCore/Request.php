@@ -179,21 +179,6 @@ class Request extends Message implements RequestInterface
     }
 
     /**
-     * Get the HTTP "Accept-Encoding" request-header field.
-     *
-     * @param void
-     * @return string
-     */
-    public function getAcceptEncoding()
-    {
-        if (array_key_exists('HTTP_ACCEPT_ENCODING', $this->Server)) {
-            return $this->Server['HTTP_ACCEPT_ENCODING'];
-        } else {
-            return '';
-        }
-    }
-
-    /**
      * Get a cookie by name.
      *
      * @param string $cookie_name

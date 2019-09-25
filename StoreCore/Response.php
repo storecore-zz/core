@@ -83,7 +83,7 @@ class Response extends AbstractController
      *   output is not compressed and the output string is equal to the input
      *   string.
      *
-     * @uses \StoreCore\Request::getAcceptEncoding()
+     * @uses \StoreCore\ServerRequest::getServerParams()
      */
     private function compress($data, $level = -1)
     {
@@ -95,7 +95,13 @@ class Response extends AbstractController
             return $data;
         }
 
-        $accept_encoding = $this->Request->getAcceptEncoding();
+        if (!array_key_exists('HTTP_ACCEPT_ENCODING', $this->Server->getServerParams())) {
+            return $data;
+        } else {
+            $server_params = $this->Server->getServerParams();
+            $accept_encoding = $server_params['HTTP_ACCEPT_ENCODING'];
+        }
+
         if (empty($accept_encoding)) {
             return $data;
         }
