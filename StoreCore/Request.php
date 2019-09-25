@@ -65,12 +65,10 @@ class Request extends Message implements RequestInterface
     private $Uri;
 
     /**
-     * @var array|null $Cookies
      * @var array|null $Get
      * @var array|null $Post
      * @var array      $Server
      */
-    private $Cookies;
     private $Get;
     private $Post;
     private $Server;
@@ -138,20 +136,6 @@ class Request extends Message implements RequestInterface
             }
             $this->Post = $data;
         }
-
-        // Add cookie data
-        if (isset($_COOKIE) && !empty($_COOKIE)) {
-            $data = array();
-            foreach ($_COOKIE as $name => $value) {
-                if (is_string($name) && !empty($value)) {
-                    $name = mb_strtolower($name);
-                    $data[$name] = $value;
-                }
-            }
-            if (!empty($data)) {
-                $this->Cookies = $data;
-            }
-        }
     }
 
     /**
@@ -176,21 +160,6 @@ class Request extends Message implements RequestInterface
         } else {
             return null;
         }
-    }
-
-    /**
-     * Get a cookie by name.
-     *
-     * @param string $cookie_name
-     *   Case-insensitive name of a cookie.
-     *
-     * @return mixed|null
-     *   Returns the contents of a cookie or null if the cookie does not exist.
-     */
-    public function getCookie($cookie_name)
-    {
-        $cookie_name = mb_strtolower($cookie_name, 'UTF-8');
-        return $this->hasCookie($cookie_name) ? $this->Cookies[$cookie_name] : null;
     }
 
     /**
@@ -252,24 +221,6 @@ class Request extends Message implements RequestInterface
     public function getUserAgent()
     {
         return array_key_exists('HTTP_USER_AGENT', $this->Server) ? $this->Server['HTTP_USER_AGENT'] : null;
-    }
-
-    /**
-     * Check if a cookie exists.
-     *
-     * @param string $cookie_name
-     *   Case-insensitive name of a cookie.
-     *
-     * @return bool
-     *   Returns true if the cookie exists, otherwise false.
-     */
-    public function hasCookie($cookie_name)
-    {
-        if (!is_array($this->Cookies)) {
-            return false;
-        }
-        $cookie_name = mb_strtolower($cookie_name);
-        return array_key_exists($cookie_name, $this->Cookies);
     }
 
     /**

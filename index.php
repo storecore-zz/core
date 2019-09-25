@@ -68,9 +68,8 @@ if (defined('STORECORE_KILL_SWITCH') && STORECORE_KILL_SWITCH == true) {
 // Load a language pack
 $language = $session->get('Language');
 if ($language == null) {
-    if ($request->hasCookie('Language')) {
-        $cookie_language = $request->getCookie('Language');
-        $cookie_language = base64_decode($cookie_language);
+    if ($registry->get('Cookies')->has('Language')) {
+        $cookie_language = $registry->get('Cookies')->get('Language');
         $cookie_language = strip_tags($cookie_language);
         if (strlen($cookie_language) == 5) {
             $language = $cookie_language;
