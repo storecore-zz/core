@@ -1,9 +1,9 @@
 <?php
 namespace StoreCore\FileSystem;
 
-use \StoreCore\AbstractController as AbstractController;
-use \StoreCore\Database\Blacklist as BlacklistModel;
-use \StoreCore\Registry as Registry;
+use StoreCore\AbstractController;
+use StoreCore\Database\Blacklist as BlacklistModel;
+use StoreCore\Registry;
 
 /**
  * IP Blacklist
@@ -35,8 +35,12 @@ class Blacklist extends AbstractController
      *   the cache file is empty, or the cache file somehow could not be
      *   processed.
      */
-    public static function exists($ip_address)
+    public static function has($ip_address)
     {
+        if (empty($ip_address)) {
+            return false;
+        }
+
         $ip_address = filter_var($ip_address, FILTER_VALIDATE_IP);
         if ($ip_address === false) {
             return false;
