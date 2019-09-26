@@ -124,30 +124,6 @@ class RequestTest extends PHPUnit_Framework_TestCase
     }
 
 
-    public function testKnownUserAgentsMatch()
-    {
-        $user_agents = array(
-            'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko',
-            'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:37.0) Gecko/20100101 Firefox/37.0',
-            'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36',
-        );
-
-        foreach ($user_agents as $user_agent) {
-            $_SERVER['HTTP_USER_AGENT'] = $user_agent;
-            $request = new \StoreCore\Request();
-            $this->assertEquals($user_agent, $request->getUserAgent());
-            $request = null;
-        }
-    }
-
-    public function testUnknownUserAgentIsNull()
-    {
-        $_SERVER['HTTP_USER_AGENT'] = '';
-        $request = new \StoreCore\Request();
-        $this->assertNull($request->getUserAgent());
-    }
-
-
     /**
      * @testdox Request::getRequestTarget() exists
      */

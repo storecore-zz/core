@@ -174,17 +174,6 @@ class Request extends Message implements RequestInterface
     }
 
     /**
-     * Get the client IP address.
-     *
-     * @param void
-     * @return string
-     */
-    public function getRemoteAddress()
-    {
-        return $this->Server['REMOTE_ADDR'];
-    }
-
-    /**
      * Get the message’s request target.
      *
      * @param void
@@ -210,17 +199,6 @@ class Request extends Message implements RequestInterface
         }
 
         return $this->Uri;
-    }
-
-    /**
-     * Get the HTTP User-Agent request-header field.
-     *
-     * @param void
-     * @return string|null
-     */
-    public function getUserAgent()
-    {
-        return array_key_exists('HTTP_USER_AGENT', $this->Server) ? $this->Server['HTTP_USER_AGENT'] : null;
     }
 
     /**
