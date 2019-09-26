@@ -111,6 +111,23 @@ class ServerRequest extends Request implements ServerRequestInterface
     }
 
     /**
+     * Get the client IP address.
+     *
+     * @param void
+     *
+     * @return string
+     *   Returns the IPv4 or IPv6 IP address of the client or an empty string.
+     */
+    public function getRemoteAddress()
+    {
+        if (array_key_exists('REMOTE_ADDR', $this->ServerParams)) {
+            return $this->ServerParams['REMOTE_ADDR'];
+        } else {
+            return (string) null;
+        }
+    }
+
+    /**
      * @inheritDoc
      */
     public function getServerParams()

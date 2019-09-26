@@ -269,6 +269,47 @@ class ServerRequestTest extends PHPUnit_Framework_TestCase
 
 
     /**
+     * @testdox ServerRequest::getRemoteAddress() exists
+     */
+    public function testServerRequestGetRemoteAddressExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\ServerRequest');
+        $this->assertTrue($class->hasMethod('getRemoteAddress'));
+    }
+
+    /**
+     * @depends testServerRequestGetRemoteAddressExists
+     * @testdox ServerRequest::getRemoteAddress() is public
+     */
+    public function testServerRequestGetRemoteAddressIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\ServerRequest', 'getRemoteAddress');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testServerRequestGetRemoteAddressExists
+     * @testdox ServerRequest::getRemoteAddress() has no parameters
+     */
+    public function testServerRequestGetRemoteAddressHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\ServerRequest', 'getRemoteAddress');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+    /**
+     * @depends testServerRequestGetRemoteAddressExists
+     * @depends testServerRequestGetRemoteAddressHasNoParameters
+     * @testdox ServerRequest::getRemoteAddress() returns string
+     */
+    public function testServerRequestGetRemoteAddressReturnsString()
+    {
+        $request = new \StoreCore\ServerRequest();
+        $this->assertInternalType('string', $request->getRemoteAddress());
+    }
+
+
+    /**
      * @testdox ServerRequest::getServerParams() exists
      */
     public function testServerRequestGetServerParamsExists()
