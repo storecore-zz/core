@@ -67,6 +67,34 @@ class ServerRequest extends Request implements ServerRequestInterface
     );
 
     /**
+     * Get a request value by name.
+     *
+     * @param string $key
+     *   Unique name of the parameter to retrieve.
+     *
+     * @return string|array|null
+     *   Returns null if the parameter was not found, otherwise a single string
+     *   or an array of string values.
+     */
+    public function get($key)
+    {
+        if (!is_string($key)) {
+            return null;
+        }
+        
+        // Return $_POST, $_GET, or $_COOKIE data (in that order)
+        if ($this->ParsedBody !== null && is_array($this->ParsedBody) && array_key_exists($key, $this->ParsedBody)) {
+            return $this->ParsedBody[$key];
+        } elseif ($this->QueryParams !== null && array_key_exists($key, $this->QueryParams)) {
+            return $this->QueryParams[$key];
+        } elseif ($this->CookieParams !== null && array_key_exists($key, $this->CookieParams)) {
+            return $this->CookieParams[$key];
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * @inheritdoc
      */
     public function getAttribute($name, $default = null)

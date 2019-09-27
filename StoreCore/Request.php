@@ -65,104 +65,6 @@ class Request extends Message implements RequestInterface
     private $Uri;
 
     /**
-     * @var array|null $Get
-     * @var array|null $Post
-     * @var array      $Server
-     */
-    private $Get;
-    private $Post;
-    private $Server;
-
-    /**
-     * @param void
-     * @return self
-     */
-    public function __construct()
-    {
-        // Set internal character encoding to UTF-8
-        mb_internal_encoding('UTF-8');
-
-        // Non-empty $_SERVER string variables
-        $data = array();
-        foreach ($_SERVER as $key => $value) {
-            if (is_string($value)) {
-                $value = trim($value);
-                if (!empty($value)) {
-                    $key = mb_strtoupper($key);
-                    $data[$key] = strip_tags($value);
-                }
-            }
-        }
-        $this->Server = $data;
-
-        /*
-         * Set the HTTP request method (POST, HEAD, PUT, etc.) other than the
-         * default method (GET).  The HTTP request method in the superglobal
-         * PHP variable $_SERVER['REQUEST_METHOD'] is controlled by the client.
-         * It MAY be considered reliable as long as the web server allows only
-         * certain request methods.
-         */
-        if (
-            isset($_SERVER['REQUEST_METHOD'])
-            && ($_SERVER['REQUEST_METHOD'] !== $this->getMethod())
-            && is_string($_SERVER['REQUEST_METHOD'])
-        ) {
-            $this->setMethod(strtoupper($_SERVER['REQUEST_METHOD']));
-        }
-
-        // Request path (URI without host)
-        if (isset($_SERVER['REQUEST_URI'])) {
-            $request_target = $_SERVER['REQUEST_URI'];
-            if (strpos($request_target, '?') !== false) {
-                $request_target = strtok($request_target, '?');
-            }
-            $request_target = rawurldecode($request_target);
-            $request_target = mb_strtolower($request_target, 'UTF-8');
-            $request_target = str_ireplace('/index.php', '/', $request_target);
-            $this->setRequestTarget($request_target);
-        }
-
-        // Posted data
-        if ($this->getMethod() === 'POST') {
-            $data = array();
-            foreach ($_POST as $key => $value) {
-                if (is_string($value)) {
-                    $value = trim($value);
-                    $value = strip_tags($value);
-                    if (!empty($value)) {
-                        $data[mb_strtolower($key)] = $value;
-                    }
-                }
-            }
-            $this->Post = $data;
-        }
-    }
-
-    /**
-     * Get a request value by name.
-     *
-     * @param string $key
-     * @return mixed|null
-     */
-    public function get($key)
-    {
-        if (!is_string($key)) {
-            return null;
-        }
-
-        // Keys are case-insensitive, but are stored in lower case.
-        $key = mb_strtolower($key, 'UTF-8');
-
-        if ($this->Post !== null && array_key_exists($key, $this->Post)) {
-            return $this->Post[$key];
-        } elseif ($this->Get !== null && array_key_exists($key, $this->Get)) {
-            return $this->Get[$key];
-        } else {
-            return null;
-        }
-    }
-
-    /**
      * Get the current request method.
      *
      * @param void
@@ -284,7 +186,7 @@ class Request extends Message implements RequestInterface
                 throw $e;
             }
         } else {
-            throw new \InvalidArgumentException('Argument passed to ' .  __METHOD__ . ' must be UriInterface or URI string, ' . gettype($uri) . ' given');
+            throw new \InvalidArgumentException('Argument passed to ' . __METHOD__ . ' must be UriInterface or URI string, ' . gettype($uri) . ' given');
         }
     }
 

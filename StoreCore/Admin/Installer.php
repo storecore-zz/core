@@ -1,16 +1,20 @@
 <?php
 namespace StoreCore\Admin;
 
+use StoreCore\AbstractController;
+use StoreCore\Registry;
+use StoreCore\Response;
+
 /**
  * StoreCore Installer
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
  * @copyright Copyright © 2015–2019 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-class Installer extends \StoreCore\AbstractController
+class Installer extends AbstractController
 {
     /**
      * @var string VERSION
@@ -31,7 +35,7 @@ class Installer extends \StoreCore\AbstractController
      * @param \StoreCore\Registry $registry
      * @return void
      */
-    public function __construct(\StoreCore\Registry $registry)
+    public function __construct(Registry $registry)
     {
         parent::__construct($registry);
 
@@ -58,7 +62,7 @@ class Installer extends \StoreCore\AbstractController
                             $this->Logger->notice('Completed installation of StoreCore version ' . STORECORE_VERSION . '.');
                             $this->SelfDestruct = true;
 
-                            $response = new \StoreCore\Response($this->Registry);
+                            $response = new Response($this->Registry);
                             $response->redirect('/admin/sign-in/');
                             exit;
                         }
@@ -102,7 +106,7 @@ class Installer extends \StoreCore\AbstractController
         } catch (\PDOException $e) {
             $this->Logger->critical($e->getMessage());
             if ($this->Request->getRequestTarget() !== '/admin/settings/database/account/') {
-                $response = new \StoreCore\Response($this->Registry);
+                $response = new Response($this->Registry);
                 $response->redirect('/admin/settings/database/account/');
             } else {
                 $route = new \StoreCore\Route('/admin/settings/database/account/', '\StoreCore\Admin\SettingsDatabaseAccount');
@@ -290,31 +294,31 @@ class Installer extends \StoreCore\AbstractController
         if ($this->Request->getMethod() == 'POST') {
 
             // E-mail address
-            if ($this->Request->get('email_address') !== null) {
+            if ($this->Server->get('email_address') !== null) {
                 try {
-                    $email_address = new \StoreCore\Types\EmailAddress($this->Request->get('email_address'));
+                    $email_address = new \StoreCore\Types\EmailAddress($this->Server->get('email_address'));
                     $user->setEmailAddress($email_address);
                     $user_data['email_address'] = $user->getEmailAddress();
                 } catch (\Exception $e) {
-                    $this->Logger->warning('Invalid e-mail address: ' . $this->Request->get('email_address'));
+                    $this->Logger->warning('Invalid e-mail address: ' . $this->Server->get('email_address'));
                 }
             }
 
             // Optional personal identification number (PIN number or PIN code)
-            if ($this->Request->get('pin_code') !== null) {
+            if ($this->Server->get('pin_code') !== null) {
                 try {
-                    $pin_code = trim($this->Request->get('pin_code'));
+                    $pin_code = trim($this->Server->get('pin_code'));
                     $user->setPIN($pin_code);
                     $user_data['pin_code'] = $user->getPIN();
                     unset($pin_code);
                 } catch (\Exception $e) {
-                    $this->Logger->notice('Invalid PIN number: ' . $this->Request->get('pin_code'));
+                    $this->Logger->notice('Invalid PIN number: ' . $this->Server->get('pin_code'));
                 }
             }
 
             // Username
-            if (is_string($this->Request->get('username'))) {
-                $username = trim($this->Request->get('username'));
+            if (is_string($this->Server->get('username'))) {
+                $username = trim($this->Server->get('username'));
                 if (!empty($username)) {
                     $user->setUsername($username);
                     $user_data['username'] = $user->getUsername();
@@ -325,15 +329,15 @@ class Installer extends \StoreCore\AbstractController
             $user_has_password = false;
             if (
                 $user->getEmailAddress() !== null
-                && is_string($this->Request->get('password'))
-                && is_string($this->Request->get('confirm_password'))
-                && $this->Request->get('password') == $this->Request->get('confirm_password')
-                && mb_stristr($this->Request->get('password'), $user_data['username']) === false
-                && \StoreCore\Admin\PasswordCompliance::validate($this->Request->get('password')) === true
-                && \StoreCore\Database\CommonPassword::exists($this->Request->get('password')) === false
+                && is_string($this->Server->get('password'))
+                && is_string($this->Server->get('confirm_password'))
+                && $this->Server->get('password') == $this->Server->get('confirm_password')
+                && mb_stristr($this->Server->get('password'), $user_data['username']) === false
+                && \StoreCore\Admin\PasswordCompliance::validate($this->Server->get('password')) === true
+                && \StoreCore\Database\CommonPassword::exists($this->Server->get('password')) === false
             ) {
                 $password = new \StoreCore\Database\Password();
-                $password->setPassword($this->Request->get('password'));
+                $password->setPassword($this->Server->get('password'));
                 $password->encrypt();
                 $user->setPasswordSalt($password->getSalt());
                 $user->setHashAlgorithm($password->getAlgorithm());
@@ -394,7 +398,7 @@ class Installer extends \StoreCore\AbstractController
 
         $document = new \StoreCore\Admin\Document();
         $document->addSection($form, 'main');
-        $response = new \StoreCore\Response($this->Registry);
+        $response = new Response($this->Registry);
         $response->setResponseBody($document);
         $response->output();
 

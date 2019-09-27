@@ -95,6 +95,57 @@ class ServerRequestTest extends PHPUnit_Framework_TestCase
 
 
     /**
+     * @testdox ServerRequest::get() exists
+     */
+    public function testServerRequestGetExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\ServerRequest');
+        $this->assertTrue($class->hasMethod('get'));
+    }
+
+    /**
+     * @depends testServerRequestGetExists
+     * @testdox ServerRequest::get() is public
+     */
+    public function testServerRequestGetIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\ServerRequest', 'get');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testServerRequestGetExists
+     * @testdox ServerRequest::get() has one required parameter
+     */
+    public function testServerRequestGetHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\ServerRequest', 'get');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+    /**
+     * @depends testServerRequestGetHasOneRequiredParameter
+     * @testdox ServerRequest::get() returns null on invalid argument
+     */
+    public function testServerRequestGetReturnsNullOnInvalidArgument()
+    {
+        $request = new \StoreCore\ServerRequest();
+        $this->assertNull($request->get(false));
+    }
+
+    /**
+     * @depends testServerRequestGetHasOneRequiredParameter
+     * @testdox ServerRequest::get() returns null on missing value
+     */
+    public function testServerRequestGetReturnsNullOnMissingValue()
+    {
+        $request = new \StoreCore\ServerRequest();
+        $this->assertNull($request->get('Foo'));
+    }
+
+
+    /**
      * @testdox ServerRequest::getAttribute() exists
      */
     public function testServerRequestGetAttributeExists()
