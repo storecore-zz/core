@@ -82,7 +82,7 @@ class CacheKey implements StringableInterface
     private function set($str)
     {
         if ($str instanceof UriInterface || $str instanceof StringableInterface) {
-            $uri = (string) $uri;
+            $str = (string) $str;
         }
 
         if (!is_string($str) || empty($str)) {
