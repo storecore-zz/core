@@ -635,6 +635,59 @@ class LocationTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
     }
 
+    /**
+     * @depends testLocationSetPortHasOneRequiredParameter
+     * @testdox Location::setPort() accepts integers
+     */
+    public function testLocationSetPortAcceptsIntegers()
+    {
+        $location = new \StoreCore\Location();
+        $this->assertNull($location->getPort());
+        $location->setPort(80);
+        $this->assertNotNull($location->getPort());
+        $this->assertInternalType('int', $location->getPort());
+        $this->assertEquals(80, $location->getPort());
+    }
+
+    /**
+     * @depends testLocationSetPortAcceptsIntegers
+     * @testdox Location::setPort() accepts strings with digits
+     */
+    public function testLocationSetPortAcceptsStringsWithDigits()
+    {
+        $location = new \StoreCore\Location();
+        $this->assertNull($location->getPort());
+        $location->setPort('8080');
+        $this->assertInternalType('int', $location->getPort());
+        $this->assertEquals(8080, $location->getPort());
+    }
+
+    /**
+     * @depends testLocationSetPortAcceptsIntegers
+     * @testdox Location::setPort() accepts null
+     */
+    public function testLocationSetPortAcceptsNull()
+    {
+        $location = new \StoreCore\Location();
+        $location->setPort(80);
+        $this->assertEquals(80, $location->getPort());
+        $location->setPort(null);
+        $this->assertNull($location->getPort());
+    }
+
+    /**
+     * @depends testLocationSetPortAcceptsIntegers
+     * @testdox Location::setPort() accepts empty string as null
+     */
+    public function testLocationSetPortAcceptsEmptyStringAsNull()
+    {
+        $location = new \StoreCore\Location();
+        $location->setPort(80);
+        $this->assertEquals(80, $location->getPort());
+        $location->setPort('');
+        $this->assertNull($location->getPort());
+    }
+
 
     /**
      * @testdox Location::setQuery() exists
@@ -1077,4 +1130,43 @@ class LocationTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
     }
 
+
+    /**
+     * @testdox Location::withUserInfo() exists
+     */
+    public function testLocationWithUserInfoExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Location');
+        $this->assertTrue($class->hasMethod('withUserInfo'));
+    }
+
+    /**
+     * @depends testLocationWithUserInfoExists
+     * @testdox Location::withUserInfo() is public
+     */
+    public function testLocationWithUserInfoIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Location', 'withUserInfo');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testLocationWithUserInfoExists
+     * @testdox Location::withUserInfo() has two parameters
+     */
+    public function testLocationWithUserInfoHasTwoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Location', 'withUserInfo');
+        $this->assertTrue($method->getNumberOfParameters() === 2);
+    }
+
+    /**
+     * @depends testLocationWithUserInfoExists
+     * @testdox Location::withUserInfo() has one required parameter
+     */
+    public function testLocationWithUserInfoHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Location', 'withUserInfo');
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
 }

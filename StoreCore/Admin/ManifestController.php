@@ -1,31 +1,37 @@
 <?php
 namespace StoreCore\Admin;
 
-use \StoreCore\Admin\ManifestModel as ManifestModel;
-use \StoreCore\Response as Response;
-use \StoreCore\View as View;
+use StoreCore\Admin\ManifestModel;
+use StoreCore\AbstractController;
+use StoreCore\Registry;
+use StoreCore\ResponseFactory;
+use StoreCore\View;
 
 /**
  * Administration Web App Manifest Controller
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2017 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @copyright Copyright © 2017–2019 StoreCore™
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
  * @version   0.1.0
  */
-class ManifestController extends \StoreCore\AbstractController
+class ManifestController extends AbstractController
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
      * Create a web app manifest in JSON.
      *
-     * @param \StoreCore\Registry $registry
+     * @param Registry $registry
+     *
      * @return self
      */
-    public function __construct(\StoreCore\Registry $registry)
+    public function __construct(Registry $registry)
     {
         parent::__construct($registry);
 
@@ -34,7 +40,7 @@ class ManifestController extends \StoreCore\AbstractController
             'manifest_version' => ManifestModel::MANIFEST_VERSION,
             'name' => $this->Model->getName(),
             'short_name' => $this->Model->getShortName(),
-            'start_url' => 'https://' . $this->Request->getHostName() . '/admin/',
+            'start_url' => 'https://' . $this->Location->getHost() . '/admin/',
             'background_color' => $this->Model->getBackgroundColor(),
             'theme_color' => $this->Model->getThemeColor(),
         );
@@ -44,7 +50,8 @@ class ManifestController extends \StoreCore\AbstractController
         $this->View->setValues($manifest_members);
         $manifest = $this->View->render();
 
-        $this->Response = new Response($this->Registry);
+        $factory = new ResponseFactory();
+        $response = $factory->createResponse();
         $this->Response->addHeader('Content-Type: application/manifest+json;charset=UTF-8');
         $this->Response->setResponseBody($manifest);
         $this->Response->output();

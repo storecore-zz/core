@@ -5,7 +5,7 @@ use StoreCore\Types\StringableInterface;
 use Psr\Http\Message\UriInterface;
 
 /**
- * Uniform Resource Identifier (URI).
+ * Uniform Resource Identifier (URI)
  *
  * @api
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
@@ -14,8 +14,11 @@ use Psr\Http\Message\UriInterface;
  * @package   StoreCore\Core
  * @version   0.2.0
  *
- * @see       https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Identifying_resources_on_the_Web
- *            Identifying resources on the Web
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Identifying_resources_on_the_Web
+ *      Identifying resources on the Web
+ * 
+ * @see https://www.php-fig.org/psr/psr-7/#35-psrhttpmessageuriinterface
+ *      PSR-7 Psr\Http\Message\UriInterface
  */
 class Location implements StringableInterface, UriInterface
 {
@@ -73,7 +76,6 @@ class Location implements StringableInterface, UriInterface
      *   User name in the user information component of the URI.
      */
     private $UserName = '';
-
 
     /**
      * Convert the location to a URL string.
@@ -370,9 +372,13 @@ class Location implements StringableInterface, UriInterface
     public function setPort($port)
     {
         if (empty($port)) {
-            return $this->unsetPort();
+            $this->unsetPort();
+        } elseif (is_int($port)) {
+            $this->Port = $port;
+        } elseif (ctype_digit($port)) {
+            $this->Port = intval($port);
         } else {
-            $this->Port = (int)$port;
+            throw new \InvalidArgumentException();
         }
     }
 
@@ -523,45 +529,5 @@ class Location implements StringableInterface, UriInterface
         }
         $location->setUserInfo($user_info);
         return $location;
-    }
-
-
-    /**
-     * @testdox Location::withUserInfo() exists
-     */
-    public function testLocationWithUserInfoExists()
-    {
-        $class = new \ReflectionClass('\StoreCore\Location');
-        $this->assertTrue($class->hasMethod('withUserInfo'));
-    }
-
-    /**
-     * @depends testLocationWithUserInfoExists
-     * @testdox Location::withUserInfo() is public
-     */
-    public function testLocationWithUserInfoIsPublic()
-    {
-        $method = new \ReflectionMethod('\StoreCore\Location', 'withUserInfo');
-        $this->assertTrue($method->isPublic());
-    }
-
-    /**
-     * @depends testLocationWithUserInfoExists
-     * @testdox Location::withUserInfo() has two parameters
-     */
-    public function testLocationWithUserInfoHasTwoParameters()
-    {
-        $method = new \ReflectionMethod('\StoreCore\Location', 'withUserInfo');
-        $this->assertTrue($method->getNumberOfParameters() === 2);
-    }
-
-    /**
-     * @depends testLocationWithUserInfoExists
-     * @testdox Location::withUserInfo() has one required parameter
-     */
-    public function testLocationWithUserInfoHasOneRequiredParameter()
-    {
-        $method = new \ReflectionMethod('\StoreCore\Location', 'withUserInfo');
-        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
     }
 }

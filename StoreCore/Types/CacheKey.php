@@ -1,6 +1,9 @@
 <?php
 namespace StoreCore\Types;
 
+use StoreCore\Types\StringableInterface;
+use Psr\Http\Message\UriInterface;
+
 /**
  * Cache Key
  *
@@ -18,11 +21,14 @@ class CacheKey implements StringableInterface
      */
     const VERSION = '0.1.0';
 
-    /** @var string $Key */
-    private $Key = '';
+    /**
+     * @var string $Key
+     *   Cache key hash.
+     */
+    private $Key;
 
     /**
-     * @param string $str
+     * @param string|StringableInterface|UriInterface $str
      *   Optional case-insensitive string.  If this parameter is not set,
      *   a random unique identifier (UID) is generated.
      *
@@ -30,10 +36,9 @@ class CacheKey implements StringableInterface
      */
     public function __construct($str = null)
     {
-        if ($str === null) {
-            $str = uniqid(mt_rand(), true);
+        if ($str !== null) {
+            $this->set($str);
         }
-        $this->set($str);
     }
 
     /**
@@ -53,29 +58,46 @@ class CacheKey implements StringableInterface
      * @return string
      *   Returns a string containing the cache key as lowercase hexits.
      */
-    public function get()
+    private function get()
     {
+        if ($this->Key === null) {
+            $str = uniqid(bin2hex(openssl_random_pseudo_bytes(20)), true);
+            $this->set($str);
+        }
         return $this->Key;
     }
 
     /**
      * Derive the cache key from a string.
      *
-     * @param string $str
+     * @param string|StringableInterface|UriInterface $str
      *   Case-insensitive string to convert to a cache key.
      *
      * @return void
      *
      * @throws \InvalidArgumentException
      *   Throws an invalid argument exception if the `$str` parameter is not
-     *   a string or an empty string.
+     *   a string, cannot be converted to a string, or is an empty string.
      */
-    public function set($str)
+    private function set($str)
     {
+        if ($str instanceof UriInterface || $str instanceof StringableInterface) {
+            $str = (string) $str;
+        }
+
         if (!is_string($str) || empty($str)) {
             throw new \InvalidArgumentException();
         }
+
         $str = mb_strtolower($str, 'UTF-8');
+
+        // Shorten 'https://' and 'http://' to '//'
+        if (substr($str, 0, 8) === 'https://') {
+            $str = substr($str, 6);
+        } elseif (substr($str, 0, 7) === 'http://') {
+            $str = substr($str, 5);
+        }
+
         $str = hash('sha256', $str);
         $this->Key = $str;
     }

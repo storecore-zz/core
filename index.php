@@ -34,14 +34,12 @@ if (!defined('STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR')) {
 require STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'bootloader.php';
 
 // Refuse requests from a blacklisted client IP address.
-$request = $registry->get('Request');
-if (\StoreCore\FileSystem\Blacklist::exists($request->getRemoteAddress())) {
+if (\StoreCore\FileSystem\Blacklist::has($registry->get('Server')->getRemoteAddress())) {
     $response = new \StoreCore\Response($registry);
     $response->setCompression(0);
     $response->addHeader('HTTP/1.1 403 Forbidden');
     $response->output();
-    $logger = $registry->get('Logger');
-    $logger->info('HTTP/1.1 403 Forbidden: client IP address ' . $request->getRemoteAddress() . ' is blacklisted.');
+    $registry->get('Logger')->info('HTTP/1.1 403 Forbidden: client IP address ' . $registry->get('Server')->getRemoteAddress() . ' is blacklisted.');
     exit;
 }
 
@@ -68,9 +66,8 @@ if (defined('STORECORE_KILL_SWITCH') && STORECORE_KILL_SWITCH == true) {
 // Load a language pack
 $language = $session->get('Language');
 if ($language == null) {
-    if ($request->hasCookie('Language')) {
-        $cookie_language = $request->getCookie('Language');
-        $cookie_language = base64_decode($cookie_language);
+    if ($registry->get('Cookies')->has('Language')) {
+        $cookie_language = $registry->get('Cookies')->get('Language');
         $cookie_language = strip_tags($cookie_language);
         if (strlen($cookie_language) == 5) {
             $language = $cookie_language;
@@ -91,7 +88,7 @@ $registry->set('Session', $session);
 
 // Routing
 $route = false;
-switch ($request->getRequestTarget()) {
+switch ($registry->get('Request')->getRequestTarget()) {
     // Admin web app manifest:
     case '/admin/manifest.json':
     case '/admin/StoreCore.webmanifest':
@@ -118,13 +115,13 @@ switch ($request->getRequestTarget()) {
     // Fallback to some other (admin) route or a fixed redirect:
     default:
         // Execute an administration route.
-        if (strpos($request->getRequestTarget(), '/admin/', 0) === 0) {
+        if (strpos($registry->get('Request')->getRequestTarget(), '/admin/', 0) === 0) {
             $route = new \StoreCore\Route('/admin/', '\StoreCore\Admin\FrontController');
             break;
         }
 
         // Execute a redirect if a destination is found.
-        \StoreCore\Redirector::find($request);
+        \StoreCore\Redirector::find($registry->get('Request'));
 
         // Find some other route.
         $route_factory = new \StoreCore\Database\RouteFactory($registry);
@@ -139,8 +136,7 @@ if ($route !== false) {
     $registry->set('Route', $route);
     $route->dispatch();
 } else {
-    $logger = $registry->get('Logger');
-    $logger->notice('HTTP/1.1 404 Not Found: ' . $request->getRequestTarget());
+    $registry->get('Logger')->notice('HTTP/1.1 404 Not Found: ' . $registry->get('Request')->getRequestTarget());
     $response = new \StoreCore\Response($registry);
     $response->addHeader('HTTP/1.1 404 Not Found');
     $response->output();
@@ -148,9 +144,10 @@ if ($route !== false) {
 
 // Statistics and analytics
 if (defined('STORECORE_BI') && STORECORE_BI == true) {
-    $request = $registry->get('Request');
-    $user_agent = $request->getUserAgent();
-    $user_agent_mapper = new \StoreCore\Database\UserAgent($registry);
-    $user_agent_mapper->setUserAgent($user_agent);
-    $user_agent_mapper->update();
+    if (array_key_exists('HTTP_USER_AGENT', $registry->get('Server')->getServerParams())) {
+        $user_agent = $registry->get('Server')->getServerParams()['HTTP_USER_AGENT'];
+        $user_agent_mapper = new \StoreCore\Database\UserAgent($registry);
+        $user_agent_mapper->setUserAgent($user_agent);
+        $user_agent_mapper->update();
+    }
 }

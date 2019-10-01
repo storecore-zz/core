@@ -22,6 +22,7 @@ class LockScreenTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group distro
+     * @testdox VERSION constant is defined
      */
     public function testVersionConstantIsDefined()
     {
@@ -32,18 +33,21 @@ class LockScreenTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
+     * @testdox VERSION constant is non-empty string
      */
-    public function testVersionConstantIsString()
+    public function testVersionConstantIsNonEmptyString()
     {
+        $this->assertNotEmpty(\StoreCore\Admin\LockScreen::VERSION);
         $this->assertInternalType('string', \StoreCore\Admin\LockScreen::VERSION);
     }
 
     /**
-     * @depends testVersionConstantIsDefined
+     * @depends testVersionConstantIsNonEmptyString
      * @group distro
+     * @testdox VERSION matches master branch
      */
-    public function testVersionConstantIsNotEmpty()
+    public function testVersionMatchesMasterBranch()
     {
-        $this->assertNotEmpty(\StoreCore\Admin\LockScreen::VERSION);
+        $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Admin\LockScreen::VERSION);
     }
 }

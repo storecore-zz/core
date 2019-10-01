@@ -1,16 +1,24 @@
 <?php
 namespace StoreCore\FileSystem;
 
+use StoreCore\AbstractController;
+use StoreCore\LocationFactory;
+use StoreCore\ResponseFactory;
+
+use StoreCore\FileSystem\FileCacheReader;
+
+use StoreCore\Types\CacheKey;
+
 /**
  * Full-Page Cache
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015–2018 StoreCore™
+ * @copyright Copyright © 2015–2019 StoreCore™
  * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Catalog
  * @version   0.1.0
  */
-class FullPageCache extends \StoreCore\AbstractController
+class FullPageCache extends AbstractController
 {
     /**
      * @var string VERSION
@@ -28,9 +36,14 @@ class FullPageCache extends \StoreCore\AbstractController
      */
     public static function trigger()
     {
-        $location = new \StoreCore\Location($this->Registry);
-        $key = new \StoreCore\Types\CacheKey($location->get());
-        $cache = new \StoreCore\FileSystem\FileCacheReader();
+        try {
+            $location = LocationFactory::getCurrentLocation();
+        } catch (\RuntimeException $e) {
+            return false;
+        }
+
+        $key = new CacheKey($location->get());
+        $cache = new FileCacheReader();
 
         // Cache miss
         if ($cache->exists($key) === false) {
@@ -38,7 +51,8 @@ class FullPageCache extends \StoreCore\AbstractController
         }
         unset($location, $key);
 
-        $response = new \StoreCore\Response($this->Registry);
+        $factory = new ResponseFactory();
+        $response = $factory->createResponse();
         $cache_file_contents = $cache->read();
 
         // Set expiration headers

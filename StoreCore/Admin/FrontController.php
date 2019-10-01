@@ -1,16 +1,16 @@
 <?php
 namespace StoreCore\Admin;
 
-use \Psr\Log\LoggerAwareInterface as LoggerAwareInterface;
-use \Psr\Log\LoggerInterface as LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 
-use \StoreCore\AbstractController as AbstractController;
-use \StoreCore\Admin\AccessControlWhitelist as AccessControlWhitelist;
-use \StoreCore\Registry as Registry;
-use \StoreCore\Response as Response;
-use \StoreCore\Route as Route;
-use \StoreCore\Database\RouteFactory as RouteFactory;
-use \StoreCore\Session as Session;
+use StoreCore\AbstractController;
+use StoreCore\Admin\AccessControlWhitelist;
+use StoreCore\Registry;
+use StoreCore\ResponseFactory;
+use StoreCore\Route;
+use StoreCore\Database\RouteFactory;
+use StoreCore\Session;
 
 /**
  * Administration Front Controller
@@ -50,7 +50,8 @@ class FrontController extends AbstractController implements LoggerAwareInterface
         if ($this->Session->has('User')) {
             $this->User = $this->Session->get('User');
         } else {
-            $response = new Response($registry);
+            $factory = new ResponseFactory();
+            $response = $factory->createResponse(302);
             $response->redirect('/admin/sign-in/');
             exit;
         }
@@ -75,7 +76,8 @@ class FrontController extends AbstractController implements LoggerAwareInterface
             $route->dispatch();
         } else {
             $this->Logger->debug('Unknown admin route: ' . $this->Request->getRequestTarget());
-            $response = new Response($this->Registry);
+            $factory = new ResponseFactory();
+            $response = $factory->createResponse(404);
             $response->addHeader('HTTP/1.1 404 Not Found');
             $response->output();
             exit;

@@ -13,9 +13,10 @@ use \StoreCore\TemporaryStream;
  * @copyright Copyright © 2019 StoreCore™
  * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
+ * @see       https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-7-http-message.md
  * @version   0.1.0
  */
-class Message implements \Psr\Http\Message\MessageInterface
+class Message implements MessageInterface
 {
     /**
      * @var string VERSION

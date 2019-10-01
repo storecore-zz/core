@@ -1,18 +1,29 @@
 <?php
 namespace StoreCore\Admin;
 
-use \StoreCore\Response as Response;
+use StoreCore\AbstractController;
+use StoreCore\Registry;
+use StoreCore\ResponseFactory;
+use StoreCore\View;
+
+use StoreCore\Admin\Document;
+use StoreCore\Admin\Minifier;
+
+use StoreCore\Database\LoginAudit;
+use StoreCore\Database\UserMapper;
+
+use StoreCore\Types\FormToken;
 
 /**
  * Administration Sign-In
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015–2018 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @copyright Copyright © 2015–2019 StoreCore™
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
  * @version   0.1.0
  */
-class SignIn extends \StoreCore\AbstractController
+class SignIn extends AbstractController
 {
     /**
      * @var string VERSION
@@ -28,9 +39,14 @@ class SignIn extends \StoreCore\AbstractController
 
     /**
      * @param \StoreCore\Registry $registry
+     *
      * @return void
+     *
+     * @uses \StoreCore\Request::getMethod()
+     * @uses \StoreCore\ServerRequest::get()
+     * @uses \StoreCore\Database\LoginAudit::storeAttempt()
      */
-    public function __construct(\StoreCore\Registry $registry)
+    public function __construct(Registry $registry)
     {
         parent::__construct($registry);
 
@@ -47,23 +63,25 @@ class SignIn extends \StoreCore\AbstractController
         }
 
         if (
-            !is_string($this->Request->get('username'))
-            || !is_string($this->Request->get('password'))
-            || !is_string($this->Request->get('token'))
+            !is_string($this->Server->get('username'))
+            || !is_string($this->Server->get('password'))
+            || !is_string($this->Server->get('token'))
         ) {
-            $response = new Response($this->Registry);
+            $factory = new ResponseFactory();
+            $response = $factory->createResponse(303);
             $response->redirect('/admin/sign-in/', 303);
             exit;
         }
 
         // Audit failed and successful attempts
-        $login_audit = new \StoreCore\Database\LoginAudit($this->Registry);
+        $login_audit = new LoginAudit($this->Registry);
 
         // HTTP response object
-        $response = new Response($this->Registry);
+        $factory = new ResponseFactory();
+        $response = $factory->createResponse();
 
         // Token handshake
-        if ($this->Request->get('token') != $this->Session->get('Token')) {
+        if ($this->Server->get('token') != $this->Session->get('Token')) {
             $this->Logger->notice('Token mismatch in admin sign-in.');
             $this->resetToken();
             $response->redirect('/admin/sign-in/', 303);
@@ -87,23 +105,23 @@ class SignIn extends \StoreCore\AbstractController
         sleep($seconds);
 
         // Try to fetch the user.
-        $user_mapper = new \StoreCore\Database\UserMapper($this->Registry);
-        $user = $user_mapper->getUserByUsername($this->Request->get('username'));
+        $user_mapper = new UserMapper($this->Registry);
+        $user = $user_mapper->getUserByUsername($this->Server->get('username'));
         if ($user === null) {
-            $this->Logger->warning('Unknown user "' . $this->Request->get('username') . '" attempted to sign in.');
-            $login_audit->storeAttempt($this->Request->get('username'));
+            $this->Logger->warning('Unknown user "' . $this->Server->get('username') . '" attempted to sign in.');
+            $login_audit->storeAttempt($this->Server->get('username'));
             $this->resetToken();
             $response->redirect('/admin/sign-in/', 303);
             exit;
         }
 
         // Check the user password.
-        if ($user->authenticate($this->Request->get('password')) !== true) {
+        if ($user->authenticate($this->Server->get('password')) !== true) {
             $this->Logger->warning(
                 'Known user "' . $user->getUsername() . '" (#' .
                 $user->getUserID() . ') attempted to sign in with an illegal password.'
             );
-            $login_audit->storeAttempt($this->Request->get('username'));
+            $login_audit->storeAttempt($this->Server->get('username'));
             $this->resetToken();
             $response->redirect('/admin/sign-in/', 303);
             exit;
@@ -111,15 +129,19 @@ class SignIn extends \StoreCore\AbstractController
 
         // Finally, store the user and open up the administration.
         $this->Logger->notice('User "' . $user->getUsername() . '" (#' . $user->getUserID() . ') signed in.');
-        $login_audit->storeAttempt($this->Request->get('username'), null, true);
+        $login_audit->storeAttempt($this->Server->get('username'), null, true);
         $this->Session->set('User', $user);
         $response->redirect('/admin/', 303);
         exit;
     }
 
     /**
+     * Retrieve the form token.
+     *
      * @param void
+     *
      * @return string
+     *   Returns the active form token as a string.
      */
     public function getToken()
     {
@@ -132,12 +154,12 @@ class SignIn extends \StoreCore\AbstractController
      */
     private function render()
     {
-        $view = new \StoreCore\View();
+        $view = new View();
         $view->setTemplate(__DIR__ . DIRECTORY_SEPARATOR . 'SignIn.phtml');
         $view->setValues(array('token' => $this->getToken()));
         $view = $view->render();
 
-        $document = new \StoreCore\Admin\Document();
+        $document = new Document();
         $document->addSection($view);
         $document->setTitle(\StoreCore\I18N\COMMAND_SIGN_IN);
 
@@ -147,9 +169,10 @@ class SignIn extends \StoreCore\AbstractController
          */
         $document->addScript("window.setTimeout(function() { top.location.href = '/admin/lock/'; }, 60000);");
 
-        $document = \StoreCore\Admin\Minifier::minify($document);
+        $document = Minifier::minify($document);
 
-        $response = new Response($this->Registry);
+        $factory = new ResponseFactory();
+        $response = $factory->createResponse();
         $response->addHeader('Allow: GET, POST');
         $response->addHeader('X-Robots-Tag: noindex');
         $response->setResponseBody($document);
@@ -157,12 +180,15 @@ class SignIn extends \StoreCore\AbstractController
     }
 
     /**
+     * Reset the form token.
+     *
      * @param void
      * @return void
+     * @uses \StoreCore\Types\FormToken::getInstance()
      */
     private function resetToken()
     {
-        $this->Token = \StoreCore\Types\FormToken::getInstance();
+        $this->Token = FormToken::getInstance();
         $this->Session->set('Token', $this->Token);
     }
 }

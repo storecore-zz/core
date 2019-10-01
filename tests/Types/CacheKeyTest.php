@@ -29,6 +29,39 @@ class CacheKeyTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $cache_key);
     }
 
+
+    /**
+     * @group distro
+     * @testdox VERSION constant is defined
+     */
+    public function testVersionConstantIsDefined()
+    {
+        $class = new \ReflectionClass('\StoreCore\Types\CacheKey');
+        $this->assertInternalType('string', \StoreCore\Types\CacheKey::VERSION);
+    }
+
+    /**
+     * @depends testVersionConstantIsDefined
+     * @group distro
+     * @testdox VERSION constant is non-empty string
+     */
+    public function testVersionConstantIsNonEmptyString()
+    {
+        $this->assertNotEmpty(\StoreCore\Types\CacheKey::VERSION);
+        $this->assertInternalType('string', \StoreCore\Types\CacheKey::VERSION);
+    }
+
+    /**
+     * @depends testVersionConstantIsNonEmptyString
+     * @group distro
+     * @testdox VERSION matches master branch
+     */
+    public function testVersionMatchesMasterBranch()
+    {
+        $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Types\CacheKey::VERSION);
+    }
+
+
     /**
      * @depends testCacheKeyImplementsStringableInterface
      * @group hmvc
@@ -41,32 +74,25 @@ class CacheKeyTest extends PHPUnit_Framework_TestCase
         $this->assertNotEmpty((string)$cache_key);
     }
 
-
     /**
-     * @group distro
+     * @depends testStringableObjectIsANonEmptyString
+     * @testdox Cache key is case-insensitive
      */
-    public function testVersionConstantIsDefined()
+    public function testCacheKeyIsCaseInsensitive()
     {
-        $class = new \ReflectionClass('\StoreCore\Types\CacheKey');
-        $this->assertInternalType('string', \StoreCore\Types\CacheKey::VERSION);
+        $foobar = new \StoreCore\Types\CacheKey('foo/bar');
+        $FooBar = new \StoreCore\Types\CacheKey('Foo/Bar');
+        $this->assertSame((string) $FooBar, (string) $foobar);
     }
 
     /**
-     * @depends testVersionConstantIsDefined
-     * @group distro
+     * @depends testStringableObjectIsANonEmptyString
+     * @testdox Cache key ignores HTTP URI scheme
      */
-    public function testVersionConstantIsNonEmptyString()
+    public function testCacheKeyIgnoresHttpUriScheme()
     {
-        $this->assertNotEmpty(\StoreCore\Types\CacheKey::VERSION);
-        $this->assertInternalType('string', \StoreCore\Types\CacheKey::VERSION);
-    }
-
-    /**
-     * @depends testVersionConstantIsNonEmptyString
-     * @group distro
-     */
-    public function testVersionMatchesMasterBranch()
-    {
-        $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Types\CacheKey::VERSION);
+        $http  = new \StoreCore\Types\CacheKey('http://www.example.com/foo-bar/baz-qux');
+        $https = new \StoreCore\Types\CacheKey('https://www.example.com/foo-bar/baz-qux');
+        $this->assertSame((string) $https, (string) $http);
     }
 }

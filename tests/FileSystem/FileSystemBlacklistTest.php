@@ -31,93 +31,121 @@ class FileSystemBlacklistTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
-     * @testdox VERSION constant is string
+     * @testdox VERSION constant is non-empty string
      */
-    public function testVersionConstantIsString()
+    public function testVersionConstantIsNonEmptyString()
     {
+        $this->assertNotEmpty(\StoreCore\FileSystem\Blacklist::VERSION);
         $this->assertInternalType('string', \StoreCore\FileSystem\Blacklist::VERSION);
     }
 
     /**
-     * @depends testVersionConstantIsDefined
+     * @depends testVersionConstantIsNonEmptyString
      * @group distro
-     * @testdox VERSION constant is not empty
+     * @testdox VERSION matches master branch
      */
-    public function testVersionConstantIsNotEmpty()
-    {
-        $this->assertNotEmpty(\StoreCore\FileSystem\Blacklist::VERSION);
-    }
-
-    /**
-     * @depends testVersionConstantIsDefined
-     * @group distro
-     * @testdox VERSION constant matches master branch
-     */
-    public function testVersionConstantMatchesMasterBranch()
+    public function testVersionMatchesMasterBranch()
     {
         $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\FileSystem\Blacklist::VERSION);
     }
 
 
     /**
-     * @testdox Public static exists() method exists
+     * @testdox Blacklist::has() exists
      */
-    public function testPublicStaticExistsMethodExists()
+    public function testBlacklistHasExists()
     {
         $class = new \ReflectionClass('\StoreCore\FileSystem\Blacklist');
-        $this->assertTrue($class->hasMethod('exists'));
+        $this->assertTrue($class->hasMethod('has'));
     }
 
     /**
-     * @testdox Public static exists() method is public
+     * @depends testBlacklistHasExists
+     * @testdox Blacklist::has() is public
      */
-    public function testPublicStaticExistsMethodIsPublic()
+    public function testBlacklistHasIsPublic()
     {
-        $method = new \ReflectionMethod('\StoreCore\FileSystem\Blacklist', 'exists');
+        $method = new \ReflectionMethod('\StoreCore\FileSystem\Blacklist', 'has');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public static exists() method is static
+     * @depends testBlacklistHasExists
+     * @testdox Blacklist::has() is static
      */
-    public function testPublicStaticExistsMethodIsStatic()
+    public function testBlacklistHasIsStatic()
     {
-        $method = new \ReflectionMethod('\StoreCore\FileSystem\Blacklist', 'exists');
+        $method = new \ReflectionMethod('\StoreCore\FileSystem\Blacklist', 'has');
         $this->assertTrue($method->isStatic());
     }
 
     /**
-     * @testdox Public static exists() method has one required parameter
+     * @depends testBlacklistHasExists
+     * @testdox Blacklist::has() has one required parameter
      */
-    public function testPublicStaticExistsMethodHasOneRequiredParameter()
+    public function testBlacklistHasHasOneRequiredParameter()
     {
-        $method = new \ReflectionMethod('\StoreCore\FileSystem\Blacklist', 'exists');
+        $method = new \ReflectionMethod('\StoreCore\FileSystem\Blacklist', 'has');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
         $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+    /**
+     * @depends testBlacklistHasIsStatic
+     * @depends testBlacklistHasHasOneRequiredParameter
+     * @testdox Blacklist::has() returns boolean
+     */
+    public function testBlacklistHasReturnsBoolean()
+    {
+        $this->assertInternalType('bool', \StoreCore\FileSystem\Blacklist::has('93.184.216.34'));
+        $this->assertInternalType('bool', \StoreCore\FileSystem\Blacklist::has('2606:2800:220:1:248:1893:25c8:1946'));
+    }
+
+    /**
+     * @depends testBlacklistHasIsStatic
+     * @depends testBlacklistHasHasOneRequiredParameter
+     * @testdox Blacklist::has() returns false on empty string
+     */
+    public function testBlacklistHasReturnsFalseOnEmptyString()
+    {
+        $this->assertFalse(\StoreCore\FileSystem\Blacklist::has(''));
+    }
+
+    /**
+     * @depends testBlacklistHasIsStatic
+     * @depends testBlacklistHasHasOneRequiredParameter
+     * @testdox Blacklist::has() returns false on invalid arguments
+     */
+    public function testBlacklistHasReturnsFalseOnInvalidArguments()
+    {
+        $this->assertFalse(\StoreCore\FileSystem\Blacklist::has((bool) true));
+        $this->assertFalse(\StoreCore\FileSystem\Blacklist::has((int) 42));
+        $this->assertFalse(\StoreCore\FileSystem\Blacklist::has('This is not an IP address but a string.'));
     }
 
 
     /**
-     * @testdox Public flush() method exists
+     * @testdox Blacklist::flush() exists
      */
-    public function testPublicFlushMethodExists()
+    public function testBlacklistFlushExists()
     {
         $class = new \ReflectionClass('\StoreCore\FileSystem\Blacklist');
         $this->assertTrue($class->hasMethod('flush'));
     }
 
     /**
-     * @testdox Public flush() method is public
+     * @testdox Blacklist::flush() is public
      */
-    public function testPublicFlushMethodIsPublic()
+    public function testBlacklistFlushIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\FileSystem\Blacklist', 'flush');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public flush() method has no parameters
+     * @testdox Blacklist::flush() has no parameters
      */
-    public function testPublicFlushMethodHasNoParameter()
+    public function testBlacklistFlushHasNoParameters()
     {
         $method = new \ReflectionMethod('\StoreCore\FileSystem\Blacklist', 'flush');
         $this->assertTrue($method->getNumberOfRequiredParameters() === 0);

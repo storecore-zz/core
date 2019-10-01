@@ -1,30 +1,50 @@
 <?php
 namespace StoreCore\FileSystem;
 
+use StoreCore\Database\Robots as RobotsModel;
+
+use StoreCore\AbstractController;
+use StoreCore\Registry;
+use StoreCore\ResponseFactory;
+
 /**
  * Robots Controller
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2015-2016 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @copyright Copyright © 2015–2019 StoreCore™
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @package   StoreCore\CMS
  * @version   0.1.0
  */
-class Robots extends \StoreCore\AbstractController
+class Robots extends AbstractController
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
      * @var \StoreCore\Database\Robots $Model
-     * @var string $View
+     *   Data model for the robots.txt file.
      */
     private $Model;
+
+    /**
+     * @var string $View
+     *   Contents of the robots.txt file as an MVC view.
+     */
     private $View = "User-agent: *\nDisallow:";
 
     /**
+     * Create and publish robots.txt file.
+     *
      * @param \StoreCore\Registry $registry
+     *   Global StoreCore service locator.
+     *
      * @return void
      */
-    public function __construct(\StoreCore\Registry $registry)
+    public function __construct(Registry $registry)
     {
         parent::__construct($registry);
         $this->loadModel();
@@ -38,7 +58,7 @@ class Robots extends \StoreCore\AbstractController
      */
     private function loadModel()
     {
-        $this->Model = new \StoreCore\Database\Robots($this->Registry);
+        $this->Model = new RobotsModel($this->Registry);
     }
 
     /**
@@ -71,7 +91,8 @@ class Robots extends \StoreCore\AbstractController
      */
     private function respond()
     {
-        $response = new \StoreCore\Response($this->Registry);
+        $factory = new \StoreCore\ResponseFactory();
+        $response = $factory->createResponse();
         $response->addHeader('Content-Type: text/plain;charset=UTF-8');
         $response->setCompression(-1);
         $response->setResponseBody($this->View);
