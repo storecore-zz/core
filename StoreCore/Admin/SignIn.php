@@ -3,7 +3,7 @@ namespace StoreCore\Admin;
 
 use StoreCore\AbstractController;
 use StoreCore\Registry;
-use StoreCore\Response;
+use StoreCore\ResponseFactory;
 use StoreCore\View;
 
 use StoreCore\Admin\Document;
@@ -67,7 +67,8 @@ class SignIn extends AbstractController
             || !is_string($this->Server->get('password'))
             || !is_string($this->Server->get('token'))
         ) {
-            $response = new Response($this->Registry);
+            $factory = new ResponseFactory();
+            $response = $factory->createResponse(303);
             $response->redirect('/admin/sign-in/', 303);
             exit;
         }
@@ -76,7 +77,8 @@ class SignIn extends AbstractController
         $login_audit = new LoginAudit($this->Registry);
 
         // HTTP response object
-        $response = new Response($this->Registry);
+        $factory = new ResponseFactory();
+        $response = $factory->createResponse();
 
         // Token handshake
         if ($this->Server->get('token') != $this->Session->get('Token')) {
@@ -169,7 +171,8 @@ class SignIn extends AbstractController
 
         $document = Minifier::minify($document);
 
-        $response = new Response($this->Registry);
+        $factory = new ResponseFactory();
+        $response = $factory->createResponse();
         $response->addHeader('Allow: GET, POST');
         $response->addHeader('X-Robots-Tag: noindex');
         $response->setResponseBody($document);

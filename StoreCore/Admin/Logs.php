@@ -1,17 +1,25 @@
 <?php
 namespace StoreCore\Admin;
 
+use StoreCore\AbstractController;
+use StoreCore\Registry;
+use StoreCore\ResponseFactory;
+
 /**
  * Logs
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2015-2016 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @copyright Copyright © 2015-2019 StoreCore™
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
  * @version   0.1.0
  */
-class Logs extends \StoreCore\AbstractController
+class Logs extends AbstractController
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /** @var \StoreCore\FileSystem\LogFileManager $Model */
@@ -22,11 +30,10 @@ class Logs extends \StoreCore\AbstractController
      * @return void
      * @uses \StoreCore\FileSystem\LogFileManager
      */
-    public function __construct(\StoreCore\Registry $registry)
+    public function __construct(Registry $registry)
     {
         parent::__construct($registry);
-
-        $this->Model = new \StoreCore\FileSystem\LogFileManager();
+        $this->Model = new LogFileManager();
     }
 
     /**
@@ -46,7 +53,9 @@ class Logs extends \StoreCore\AbstractController
         $filename = date('Y-m-d-H-i-s') . '.txt';
         $download = implode(PHP_EOL, $download);
 
-        $response = new \StoreCore\Response($this->Registry);
+        $factory = new ResponseFactory();
+        $response = $factory->createResponse();
+
         $response->addHeader('Content-Type: text/plain; charset=UTF-8');
         $response->addHeader('Content-Disposition: attachment; filename="' . $filename . '"');
         $response->setCompression(false);

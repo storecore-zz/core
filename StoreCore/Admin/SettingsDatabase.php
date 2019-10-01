@@ -7,7 +7,7 @@ use StoreCore\Admin\Minifier;
 
 use StoreCore\AbstractController;
 use StoreCore\Registry;
-use StoreCore\Response;
+use StoreCore\ResponseFactory;
 use StoreCore\View;
 
 /**
@@ -97,8 +97,9 @@ class SettingsDatabase extends AbstractController
                 $logger->notice('Database configuration saved.');
             }
 
-            $response = new Response($this->Registry);
-            $response->redirect('/admin/settings/database/', 303);
+            $factory = new ResponseFactory();
+            $response = $factory->createResponse(303);
+            $response->redirect('/admin/settings/database/');
         } else {
             $this->View = new View();
             $this->View->setTemplate(__DIR__ . DIRECTORY_SEPARATOR . 'SettingsDatabase.phtml');
@@ -116,7 +117,8 @@ class SettingsDatabase extends AbstractController
 
             $document = new Document();
             $document->addSection($view, 'main');
-            $response = new Response($registry);
+            $factory = new ResponseFactory();
+            $response = $factory->createResponse();
             $response->setResponseBody($document);
             $response->output();
         }

@@ -1,6 +1,11 @@
 <?php
 namespace StoreCore;
 
+use Psr\Http\Message\ResponseInterface;
+
+use StoreCore\Message;
+use StoreCore\Registry;
+
 /**
  * Server Response
  *
@@ -11,7 +16,7 @@ namespace StoreCore;
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-class Response extends AbstractController
+class Response extends Message implements ResponseInterface
 {
     /**
      * @var string VERSION
@@ -33,26 +38,24 @@ class Response extends AbstractController
     protected $Headers = array();
 
     /**
+     * @var string $ReasonPhrase
+     *   Response reason phrase associated with the status code.
+     *   Defaults to 'OK' for a '200 OK' response.
+     */
+    private $ReasonPhrase = 'OK';
+
+    /**
      * @var string $ResponseBody
      *   Contents body of the HTTP response.
      */
     protected $ResponseBody;
 
     /**
-     * HTTP response constructor.
-     *
-     * @param \StoreCore\Registry $registry
-     *   Central registry (service locator).
-     *
-     * @return self
+     * @var string $StatusCode
+     *   HTTP response status code.  Defaults to 200.
      */
-    public function __construct(\StoreCore\Registry $registry)
-    {
-        if (defined('STORECORE_RESPONSE_COMPRESSION_LEVEL')) {
-            $this->setCompression(STORECORE_RESPONSE_COMPRESSION_LEVEL);
-        }
-        parent::__construct($registry);
-    }
+    private $StatusCode = 200;
+
 
     /**
      * Add an HTTP response header.
@@ -82,8 +85,6 @@ class Response extends AbstractController
      *   extension is not installed or compression is disabled, the returned
      *   output is not compressed and the output string is equal to the input
      *   string.
-     *
-     * @uses \StoreCore\ServerRequest::getServerParams()
      */
     private function compress($data, $level = -1)
     {
@@ -95,14 +96,13 @@ class Response extends AbstractController
             return $data;
         }
 
-        if (!array_key_exists('HTTP_ACCEPT_ENCODING', $this->Server->getServerParams())) {
-            return $data;
-        } else {
-            $server_params = $this->Server->getServerParams();
-            $accept_encoding = $server_params['HTTP_ACCEPT_ENCODING'];
-        }
-
-        if (empty($accept_encoding)) {
+        $accept_encoding = filter_input(INPUT_SERVER, 'HTTP_ACCEPT_ENCODING', FILTER_SANITIZE_STRING);
+        if (
+            $accept_encoding === false
+            || $accept_encoding === null
+            || empty($accept_encoding)
+            || !\is_string($accept_encoding)
+        ) {
             return $data;
         }
 
@@ -116,6 +116,22 @@ class Response extends AbstractController
 
         $this->addHeader('Content-Encoding: ' . $encoding);
         return gzencode($data, (int)$level);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getReasonPhrase()
+    {
+        return $this->ReasonPhrase;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getStatusCode()
+    {
+        return $this->StatusCode;
     }
 
     /**
@@ -161,7 +177,10 @@ class Response extends AbstractController
              header('Server-Timing: total;dur=' . round(1000 * (microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']), 1));
         }
 
-        if ($this->ResponseBody !== null && $this->Request->getMethod() !== 'HEAD') {
+        if (
+            $this->ResponseBody !== null 
+            && filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_STRING) !== 'HEAD'
+        ) {
             echo $this->ResponseBody;
         }
     }
@@ -202,7 +221,7 @@ class Response extends AbstractController
             $level = 0;
         } elseif ($level === true) {
             $level = -1;
-        } elseif (!is_int($level)) {
+        } elseif (!\is_int($level)) {
             throw new \InvalidArgumentException(__METHOD__ . ' expects parameter 1 to be an integer or boolean.');
         }
 
@@ -216,6 +235,39 @@ class Response extends AbstractController
     }
 
     /**
+     * Set the HTTP response status code.
+     *
+     * @param int $code
+     *   HTTP response status code as an integer.
+     */
+    public function setStatusCode($code)
+    {
+        $this->StatusCode = $code;
+    }
+
+    /**
+     * Set the reason response phrase.
+     * 
+     * @param string|null $reason_phrase
+     *   Reason phrase associated with the response status code.
+     *   The reason phrase value MAY be empty.
+     *
+     * @return void
+     */
+    public function setReasonPhrase($reason_phrase)
+    {
+        if ($reason_phrase === null || empty($reason_phrase)) {
+            $reason_phrase = '';
+        }
+
+        if (!is_string($reason_phrase)) {
+            throw new \InvalidArgumentException();
+        }
+
+        $this->ReasonPhrase = $reason_phrase;
+    }
+
+    /**
      * Set the response content.
      *
      * @param string $output
@@ -224,5 +276,16 @@ class Response extends AbstractController
     public function setResponseBody($output)
     {
         $this->ResponseBody = $output;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function withStatus($code, $reason_phrase = '')
+    {
+        $response = clone $this;
+        $response->setStatusCode($code);
+        $response->setReasonPhrase($reason_phrase);
+        return $response;
     }
 }

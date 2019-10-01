@@ -4,7 +4,7 @@ namespace StoreCore\Admin;
 use StoreCore\Admin\ManifestModel;
 use StoreCore\AbstractController;
 use StoreCore\Registry;
-use StoreCore\Response;
+use StoreCore\ResponseFactory;
 use StoreCore\View;
 
 /**
@@ -50,7 +50,8 @@ class ManifestController extends AbstractController
         $this->View->setValues($manifest_members);
         $manifest = $this->View->render();
 
-        $this->Response = new Response($this->Registry);
+        $factory = new ResponseFactory();
+        $response = $factory->createResponse();
         $this->Response->addHeader('Content-Type: application/manifest+json;charset=UTF-8');
         $this->Response->setResponseBody($manifest);
         $this->Response->output();

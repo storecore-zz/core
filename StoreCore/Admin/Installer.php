@@ -3,7 +3,7 @@ namespace StoreCore\Admin;
 
 use StoreCore\AbstractController;
 use StoreCore\Registry;
-use StoreCore\Response;
+use StoreCore\ResponseFactory;
 
 /**
  * StoreCore Installer
@@ -62,7 +62,8 @@ class Installer extends AbstractController
                             $this->Logger->notice('Completed installation of StoreCore version ' . STORECORE_VERSION . '.');
                             $this->SelfDestruct = true;
 
-                            $response = new Response($this->Registry);
+                            $factory = new ResponseFactory();
+                            $response = $factory->createResponse(302);
                             $response->redirect('/admin/sign-in/');
                             exit;
                         }
@@ -106,7 +107,8 @@ class Installer extends AbstractController
         } catch (\PDOException $e) {
             $this->Logger->critical($e->getMessage());
             if ($this->Request->getRequestTarget() !== '/admin/settings/database/account/') {
-                $response = new Response($this->Registry);
+                $factory = new ResponseFactory();
+                $response = $factory->createResponse(302);
                 $response->redirect('/admin/settings/database/account/');
             } else {
                 $route = new \StoreCore\Route('/admin/settings/database/account/', '\StoreCore\Admin\SettingsDatabaseAccount');
@@ -398,7 +400,8 @@ class Installer extends AbstractController
 
         $document = new \StoreCore\Admin\Document();
         $document->addSection($form, 'main');
-        $response = new Response($this->Registry);
+        $factory = new ResponseFactory();
+        $response = $factory->createResponse();
         $response->setResponseBody($document);
         $response->output();
 

@@ -1,16 +1,23 @@
 <?php
 namespace StoreCore\Admin;
 
+use StoreCore\Admin\Document;
+
+use StoreCore\AbstractController;
+use StoreCore\Registry;
+use StoreCore\ResponseFactory;
+use StoreCore\Response;
+
 /**
  * Admin Lock Screen
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015–2018 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @copyright Copyright © 2015–2019 StoreCore™
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-class LockScreen extends \StoreCore\AbstractController
+class LockScreen extends AbstractController
 {
     /**
      * @var string VERSION
@@ -26,7 +33,7 @@ class LockScreen extends \StoreCore\AbstractController
      *
      * @return void
      */
-    public function __construct(\StoreCore\Registry $registry)
+    public function __construct(Registry $registry)
     {
         parent::__construct($registry);
 
@@ -45,11 +52,12 @@ class LockScreen extends \StoreCore\AbstractController
             . '</h1>'
             . '</div>';
 
-        $lock_screen = new \StoreCore\Admin\Document();
+        $lock_screen = new Document();
         $lock_screen->setTitle('StoreCore™');
         $lock_screen->addSection($html, '');
 
-        $response = new \StoreCore\Response($this->Registry);
+        $factory = new ResponseFactory();
+        $response = $factory->createResponse();
         $response->addHeader('X-Robots-Tag: noindex');
         $response->setResponseBody($lock_screen);
         $response->output();
