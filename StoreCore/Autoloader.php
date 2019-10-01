@@ -14,7 +14,7 @@ namespace StoreCore;
  * @api
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
  * @copyright Copyright © 2014–2019 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @see       https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader-examples.md
  * @version   1.0.0-beta.1
  */

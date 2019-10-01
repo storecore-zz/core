@@ -6,7 +6,7 @@ namespace StoreCore\Database;
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
  * @copyright Copyright (c) 2015 StoreCore
- * @license   http://www.gnu.org/licenses/gpl.html
+ * @license   https://www.gnu.org/licenses/gpl.html
  * @version   0.0.1
  */
 class Robots extends \StoreCore\AbstractModel

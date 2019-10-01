@@ -6,7 +6,7 @@ namespace Google\Analytics;
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
  * @copyright Copyright © 2016–2018 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\BI
  * @see       https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters
  * @uses      \StoreCore\Types\ClientID
