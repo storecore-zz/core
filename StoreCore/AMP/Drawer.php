@@ -12,7 +12,7 @@ use \StoreCore\Types\StringableInterface as StringableInterface;
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
  * @copyright Copyright © 2019 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
  * @see       https://material.io/design/components/navigation-drawer.html
  * @see       https://material.io/develop/web/components/drawers/

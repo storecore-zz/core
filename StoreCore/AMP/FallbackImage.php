@@ -6,7 +6,7 @@ namespace StoreCore\AMP;
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
  * @copyright Copyright © 2017–2019 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
  * @see       https://amp.dev/documentation/components/amp-img
  * @see       https://amp.dev/documentation/guides-and-tutorials/develop/style_and_layout/placeholders

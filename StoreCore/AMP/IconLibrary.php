@@ -11,7 +11,7 @@ namespace StoreCore\AMP;
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
  * @copyright Copyright code © 2018–2019 StoreCore™
- * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License
+ * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @copyright Copyright icons © 2014-2019 Google
  * @license   https://www.apache.org/licenses/LICENSE-2.0.html Apache License, Version 2.0
  * @package   StoreCore\CMS
