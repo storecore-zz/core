@@ -29,6 +29,7 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($class->isSubclassOf('\StoreCore\Database\AbstractDataAccessObject'));
     }
 
+
     /**
      * @group distro
      * @testdox VERSION constant is defined
@@ -42,31 +43,24 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
-     * @testdox VERSION constant is not empty
+     * @testdox VERSION constant is non-empty string
      */
-    public function testVersionConstantIsNotEmpty()
+    public function testVersionConstantIsNonEmptyString()
     {
         $this->assertNotEmpty(\StoreCore\Database\UserMapper::VERSION);
+        $this->assertInternalType('string', \StoreCore\Database\UserMapper::VERSION);
     }
 
     /**
-     * @depends testVersionConstantIsDefined
+     * @depends testVersionConstantIsNonEmptyString
      * @group distro
-     * @testdox VERSION constant is string
-     */
-    public function testVersionConstantIsString()
-    {
-        $this->assertTrue(is_string(\StoreCore\Database\UserMapper::VERSION));
-    }
-
-    /**
-     * @depends testVersionConstantIsDefined
-     * @group distro
+     * @testdox VERSION matches master branch
      */
     public function testVersionMatchesMasterBranch()
     {
         $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Database\UserMapper::VERSION);
     }
+
 
     /**
      * @group hmvc

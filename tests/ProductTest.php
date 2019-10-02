@@ -47,11 +47,11 @@ class ProductTest extends PHPUnit_Framework_TestCase
     public function testVersionConstantIsNonEmptyString()
     {
         $this->assertNotEmpty(\StoreCore\Product::VERSION);
-        $this->assertTrue(is_string(\StoreCore\Product::VERSION));
+        $this->assertInternalType('string', \StoreCore\Product::VERSION);
     }
 
     /**
-     * @depends testVersionConstantIsDefined
+     * @depends testVersionConstantIsNonEmptyString
      * @group distro
      * @testdox VERSION matches master branch
      */

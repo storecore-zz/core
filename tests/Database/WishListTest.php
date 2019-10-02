@@ -29,6 +29,7 @@ class WishListTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($class->isSubclassOf('\StoreCore\Database\Order'));
     }
 
+
     /**
      * @group distro
      * @testdox VERSION constant is defined
@@ -42,26 +43,18 @@ class WishListTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
-     * @testdox VERSION constant is not empty
+     * @testdox VERSION constant is non-empty string
      */
-    public function testVersionConstantIsNotEmpty()
+    public function testVersionConstantIsNonEmptyString()
     {
         $this->assertNotEmpty(\StoreCore\Database\WishList::VERSION);
+        $this->assertInternalType('string', \StoreCore\Database\WishList::VERSION);
     }
 
     /**
-     * @depends testVersionConstantIsDefined
+     * @depends testVersionConstantIsNonEmptyString
      * @group distro
-     * @testdox VERSION constant is string
-     */
-    public function testVersionConstantIsString()
-    {
-        $this->assertTrue(is_string(\StoreCore\Database\WishList::VERSION));
-    }
-
-    /**
-     * @depends testVersionConstantIsDefined
-     * @group distro
+     * @testdox VERSION matches master branch
      */
     public function testVersionMatchesMasterBranch()
     {

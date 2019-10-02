@@ -49,6 +49,7 @@ class ProductIDTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $product_id);
     }
 
+
     /**
      * @group distro
      * @testdox VERSION constant is defined
@@ -62,25 +63,16 @@ class ProductIDTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
-     * @testdox VERSION constant is not empty
+     * @testdox VERSION constant is non-empty string
      */
-    public function testVersionConstantIsNotEmpty()
+    public function testVersionConstantIsNonEmptyString()
     {
         $this->assertNotEmpty(\StoreCore\Types\ProductID::VERSION);
+        $this->assertInternalType('string', \StoreCore\Types\ProductID::VERSION);
     }
 
     /**
-     * @depends testVersionConstantIsDefined
-     * @group distro
-     * @testdox VERSION constant is string
-     */
-    public function testVersionConstantIsString()
-    {
-        $this->assertTrue(is_string(\StoreCore\Types\ProductID::VERSION));
-    }
-
-    /**
-     * @depends testVersionConstantIsDefined
+     * @depends testVersionConstantIsNonEmptyString
      * @group distro
      * @testdox VERSION matches master branch
      */
@@ -88,6 +80,7 @@ class ProductIDTest extends PHPUnit_Framework_TestCase
     {
         $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Types\ProductID::VERSION);
     }
+
 
     /**
      * @testdox Constructor requires at least one paramater

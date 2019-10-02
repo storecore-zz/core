@@ -22,6 +22,7 @@ class PaymentReferenceTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group distro
+     * @testdox VERSION constant is defined
      */
     public function testVersionConstantIsDefined()
     {
@@ -32,26 +33,18 @@ class PaymentReferenceTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
+     * @testdox VERSION constant is non-empty string
      */
-    public function testVersionConstantIsNotEmpty()
+    public function testVersionConstantIsNonEmptyString()
     {
-        $class = new \ReflectionClass('\StoreCore\Types\PaymentReference');
-        $this->assertNotEmpty($class->getConstant('VERSION'));
+        $this->assertNotEmpty(\StoreCore\Types\PaymentReference::VERSION);
+        $this->assertInternalType('string', \StoreCore\Types\PaymentReference::VERSION);
     }
 
     /**
-     * @depends testVersionConstantIsDefined
+     * @depends testVersionConstantIsNonEmptyString
      * @group distro
-     */
-    public function testVersionConstantIsString()
-    {
-        $class = new \ReflectionClass('\StoreCore\Types\PaymentReference');
-        $this->assertTrue(is_string($class->getConstant('VERSION')));
-    }
-
-    /**
-     * @depends testVersionConstantIsNotEmpty
-     * @group distro
+     * @testdox VERSION matches master branch
      */
     public function testVersionMatchesMasterBranch()
     {
