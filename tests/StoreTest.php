@@ -84,27 +84,25 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @testdox Public getDateTimeZone() method returns object
+     * @testdox Store::getDateTimeZone() returns object
      */
-    public function testPublicGetDateTimeZoneMethodReturnsObject()
+    public function testStoreGetDateTimeZoneReturnsObject()
     {
-        $object = new \StoreCore\Store(\StoreCore\Registry::getInstance());
-        $return = $object->getDateTimeZone();
-        $this->assertTrue(is_object($return));
+        $store = new \StoreCore\Store(\StoreCore\Registry::getInstance());
+        $this->assertInternalType('object', $store->getDateTimeZone());
     }
 
     /**
-     * @testdox Public getDateTimeZone() method returns DateTimeZone object by default
+     * @testdox Store::getDateTimeZone() returns DateTimeZone object by default
      */
-    public function testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault()
+    public function testStoreGetDateTimeZoneReturnsDateTimeZoneObjectByDefault()
     {
-        $object = new \StoreCore\Store(\StoreCore\Registry::getInstance());
-        $return = $object->getDateTimeZone();
-        $this->assertInstanceOf(\DateTimeZone::class, $return);
+        $store = new \StoreCore\Store(\StoreCore\Registry::getInstance());
+        $this->assertInstanceOf(\DateTimeZone::class, $store->getDateTimeZone());
     }
 
     /**
-     * @depends testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault
+     * @depends testStoreGetDateTimeZoneReturnsDateTimeZoneObjectByDefault
      * @testdox Public getDateTimeZone() method returns 'UTC' DateTimeZone by default
      */
     public function testPublicGetDateTimeZoneMethodReturnsUTCDateTimeZoneByDefault()
@@ -242,7 +240,7 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault
+     * @depends testStoreGetDateTimeZoneReturnsDateTimeZoneObjectByDefault
      * @testdox Public setDateTimeZone() method accepts common timezone identifiers
      */
     public function testPublicSetDateTimeZoneMethodAcceptsCommonTimezoneIdentifiers()

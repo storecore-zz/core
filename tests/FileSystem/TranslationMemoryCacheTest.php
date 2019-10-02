@@ -9,8 +9,10 @@ class TranslationMemoryCacheTest extends PHPUnit_Framework_TestCase
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'FileSystem/TranslationMemoryCache.php');
     }
 
+
     /**
      * @group distro
+     * @testdox VERSION constant is defined
      */
     public function testVersionConstantIsDefined()
     {
@@ -21,31 +23,24 @@ class TranslationMemoryCacheTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
+     * @testdox VERSION constant is non-empty string
      */
-    public function testVersionConstantIsNotEmpty()
+    public function testVersionConstantIsNonEmptyString()
     {
-        $class = new \ReflectionClass('\StoreCore\FileSystem\TranslationMemoryCache');
-        $this->assertNotEmpty($class->getConstant('VERSION'));
+        $this->assertNotEmpty(\StoreCore\FileSystem\TranslationMemoryCache::VERSION);
+        $this->assertInternalType('string', \StoreCore\FileSystem\TranslationMemoryCache::VERSION);
     }
 
     /**
-     * @depends testVersionConstantIsDefined
+     * @depends testVersionConstantIsNonEmptyString
      * @group distro
-     */
-    public function testVersionConstantIsString()
-    {
-        $class = new \ReflectionClass('\StoreCore\FileSystem\TranslationMemoryCache');
-        $this->assertTrue(is_string($class->getConstant('VERSION')));
-    }
-
-    /**
-     * @depends testVersionConstantIsDefined
-     * @group distro
+     * @testdox VERSION matches master branch
      */
     public function testVersionMatchesMasterBranch()
     {
         $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\FileSystem\TranslationMemoryCache::VERSION);
     }
+
 
     /**
      * @testdox Public static rebuild() method exists

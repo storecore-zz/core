@@ -64,6 +64,7 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group hmvc
+     * @testdox TABLE_NAME constant is defined
      */
     public function testTableNameConstantIsDefined()
     {
@@ -74,17 +75,17 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testTableNameConstantIsDefined
      * @group hmvc
+     * @testdox TABLE_NAME constant is non-empty string
      */
     public function testTableNameConstantIsNonEmptyString()
     {
-        $class = new \ReflectionClass('\StoreCore\Database\UserMapper');
-        $class_constant = $class->getConstant('TABLE_NAME');
-        $this->assertNotEmpty($class_constant);
-        $this->assertTrue(is_string($class_constant));
+        $this->assertNotEmpty(\StoreCore\Database\UserMapper::TABLE_NAME);
+        $this->assertInternalType('string', \StoreCore\Database\UserMapper::TABLE_NAME);
     }
 
     /**
      * @group hmvc
+     * @testdox PRIMARY_KEY constant is defined
      */
     public function testPrimaryKeyConstantIsDefined()
     {
@@ -95,14 +96,14 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testPrimaryKeyConstantIsDefined
      * @group hmvc
+     * @testdox PRIMARY_KEY constant is non-empty string
      */
     public function testPrimaryKeyConstantIsNonEmptyString()
     {
-        $class = new \ReflectionClass('\StoreCore\Database\UserMapper');
-        $class_constant = $class->getConstant('PRIMARY_KEY');
-        $this->assertNotEmpty($class_constant);
-        $this->assertTrue(is_string($class_constant));
+        $this->assertNotEmpty(\StoreCore\Database\UserMapper::PRIMARY_KEY);
+        $this->assertInternalType('string', \StoreCore\Database\UserMapper::PRIMARY_KEY);
     }
+
 
     /**
      * @testdox Public ban() method exists

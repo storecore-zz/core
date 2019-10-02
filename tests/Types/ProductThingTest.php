@@ -82,13 +82,13 @@ class ProductThingTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group hmvc
-     * @testdox Public __toString() method returns string
+     * @testdox Product::__toString() returns string
      */
-    public function testPublicToStringMethodReturnsString()
+    public function testProductToStringReturnsString()
     {
         $product = new \StoreCore\Types\Product();
-        $product = (string)$product;
-        $this->assertTrue(is_string($product));
+        $product = (string) $product;
+        $this->assertInternalType('string', $product);
     }
 
     /**
@@ -98,7 +98,7 @@ class ProductThingTest extends PHPUnit_Framework_TestCase
     public function testProductToStringReturnsNonEmptyString()
     {
         $product = new \StoreCore\Types\Product();
-        $product = (string)$product;
+        $product = (string) $product;
         $this->assertNotEmpty($product);
         $this->assertInternalType('string', $product);
     }

@@ -137,7 +137,7 @@ class LocationTest extends PHPUnit_Framework_TestCase
     public function testLocationGetReturnsString()
     {
         $location = new \StoreCore\Location();
-        $this->assertTrue(is_string($location->get()));
+        $this->assertInternalType('string', $location->get());
     }
 
 

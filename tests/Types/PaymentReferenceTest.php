@@ -98,7 +98,7 @@ class PaymentReferenceTest extends PHPUnit_Framework_TestCase
     public function testPaymentReferenceToStringReturnsNonEmptyString()
     {
         $data_object = new \StoreCore\Types\PaymentReference();
-        $data = (string)$data_object;
+        $data = (string) $data_object;
         $this->assertNotEmpty($data);
         $this->assertInternalType('string', $data);
     }
@@ -110,7 +110,7 @@ class PaymentReferenceTest extends PHPUnit_Framework_TestCase
     public function testPaymentReferenceToStringReturnsNumericString()
     {
         $data_object = new \StoreCore\Types\PaymentReference();
-        $data = (string)$data_object;
+        $data = (string) $data_object;
         $this->assertTrue(is_numeric($data));
     }
 

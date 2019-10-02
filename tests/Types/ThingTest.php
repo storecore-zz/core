@@ -82,13 +82,13 @@ class ThingTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group hmvc
-     * @testdox Public __toString() method returns string
+     * @testdox Thing::__toString() method returns string
      */
-    public function testPublicToStringMethodReturnsString()
+    public function testThingToStringReturnsString()
     {
         $thing = new \StoreCore\Types\Thing();
-        $thing = (string)$thing;
-        $this->assertTrue(is_string($thing));
+        $thing = (string) $thing;
+        $this->assertInternalType('string', $thing);
     }
 
     /**
