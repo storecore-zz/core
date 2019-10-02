@@ -47,326 +47,460 @@ class UserTest extends PHPUnit_Framework_TestCase
 
 
     /**
-     * @testdox Public authenticate() method exists
+     * @testdox User::authenticate() exists
      */
-    public function testPublicAuthenticateMethodExists()
+    public function testUserAuthenticateExists()
     {
         $class = new \ReflectionClass('\StoreCore\User');
         $this->assertTrue($class->hasMethod('authenticate'));
     }
 
     /**
-     * @testdox Public authenticate() method is public
+     * @testdox User::authenticate() is public
      */
-    public function testPublicAuthenticateMethodIsPublic()
+    public function testUserAuthenticateIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\User', 'authenticate');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public authenticate($password) method has one required parameter
+     * @testdox User::authenticate() has one required parameter
      */
-    public function testPublicAuthenticateMethodHasOneRequiredParameter()
+    public function testUserAuthenticateHasOneRequiredParameter()
     {
         $method = new \ReflectionMethod('\StoreCore\User', 'authenticate');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
         $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
     }
 
     /**
-     * @testdox Public getDateTimeZone() method exists
+     * @testdox User::authenticate() returns bool false by default
      */
-    public function testPublicGetDateTimeZoneMethodExists()
+    public function testUserAuthenticateReturnsBoolFalseByDefault()
+    {
+        $user = new \StoreCore\User();
+        $password = 'TopSecret';
+        $this->assertInternalType('bool', $user->authenticate($password));
+        $this->assertFalse($user->authenticate($password));
+    }
+
+
+    /**
+     * @testdox User::getDateTimeZone() exists
+     */
+    public function testUserGetDateTimeZoneExists()
     {
         $class = new \ReflectionClass('\StoreCore\User');
         $this->assertTrue($class->hasMethod('getDateTimeZone'));
     }
 
     /**
-     * @testdox Public getDateTimeZone() method is public
+     * @depends testUserGetDateTimeZoneExists
+     * @testdox User::getDateTimeZone() is public
      */
-    public function testPublicGetDateTimeZoneMethodIsPublic()
+    public function testUserGetDateTimeZoneIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\User', 'getDateTimeZone');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public getDateTimeZone() method returns object
+     * @depends testUserGetDateTimeZoneExists
+     * @testdox User::getDateTimeZone() has no parameters
      */
-    public function testPublicGetDateTimeZoneMethodReturnsObject()
+    public function testUserGetDateTimeZoneHasNoParameters()
     {
-        $user = new \StoreCore\User();
-        $this->assertTrue(is_object($user->getDateTimeZone()));
+        $method = new \ReflectionMethod('\StoreCore\User', 'getDateTimeZone');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
     }
 
     /**
-     * @testdox Public getDateTimeZone() method returns DateTimeZone object by default
+     * @testdox User::getDateTimeZone() returns object
      */
-    public function testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault()
+    public function testUserGetDateTimeZoneReturnsObject()
+    {
+        $user = new \StoreCore\User();
+        $this->assertInternalType('object', $user->getDateTimeZone());
+    }
+
+    /**
+     * @testdox User::getDateTimeZone() returns DateTimeZone object by default
+     */
+    public function testUserGetDateTimeZoneReturnsDateTimeZoneObjectByDefault()
     {
         $user = new \StoreCore\User();
         $this->assertInstanceOf(\DateTimeZone::class, $user->getDateTimeZone());
     }
 
     /**
-     * @depends testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault
-     * @testdox Public getDateTimeZone() method returns 'UTC' DateTimeZone by default
+     * @depends testUserGetDateTimeZoneReturnsDateTimeZoneObjectByDefault
+     * @testdox User::getDateTimeZone() returns 'UTC' DateTimeZone by default
      */
-    public function testPublicGetDateTimeZoneMethodReturnsUTCDateTimeZoneByDefault()
+    public function testUserGetDateTimeZoneReturnsUTCDateTimeZoneByDefault()
     {
         $user = new \StoreCore\User();
         $this->assertEquals('UTC', $user->getDateTimeZone()->getName());
     }
 
+
     /**
-     * @testdox Public getEmailAddress() method exists
+     * @testdox User::getEmailAddress() exists
      */
-    public function testPublicGetEmailAddressMethodExists()
+    public function testUserGetEmailAddressExists()
     {
         $class = new \ReflectionClass('\StoreCore\User');
         $this->assertTrue($class->hasMethod('getEmailAddress'));
     }
 
     /**
-     * @testdox Public getEmailAddress() method is public
+     * @testdox User::getEmailAddress() is public
      */
-    public function testPublicGetEmailAddressMethodIsPublic()
+    public function testUserGetEmailAddressIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\User', 'getEmailAddress');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public getHashAlgorithm() method exists
+     * @testdox User::getEmailAddress() has no parameters
      */
-    public function testPublicGetHashAlgorithmMethodExists()
+    public function testUserGetEmailAddressHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\User', 'getEmailAddress');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+
+    /**
+     * @testdox User::getHashAlgorithm() exists
+     */
+    public function testUserGetHashAlgorithmExists()
     {
         $class = new \ReflectionClass('\StoreCore\User');
         $this->assertTrue($class->hasMethod('getHashAlgorithm'));
     }
 
     /**
-     * @testdox Public getHashAlgorithm() method is public
+     * @testdox User::getHashAlgorithm() is public
      */
-    public function testPublicGetHashAlgorithmMethodIsPublic()
+    public function testUserGetHashAlgorithmIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\User', 'getHashAlgorithm');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public getLanguageID() method exists
+     * @testdox User::getHashAlgorithm() has no parameters
      */
-    public function testPublicGetLanguageIDMethodExists()
+    public function testUserGetHashAlgorithmHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\User', 'getHashAlgorithm');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+    /**
+     * @testdox User::getHashAlgorithm() returns null by default
+     */
+    public function testUserGetHashAlgorithmReturnsNullByDefault()
+    {
+        $user = new \StoreCore\User();
+        $this->assertNull($user->getHashAlgorithm());
+    }
+
+
+    /**
+     * @testdox User::getLanguageID() exists
+     */
+    public function testUserGetLanguageIdExists()
     {
         $class = new \ReflectionClass('\StoreCore\User');
         $this->assertTrue($class->hasMethod('getLanguageID'));
     }
 
     /**
-     * @testdox Public getLanguageID() method is public
+     * @testdox User::getLanguageID() is public
      */
-    public function testPublicGetLanguageIDMethodIsPublic()
+    public function testUserGetLanguageIdIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\User', 'getLanguageID');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public getLanguageID() method returns string 'en-GB' by default
+     * @testdox User::getLanguageID() has no parameters
      */
-    public function testPublicGetLanguageIDMethodReturnsStringForBritishEnglishByDefault()
+    public function testUserGetLanguageIdHasNoParameters()
     {
-        $object = new \StoreCore\User();
-        $this->assertTrue(is_string($object->getLanguageID()));
-        $this->assertEquals('en-GB', $object->getLanguageID());
+        $method = new \ReflectionMethod('\StoreCore\User', 'getLanguageID');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
     }
 
     /**
-     * @testdox Public getPasswordHash() method exists
+     * @testdox User::getLanguageID() returns string 'en-GB' by default
      */
-    public function testPublicGetPasswordHashMethodExists()
+    public function testUserGetLanguageIdReturnsStringForBritishEnglishByDefault()
+    {
+        $object = new \StoreCore\User();
+        $this->assertInternalType('string', $object->getLanguageID());
+        $this->assertEquals('en-GB', $object->getLanguageID());
+    }
+
+
+    /**
+     * @testdox User::getPasswordHash() exists
+     */
+    public function testUserGetPasswordHashExists()
     {
         $class = new \ReflectionClass('\StoreCore\User');
         $this->assertTrue($class->hasMethod('getPasswordHash'));
     }
 
     /**
-     * @testdox Public getPasswordHash() method is public
+     * @testdox User::getPasswordHash() is public
      */
-    public function testPublicGetPasswordHashMethodIsPublic()
+    public function testUserGetPasswordHashIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\User', 'getPasswordHash');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public getPasswordSalt() method exists
+     * @testdox User::getPasswordHash() has no parameters
      */
-    public function testPublicGetPasswordSaltMethodExists()
+    public function testUserGetPasswordHashHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\User', 'getPasswordHash');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+
+    /**
+     * @testdox User::getPasswordSalt() exists
+     */
+    public function testUserGetPasswordSaltExists()
     {
         $class = new \ReflectionClass('\StoreCore\User');
         $this->assertTrue($class->hasMethod('getPasswordSalt'));
     }
 
     /**
-     * @testdox Public getPasswordSalt() method is public
+     * @testdox User::getPasswordSalt() is public
      */
-    public function testPublicGetPasswordSaltMethodIsPublic()
+    public function testUserGetPasswordSaltIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\User', 'getPasswordSalt');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public getPersonID() method exists
+     * @testdox User::getPasswordSalt() has no parameters
      */
-    public function testPublicGetPersonIDMethodExists()
+    public function testUserGetPasswordSaltHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\User', 'getPasswordSalt');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+
+    /**
+     * @testdox User::getPersonID() exists
+     */
+    public function testUserGetPersonIdExists()
     {
         $class = new \ReflectionClass('\StoreCore\User');
         $this->assertTrue($class->hasMethod('getPersonID'));
     }
 
     /**
-     * @testdox Public getPersonID() method is public
+     * @testdox User::getPersonID() is public
      */
-    public function testPublicGetPersonIDMethodIsPublic()
+    public function testUserGetPersonIdIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\User', 'getPersonID');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public getPersonID() method returns null by default
+     * @testdox User::getPersonID() has no parameters
      */
-    public function testPublicGetPersonIDMethodReturnsNullByDefault()
+    public function testUserGetPersonIdHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\User', 'getPersonID');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+    /**
+     * @testdox User::getPersonID() returns null by default
+     */
+    public function testUserGetPersonIdReturnsNullByDefault()
     {
         $object = new \StoreCore\User();
         $this->assertNull($object->getPersonID());
     }
 
+
     /**
-     * @testdox Public getPIN() method exists
+     * @testdox User::getPIN() exists
      */
-    public function testPublicGetPINMethodExists()
+    public function testUserGetPinExists()
     {
         $class = new \ReflectionClass('\StoreCore\User');
         $this->assertTrue($class->hasMethod('getPIN'));
     }
 
     /**
-     * @testdox Public getPIN() method is public
+     * @testdox User::getPIN() is public
      */
-    public function testPublicGetPINMethodIsPublic()
+    public function testUserGetPinIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\User', 'getPIN');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public getPIN() method returns string '0000' by default
+     * @testdox User::getPIN() has no parameters
      */
-    public function testPublicGetPINMethodReturnsString0000ByDefault()
+    public function testUserGetPinHasNoParameters()
     {
-        $object = new \StoreCore\User();
-        $this->assertTrue(is_string($object->getPIN()));
-        $this->assertEquals('0000', $object->getPIN());
+        $method = new \ReflectionMethod('\StoreCore\User', 'getPIN');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
     }
 
     /**
-     * @testdox Public getUserGroupID() method exists
+     * @testdox User::getPIN() returns string '0000' by default
      */
-    public function testPublicGetUserGroupIDMethodExists()
+    public function testUserGetPinReturnsString0000ByDefault()
+    {
+        $object = new \StoreCore\User();
+        $this->assertInternalType('string', $object->getPIN());
+        $this->assertEquals('0000', $object->getPIN());
+    }
+
+
+    /**
+     * @testdox User::getUserGroupID() exists
+     */
+    public function testUserGetUserGroupIdExists()
     {
         $class = new \ReflectionClass('\StoreCore\User');
         $this->assertTrue($class->hasMethod('getUserGroupID'));
     }
 
     /**
-     * @testdox Public getUserGroupID() method is public
+     * @testdox User::getUserGroupID() is public
      */
-    public function testPublicGetUserGroupIDMethodIsPublic()
+    public function testUserGetUserGroupIdIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\User', 'getUserGroupID');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public getUserGroupID() method returns int 0 by default
+     * @testdox User::getUserGroupID() has no parameters
      */
-    public function testPublicGetUserGroupIDMethodReturnsInt0ByDefault()
+    public function testUserGetUserGroupIdHasNoParameters()
     {
-        $object = new \StoreCore\User();
-        $this->assertTrue(is_int($object->getUserGroupID()));
-        $this->assertEquals(0, $object->getUserGroupID());
+        $method = new \ReflectionMethod('\StoreCore\User', 'getUserGroupID');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
     }
 
     /**
-     * @testdox Public getUserID() method exists
+     * @testdox User::getUserGroupID() returns int 0 by default
      */
-    public function testPublicGetUserIDMethodExists()
+    public function testUserGetUserGroupIdReturnsInt0ByDefault()
+    {
+        $object = new \StoreCore\User();
+        $this->assertInternalType('int', $object->getUserGroupID());
+        $this->assertEquals(0, $object->getUserGroupID());
+    }
+
+
+    /**
+     * @testdox User::getUserID() exists
+     */
+    public function testUserGetUserIdExists()
     {
         $class = new \ReflectionClass('\StoreCore\User');
         $this->assertTrue($class->hasMethod('getUserID'));
     }
 
     /**
-     * @testdox Public getUserID() method is public
+     * @testdox User::getUserID() is public
      */
-    public function testPublicGetUserIDMethodIsPublic()
+    public function testUserGetUserIdIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\User', 'getUserID');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public getUserID() method returns null by default
+     * @testdox User::getUserID() has no parameters
      */
-    public function testPublicGetUserIDMethodReturnsNullByDefault()
+    public function testUserGetUserIdHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\User', 'getUserID');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+    /**
+     * @testdox User::getUserID() returns null by default
+     */
+    public function testUserGetUserIdReturnsNullByDefault()
     {
         $object = new \StoreCore\User();
         $this->assertNull($object->getUserID());
     }
 
+
     /**
-     * @testdox Public getUsername() method exists
+     * @testdox User::getUsername() exists
      */
-    public function testPublicGetUsernameMethodExists()
+    public function testUserGetUsernameExists()
     {
         $class = new \ReflectionClass('\StoreCore\User');
         $this->assertTrue($class->hasMethod('getUsername'));
     }
 
     /**
-     * @testdox Public getUsername() method is public
+     * @testdox User::getUsername() is public
      */
-    public function testPublicGetUsernameMethodIsPublic()
+    public function testUserGetUsernameIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\User', 'getUsername');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public getUsername() method returns null by default
+     * @testdox User::getUsername() has no parameters
      */
-    public function testPublicGetUsernameMethodReturnsNullByDefault()
+    public function testUserGetUsernameHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\User', 'getUsername');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+    /**
+     * @testdox User::getUsername() returns null by default
+     */
+    public function testUserGetUsernameReturnsNullByDefault()
     {
         $object = new \StoreCore\User();
         $this->assertNull($object->getUsername());
     }
 
+
     /**
-     * @testdox Public setDateTimeZone() method exists
+     * @testdox User::setDateTimeZone() exists
      */
-    public function testPublicSetDateTimeZoneMethodExists()
+    public function testUserSetDateTimeZoneExists()
     {
         $class = new \ReflectionClass('\StoreCore\User');
         $this->assertTrue($class->hasMethod('setDateTimeZone'));
     }
 
     /**
-     * @testdox Public setDateTimeZone() method is public
+     * @testdox User::setDateTimeZone() is public
      */
     public function testPublicSetDateTimeZoneMethodIsPublic()
     {
@@ -375,10 +509,20 @@ class UserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault
-     * @testdox Public setDateTimeZone() method accepts global 'UTC' DateTimeZone
+     * @testdox User::setDateTimeZone() has one required parameter
      */
-    public function testPublicSetDateTimeZoneMethodAcceptsGlobalUTCDateTimeZone()
+    public function testStreamFactoryCreateStreamFromResourceHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\User', 'setDateTimeZone');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+    /**
+     * @depends testUserGetDateTimeZoneReturnsDateTimeZoneObjectByDefault
+     * @testdox User::setDateTimeZone() accepts global 'UTC' DateTimeZone
+     */
+    public function testUserSetDateTimeZoneAcceptsGlobalUtcDateTimeZone()
     {
         $timezone_string = 'UTC';
         $timezone_object = new \DateTimeZone($timezone_string);
@@ -388,73 +532,77 @@ class UserTest extends PHPUnit_Framework_TestCase
         $this->assertSame($timezone_string, $user->getDateTimeZone()->getName());
     }
 
+
     /**
-     * @testdox Public setPasswordHash() method exists
+     * @testdox User::setPasswordHash() exists
      */
-    public function testPublicSetPasswordHashMethodExists()
+    public function testUserSetPasswordHashExists()
     {
         $class = new \ReflectionClass('\StoreCore\User');
         $this->assertTrue($class->hasMethod('setPasswordHash'));
     }
 
     /**
-     * @testdox Public setPasswordHash() method is public
+     * @testdox User::setPasswordHash() is public
      */
-    public function testPublicSetPasswordHashMethodIsPublic()
+    public function testUserSetPasswordHashIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\User', 'setPasswordHash');
         $this->assertTrue($method->isPublic());
     }
 
+
     /**
-     * @testdox Public setPasswordSalt() method exists
+     * @testdox User::setPasswordSalt() exists
      */
-    public function testPublicSetPasswordSaltMethodExists()
+    public function testUserSetPasswordSaltExists()
     {
         $class = new \ReflectionClass('\StoreCore\User');
         $this->assertTrue($class->hasMethod('setPasswordSalt'));
     }
 
     /**
-     * @testdox Public setPasswordSalt() method is public
+     * @testdox User::setPasswordSalt() is public
      */
-    public function testPublicSetPasswordSaltMethodIsPublic()
+    public function testUserSetPasswordSaltIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\User', 'setPasswordSalt');
         $this->assertTrue($method->isPublic());
     }
 
+
     /**
-     * @testdox Public setPersonID() method exists
+     * @testdox User::setPersonID() exists
      */
-    public function testPublicSetPersonIDMethodExists()
+    public function testUserSetPersonIdExists()
     {
         $class = new \ReflectionClass('\StoreCore\User');
         $this->assertTrue($class->hasMethod('setPersonID'));
     }
 
     /**
-     * @testdox Public setPersonID() method is public
+     * @testdox User::setPersonID() is public
      */
-    public function testPublicSetPersonIDMethodIsPublic()
+    public function testUserSetPersonIdIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\User', 'setPersonID');
         $this->assertTrue($method->isPublic());
     }
 
+
     /**
-     * @testdox Public setPIN() method exists
+     * @testdox User::setPIN() exists
      */
-    public function testPublicSetPINMethodExists()
+    public function testUserSetPinExists()
     {
         $class = new \ReflectionClass('\StoreCore\User');
         $this->assertTrue($class->hasMethod('setPIN'));
     }
 
     /**
-     * @testdox Public setPIN() method is public
+     * @testdox User::setPIN() is public
      */
-    public function testPublicSetPINMethodIsPublic()
+    public function testUserSetPinIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\User', 'setPIN');
         $this->assertTrue($method->isPublic());
@@ -462,37 +610,58 @@ class UserTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \UnexpectedValueException
-     * @testdox Public setPIN() method throws \UnexpectedValueException on letters
+     * @testdox User::setPIN() throws \UnexpectedValueException on letters
      */
-    public function testPublicSetPINMethodThrowsUnexpectedValueExceptionOnLetters()
+    public function testUserSetPinThrowsUnexpectedValueExceptionOnLetters()
     {
         $object = new \StoreCore\User();
         $object->setPIN('ABCD');
     }
 
+
     /**
-     * @testdox Public setUserGroupID() method exists
+     * @testdox User::setUserGroupID() exists
      */
-    public function testPublicSetUserGroupIDExists()
+    public function testUserSetUserGroupIdExists()
     {
         $class = new \ReflectionClass('\StoreCore\User');
         $this->assertTrue($class->hasMethod('setUserGroupID'));
     }
 
     /**
-     * @testdox Public setUserGroupID() method is public
+     * @testdox User::setUserGroupID() is public
      */
-    public function testPublicSetUserGroupIDIsPublic()
+    public function testUserSetUserGroupIdIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\User', 'setUserGroupID');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @expectedException \DomainException
-     * @testdox Public setUserGroupID() method throws \DomainException on tinyint less than 0
+     * @testdox User::setUserGroupID() has one required parameter
      */
-    public function testPublicSetUserGroupIDMethodThrowsDomainExceptionOnTinyintLessThanZero()
+    public function testUserSetUserGroupIdHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\User', 'setUserGroupID');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @testdox User::setUserGroupID() requires integer
+     */
+    public function testUserSetUserGroupIdRequiresInteger()
+    {
+        $user = new \StoreCore\User();
+        $user->setUserGroupID(1.2);
+    }
+
+    /**
+     * @expectedException \DomainException
+     * @testdox User::setUserGroupID() throws \DomainException on tinyint less than 0
+     */
+    public function testUserSetUserGroupIdThrowsDomainExceptionOnTinyintLessThanZero()
     {
         $object = new \StoreCore\User();
         $object->setUserGroupID(-1);
@@ -500,47 +669,101 @@ class UserTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \DomainException
-     * @testdox Public setUserGroupID() method throws \DomainException on tinyint greater than 255
+     * @testdox User::setUserGroupID() throws \DomainException on tinyint greater than 255
      */
-    public function testPublicSetUserGroupIDMethodThrowsDomainExceptionOnTinyintGreaterThan255()
+    public function testUserSetUserGroupIdThrowsDomainExceptionOnTinyintGreaterThan255()
     {
         $object = new \StoreCore\User();
         $object->setUserGroupID(256);
     }
 
+
     /**
-     * @testdox Public setUserID() method exists
+     * @testdox User::setUserID() exists
      */
-    public function testPublicSetUserIDExists()
+    public function testUserSetUserIdExists()
     {
         $class = new \ReflectionClass('\StoreCore\User');
         $this->assertTrue($class->hasMethod('setUserID'));
     }
 
     /**
-     * @testdox Public setUserID() method is public
+     * @testdox User::setUserID() is public
      */
-    public function testPublicSetUserIDIsPublic()
+    public function testUserSetUserIdIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\User', 'setUserID');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public setUsername() method exists
+     * @testdox User::setUserID() has one required parameter
      */
-    public function testPublicSetUsernameExists()
+    public function testUserSetUserIdHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\User', 'setUserID');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+
+    /**
+     * @testdox User::setUsername() exists
+     */
+    public function testUserSetUsernameExists()
     {
         $class = new \ReflectionClass('\StoreCore\User');
         $this->assertTrue($class->hasMethod('setUsername'));
     }
 
     /**
-     * @testdox Public setUsername() method is public
+     * @testdox User::setUsername() is public
      */
-    public function testPublicSetUsernameIsPublic()
+    public function testUserSetUsernameIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\User', 'setUsername');
         $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @testdox User::setUsername() has one required parameter
+     */
+    public function testUserSetUsernameHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\User', 'setUsername');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @testdox User::setUsername() requires string
+     */
+    public function testUserSetUsernameRequiresString()
+    {
+        $user = new \StoreCore\User();
+        $user->setUsername(42);
+    }
+
+    /**
+     * @depends testUserSetUsernameRequiresString
+     * @expectedException \InvalidArgumentException
+     * @testdox User::setUsername() requires non-empty string
+     */
+    public function testUserSetUsernameRequiresNonEmptyString()
+    {
+        $user = new \StoreCore\User();
+        $user->setUsername('');
+    }
+
+    /**
+     * @testdox User::setUsername() sets username
+     */
+    public function testUserSetUsernameSetsUsername()
+    {
+        $user = new \StoreCore\User();
+        $this->assertEmpty($user->getUsername());
+        $user->setUsername('Alice Bob');
+        $this->assertSame('Alice Bob', $user->getUsername());
     }
 }
