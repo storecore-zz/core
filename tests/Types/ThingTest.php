@@ -37,6 +37,7 @@ class ThingTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $thing);
     }
 
+
     /**
      * @group distro
      * @testdox VERSION constant is defined
@@ -50,31 +51,24 @@ class ThingTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
-     * @testdox VERSION constant is not empty
+     * @testdox VERSION constant is non-empty string
      */
-    public function testVersionConstantIsNotEmpty()
+    public function testVersionConstantIsNonEmptyString()
     {
         $this->assertNotEmpty(\StoreCore\Types\Thing::VERSION);
+        $this->assertInternalType('string', \StoreCore\Types\Thing::VERSION);
     }
 
     /**
-     * @depends testVersionConstantIsDefined
+     * @depends testVersionConstantIsNonEmptyString
      * @group distro
-     * @testdox VERSION constant is string
-     */
-    public function testVersionConstantIsString()
-    {
-        $this->assertTrue(is_string(\StoreCore\Types\Thing::VERSION));
-    }
-
-    /**
-     * @depends testVersionConstantIsDefined
-     * @group distro
+     * @testox VERSION matches master branch
      */
     public function testVersionMatchesMasterBranch()
     {
         $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Types\Thing::VERSION);
     }
+
 
     /**
      * @group hmvc
@@ -88,13 +82,13 @@ class ThingTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group hmvc
-     * @testdox Public __toString() method returns string
+     * @testdox Thing::__toString() method returns string
      */
-    public function testPublicToStringMethodReturnsString()
+    public function testThingToStringReturnsString()
     {
         $thing = new \StoreCore\Types\Thing();
-        $thing = (string)$thing;
-        $this->assertTrue(is_string($thing));
+        $thing = (string) $thing;
+        $this->assertInternalType('string', $thing);
     }
 
     /**

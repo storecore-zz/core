@@ -17,6 +17,7 @@ class StoreMapperTest extends PHPUnit_Framework_TestCase
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'Database' . DIRECTORY_SEPARATOR . 'AbstractDataAccessObject.php');
     }
 
+
     /**
      * @group distro
      * @testdox VERSION constant is defined
@@ -30,34 +31,28 @@ class StoreMapperTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
-     * @testdox VERSION constant is not empty
+     * @testdox VERSION constant is non-empty string
      */
-    public function testVersionConstantIsNotEmpty()
+    public function testVersionConstantIsNonEmptyString()
     {
         $this->assertNotEmpty(\StoreCore\Database\StoreMapper::VERSION);
+        $this->assertInternalType('string', \StoreCore\Database\StoreMapper::VERSION);
     }
 
     /**
-     * @depends testVersionConstantIsDefined
+     * @depends testVersionConstantIsNonEmptyString
      * @group distro
-     * @testdox VERSION constant is string
-     */
-    public function testVersionConstantIsString()
-    {
-        $this->assertTrue(is_string(\StoreCore\Database\StoreMapper::VERSION));
-    }
-
-    /**
-     * @depends testVersionConstantIsDefined
-     * @group distro
+     * @testdox VERSION matches master branch
      */
     public function testVersionMatchesMasterBranch()
     {
         $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Database\StoreMapper::VERSION);
     }
 
+
     /**
      * @group hmvc
+     * @testdox TABLE_NAME constant is defined
      */
     public function testTableNameConstantIsDefined()
     {
@@ -68,17 +63,17 @@ class StoreMapperTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testTableNameConstantIsDefined
      * @group hmvc
+     * @testdox TABLE_NAME constant is non-empty string
      */
     public function testTableNameConstantIsNonEmptyString()
     {
-        $class = new \ReflectionClass('\StoreCore\Database\StoreMapper');
-        $class_constant = $class->getConstant('TABLE_NAME');
-        $this->assertNotEmpty($class_constant);
-        $this->assertTrue(is_string($class_constant));
+        $this->assertNotEmpty(\StoreCore\Database\StoreMapper::TABLE_NAME);
+        $this->assertInternalType('string', \StoreCore\Database\StoreMapper::TABLE_NAME);
     }
 
     /**
      * @group hmvc
+     * @testdox PRIMARY_KEY constant is defined
      */
     public function testPrimaryKeyConstantIsDefined()
     {
@@ -89,14 +84,14 @@ class StoreMapperTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testPrimaryKeyConstantIsDefined
      * @group hmvc
+     * @testdox PRIMARY_KEY constant is non-empty string
      */
     public function testPrimaryKeyConstantIsNonEmptyString()
     {
-        $class = new \ReflectionClass('\StoreCore\Database\StoreMapper');
-        $class_constant = $class->getConstant('PRIMARY_KEY');
-        $this->assertNotEmpty($class_constant);
-        $this->assertTrue(is_string($class_constant));
+        $this->assertNotEmpty(\StoreCore\Database\StoreMapper::PRIMARY_KEY);
+        $this->assertInternalType('string', \StoreCore\Database\StoreMapper::PRIMARY_KEY);
     }
+
 
     /**
      * @testdox Public find() method exists

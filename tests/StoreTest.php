@@ -23,6 +23,7 @@ class StoreTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(\StoreCore\AbstractModel::class, $store);
     }
 
+
     /**
      * @group distro
      * @testdox VERSION constant is defined
@@ -36,31 +37,24 @@ class StoreTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
-     * @testdox VERSION constant is not empty
+     * @testdox VERSION constant is non-empty string
      */
-    public function testVersionConstantIsNotEmpty()
+    public function testVersionConstantIsNonEmptyString()
     {
         $this->assertNotEmpty(\StoreCore\Store::VERSION);
+        $this->assertInternalType('string', \StoreCore\Store::VERSION);
     }
 
     /**
-     * @depends testVersionConstantIsDefined
+     * @depends testVersionConstantIsNonEmptyString
      * @group distro
-     * @testdox VERSION constant is string
-     */
-    public function testVersionConstantIsString()
-    {
-        $this->assertTrue(is_string(\StoreCore\Store::VERSION));
-    }
-
-    /**
-     * @depends testVersionConstantIsDefined
-     * @group distro
+     * @testdox VERSION matches master branch
      */
     public function testVersionMatchesMasterBranch()
     {
         $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Store::VERSION);
     }
+
 
     /**
      * @testdox Public getDateTimeZone() method exists
@@ -90,27 +84,25 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @testdox Public getDateTimeZone() method returns object
+     * @testdox Store::getDateTimeZone() returns object
      */
-    public function testPublicGetDateTimeZoneMethodReturnsObject()
+    public function testStoreGetDateTimeZoneReturnsObject()
     {
-        $object = new \StoreCore\Store(\StoreCore\Registry::getInstance());
-        $return = $object->getDateTimeZone();
-        $this->assertTrue(is_object($return));
+        $store = new \StoreCore\Store(\StoreCore\Registry::getInstance());
+        $this->assertInternalType('object', $store->getDateTimeZone());
     }
 
     /**
-     * @testdox Public getDateTimeZone() method returns DateTimeZone object by default
+     * @testdox Store::getDateTimeZone() returns DateTimeZone object by default
      */
-    public function testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault()
+    public function testStoreGetDateTimeZoneReturnsDateTimeZoneObjectByDefault()
     {
-        $object = new \StoreCore\Store(\StoreCore\Registry::getInstance());
-        $return = $object->getDateTimeZone();
-        $this->assertInstanceOf(\DateTimeZone::class, $return);
+        $store = new \StoreCore\Store(\StoreCore\Registry::getInstance());
+        $this->assertInstanceOf(\DateTimeZone::class, $store->getDateTimeZone());
     }
 
     /**
-     * @depends testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault
+     * @depends testStoreGetDateTimeZoneReturnsDateTimeZoneObjectByDefault
      * @testdox Public getDateTimeZone() method returns 'UTC' DateTimeZone by default
      */
     public function testPublicGetDateTimeZoneMethodReturnsUTCDateTimeZoneByDefault()
@@ -248,7 +240,7 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testPublicGetDateTimeZoneMethodReturnsDateTimeZoneObjectByDefault
+     * @depends testStoreGetDateTimeZoneReturnsDateTimeZoneObjectByDefault
      * @testdox Public setDateTimeZone() method accepts common timezone identifiers
      */
     public function testPublicSetDateTimeZoneMethodAcceptsCommonTimezoneIdentifiers()

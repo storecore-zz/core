@@ -9,8 +9,10 @@ class FullPageCacheTest extends PHPUnit_Framework_TestCase
         $this->assertFileExists(STORECORE_FILESYSTEM_LIBRARY_ROOT_DIR . 'FileSystem/FullPageCache.php');
     }
 
+
     /**
      * @group distro
+     * @testdox VERSION constant is defined
      */
     public function testVersionConstantIsDefined()
     {
@@ -21,31 +23,24 @@ class FullPageCacheTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
+     * @testdox VERSION constant is non-empty string
      */
-    public function testVersionConstantIsNotEmpty()
+    public function testVersionConstantIsNonEmptyString()
     {
-        $class = new \ReflectionClass('\StoreCore\FileSystem\FullPageCache');
-        $this->assertNotEmpty($class->getConstant('VERSION'));
+        $this->assertNotEmpty(\StoreCore\FileSystem\FullPageCache::VERSION);
+        $this->assertInternalType('string', \StoreCore\FileSystem\FullPageCache::VERSION);
     }
 
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
-     */
-    public function testVersionConstantIsString()
-    {
-        $class = new \ReflectionClass('\StoreCore\FileSystem\FullPageCache');
-        $this->assertTrue(is_string($class->getConstant('VERSION')));
-    }
-
-    /**
-     * @depends testVersionConstantIsDefined
-     * @group distro
+     * @testdox VERSION matches master branch
      */
     public function testVersionMatchesMasterBranch()
     {
         $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\FileSystem\FullPageCache::VERSION);
     }
+
 
     /**
      * @testdox Public static trigger() method exists

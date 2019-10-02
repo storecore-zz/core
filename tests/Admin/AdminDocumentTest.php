@@ -37,8 +37,10 @@ class AdminDocumentTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(\StoreCore\Types\StringableInterface::class, $object);
     }
 
+
     /**
      * @group distro
+     * @testdox VERSION constant is defined
      */
     public function testVersionConstantIsDefined()
     {
@@ -49,22 +51,24 @@ class AdminDocumentTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
+     * @testdox VERSION constant is non-empty string
      */
-    public function testVersionConstantIsNotEmpty()
+    public function testVersionConstantIsNonEmptyString()
     {
-        $class = new \ReflectionClass('\StoreCore\Admin\Document');
-        $this->assertNotEmpty($class->getConstant('VERSION'));
+        $this->assertNotEmpty(\StoreCore\Admin\Document::VERSION);
+        $this->assertInternalType('string', \StoreCore\Admin\Document::VERSION);
     }
 
     /**
-     * @depends testVersionConstantIsDefined
+     * @depends testVersionConstantIsNonEmptyString
      * @group distro
+     * @testdox VERSION matches master branch
      */
-    public function testVersionConstantIsString()
+    public function testVersionMatchesMasterBranch()
     {
-        $class = new \ReflectionClass('\StoreCore\Admin\Document');
-        $this->assertTrue(is_string($class->getConstant('VERSION')));
+        $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Admin\Document::VERSION);
     }
+
 
     /**
      * @group seo

@@ -1,18 +1,23 @@
 <?php
 namespace StoreCore;
 
+use StoreCore\Database\Password;
+
 /**
  * StoreCore User Model
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015–2018 StoreCore™
+ * @copyright Copyright © 2015–2019 StoreCore™
  * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
  * @version   0.1.0
  */
 class User
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -78,7 +83,7 @@ class User
         if ($this->HashAlgorithm == 'SHA-1') {
             $hash = sha1($this->PasswordSalt . $password);
         } else {
-            $hash_factory = new \StoreCore\Database\Password();
+            $hash_factory = new Password();
             $hash_factory->setPassword($password);
             $hash_factory->setSalt($this->PasswordSalt);
             $hash_factory->encrypt();
@@ -400,10 +405,19 @@ class User
      * Set the username.
      *
      * @param string $username
+     *   Username of the user.
+     *
      * @return void
+     *
+     * @throws \InvalidArgumentException
+     *   Throws an invalid argument exception if the username is not a string
+     *   or the username is empty.
      */
     public function setUsername($username)
     {
+        if (!\is_string($username) || empty($username)) {
+            throw new \InvalidArgumentException(__METHOD__ . ' expects parameter 1 to be a non-empty string');
+        }
         $this->Username = $username;
     }
 }

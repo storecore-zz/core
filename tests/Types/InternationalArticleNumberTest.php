@@ -44,6 +44,7 @@ class InternationalArticleNumberTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(\StoreCore\Types\ValidateInterface::class, $object);
     }
 
+
     /**
      * @group distro
      * @testdox VERSION constant is defined
@@ -57,32 +58,28 @@ class InternationalArticleNumberTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
-     * @testdox VERSION constant is not empty
+     * @testdox VERSION constant is non-empty string
      */
-    public function testVersionConstantIsNotEmpty()
+    public function testVersionConstantIsNonEmptyString()
     {
         $this->assertNotEmpty(\StoreCore\Types\InternationalArticleNumber::VERSION);
+        $this->assertInternalType('string', \StoreCore\Types\InternationalArticleNumber::VERSION);
     }
 
     /**
-     * @depends testVersionConstantIsDefined
+     * @depends testVersionConstantIsNonEmptyString
      * @group distro
-     * @testdox VERSION constant is string
-     */
-    public function testVersionConstantIsString()
-    {
-        $this->assertTrue(is_string(\StoreCore\Types\InternationalArticleNumber::VERSION));
-    }
-
-    /**
-     * @depends testVersionConstantIsDefined
-     * @group distro
+     * @testdox VERSION matches master branch
      */
     public function testVersionMatchesMasterBranch()
     {
         $this->assertGreaterThanOrEqual('0.1.0', \StoreCore\Types\InternationalArticleNumber::VERSION);
     }
 
+
+    /**
+     * @testdox Constructor adds valid check digits
+     */
     public function testConstructorAddsValidCheckDigits()
     {
         // Article numbers and valid check digits
@@ -101,26 +98,39 @@ class InternationalArticleNumberTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @testdox Constructor generates random internal numbers on zero
+     */
     public function testConstructorGeneratesRandomInternalNumbersOnZero()
     {
         $ean = new \StoreCore\Types\InternationalArticleNumber(0, false);
-        $ean = (string)$ean;
+        $ean = (string) $ean;
         $this->assertTrue(strlen($ean) === 13);
         $this->assertTrue(substr($ean, 0, 1) == '2');
 
         $ean = new \StoreCore\Types\InternationalArticleNumber('0', false);
-        $ean = (string)$ean;
+        $ean = (string) $ean;
         $this->assertTrue(strlen($ean) === 13);
         $this->assertTrue(substr($ean, 0, 1) == '2');
     }
 
+
     /**
-     * @testdox Public __toString() method exists
+     * @testdox InternationalArticleNumber::__toString() exists
      */
-    public function testPublicToStringMethodExists()
+    public function testInternationalArticleNumberToStringExists()
     {
         $class = new \ReflectionClass('\StoreCore\Types\InternationalArticleNumber');
         $this->assertTrue($class->hasMethod('__toString'));
+    }
+
+    /**
+     * @testdox InternationalArticleNumber::__toString() is public
+     */
+    public function testInternationalArticleNumberToStringIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Types\InternationalArticleNumber', '__toString');
+        $this->assertTrue($method->isPublic());
     }
 
     /**
@@ -129,8 +139,8 @@ class InternationalArticleNumberTest extends PHPUnit_Framework_TestCase
     public function testPublicToStringMethodReturnsString()
     {
         $ean = new \StoreCore\Types\InternationalArticleNumber('0190198067098');
-        $ean = (string)$ean;
-        $this->assertTrue(is_string($ean));
+        $ean = (string) $ean;
+        $this->assertInternalType('string', $ean);
     }
 
     /**
@@ -139,44 +149,55 @@ class InternationalArticleNumberTest extends PHPUnit_Framework_TestCase
     public function testInternationalArticleNumberToStringReturnsNonEmptyString()
     {
         $ean = new \StoreCore\Types\InternationalArticleNumber('0190198067098');
-        $ean = (string)$ean;
+        $ean = (string) $ean;
         $this->assertNotEmpty($ean);
     }
 
     /**
-     * @testdox Public __toString() method returns numeric string
+     * @testdox InternationalArticleNumber::__toString() returns numeric string
      */
-    public function testPublicToStringMethodReturnsNumericString()
+    public function testInternationalArticleNumberToStringReturnsNumericString()
     {
         $ean = new \StoreCore\Types\InternationalArticleNumber('0190198067098');
-        $ean = (string)$ean;
+        $ean = (string) $ean;
         $this->assertTrue(is_numeric($ean));
         $this->assertTrue(ctype_digit($ean));
     }
 
     /**
-     * @testdox Public __toString() method returns 13 characters
+     * @testdox InternationalArticleNumber::__toString() returns 13 characters
      */
-    public function testPublicToStringMethodReturnsThirteenCharacters()
+    public function testInternationalArticleNumberToStringReturnsThirteenCharacters()
     {
         $ean = new \StoreCore\Types\InternationalArticleNumber('0190198067098');
-        $ean = (string)$ean;
+        $ean = (string) $ean;
         $this->assertTrue(strlen($ean) === 13);
     }
 
+
     /**
-     * @testdox Public getCheckDigit() method exists
+     * @testdox InternationalArticleNumber::getCheckDigit() exists
      */
-    public function testPublicGetCheckDigitMethodExists()
+    public function testInternationalArticleNumberGetCheckDigitExists()
     {
         $class = new \ReflectionClass('\StoreCore\Types\InternationalArticleNumber');
         $this->assertTrue($class->hasMethod('getCheckDigit'));
     }
 
     /**
-     * @testdox Public getCheckDigit() method returns integer
+     * @testdox InternationalArticleNumber::getCheckDigit() has one optional parameter
      */
-    public function testPublicGetCheckDigitMethodReturnsInteger()
+    public function testInternationalArticleNumberGetCheckDigitHasOneOptionalParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Types\InternationalArticleNumber', 'getCheckDigit');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 0);
+    }
+
+    /**
+     * @testdox InternationalArticleNumber::getCheckDigit() returns integer
+     */
+    public function testInternationalArticleNumberGetCheckDigitReturnsInteger()
     {
         $valid_ean_numbers = array(
             '0190198067098',
@@ -189,14 +210,14 @@ class InternationalArticleNumberTest extends PHPUnit_Framework_TestCase
         );
         foreach ($valid_ean_numbers as $number) {
             $ean = new \StoreCore\Types\InternationalArticleNumber($number);
-            $this->assertTrue(is_int($ean->getCheckDigit()));
+            $this->assertInternalType('int', $ean->getCheckDigit());
         }
     }
 
     /**
-     * @testdox Public getCheckDigit() method returns single digit
+     * @testdox InternationalArticleNumber::getCheckDigit() returns single digit
      */
-    public function testPublicGetCheckDigitMethodReturnsSingleDigit()
+    public function testInternationalArticleNumberGetCheckDigitReturnsSingleDigit()
     {
         $valid_ean_numbers = array(
             '0190198067098',
@@ -215,56 +236,57 @@ class InternationalArticleNumberTest extends PHPUnit_Framework_TestCase
         }
     }
 
+
     /**
-     * @testdox Public getNextNumber() method exists
+     * @testdox InternationalArticleNumber::getNextNumber() exists
      */
-    public function testPublicGetNextNumberMethodExists()
+    public function testInternationalArticleNumberGetNextNumberExists()
     {
         $class = new \ReflectionClass('\StoreCore\Types\InternationalArticleNumber');
         $this->assertTrue($class->hasMethod('getNextNumber'));
     }
 
     /**
-     * @testdox Public getNextNumber() method is public
+     * @testdox InternationalArticleNumber::getNextNumber() is public
      */
-    public function testPublicGetNextNumberMethodIsPublic()
+    public function testInternationalArticleNumberGetNextNumberIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\Types\InternationalArticleNumber', 'getNextNumber');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public getNextNumber() method returns object
+     * @testdox InternationalArticleNumber::getNextNumber() has no parameters
      */
-    public function testPublicGetNextNumberMethodReturnsObject()
+    public function testInternationalArticleNumberGetNextNumberHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Types\InternationalArticleNumber', 'getNextNumber');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+    /**
+     * @testdox InternationalArticleNumber::getNextNumber() returns object
+     */
+    public function testInternationalArticleNumberGetNextNumberReturnsObject()
     {
         $ean = new \StoreCore\Types\InternationalArticleNumber('4006381333931');
-        $this->assertTrue(is_object($ean->getNextNumber()));
+        $this->assertInternalType('object', $ean->getNextNumber());
     }
 
     /**
-     * @testdox Public getNextNumber() method returns object
+     * @testdox InternationalArticleNumber::getNextNumber() returns new InternationalArticleNumber
      */
-    public function testPublicGetNextNumberMethodReturnsInternationalArticleNumber()
+    public function testInternationalArticleNumberGetNextNumberReturnsNewInternationalArticleNumber()
     {
         $ean = new \StoreCore\Types\InternationalArticleNumber('4006381333931');
-        $this->assertTrue(is_object($ean->getNextNumber()));
+        $this->assertInstanceOf(\StoreCore\Types\InternationalArticleNumber::class, $ean->getNextNumber());
+        $this->assertNotSame($ean->getNextNumber(), $ean);
     }
 
     /**
-     * @testdox Public getNextNumber() method returns InternationalArticleNumber object
+     * @testdox InternationalArticleNumber::getNextNumber() returns current number + 1
      */
-    public function testPublicGetNextNumberMethodReturnsInternationalArticleNumberObject()
-    {
-        $current_ean = new \StoreCore\Types\InternationalArticleNumber('4006381333931');
-        $next_ean = $current_ean->getNextNumber();
-        $this->assertInstanceOf(\StoreCore\Types\InternationalArticleNumber::class, $next_ean);
-    }
-
-    /**
-     * @testdox Public getNextNumber() method returns current number + 1
-     */
-    public function testPublicGetNextNumberMethodReturnsCurrentNumberPlusOne()
+    public function testInternationalArticleNumberGetNextNumberReturnsCurrentNumberPlusOne()
     {
         $current_number = '4006381333931';
         $current_ean = new \StoreCore\Types\InternationalArticleNumber($current_number);
@@ -275,60 +297,102 @@ class InternationalArticleNumberTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \RangeException
-     * @testdox Public getNextNumber() method throws \RangeException on 99999
+     * @testdox InternationalArticleNumber::getNextNumber() throws \RangeException on 99999
      */
-    public function testPublicGetNextNumberMethodThrowsRangeExceptionOn99999()
+    public function testInternationalArticleNumberGetNextNumberThrowsRangeExceptionOn99999()
     {
         $ean = new \StoreCore\Types\InternationalArticleNumber('123400099999', false);
         $next_number = $ean->getNextNumber();
     }
 
+
     /**
-     * @testdox Public static getRandomNumber() method exists
+     * @testdox InternationalArticleNumber::getRandomNumber() exists
      */
-    public function testPublicStaticGetRandomNumberMethodExists()
+    public function testInternationalArticleNumberGetRandomNumberExists()
     {
         $class = new \ReflectionClass('\StoreCore\Types\InternationalArticleNumber');
         $this->assertTrue($class->hasMethod('getRandomNumber'));
+    }
+
+    /**
+     * @testdox InternationalArticleNumber::getRandomNumber() is public
+     */
+    public function testInternationalArticleNumberGetRandomNumberIsPublic()
+    {
         $method = new \ReflectionMethod('\StoreCore\Types\InternationalArticleNumber', 'getRandomNumber');
         $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @testdox InternationalArticleNumber::getRandomNumber() is static
+     */
+    public function testInternationalArticleNumberGetRandomNumberIsStatic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Types\InternationalArticleNumber', 'getRandomNumber');
         $this->assertTrue($method->isStatic());
     }
 
     /**
-     * @testdox Public static getRandomNumber() returns object
+     * @testdox InternationalArticleNumber::getRandomNumber() returns object
      */
-    public function testPublicStaticGetRandomNumberReturnsObject()
+    public function testInternationalArticleNumberGetRandomNumberReturnsObject()
     {
         $ean = \StoreCore\Types\InternationalArticleNumber::getRandomNumber();
-        $this->assertTrue(is_object($ean));
+        $this->assertInternalType('object', $ean);
     }
 
     /**
-     * @testdox Public static getRandomNumber() returns InternationalArticleNumber object
+     * @testdox InternationalArticleNumber::getRandomNumber() returns InternationalArticleNumber object
      */
-    public function testPublicStaticGetRandomNumberReturnsInternationalArticleNumberObject()
+    public function testInternationalArticleNumberGetRandomNumberReturnsInternationalArticleNumberObject()
     {
         $ean = \StoreCore\Types\InternationalArticleNumber::getRandomNumber();
         $this->assertInstanceOf(\StoreCore\Types\InternationalArticleNumber::class, $ean);
     }
 
+
     /**
-     * @testdox Public static validate() method exists
+     * @testdox InternationalArticleNumber::validate() exists
      */
-    public function testPublicStaticValidateMethodExists()
+    public function testInternationalArticleNumberValidateExists()
     {
         $class = new \ReflectionClass('\StoreCore\Types\InternationalArticleNumber');
         $this->assertTrue($class->hasMethod('validate'));
+    }
+
+    /**
+     * @testdox InternationalArticleNumber::validate() is public
+     */
+    public function testInternationalArticleNumberValidateIsPublic()
+    {
         $method = new \ReflectionMethod('\StoreCore\Types\InternationalArticleNumber', 'validate');
         $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @testdox InternationalArticleNumber::validate() is static
+     */
+    public function testInternationalArticleNumberValidateIsStatic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Types\InternationalArticleNumber', 'validate');
         $this->assertTrue($method->isStatic());
     }
 
     /**
-     * @testdox Public static validate() returns true on valid numbers
+     * @testdox InternationalArticleNumber::validate() has one required parameter
      */
-    public function testPublicStaticValidateReturnsTrueOnValidNumbers()
+    public function testInternationalArticleNumberValidateHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Types\InternationalArticleNumber', 'validate');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+    /**
+     * @testdox InternationalArticleNumber::validate() returns true on valid numbers
+     */
+    public function testInternationalArticleNumberValidateReturnsTrueOnValidNumbers()
     {
         $valid_ean_numbers = array(
             '0190198067098',

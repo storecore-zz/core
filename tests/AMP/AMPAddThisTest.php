@@ -56,27 +56,18 @@ class AMPAddThisTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsDefined
      * @group distro
-     * @testdox VERSION constant is not empty
+     * @testdox VERSION constant is non-empty string
      */
-    public function testVersionConstantIsNotEmpty()
+    public function testVersionConstantIsNonEmptyString()
     {
         $this->assertNotEmpty(\StoreCore\AMP\AddThis::VERSION);
+        $this->assertInternalType('string', \StoreCore\AMP\AddThis::VERSION);
     }
 
     /**
-     * @depends testVersionConstantIsDefined
+     * @depends testVersionConstantIsNonEmptyString
      * @group distro
-     * @testdox VERSION constant is string
-     */
-    public function testVersionConstantIsString()
-    {
-        $this->assertTrue(is_string(\StoreCore\AMP\AddThis::VERSION));
-    }
-
-    /**
-     * @depends testVersionConstantIsDefined
-     * @group distro
-     * @testdox Version matches master branch
+     * @testdox VERSION matches master branch
      */
     public function testVersionMatchesMasterBranch()
     {
