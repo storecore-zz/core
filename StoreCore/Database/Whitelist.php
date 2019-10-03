@@ -1,18 +1,23 @@
 <?php
 namespace StoreCore\Database;
 
+use StoreCore\Database\AbstractModel;
+
 /**
  * IP Access Control Whitelist
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015–2018 StoreCore™
+ * @copyright Copyright © 2015–2019 StoreCore™
  * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
  * @version   0.1.0
  */
-class Whitelist extends \StoreCore\Database\AbstractModel implements \Countable
+class Whitelist extends AbstractModel implements \Countable
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -34,25 +39,6 @@ class Whitelist extends \StoreCore\Database\AbstractModel implements \Countable
         $stmt->execute();
         $count = $stmt->fetchColumn();
         return (int)$count;
-    }
-
-    /**
-     * Check if the whitelist table is empty.
-     *
-     * Note the differences between the Whitelist::count() method and the
-     * Whitelist::isEmpty() method.  If isEmpty() returns true, there are no
-     * whitelist records at all and the whitelist therefore SHOULD NOT be used
-     * to grant or deny access to the administration.
-     *
-     * @param void
-     * @return bool
-     */
-    public function isEmpty()
-    {
-        $stmt = $this->Database->prepare('SELECT SQL_NO_CACHE COUNT(*) FROM sc_ip_whitelist');
-        $stmt->execute();
-        $count = (int) $stmt->fetchColumn();
-        return ($count === 0) ? true : false;
     }
 
     /**
@@ -112,5 +98,24 @@ class Whitelist extends \StoreCore\Database\AbstractModel implements \Countable
         }
 
         return ($count === 1) ? true : false;
+    }
+
+    /**
+     * Check if the whitelist table is empty.
+     *
+     * Note the differences between the Whitelist::count() method and the
+     * Whitelist::isEmpty() method.  If isEmpty() returns true, there are no
+     * whitelist records at all and the whitelist therefore SHOULD NOT be used
+     * to grant or deny access to the administration.
+     *
+     * @param void
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        $stmt = $this->Database->prepare('SELECT SQL_NO_CACHE COUNT(*) FROM sc_ip_whitelist');
+        $stmt->execute();
+        $count = (int) $stmt->fetchColumn();
+        return ($count === 0) ? true : false;
     }
 }
