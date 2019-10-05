@@ -1,27 +1,32 @@
 <?php
 namespace StoreCore\Database;
 
+use StoreCore\Database\AbstractModel;
+use StoreCore\Database\CRUDInterface;
+
 /**
  * Data Access Object (DAO)
  *
- * The StoreCore abstract DAO provides a CRUD interface to Create, Read,
- * Update, and Delete database records.   It executes the four basic SQL data
- * manipulation operations: `INSERT`, `SELECT`, `UPDATE`, and `DELETE`.  Model
- * classes that extend the abstract DAO MUST provide two class constants for
- * late static bindings: a `TABLE_NAME` with the database table name the model
- * operates on and a `PRIMARY_KEY` for the primary key column of this table.
+ * The StoreCore abstract DAO provides an abstract CRUD interface to Create,
+ * Read, Update, and Delete database records.  It executes the four basic SQL
+ * data manipulation operations: `INSERT`, `SELECT`, `UPDATE`, and `DELETE`.
+ * 
+ * Model classes that extend this abstract DAO MUST provide two class constants
+ * for late static bindings: a `TABLE_NAME` with the database table name the
+ * model operates on and a `PRIMARY_KEY` for the primary key column of this table.
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
  * @copyright Copyright © 2015–2019 StoreCore™
  * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
+ * @see       https://www.php.net/manual/en/language.oop5.late-static-bindings.php
  * @version   1.0.0
  */
-abstract class AbstractDataAccessObject extends AbstractModel
+abstract class AbstractDataAccessObject extends AbstractModel implements CRUDInterface
 {
     /**
      * @var string VERSION
-     *   Semantic Version (SemVer)
+     *   Semantic Version (SemVer).
      */
     const VERSION = '1.0.0';
 
