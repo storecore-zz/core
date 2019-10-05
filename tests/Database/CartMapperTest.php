@@ -3,6 +3,7 @@ class CartMapperTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @group distro
+     * @testdox CartMapper class file exists
      */
     public function testCartMapperClassFileExists()
     {
@@ -11,8 +12,9 @@ class CartMapperTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group hmvc
+     * @testdox CartMapper is a database model
      */
-    public function testCartMapperIsAnAbstractModel()
+    public function testCartMapperIsADatabaseModel()
     {
         $class = new \ReflectionClass('\StoreCore\Database\CartMapper');
         $this->assertTrue($class->isSubclassOf('\StoreCore\Database\AbstractModel'));
@@ -51,11 +53,32 @@ class CartMapperTest extends PHPUnit_Framework_TestCase
 
 
     /**
-     * @testdox Public getOrder() method exists
+     * @testdox CartMapper::getOrder() exists
      */
-    public function testPublicGetOrderMethodExists()
+    public function testCartMapperGetOrderExists()
     {
         $class = new \ReflectionClass('\StoreCore\Database\CartMapper');
         $this->assertTrue($class->hasMethod('getOrder'));
+    }
+
+    /**
+     * @depends testCartMapperGetOrderExists
+     * @testdox CartMapper::getOrder() is public
+     */
+    public function testCartMapperGetOrderIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\CartMapper', 'getOrder');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testCartMapperGetOrderExists
+     * @testdox CartMapper::getOrder() has one required parameter
+     */
+    public function testCartMapperGetOrderHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\CartMapper', 'getOrder');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
     }
 }

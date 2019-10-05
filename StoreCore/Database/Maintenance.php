@@ -1,18 +1,24 @@
 <?php
 namespace StoreCore\Database;
 
+use StoreCore\Registry;
+use StoreCore\Admin\Configurator;
+
 /**
  * Database Maintenance Module
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015–2018 StoreCore™
+ * @copyright Copyright © 2015–2019 StoreCore™
  * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
 class Maintenance extends AbstractModel
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -24,7 +30,7 @@ class Maintenance extends AbstractModel
     private $Configurator;
 
     /**
-     * @var array \ChangeLog
+     * @var array $ChangeLog
      *   Array with SQL statements that cannot be executed by parsing the
      *   default core SQL files.  Changes to database tables are ignored by the
      *   `IF NOT EXISTS` clause in a `CREATE TABLE IF NOT EXISTS`, so changes
@@ -55,7 +61,7 @@ class Maintenance extends AbstractModel
      *
      * @return self
      */
-    public function __construct(\StoreCore\Registry $registry)
+    public function __construct(Registry $registry)
     {
         parent::__construct($registry);
 
@@ -250,7 +256,7 @@ class Maintenance extends AbstractModel
     private function saveConfigurationSetting($name, $value)
     {
         if ($this->Configurator == null) {
-            $this->Configurator = new \StoreCore\Admin\Configurator();
+            $this->Configurator = new Configurator();
         }
         $this->Configurator->set($name, $value);
         $this->Configurator->save();

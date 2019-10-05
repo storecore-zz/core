@@ -1,18 +1,25 @@
 <?php
 namespace StoreCore\Database;
 
+use StoreCore\Database\AbstractModel;
+use StoreCore\Currency;
+use StoreCore\Types\StoreID;
+
 /**
  * Currencies
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2017–2018 StoreCore™
+ * @copyright Copyright © 2017–2019 StoreCore™
  * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
 class Currencies extends AbstractModel
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -20,7 +27,7 @@ class Currencies extends AbstractModel
      *
      * @param int|string $iso_currency_code
      *
-     * @return
+     * @return bool
      *   Returns true if the currency code exists or false if it does not.
      */
     public function exists($iso_currency_code)
@@ -54,7 +61,7 @@ class Currencies extends AbstractModel
      *   key and a \StoreCore\Currency object as the value.  If a store has no
      *   default currency, null is returned.
      */
-    public function getDefaultStoreCurrency(\StoreCore\Types\StoreID $store_id)
+    public function getDefaultStoreCurrency(StoreID $store_id)
     {
         $stmt = $this->Database->prepare('
                SELECT s.currency_id, c.currency_code, c.digits, c.currency_symbol
@@ -75,7 +82,7 @@ class Currencies extends AbstractModel
         }
 
         $result = $result[0];
-        $currency = new \StoreCore\Currency($this->Registry);
+        $currency = new Currency($this->Registry);
         $currency_id = $result['currency_id'];
         $currency->setCurrencyCode($result['currency_code']);
         $currency->setCurrencyID($currency_id);
@@ -96,7 +103,7 @@ class Currencies extends AbstractModel
      *   If the store has no currencies at all, this method returns an array
      *   with the euro as the system default.
      */
-    public function getStoreCurrencies(\StoreCore\Types\StoreID $store_id)
+    public function getStoreCurrencies(StoreID $store_id)
     {
         $stmt = $this->Database->prepare('
                SELECT s.currency_id, c.currency_code, c.digits, c.currency_symbol
@@ -113,13 +120,13 @@ class Currencies extends AbstractModel
         unset($stmt);
 
         if ($result === false || empty($result)) {
-            $default_currency = new \StoreCore\Currency($this->Registry);
+            $default_currency = new Currency($this->Registry);
             return array($default_currency->getCurrencyID() => $default_currency);
         }
 
         $store_currencies = array();
         foreach ($result as $row) {
-            $currency = new \StoreCore\Currency($this->Registry);
+            $currency = new Currency($this->Registry);
             $currency_id = $row['currency_id'];
             $currency->setCurrencyCode($row['currency_code']);
             $currency->setCurrencyID($currency_id);

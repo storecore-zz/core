@@ -1,6 +1,12 @@
 <?php
 namespace StoreCore\Database;
 
+use StoreCore\Database\AbstractModel;
+use StoreCore\Database\Order;
+
+use StoreCore\Types\CartID;
+use StoreCore\Types\StoreID;
+
 /**
  * Cart Mapper
  *
@@ -9,12 +15,12 @@ namespace StoreCore\Database;
  * clients and servers, unlocks a previously saved order.
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015–2018 StoreCore™
+ * @copyright Copyright © 2015–2019 StoreCore™
  * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-class CartMapper extends \StoreCore\Database\AbstractModel
+class CartMapper extends AbstractModel
 {
     /**
      * @var string VERSION
@@ -39,7 +45,7 @@ class CartMapper extends \StoreCore\Database\AbstractModel
             return false;
         }
 
-        $cart_id = new \StoreCore\Types\CartID();
+        $cart_id = new CartID();
         if ($cart_id->decode($encoded_cart_id) !== true) {
             return false;
         }
@@ -57,9 +63,9 @@ class CartMapper extends \StoreCore\Database\AbstractModel
             return null;
         }
 
-        $order = new \StoreCore\Database\Order($this->Registry);
+        $order = new Order($this->Registry);
         $order->setOrderID($row['order_id']);
-        $order->setStoreID(new \StoreCore\Types\StoreID($row['store_id']));
+        $order->setStoreID(new StoreID($row['store_id']));
         $order->setCustomerID($row['customer_id']);
 
         return $order;

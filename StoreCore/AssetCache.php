@@ -1,6 +1,9 @@
 <?php
 namespace StoreCore;
 
+use StoreCore\Asset;
+use StoreCore\Registry;
+
 /**
  * Asset Cache
  *
@@ -41,7 +44,7 @@ class AssetCache
 
         $pathinfo = pathinfo($registry->get('Request')->getRequestTarget());
         if (array_key_exists('basename', $pathinfo) && array_key_exists('extension', $pathinfo)) {
-            $asset = new \StoreCore\Asset($pathinfo['basename'], $pathinfo['extension']);
+            $asset = new Asset($pathinfo['basename'], $pathinfo['extension']);
         }
     }
 }
