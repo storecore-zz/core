@@ -137,4 +137,35 @@ class OrderMapperTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals('order_id', \StoreCore\Database\OrderMapper::PRIMARY_KEY);
     }
+
+
+    /**
+     * @testdox OrderMapper::exists() exists
+     */
+    public function testOrderMapperExistsExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\OrderMapper');
+        $this->assertTrue($class->hasMethod('exists'));
+    }
+
+    /**
+     * @depends testOrderMapperExistsExists
+     * @testdox OrderMapper::exists() is public
+     */
+    public function testOrderMapperExistsIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\OrderMapper', 'exists');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testOrderMapperExistsExists
+     * @testdox OrderMapper::exists() has one required parameter
+     */
+    public function testOrderMapperExistsHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\OrderMapper', 'exists');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
 }

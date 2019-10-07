@@ -27,4 +27,39 @@ class OrderMapper extends AbstractDataAccessObject implements CRUDInterface
      */
     const PRIMARY_KEY = 'order_id';
     const TABLE_NAME  = 'sc_orders';
+
+    /**
+     * Check if an order exists.
+     *
+     * @param int $order_id
+     *   Order number as an integer.
+     *
+     * @return bool
+     *   Returns true if the order exists, otherwise false.
+     */
+    public function exists($order_id)
+    {
+        if (!is_int($order_id)) {
+            if (ctype_digit($order_id)) {
+                $order_id = intval($order_id);
+            } else {
+                return false;
+            }
+        }
+
+        if ($order_id < 1) {
+            return false;
+        }
+
+        $stmt = $this->Database->prepare('SELECT COUNT(order_id) FROM sc_orders WHERE order_id = :order_id');
+        $stmt->bindParam(':order_id', $order_id, \PDO::PARAM_INT);
+        if ($stmt->execute()) {
+            $count = $stmt->fetchColumn();
+            if ($count == 1) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
