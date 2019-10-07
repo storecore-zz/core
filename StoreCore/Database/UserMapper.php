@@ -1,25 +1,34 @@
 <?php
 namespace StoreCore\Database;
 
+use StoreCore\Database\AbstractDataAccessObject;
+use StoreCore\Database\CRUDInterface;
+
+use StoreCore\User;
+
 /**
  * User Mapper
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015-2017 StoreCore
+ * @copyright Copyright © 2015–2019 StoreCore™
  * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Security
  * @version   0.1.0
  */
-class UserMapper extends AbstractDataAccessObject
+class UserMapper extends AbstractDataAccessObject implements CRUDInterface
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
+    const VERSION = '0.1.0';
+
     /**
      * @var string PRIMARY_KEY DAO database table primary key.
      * @var string TABLE_NAME  DAO database table name.
-     * @var string VERSION     Semantic Version (SemVer).
      */
     const PRIMARY_KEY = 'user_id';
     const TABLE_NAME  = 'sc_users';
-    const VERSION = '0.1.0';
 
     /**
      * Ban a user.
@@ -32,11 +41,11 @@ class UserMapper extends AbstractDataAccessObject
      * group ID 0 (zero).
      *
      * @param \StoreCore\User $user
-     * @return \StoreCore\User $user
+     * @return \StoreCore\User
      * @uses \StoreCore\User::getUserID()
      * @uses \StoreCore\User::setUserGroupID()
      */
-    public function ban(\StoreCore\User $user)
+    public function ban(User $user)
     {
         $user->setUserGroupID(0);
         $data = array(
@@ -95,7 +104,7 @@ class UserMapper extends AbstractDataAccessObject
      */
     private function getUserObject(array $user_data)
     {
-        $user = new \StoreCore\User();
+        $user = new User();
 
         $user->setUserID($user_data['user_id']);
         $user->setUserGroupID($user_data['user_group_id']);
@@ -180,7 +189,7 @@ class UserMapper extends AbstractDataAccessObject
      * @throws \DomainException
      *   A domain logic exception is thrown if required user data are missing.
      */
-    public function save(\StoreCore\User &$user)
+    public function save(User &$user)
     {
         if ($user->getUserID() === null) {
             $user_data = array(
