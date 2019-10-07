@@ -1,11 +1,13 @@
 <?php
 /**
+ * @coversDefaultClass \StoreCore\Database\UserMapper
  * @group security
  */
 class UserMapperTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @group distro
+     * @testdox UserMapper class file exists
      */
     public function testUserMapperClassFileExists()
     {
@@ -14,6 +16,7 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group distro
+     * @testdox Extended AbstractDataAccessObject class file exists
      */
     public function testExtendedAbstractDataAccessObjectClassFileExists()
     {
@@ -22,11 +25,22 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group hmvc
+     * @testdox UserMapper is an abstract data access object (DAO)
      */
-    public function testUserMapperIsAnAbstractDataAccessObject()
+    public function testUserMapperIsAnAbstractDataAccessObjectDao()
     {
         $class = new \ReflectionClass('\StoreCore\Database\UserMapper');
         $this->assertTrue($class->isSubclassOf('\StoreCore\Database\AbstractDataAccessObject'));
+    }
+
+    /**
+     * @group hmvc
+     * @testdox UserMapper implements CRUD interface
+     */
+    public function testUserMapperImplementsCrudInterface()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\UserMapper');
+        $this->assertTrue($class->isSubclassOf('\StoreCore\Database\CRUDInterface'));
     }
 
 
@@ -84,6 +98,16 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @depends testTableNameConstantIsNonEmptyString
+     * @group hmvc
+     * @testdox TABLE_NAME is 'sc_users'
+     */
+    public function testTableNameIsScUsers()
+    {
+        $this->assertEquals('sc_users', \StoreCore\Database\UserMapper::TABLE_NAME);
+    }
+
+    /**
      * @group hmvc
      * @testdox PRIMARY_KEY constant is defined
      */
@@ -104,76 +128,158 @@ class UserMapperTest extends PHPUnit_Framework_TestCase
         $this->assertInternalType('string', \StoreCore\Database\UserMapper::PRIMARY_KEY);
     }
 
+    /**
+     * @depends testPrimaryKeyConstantIsNonEmptyString
+     * @group hmvc
+     * @testdox PRIMARY_KEY is 'user_id'
+     */
+    public function testPrimaryKeyIsUserId()
+    {
+        $this->assertEquals('user_id', \StoreCore\Database\UserMapper::PRIMARY_KEY);
+    }
+
 
     /**
-     * @testdox Public ban() method exists
+     * @testdox UserMapper::ban() exists
      */
-    public function testPublicAuthenticateMethodExists()
+    public function testUserMapperBanExists()
     {
         $class = new \ReflectionClass('\StoreCore\Database\UserMapper');
         $this->assertTrue($class->hasMethod('ban'));
     }
 
     /**
-     * @testdox Public ban() method is public
+     * @testdox UserMapper::ban() is public
      */
-    public function testPublicBanMethodIsPublic()
+    public function testUserMapperBanIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\Database\UserMapper', 'ban');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public getUser() method is public
+     * @testdox UserMapper::ban() has one required parameter
      */
-    public function testPublicGetUserMethodIsPublic()
+    public function testUserMapperBanHasOneRequiredParameter()
     {
-        $method = new \ReflectionMethod('\StoreCore\Database\UserMapper', 'getUser');
-        $this->assertTrue($method->isPublic());
+        $method = new \ReflectionMethod('\StoreCore\Database\UserMapper', 'ban');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
     }
 
+
     /**
-     * @testdox Public getUser() method exists
+     * @testdox UserMapper::getUser() exists
      */
-    public function testPublicGetUserMethodExists()
+    public function testUserMapperGetUserExists()
     {
         $class = new \ReflectionClass('\StoreCore\Database\UserMapper');
         $this->assertTrue($class->hasMethod('getUser'));
     }
 
     /**
-     * @testdox Public getUserByEmailAddress() method exists
+     * @testdox UserMapper::getUser() is public
      */
-    public function testPublicGetUserByEmailAddressMethodExists()
+    public function testUserMapperGetUserIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\UserMapper', 'getUser');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @testdox UserMapper::getUser() has one required parameter
+     */
+    public function testUserMapperGetUserHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\UserMapper', 'getUser');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+
+    /**
+     * @testdox UserMapper::getUserByEmailAddress() exists
+     */
+    public function testUserMapperGetUserByEmailAddressExists()
     {
         $class = new \ReflectionClass('\StoreCore\Database\UserMapper');
         $this->assertTrue($class->hasMethod('getUserByEmailAddress'));
     }
 
     /**
-     * @testdox Public getUserByEmailAddress() method is public
+     * @testdox UserMapper::getUserByEmailAddress() is public
      */
-    public function testPublicGetUserByEmailAddressMethodIsPublic()
+    public function testUserMapperGetUserByEmailAddressIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\Database\UserMapper', 'getUserByEmailAddress');
         $this->assertTrue($method->isPublic());
     }
 
     /**
-     * @testdox Public getUserByUsername() method exists
+     * @testdox UserMapper::getUserByEmailAddress() has one required parameter
      */
-    public function testPublicGetUserByUsernameMethodExists()
+    public function testUserMapperGetUserByEmailAddressHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\UserMapper', 'getUserByEmailAddress');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+
+    /**
+     * @testdox UserMapper::getUserByUsername() exists
+     */
+    public function testUserMapperGetUserByUsernameExists()
     {
         $class = new \ReflectionClass('\StoreCore\Database\UserMapper');
         $this->assertTrue($class->hasMethod('getUserByUsername'));
     }
 
     /**
-     * @testdox Public getUserByUsername() method is public
+     * @testdox UserMapper::getUserByUsername() is public
      */
-    public function testPublicGetUserByUsernameMethodIsPublic()
+    public function testUserMapperGetUserByUsernameIsPublic()
     {
         $method = new \ReflectionMethod('\StoreCore\Database\UserMapper', 'getUserByUsername');
         $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @testdox UserMapper::getUserByUsername() has one required parameter
+     */
+    public function testUserMapperGetUserByUsernameHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\UserMapper', 'getUserByUsername');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+
+    /**
+     * @testdox UserMapper::save() exists
+     */
+    public function testUserMapperSaveExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\UserMapper');
+        $this->assertTrue($class->hasMethod('save'));
+    }
+
+    /**
+     * @testdox UserMapper::save() is public
+     */
+    public function testUserMapperSaveIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\UserMapper', 'save');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @testdox UserMapper::save() has one required parameter
+     */
+    public function testUserMapperSaveHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\UserMapper', 'save');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
     }
 }
