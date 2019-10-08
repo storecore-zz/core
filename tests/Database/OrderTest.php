@@ -104,4 +104,68 @@ class OrderTest extends PHPUnit_Framework_TestCase
         $method = new \ReflectionMethod('\StoreCore\Database\Order', 'count');
         $this->assertTrue($method->getNumberOfParameters() === 0);
     }
+
+
+    /**
+     * @testdox Order::isWishList() exists
+     */
+    public function testOrderIsWishListExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\Order');
+        $this->assertTrue($class->hasMethod('isWishList'));
+    }
+
+    /**
+     * @depends testOrderIsWishListExists
+     * @testdox Order::isWishList() is public
+     */
+    public function testOrderIsWishListIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\Order', 'isWishList');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testOrderIsWishListExists
+     * @testdox Order::isWishList() has no parameters
+     */
+    public function testOrderIsWishListHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\Order', 'isWishList');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+
+    /**
+     * @group hmvc
+     * @testdox Order::setWishList() exists
+     */
+    public function testOrderSetWishListExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\Order');
+        $this->assertTrue($class->hasMethod('setWishList'));
+    }
+
+    /**
+     * @group hmvc
+     * @depends testOrderSetWishListExists
+     * @testdox Order::setWishList() is public
+     */
+    public function testOrderSetWishListIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\Order', 'setWishList');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @group hmvc
+     * @depends testOrderSetWishListExists
+     * @testdox Order::setWishList() has one optional parameter
+     */
+    public function testOrderSetWishListHasOneOptionalParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\Order', 'setWishList');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 0);
+    }
 }

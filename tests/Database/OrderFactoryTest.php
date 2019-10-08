@@ -96,4 +96,35 @@ class OrderFactoryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($method->getNumberOfParameters() === 1);
         $this->assertTrue($method->getNumberOfRequiredParameters() === 0);
     }
+
+
+    /**
+     * @testdox OrderFactory::createWishList() exists
+     */
+    public function testOrderFactoryCreateWishListExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\OrderFactory');
+        $this->assertTrue($class->hasMethod('createWishList'));
+    }
+
+    /**
+     * @depends testOrderFactoryCreateWishListExists
+     * @testdox OrderFactory::createWishList() is public
+     */
+    public function testOrderFactoryCreateWishListIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\OrderFactory', 'createWishList');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testOrderFactoryCreateWishListExists
+     * @testdox OrderFactory::createWishList() has one optional parameter
+     */
+    public function testOrderFactoryCreateWishListHasOneOptionalParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\OrderFactory', 'createWishList');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 0);
+    }
 }

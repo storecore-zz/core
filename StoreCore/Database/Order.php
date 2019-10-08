@@ -49,6 +49,12 @@ class Order extends AbstractModel implements \Countable
     private $StoreID;
 
     /**
+     * @var bool $IsWishList
+     *   This data model is a wishlist (true) or not (default false).
+     */
+    protected $IsWishList = false;
+
+    /**
      * Count the total number of items in the order or cart.
      *
      * @param void
@@ -133,6 +139,19 @@ class Order extends AbstractModel implements \Countable
     }
 
     /**
+     * Check if this is a wish list.
+     *
+     * @param void
+     * 
+     * @return bool
+     *   Returns true if this incomplete order is a wishlist, otherwse false.
+     */
+    public function isWishList()
+    {
+        return $this->IsWishList();
+    }
+
+    /**
      * Set the customer identifier.
      *
      * @param int|string|null $customer_id
@@ -173,5 +192,17 @@ class Order extends AbstractModel implements \Countable
             $store_id = new StoreID($store_id);
         }
         $this->StoreID = $store_id;
+    }
+
+    /**
+     * Handle the order as a wishlist or not.
+     *
+     * @param bool $is_wish_list
+     *   Turns the order into a wish list (default true) or turns a wish list
+     *   into a plain order (false).
+     */
+    public function setWishList($is_wish_list = true)
+    {
+        $this->IsWishList = (bool) $is_wish_list;
     }
 }

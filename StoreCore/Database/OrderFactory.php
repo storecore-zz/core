@@ -4,6 +4,7 @@ namespace StoreCore\Database;
 use StoreCore\Database\AbstractModel;
 use StoreCore\Database\Order;
 use StoreCore\Database\OrderMapper;
+use StoreCore\Database\WishList;
 
 use StoreCore\Types\StoreID;
 
@@ -64,6 +65,30 @@ class OrderFactory extends AbstractModel
 
         return $order;
     }
+
+    /**
+     * Create a new wish list.
+     *
+     * @param \StoreCore\Types\StoreID|null $store_id
+     *   Optional store identifier.  If omitted, the default store is used.
+     * 
+     * @return \StoreCore\Database\WishList
+     *   Returns a wish list data object.
+     */
+    public function createWishList($store_id = null)
+    {
+        $order = $this->createOrder($store_id);
+
+        $wish_list = new WishList($this->Registry);
+        $wish_list->setOrderID($order->getOrderID());
+        $wish_list->setStoreID($order->getStoreID());
+
+        $sql = 'UPDATE sc_orders SET wishlist_flag = 1 WHERE order_id = ?';
+        $this->Database->prepare($sql)->execute([$wish_list->getOrderID()]);
+
+        return $wish_list;
+    }
+
 
     /**
      * Get a new pseudo-random order number.
