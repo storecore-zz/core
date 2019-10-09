@@ -168,4 +168,35 @@ class OrderMapperTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($method->getNumberOfParameters() === 1);
         $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
     }
+
+
+    /**
+     * @testdox OrderMapper::getOrder() exists
+     */
+    public function testOrderMapperGetOrderExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\OrderMapper');
+        $this->assertTrue($class->hasMethod('getOrder'));
+    }
+
+    /**
+     * @depends testOrderMapperGetOrderExists
+     * @testdox OrderMapper::getOrder() is public
+     */
+    public function testOrderMapperGetOrderIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\OrderMapper', 'getOrder');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testOrderMapperGetOrderExists
+     * @testdox OrderMapper::getOrder() has one required parameter
+     */
+    public function testOrderMapperGetOrderHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\OrderMapper', 'getOrder');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
 }
