@@ -5,7 +5,7 @@ namespace StoreCore\Types;
  * Shopping Cart Identifier
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2016–2018 StoreCore™
+ * @copyright Copyright © 2016–2019 StoreCore™
  * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
@@ -30,19 +30,23 @@ class CartID implements StringableInterface
      * Construct a cart identifier.
      *
      * @param string|null $uuid
-     *   Existing universally unique identifier (UUID) or null to create
-     *   a new UUID.
+     *   Existing universally unique identifier (UUID) or null.
      *
      * @param string|null $token
-     *   Existing token or null to generate a new random token.
+     *   Existing token or null.
      *
      * @return void
      */
     public function __construct($uuid = null, $token = null)
     {
         $this->CartID = array(0 => self::VERSION);
-        $this->setUUID($uuid);
-        $this->setToken($token);
+    
+        if ($uuid !== null) {
+            $this->setUUID($uuid);
+            if ($token !== null) {
+                $this->setToken($token);
+            }
+        }
     }
 
     /**
@@ -110,6 +114,14 @@ class CartID implements StringableInterface
      */
     public function encode()
     {
+        if (!isset($this->CartID[1])) {
+            $this->resetUUID();
+        }
+
+        if (!isset($this->CartID[2])) {
+            $this->resetToken();
+        }
+
         $cart_id = json_encode($this->CartID);
         $cart_id = base64_encode($cart_id);
         return $cart_id;
@@ -126,6 +138,9 @@ class CartID implements StringableInterface
      */
     public function getToken()
     {
+        if (!isset($this->CartID[2])) {
+            $this->resetToken();
+        }
         return $this->CartID[2];
     }
 
@@ -139,6 +154,9 @@ class CartID implements StringableInterface
      */
     public function getUUID()
     {
+        if (!isset($this->CartID[1])) {
+            $this->resetUUID();
+        }
         return $this->CartID[1];
     }
 
@@ -187,24 +205,29 @@ class CartID implements StringableInterface
     /**
      * Set or reset the shopping cart token.
      *
-     * @param string|null $token
+     * @param string $token
+     *   Shopping cart token as a string.
+     *
      * @return void
+     *
+     * @throws \UnexpectedValueException
+     *   Throws a Standard PHP Library (SPL) unexpected value runtime exception
+     *   if the token is not a string or does not have a string length of 192
+     *   characters.
      */
-    public function setToken($token = null)
+    public function setToken($token)
     {
-        if ($token === null) {
-            $this->resetToken();
-        } else {
-            $this->CartID[2] = $token;
+        if (!\is_string($token) || strlen($token) !== 192) {
+            throw new \UnexpectedValueException();
         }
+        $this->CartID[2] = $token;
     }
 
     /**
      * Set the shopping cart UUID.
      *
-     * @param string|null $uuid
-     *   Universally unique identifier (UUID) as a string or null to generate
-     *   a new and random UUID.
+     * @param string $uuid
+     *   Universally unique identifier (UUID) as a string.
      *
      * @return void
      *
@@ -213,12 +236,10 @@ class CartID implements StringableInterface
      *   thrown if the UUID is not a string consisting of 36 lowercase ASCII
      *   characters.
      */
-    public function setUUID($uuid = null)
+    public function setUUID($uuid)
     {
-        if ($uuid === null) {
-            $this->resetUUID();
-        } elseif (
-            !is_string($uuid)
+        if (
+            !\is_string($uuid)
             || strlen($uuid) !== 36
             || mb_detect_encoding($uuid, 'ASCII', true) !== 'ASCII'
             || substr_count($uuid, '-') !== 4
