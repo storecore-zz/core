@@ -12,6 +12,17 @@ class WishListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group hmvc
+     * @testdox WhiteList class is concrete
+     */
+    public function testWhiteListClassIsConcrete()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\WhiteList');
+        $this->assertFalse($class->isAbstract());
+        $this->assertTrue($class->isInstantiable());
+    }
+
+    /**
+     * @group distro
      * @testdox Extended Order class file exists
      */
     public function testExtendedOrderClassFileExists()

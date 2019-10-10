@@ -1,28 +1,26 @@
 <?php
 namespace StoreCore\Database;
 
+use StoreCore\Database\AbstractModel;
+
+use StoreCore\Types\StoreID;
+
 /**
  * Order Model
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015–2018 StoreCore™
+ * @copyright Copyright © 2015–2019 StoreCore™
  * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
-class Order extends \StoreCore\Database\AbstractModel
+class Order extends AbstractModel implements \Countable
 {
     /**
      * @var string VERSION
      *   Semantic Version (SemVer).
      */
     const VERSION = '0.1.0';
-
-    /**
-     * @var \StoreCore\Types\CartID|null $CartID
-     *   Shopping cart identifier or null if the cart or order does not exist.
-     */
-    private $CartID;
 
     /**
      * @var int|null $CustomerID
@@ -38,11 +36,16 @@ class Order extends \StoreCore\Database\AbstractModel
     private $OrderID;
 
     /**
-     * @var int $StoreID
-     *   Store identifier, defaults to 1 for the default store if no other
-     *   store is set.
+     * @var StoreCore\Types\StoreID $StoreID
+     *   Store identifier.
      */
-    private $StoreID = 1;
+    private $StoreID;
+
+    /**
+     * @var bool $IsWishList
+     *   This data model is a wishlist (true) or not (default false).
+     */
+    protected $IsWishList = false;
 
     /**
      * Count the total number of items in the order or cart.
@@ -50,8 +53,9 @@ class Order extends \StoreCore\Database\AbstractModel
      * @param void
      *
      * @return int
-     *   Number of distinct items in the cart or.  If a cart or order contains
-     *   2 apples and 3 bananas, this method will return the integer `5`.
+     *   Number of distinct items in the cart or order.  If a cart or order
+     *   contains 2 apples and 3 bananas, this method will return the
+     *   integer 5.
      */
     public function count()
     {
@@ -63,90 +67,20 @@ class Order extends \StoreCore\Database\AbstractModel
         $stmt->bindParam(':order_id', $this->OrderID, \PDO::PARAM_INT);
         if ($stmt->execute()) {
             $number_of_units = $stmt->fetchColumn();
-            return (int)$number_of_units;
+            return (int) $number_of_units;
         } else {
             return 0;
         }
     }
 
     /**
-     * Create and save a new order.
-     *
-     * @param int|null $store_id
-     *   Optional store identifier.
-     *
-     * @param int|null $customer_id
-     *   Optional customer identifier.
-     *
-     * @return int
-     */
-    public function create($store_id = null, $customer_id = null)
-    {
-        if ($store_id !== null) {
-            $this->setStoreID($store_id);
-        }
-
-        if ($customer_id !== null) {
-            $this->setCustomerID($customer_id);
-        }
-
-        $cart_id = new \StoreCore\Types\CartID();
-
-        $sql = 'INSERT INTO sc_orders (order_id, store_id, cart_uuid, cart_rand, date_created, customer_id) VALUES (:order_id, :store_id, UUID(), :cart_rand, UTC_TIMESTAMP(), :customer_id)';
-        $stmt = $this->Database->prepare($sql);
-
-        $stmt->bindParam(':store_id', $this->StoreID, \PDO::PARAM_INT);
-        $stmt->bindParam(':cart_rand', $cart_id->getToken(), \PDO::PARAM_STR);
-
-        if ($this->CustomerID === null) {
-            $stmt->bindParam(':customer_id', $this->CustomerID, \PDO::PARAM_NULL);
-        } else {
-            $stmt->bindParam(':customer_id', $this->CustomerID, \PDO::PARAM_INT);
-        }
-
-        $order_id = $this->getRandomOrderID();
-        $stmt->bindParam(':order_id', $order_id, \PDO::PARAM_INT);
-        $stmt->execute();
-
-        $this->OrderID = $order_id;
-        $this->CartID = null;
-
-        return $order_id;
-    }
-
-    /**
-     * Check if an order exists.
-     *
-     * @param int|null $order_id
-     * @return bool
-     */
-    public function exists($order_id = null)
-    {
-        if ($order_id !== null) {
-            $this->setOrderID($order_id);
-        }
-
-        if ($this->OrderID === null) {
-            return false;
-        }
-
-        $stmt = $this->Database->prepare('SELECT COUNT(*) FROM sc_orders WHERE order_id = :order_id');
-        $stmt->bindParam(':order_id', $this->OrderID, \PDO::PARAM_INT);
-        if ($stmt->execute()) {
-            $number_of_rows = $stmt->fetchColumn();
-            if ($number_of_rows == 1) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Get the order number.
      *
      * @param void
+     *
      * @return int|null
+     *   Returns the unique order number as an integer or null if the order
+     *   does not yet have a number.
      */
     public function getOrderID()
     {
@@ -157,66 +91,35 @@ class Order extends \StoreCore\Database\AbstractModel
      * Get the store identifier.
      *
      * @param void
+     *
      * @return \StoreCore\Types\StoreID
+     *   Returns a store identifier data object.
      */
     public function getStoreID()
     {
-        return new \StoreCore\Types\StoreID($this->StoreID);
+        if ($this->StoreID === null) {
+            $this->setStoreID(new StoreID());
+        }
+        return $this->StoreID;
     }
 
     /**
-     * Get a new pseudo-random order number.
+     * Check if this is a wish list.
      *
      * @param void
-     *
-     * @return int
+     * 
+     * @return bool
+     *   Returns true if this incomplete order is a wishlist, otherwse false.
      */
-    private function getRandomOrderID()
+    public function isWishList()
     {
-        // The INT(10) UNSIGNED maximum is 4294967295 in MySQL
-        // and 42949 67295 when split down the middle.
-        $new_order_id = mt_rand(0, 42948) . sprintf('%05d', mt_rand(0, 99999));
-        $new_order_id = ltrim($new_order_id, '0');
-        $new_order_id = (int)$new_order_id;
-
-        if ($this->exists($new_order_id)) {
-            $new_order_id = $this->getRandomOrderID();
-        }
-        return $new_order_id;
-    }
-
-    /**
-     * Get the shopping cart ID.
-     *
-     * @param void
-     *
-     * @return \StoreCore\Types\CartID|null
-     *   Returns a cart identifier data object or null if the order has no cart
-     *   identifier.
-     */
-    public function getCartID()
-    {
-        if ($this->OrderID === null) {
-            return null;
-        }
-
-        if ($this->CartID !== null) {
-            return $this->CartID;
-        }
-
-        $stmt = $this->Database->prepare('SELECT cart_uuid, cart_rand FROM sc_orders WHERE order_id = :order_id');
-        $stmt->bindParam(':order_id', $this->OrderID, \PDO::PARAM_INT);
-        $stmt->execute();
-        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-        $this->CartID = new \StoreCore\Types\CartID($row['cart_uuid'], $row['cart_rand']);
-        return $this->CartID;
+        return $this->IsWishList();
     }
 
     /**
      * Set the customer identifier.
      *
-     * @param int|string $customer_id
+     * @param int|string|null $customer_id
      *   Unique customer identifier and customer number.
      *
      * @return void
@@ -229,7 +132,7 @@ class Order extends \StoreCore\Database\AbstractModel
     /**
      * Set the order number.
      *
-     * @param int|string $order_id
+     * @param int $order_id
      *   Unique order identifier, used as the primary key for orders.
      *
      * @return void
@@ -242,14 +145,36 @@ class Order extends \StoreCore\Database\AbstractModel
     /**
      * Set the store identifier.
      *
-     * @param \StoreCore\Types\StoreID $order_id
-     *   Store identifier data object.
+     * @param \StoreCore\Types\StoreID|int $store_id
+     *   Store identifier as a data object or integer.
      *
      * @return void
+     *   Throws an invalid argument exception if the `$store_id` is not a valid
+     *   StoreID and cannot be converted to a StoreID.
      */
-    public function setStoreID(\StoreCore\Types\StoreID $store_id)
+    public function setStoreID($store_id)
     {
-        $store_id = (string)$store_id;
-        $this->StoreID = (int)$store_id;
+        if (!$store_id instanceof StoreID) {
+            if ( \is_int($store_id) || \ctype_digit($store_id) ) {
+                $store_id = (int) $store_id;
+                $store_id = new StoreID($store_id);
+            } else {
+                throw new \InvalidArgumentException();
+            }
+        }
+
+        $this->StoreID = $store_id;
+    }
+
+    /**
+     * Handle the order as a wishlist or not.
+     *
+     * @param bool $is_wish_list
+     *   Turns the order into a wish list (default true) or turns a wish list
+     *   into a plain order (false).
+     */
+    public function setWishList($is_wish_list = true)
+    {
+        $this->IsWishList = (bool) $is_wish_list;
     }
 }
