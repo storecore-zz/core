@@ -3,7 +3,6 @@ namespace StoreCore\Database;
 
 use StoreCore\Database\AbstractModel;
 
-use StoreCore\Types\CartID;
 use StoreCore\Types\StoreID;
 
 /**
@@ -22,12 +21,6 @@ class Order extends AbstractModel implements \Countable
      *   Semantic Version (SemVer).
      */
     const VERSION = '0.1.0';
-
-    /**
-     * @var \StoreCore\Types\CartID|null $CartID
-     *   Shopping cart identifier or null if the cart or order does not exist.
-     */
-    private $CartID;
 
     /**
      * @var int|null $CustomerID
@@ -78,34 +71,6 @@ class Order extends AbstractModel implements \Countable
         } else {
             return 0;
         }
-    }
-
-    /**
-     * Get the shopping cart ID.
-     *
-     * @param void
-     *
-     * @return \StoreCore\Types\CartID|null
-     *   Returns a cart identifier data object or null if the order has no cart
-     *   identifier.
-     */
-    public function getCartID()
-    {
-        if ($this->OrderID === null) {
-            return null;
-        }
-
-        if ($this->CartID !== null) {
-            return $this->CartID;
-        }
-
-        $stmt = $this->Database->prepare('SELECT cart_uuid, cart_rand FROM sc_orders WHERE order_id = :order_id');
-        $stmt->bindParam(':order_id', $this->OrderID, \PDO::PARAM_INT);
-        $stmt->execute();
-        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-        $this->CartID = new CartID($row['cart_uuid'], $row['cart_rand']);
-        return $this->CartID;
     }
 
     /**
@@ -184,13 +149,20 @@ class Order extends AbstractModel implements \Countable
      *   Store identifier as a data object or integer.
      *
      * @return void
+     *   Throws an invalid argument exception if the `$store_id` is not a valid
+     *   StoreID and cannot be converted to a StoreID.
      */
     public function setStoreID($store_id)
     {
         if (!$store_id instanceof StoreID) {
-            $store_id = (int) $store_id;
-            $store_id = new StoreID($store_id);
+            if ( \is_int($store_id) || \ctype_digit($store_id) ) {
+                $store_id = (int) $store_id;
+                $store_id = new StoreID($store_id);
+            } else {
+                throw new \InvalidArgumentException();
+            }
         }
+
         $this->StoreID = $store_id;
     }
 

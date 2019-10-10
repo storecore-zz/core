@@ -6,6 +6,7 @@ use StoreCore\Database\Order;
 use StoreCore\Database\OrderMapper;
 use StoreCore\Database\WishList;
 
+use StoreCore\Types\CartID;
 use StoreCore\Types\StoreID;
 
 /**
@@ -26,6 +27,35 @@ class OrderFactory extends AbstractModel
     const VERSION = '0.1.0';
 
     /**
+     * Create a new cart.
+     *
+     * @param \StoreCore\Types\StoreID|null $store_id
+     *   Optional store identifier.  If omitted, the default store is used.
+     *
+     * @return \StoreCore\Database\Cart
+     *   Returns a Cart data object for a new and empty cart.
+     */
+    public function createCart($store_id = null)
+    {
+        $order = $this->createOrder($store_id);
+        $order_id = $order->getOrderID();
+        unset($order);
+
+        $cart_id = new CartID();
+        $cart_token = $cart_id->getToken();
+        unset($cart_id);
+
+        $stmt = $this->Database->prepare(' UPDATE sc_orders SET cart_uuid = UUID(), cart_rand = :cart_token WHERE order_id = :order_id');
+        $stmt->bindParam(':cart_token', $cart_token, \PDO::PARAM_STR);
+        $stmt->bindParam(':order_id', $order_id, \PDO::PARAM_INT);
+        $stmt->execute();
+        $stmt->closeCursor();
+
+        $mapper = new OrderMapper($this->Registry);
+        return $mapper->getOrder($order_id);
+    }
+
+    /**
      * Create a new order.
      *
      * @param \StoreCore\Types\StoreID|null $store_id
@@ -42,27 +72,26 @@ class OrderFactory extends AbstractModel
     {
         if ($store_id === null) {
             $store_id = new StoreID();
-        }
-
-        if (!$store_id instanceof StoreID) {
+        } elseif (!$store_id instanceof StoreID) {
             throw new \InvalidArgumentException(
                 __METHOD__ . ' expects parameter 1 to be \StoreCore\Types\StoreID, '
-                . gettype($store_id) .' given.'
+                . gettype($store_id) . ' given.'
             );
         }
 
-        $order_data = array(
-            'order_id' => $this->getRandomOrderID(),
-            'store_id' => (int) (string) $store_id,
-        );
-        $order_mapper = new OrderMapper($this->Registry);
-        $order_mapper->create($order_data);
-        $order_mapper = null;
+        $order_id = $this->getRandomOrderID();
+        $store_id = (int) (string) $store_id;
+
+        try {
+            $mapper = new OrderMapper($this->Registry);
+            $mapper->create(['order_id' => $order_id, 'store_id' => $store_id]);
+        } catch (\Exception $e) {
+            $this->Logger->error('Error creating new order: ' . $e->getMessage());
+        }
 
         $order = new Order($this->Registry);
-        $order->setOrderID($order_data['order_id']);
-        $order->setStoreID($order_data['store_id']);
-
+        $order->setOrderID($order_id);
+        $order->setStoreID($store_id);
         return $order;
     }
 

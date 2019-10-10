@@ -68,6 +68,37 @@ class OrderFactoryTest extends PHPUnit_Framework_TestCase
 
 
     /**
+     * @testdox OrderFactory::createCart() exists
+     */
+    public function testOrderFactoryCreateCartExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\OrderFactory');
+        $this->assertTrue($class->hasMethod('createCart'));
+    }
+
+    /**
+     * @depends testOrderFactoryCreateCartExists
+     * @testdox OrderFactory::createCart() is public
+     */
+    public function testOrderFactoryCreateCartIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\OrderFactory', 'createCart');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testOrderFactoryCreateCartExists
+     * @testdox OrderFactory::createCart() has one optional parameter
+     */
+    public function testOrderFactoryCreateCartHasOneOptionalParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\OrderFactory', 'createCart');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 0);
+    }
+
+
+    /**
      * @testdox OrderFactory::createOrder() exists
      */
     public function testOrderFactoryCreateOrderExists()

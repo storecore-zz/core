@@ -107,6 +107,72 @@ class OrderTest extends PHPUnit_Framework_TestCase
 
 
     /**
+     * @group hmvc
+     * @testdox Order::getOrderID() exists
+     */
+    public function testOrderGetOrderIdExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\Order');
+        $this->assertTrue($class->hasMethod('getOrderID'));
+    }
+
+    /**
+     * @group hmvc
+     * @depends testOrderGetOrderIdExists
+     * @testdox Order::getOrderID() is public
+     */
+    public function testOrderGetOrderIdIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\Order', 'getOrderID');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @group hmvc
+     * @depends testOrderGetOrderIdExists
+     * @testdox Order::getOrderID() has no parameters
+     */
+    public function testOrderGetOrderIdHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\Order', 'getOrderID');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+
+    /**
+     * @group hmvc
+     * @testdox Order::getStoreID() exists
+     */
+    public function testOrderGetStoreIdExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\Order');
+        $this->assertTrue($class->hasMethod('getStoreID'));
+    }
+
+    /**
+     * @group hmvc
+     * @depends testOrderGetStoreIdExists
+     * @testdox Order::getStoreID() is public
+     */
+    public function testOrderGetStoreIdIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\Order', 'getStoreID');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @group hmvc
+     * @depends testOrderGetStoreIdExists
+     * @testdox Order::getStoreID() has no parameters
+     */
+    public function testOrderGetStoreIdHasNoParameters()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\Order', 'getStoreID');
+        $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+
+    /**
      * @testdox Order::isWishList() exists
      */
     public function testOrderIsWishListExists()
@@ -133,6 +199,71 @@ class OrderTest extends PHPUnit_Framework_TestCase
     {
         $method = new \ReflectionMethod('\StoreCore\Database\Order', 'isWishList');
         $this->assertTrue($method->getNumberOfParameters() === 0);
+    }
+
+
+    /**
+     * @group hmvc
+     * @testdox Order::setOrderID() exists
+     */
+    public function testOrderSetOrderIdExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\Order');
+        $this->assertTrue($class->hasMethod('setOrderID'));
+    }
+
+    /**
+     * @group hmvc
+     * @depends testOrderSetOrderIdExists
+     * @testdox Order::setOrderID() is public
+     */
+    public function testOrderSetOrderIdIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\Order', 'setOrderID');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @group hmvc
+     * @depends testOrderSetOrderIdExists
+     * @testdox Order::setOrderID() has one required parameter
+     */
+    public function testOrderSetOrderIdHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\Order', 'setOrderID');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
+    }
+
+
+    /**
+     * @testdox Order::setStoreID() exists
+     */
+    public function testOrderSetStoreIdExists()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\Order');
+        $this->assertTrue($class->hasMethod('setStoreID'));
+    }
+
+    /**
+     * @depends testOrderSetStoreIdExists
+     * @testdox Order::setStoreID() is public
+     */
+    public function testOrderSetStoreIdIsPublic()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\Order', 'setStoreID');
+        $this->assertTrue($method->isPublic());
+    }
+
+    /**
+     * @depends testOrderSetStoreIdExists
+     * @testdox Order::setStoreID() has one required parameter
+     */
+    public function testOrderSetStoreIdHasOneRequiredParameter()
+    {
+        $method = new \ReflectionMethod('\StoreCore\Database\Order', 'setStoreID');
+        $this->assertTrue($method->getNumberOfParameters() === 1);
+        $this->assertTrue($method->getNumberOfRequiredParameters() === 1);
     }
 
 

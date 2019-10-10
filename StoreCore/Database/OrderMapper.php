@@ -2,9 +2,12 @@
 namespace StoreCore\Database;
 
 use StoreCore\Database\AbstractDataAccessObject;
+use StoreCore\Database\Cart;
 use StoreCore\Database\CRUDInterface;
 use StoreCore\Database\Order;
 use StoreCore\Database\WishList;
+
+use StoreCore\Types\CartID;
 
 /**
  * Order Mapper
@@ -72,9 +75,10 @@ class OrderMapper extends AbstractDataAccessObject implements CRUDInterface
      * @param int $order_id
      *   Unique order number.
      *
-     * @return \StoreCore\Database\Order|\StoreCore\Database\WishList|null
+     * @return Order|Cart|WishList|null
      *   Returns an order data object or null if the order does not exist.
-     *   This method MAY return a wish list data object for incomplete orders.
+     *   This method MAY also return a cart or wish list data object for
+     *   incomplete orders.
      *
      * @throws \InvalidArgumentException
      *   Throws an invalid argument logic exception if the `$order_id`
@@ -107,13 +111,21 @@ class OrderMapper extends AbstractDataAccessObject implements CRUDInterface
      *
      * @param array $order_data
      *
-     * @return \StoreCore\Database\Order|\StoreCore\Database\WishList
-     *   Returns a StoreCore order model or wish list model as a data model
-     *   object.
+     * @return Order|Cart|WishList
+     *   Returns a StoreCore order model, cart model, or wish list model
+     *   as a data model object.
      */
     private function getOrderObject(array $order_data)
     {
-        if (array_key_exists('wishlist_flag', $order_data) && $order_data['wishlist_flag'] == 1) {
+        if (
+            !empty($order_data['cart_uuid'])
+            && !empty($order_data['cart_rand'])
+            && $order_data['date_confirmed'] === null
+        ) {
+            $object = new Cart($this->Registry);
+            $cart_id = new CartID($order_data['cart_uuid'], $order_data['cart_rand']);
+            $object->setCartID($cart_id);
+        } elseif ($order_data['wishlist_flag'] === 1) {
             $object = new WishList($this->Registry);
         } else {
             $object = new Order($this->Registry);
