@@ -1704,8 +1704,8 @@ CREATE TABLE IF NOT EXISTS sc_orders (
   customer_id     INT(10) UNSIGNED      NULL  DEFAULT NULL,
   wishlist_flag   TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
   backorder_flag  TINYINT(1) UNSIGNED   NOT NULL  DEFAULT 0,
-  cart_uuid       CHAR(36)              NOT NULL,
-  cart_rand       CHAR(192)             NOT NULL,
+  cart_uuid       CHAR(36)              NULL  DEFAULT NULL,
+  cart_rand       CHAR(192)             NULL  DEFAULT NULL,
   date_created    DATETIME              NOT NULL  DEFAULT CURRENT_TIMESTAMP,
   date_modified   DATETIME              NULL  DEFAULT NULL  ON UPDATE CURRENT_TIMESTAMP,
   date_confirmed  DATETIME              NULL  DEFAULT NULL,
@@ -1716,8 +1716,7 @@ CREATE TABLE IF NOT EXISTS sc_orders (
   FOREIGN KEY fk_orders_currencies (currency_id) REFERENCES sc_currencies (currency_id) ON DELETE NO ACTION ON UPDATE CASCADE,
   FOREIGN KEY fk_orders_customers (customer_id) REFERENCES sc_customers (customer_id) ON DELETE NO ACTION ON UPDATE CASCADE,
   INDEX ix_cart (cart_uuid, cart_rand),
-  INDEX ix_date_confirmed (date_confirmed DESC),
-  INDEX ix_date_created (date_created ASC)
+  INDEX ix_date_confirmed (date_confirmed DESC)
 ) ENGINE=InnoDB  DEFAULT CHARSET=ascii  COLLATE=ascii_bin;
 
 CREATE TABLE IF NOT EXISTS sc_order_products (

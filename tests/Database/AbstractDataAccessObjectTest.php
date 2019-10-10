@@ -3,6 +3,7 @@ class AbstractDataAccessObjectTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @group distro
+     * @testdox AbstractDataAccessObject class file exists
      */
     public function testAbstractDataAccessObjectClassFileExists()
     {
@@ -11,6 +12,7 @@ class AbstractDataAccessObjectTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group hmvc
+     * @testdox AbstractDataAccessObject is abstract
      */
     public function testAbstractDataAccessObjectIsAbstract()
     {
@@ -20,11 +22,22 @@ class AbstractDataAccessObjectTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group hmvc
+     * @testdox AbstractDataAccessObject is an abstract database model
      */
-    public function testAbstractDataAccessObjectIsAAbstractDatabaseModel()
+    public function testAbstractDataAccessObjectIsAnAbstractDatabaseModel()
     {
         $class = new \ReflectionClass('\StoreCore\Database\AbstractDataAccessObject');
         $this->assertTrue($class->isSubclassOf('\StoreCore\Database\AbstractModel'));
+    }
+
+    /**
+     * @group hmvc
+     * @testdox AbstractDataAccessObject implements CRUD interface
+     */
+    public function testAbstractDataAccessObjectImplementsCrudInterface()
+    {
+        $class = new \ReflectionClass('\StoreCore\Database\AbstractDataAccessObject');
+        $this->assertTrue($class->isSubclassOf('\StoreCore\Database\CRUDInterface'));
     }
 
 
@@ -52,6 +65,7 @@ class AbstractDataAccessObjectTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testVersionConstantIsNonEmptyString
      * @group distro
+     * @testdox VERSION matches master branch
      */
     public function testVersionMatchesMasterBranch()
     {
