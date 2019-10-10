@@ -1,11 +1,14 @@
 <?php
 namespace StoreCore\Database;
 
+use StoreCore\Registry;
+use StoreCore\Database\Connection;
+
 /**
  * Abstract MVC Model
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015–2018 StoreCore™
+ * @copyright Copyright © 2015–2019 StoreCore™
  * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   1.0.0
@@ -17,7 +20,10 @@ namespace StoreCore\Database;
  */
 abstract class AbstractModel extends \StoreCore\AbstractModel
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '1.0.0';
 
     /**
@@ -35,11 +41,11 @@ abstract class AbstractModel extends \StoreCore\AbstractModel
      *   is set up correctly, the usual cause of a failed connection is a
      *   “Too many connections” timeout, which can only be noticed at runtime.
      */
-    public function __construct(\StoreCore\Registry $registry)
+    public function __construct(Registry $registry)
     {
         if (false === $registry->has('Database')) {
             try {
-                $dbh = new \StoreCore\Database\Connection();
+                $dbh = new Connection();
                 if ($dbh === null) {
                     throw new \RuntimeException();
                 }

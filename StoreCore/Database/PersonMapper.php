@@ -1,6 +1,8 @@
 <?php
 namespace StoreCore\Database;
 
+use StoreCore\Person;
+
 /**
  * Person Mapper
  *
@@ -13,13 +15,18 @@ namespace StoreCore\Database;
 class PersonMapper extends AbstractDataAccessObject
 {
     /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
+    const VERSION = '0.1.0';
+
+    /**
      * @var string PRIMARY_KEY DAO database table primary key.
      * @var string TABLE_NAME  DAO database table name.
-     * @var string VERSION     Semantic Version (SemVer).
      */
     const PRIMARY_KEY = 'person_id';
     const TABLE_NAME  = 'sc_persons';
-    const VERSION = '0.1.0';
+
 
     /**
      * Anonymize PII (personally identifiable information).
@@ -28,7 +35,7 @@ class PersonMapper extends AbstractDataAccessObject
      *
      * @return bool
      */
-    public function anonymize(\StoreCore\Person &$person)
+    public function anonymize(Person &$person)
     {
         $person_id = $person->getPersonID();
 
@@ -114,7 +121,7 @@ class PersonMapper extends AbstractDataAccessObject
             return null;
         }
 
-        $person = new \StoreCore\Person();
+        $person = new Person();
 
         $person->setPersonID($keyed_data['person_id']);
         $person->setEmailAddress($keyed_data['email_address']);
@@ -161,7 +168,7 @@ class PersonMapper extends AbstractDataAccessObject
      * @return mixed
      * @uses \StoreCore\AbstractSubject::notify()
      */
-    public function save(\StoreCore\Person &$person)
+    public function save(Person &$person)
     {
         $person_data = array();
 
