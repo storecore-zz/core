@@ -83,6 +83,8 @@ class LocationFactory implements UriFactoryInterface
         // Host
         if (isset($uri['host'])) {
             $location->setHost($uri['host']);
+        } elseif (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
+            $location->setHost(strtolower($_SERVER['HTTP_HOST']));
         }
 
         // Path
