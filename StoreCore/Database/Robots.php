@@ -11,6 +11,12 @@ use StoreCore\Database\AbstractModel;
  * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
  * @version   0.0.2
+ *
+ * @see https://moz.com/learn/seo/robotstxt
+ *      Robots.txt – Moz SEO Learning Center
+ *
+ * @see https://developers.google.com/search/reference/robots_txt?hl=en
+ *      Robots.txt Specifications – Google Developers Search Reference
  */
 class Robots extends AbstractModel
 {
@@ -24,7 +30,10 @@ class Robots extends AbstractModel
      * Get all disallowed paths by user agent.
      *
      * @param void
+     *
      * @return array
+     *   Returns an associative array with a single entry per robot
+     *   and possibly multiple `Disallow` locations for that robot.
      */
     public function getAllDisallows()
     {
