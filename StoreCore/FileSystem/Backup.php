@@ -1,18 +1,24 @@
 <?php
 namespace StoreCore\FileSystem;
 
+use Psr\Log\NullLogger;
+use StoreCore\FileSystem\Logger;
+
 /**
  * StoreCore File System Backup
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2015-2016 StoreCore
+ * @copyright Copyright © 2015–2019 StoreCore™
  * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
  */
 class Backup
 {
-    /** @var string VERSION */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -31,9 +37,9 @@ class Backup
     public static function save($compress = true)
     {
         if (STORECORE_NULL_LOGGER) {
-            $logger = new \Psr\Log\NullLogger();
+            $logger = new NullLogger();
         } else {
-            $logger = new \StoreCore\FileSystem\Logger();
+            $logger = new Logger();
         }
         $logger->notice('Backup process started.');
 

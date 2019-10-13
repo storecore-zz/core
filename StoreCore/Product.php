@@ -1,6 +1,9 @@
 <?php
 namespace StoreCore;
 
+use StoreCore\Types\ItemAvailability;
+use StoreCore\Types\ProductID;
+
 /**
  * StoreCore Product Model
  *
@@ -81,7 +84,7 @@ class Product extends AbstractModel
     public function __construct(Registry $registry)
     {
         parent::__construct($registry);
-        $this->Availability = new \StoreCore\Types\ItemAvailability('https://schema.org/InStock', true);
+        $this->Availability = new ItemAvailability('https://schema.org/InStock', true);
         $this->setModificationDate();
     }
 
@@ -205,7 +208,7 @@ class Product extends AbstractModel
      *
      * @return void
      */
-    public function setAvailability(\StoreCore\Types\ItemAvailability $availability)
+    public function setAvailability(ItemAvailability $availability)
     {
         $this->Availability = $availability;
     }
@@ -239,10 +242,10 @@ class Product extends AbstractModel
      */
     public function setParentID($parent_product_identifier)
     {
-        if ($parent_product_identifier instanceof \StoreCore\Types\ProductID) {
+        if ($parent_product_identifier instanceof ProductID) {
             $this->ParentID = $parent_product_identifier;
         } else {
-            $this->ParentID = new \StoreCore\Types\ProductID($parent_product_identifier, false);
+            $this->ParentID = new ProductID($parent_product_identifier, false);
         }
     }
 
@@ -258,10 +261,10 @@ class Product extends AbstractModel
      */
     public function setProductID($product_identifier)
     {
-        if ($product_identifier instanceof \StoreCore\Types\ProductID) {
+        if ($product_identifier instanceof ProductID) {
             $this->ProductID = $product_identifier;
         } else {
-            $this->ProductID = new \StoreCore\Types\ProductID($product_identifier, false);
+            $this->ProductID = new ProductID($product_identifier, false);
         }
     }
 

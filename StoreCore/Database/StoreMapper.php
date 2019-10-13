@@ -1,6 +1,14 @@
 <?php
 namespace StoreCore\Database;
 
+use StoreCore\Response;
+use StoreCore\Store;
+
+use StoreCore\Database\Currencies;
+use StoreCore\Database\Languages;
+
+use StoreCore\Types\StoreID;
+
 /**
  * Store Mapper
  *
@@ -13,13 +21,18 @@ namespace StoreCore\Database;
 class StoreMapper extends AbstractDataAccessObject
 {
     /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
+    const VERSION = '0.1.0';
+
+    /**
      * @var string PRIMARY_KEY DAO database table primary key.
      * @var string TABLE_NAME  DAO database table name.
-     * @var string VERSION     Semantic Version (SemVer).
      */
     const PRIMARY_KEY = 'store_id';
     const TABLE_NAME = 'sc_stores';
-    const VERSION = '0.1.0';
+
 
     /**
      * Find a store that matches a request.
@@ -86,7 +99,7 @@ class StoreMapper extends AbstractDataAccessObject
                 } else {
                     $location .= 'https://' . $hosts['host_name'] . '/';
                 }
-                $response = new \StoreCore\Response($this->Registry);
+                $response = new Response($this->Registry);
                 $response->redirect($location, 301);
             }
 
@@ -100,7 +113,7 @@ class StoreMapper extends AbstractDataAccessObject
                     $smallest_levenshtein_distance = $levenshtein_distance;
                 }
             }
-            $response = new \StoreCore\Response($this->Registry);
+            $response = new Response($this->Registry);
             $response->redirect($location, 301);
         }
 
@@ -144,7 +157,7 @@ class StoreMapper extends AbstractDataAccessObject
             }
         }
 
-        $response = new \StoreCore\Response($this->Registry);
+        $response = new Response($this->Registry);
         $response->redirect($location, 301);
     }
 
@@ -158,7 +171,7 @@ class StoreMapper extends AbstractDataAccessObject
      *   Returns a store model object if the store exists or null if it does
      *   not exists.
      */
-    public function getStore(\StoreCore\Types\StoreID $store_id)
+    public function getStore(StoreID $store_id)
     {
         $store_id = (string)$store_id;
         $store_data = $this->read($store_id);
@@ -178,10 +191,10 @@ class StoreMapper extends AbstractDataAccessObject
      */
     private function getStoreObject(array $store_data)
     {
-        $store = new \StoreCore\Store($this->Registry);
+        $store = new Store($this->Registry);
 
         // Set the store ID and store name.
-        $store_id = new \StoreCore\Types\StoreID($store_data['store_id']);
+        $store_id = new StoreID($store_data['store_id']);
         $store->setStoreID($store_id);
         $store->setStoreName($store_data['store_name']);
 
@@ -196,11 +209,11 @@ class StoreMapper extends AbstractDataAccessObject
         }
 
         // Add store languages.
-        $model = new \StoreCore\Database\Languages($this->Registry);
+        $model = new Languages($this->Registry);
         $store->setStoreLanguages($model->getStoreLanguages($store_id));
 
         // Add store currencies.
-        $model = new \StoreCore\Database\Currencies($this->Registry);
+        $model = new Currencies($this->Registry);
         $store->setStoreCurrencies($model->getStoreCurrencies($store_id));
 
         return $store;
@@ -215,7 +228,7 @@ class StoreMapper extends AbstractDataAccessObject
      * @return bool
      *   Returns true on success or false on failure.
      */
-    public function save(\StoreCore\Store &$store)
+    public function save(Store &$store)
     {
         $store_data = array(
             'store_name' => $store->getStoreName(),

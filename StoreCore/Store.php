@@ -1,11 +1,13 @@
 <?php
 namespace StoreCore;
 
+use StoreCore\Types\StoreID;
+
 /**
  * StoreCore Store Model
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2017-2018 StoreCore™
+ * @copyright Copyright © 2017–2019 StoreCore™
  * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
@@ -242,10 +244,10 @@ class Store extends AbstractModel
     public function setStoreID($store_id)
     {
         if (is_int($store_id)) {
-            $store_id = new \StoreCore\Types\StoreID($store_id);
+            $store_id = new StoreID($store_id);
         }
 
-        if ($store_id instanceof \StoreCore\Types\StoreID) {
+        if ($store_id instanceof StoreID) {
             $this->StoreID = $store_id;
         } else {
             throw new \InvalidArgumentException();

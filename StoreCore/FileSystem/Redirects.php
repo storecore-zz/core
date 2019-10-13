@@ -1,17 +1,27 @@
 <?php
 namespace StoreCore\FileSystem;
 
+use Psr\Cache\CacheItemInterface;
+use Psr\Cache\CacheItemPoolInterface;
+use Psr\Cache\InvalidArgumentException;
+
+use StoreCore\Types\Redirect;
+
 /**
  * Cache Pool for Redirects
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright (c) 2016 StoreCore
+ * @copyright Copyright © 2016–2019 StoreCore™
  * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
  * @version   0.1.0
  */
-class Redirects implements \Psr\Cache\CacheItemPoolInterface
+class Redirects implements CacheItemPoolInterface
 {
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -35,8 +45,10 @@ class Redirects implements \Psr\Cache\CacheItemPoolInterface
     private $NewFileContents = array();
 
     /**
+     * Create a cache pool for redirects.
+     *
      * @param void
-     * @param void
+     * @return self
      */
     public function __construct()
     {
@@ -97,7 +109,7 @@ class Redirects implements \Psr\Cache\CacheItemPoolInterface
             unset($this->NewFileContents[$key]);
             return true;
         } else {
-            throw new \Psr\Cache\InvalidArgumentException();
+            throw new InvalidArgumentException();
             return false;
         }
     }
@@ -117,7 +129,7 @@ class Redirects implements \Psr\Cache\CacheItemPoolInterface
             } elseif (array_key_exists($key, $this->NewFileContents) ) {
                 unset($this->NewFileContents[$key]);
             } else {
-                throw new \Psr\Cache\InvalidArgumentException();
+                throw new InvalidArgumentException();
             }
         }
 
@@ -161,7 +173,7 @@ class Redirects implements \Psr\Cache\CacheItemPoolInterface
     public function getItem($key)
     {
         if (!is_string($key) || empty($key)) {
-            throw new \Psr\Cache\InvalidArgumentException();
+            throw new InvalidArgumentException();
         }
 
         if (array_key_exists($key, $this->FileContents)) {
@@ -169,7 +181,7 @@ class Redirects implements \Psr\Cache\CacheItemPoolInterface
         } elseif (array_key_exists($key, $this->NewFileContents)) {
             return unserialize($this->NewFileContents[$key]);
         } else {
-            return new \StoreCore\Types\Redirect();
+            return new Redirect();
         }
     }
 
@@ -188,7 +200,7 @@ class Redirects implements \Psr\Cache\CacheItemPoolInterface
                 } elseif (array_key_exists($key, $this->FileContents)) {
                     $items[$key] = $this->FileContents[$key];
                 } else {
-                    throw new \Psr\Cache\InvalidArgumentException();
+                    throw new InvalidArgumentException();
                 }
             }
         }
@@ -205,7 +217,7 @@ class Redirects implements \Psr\Cache\CacheItemPoolInterface
     public function hasItem($key)
     {
         if (!is_string($key)) {
-            throw new \Psr\Cache\InvalidArgumentException();
+            throw new InvalidArgumentException();
         }
 
         if (
@@ -221,7 +233,7 @@ class Redirects implements \Psr\Cache\CacheItemPoolInterface
     /**
      * @inheritDoc
      */
-    public function save(\Psr\Cache\CacheItemInterface $item)
+    public function save(CacheItemInterface $item)
     {
         $key = $item->getKey();
         $this->FileContents[$key] = serialize($item);
@@ -231,7 +243,7 @@ class Redirects implements \Psr\Cache\CacheItemPoolInterface
     /**
      * @inheritDoc
      */
-    public function saveDeferred(\Psr\Cache\CacheItemInterface $item)
+    public function saveDeferred(CacheItemInterface $item)
     {
         $key = $item->getKey();
         $this->NewFileContents[$key] = serialize($item);
