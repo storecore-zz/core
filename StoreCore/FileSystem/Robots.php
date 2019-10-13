@@ -14,7 +14,7 @@ use StoreCore\ResponseFactory;
  * @copyright Copyright © 2015–2019 StoreCore™
  * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\CMS
- * @version   0.1.0
+ * @version   0.2.0
  */
 class Robots extends AbstractController
 {
@@ -22,7 +22,7 @@ class Robots extends AbstractController
      * @var string VERSION
      *   Semantic Version (SemVer).
      */
-    const VERSION = '0.1.0';
+    const VERSION = '0.2.0';
 
     /**
      * @var \StoreCore\Database\Robots $Model
@@ -34,7 +34,7 @@ class Robots extends AbstractController
      * @var string $View
      *   Contents of the robots.txt file as an MVC view.
      */
-    private $View = "User-agent: *\nDisallow:";
+    private $View;
 
     /**
      * Create and publish robots.txt file.
@@ -47,6 +47,24 @@ class Robots extends AbstractController
     public function __construct(Registry $registry)
     {
         parent::__construct($registry);
+
+        /*
+            User-agent: *
+            Crawl-delay: 5
+            Disallow:
+         */
+        $this->View  = 'User-agent: *' . "\n";
+        $this->View .= 'Crawl-delay: ';
+        if (\defined('STORECORE_CMS_CRAWL_DELAY')) {
+            $this->View .= STORECORE_CMS_CRAWL_DELAY;
+        } else {
+            $this->View .= 5;
+        }
+        $this->View .= "\n";
+        $this->View .= 'Disallow: ' . "\n\n";
+
+        $this->View .= 'Sitemap: ' . $this->Location->getScheme() . '://' . $this->Location->getHost() . '/sitemap.xml' . "\n\n";
+
         $this->loadModel();
         $this->renderView();
         $this->respond();
@@ -70,18 +88,30 @@ class Robots extends AbstractController
         $robots = $this->Model->getAllDisallows();
 
         if (is_array($robots)) {
-            $view = (string)null;
+            $view = (string) null;
+
             foreach ($robots as $user_agent => $paths) {
+
                 $view .= 'User-agent: ' . $user_agent . "\n";
+
+                if ($user_agent === '*') {
+                    $view .= 'Crawl-delay: ';
+                    if (\defined('STORECORE_CMS_CRAWL_DELAY')) {
+                        $view .= STORECORE_CMS_CRAWL_DELAY;
+                    } else {
+                        $view .= 5;
+                    }
+                    $view .= "\n";
+                }
+
                 foreach ($paths as $path) {
                     $view .= 'Disallow: ' . $path . "\n";
                 }
-                if ($user_agent == '*') {
-                    $view .= "Crawl-delay: 5\n";
-                }
+
                 $view .= "\n";
             }
-            $this->View = $view;
+
+            $this->View .= $view;
         }
     }
 
@@ -91,7 +121,7 @@ class Robots extends AbstractController
      */
     private function respond()
     {
-        $factory = new \StoreCore\ResponseFactory();
+        $factory = new ResponseFactory();
         $response = $factory->createResponse();
         $response->addHeader('Content-Type: text/plain;charset=UTF-8');
         $response->setCompression(-1);

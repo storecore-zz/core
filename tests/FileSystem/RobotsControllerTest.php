@@ -1,8 +1,9 @@
 <?php
 /**
+ * @coversDefaultClass \StoreCore\FileSystem\Robots
  * @group seo
  */
-class RobotsTest extends PHPUnit_Framework_TestCase
+class RobotsControllerTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @group distro
