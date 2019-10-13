@@ -9,6 +9,8 @@ use StoreCore\Registry;
 use StoreCore\ResponseFactory;
 use StoreCore\View;
 
+use StoreCore\FileSystem\Logger;
+
 /**
  * Database Account Settings Controller
  *
@@ -92,7 +94,7 @@ class SettingsDatabaseAccount extends AbstractController
             // Save configuration changes
             if ($save_config) {
                 $config->save();
-                $logger = new \StoreCore\FileSystem\Logger();
+                $logger = new Logger();
                 $logger->notice('Database configuration saved.');
             }
 
@@ -100,7 +102,7 @@ class SettingsDatabaseAccount extends AbstractController
             $response = $factory->createResponse(303);
             $response->redirect('/admin/settings/database/account/');
         } else {
-            $this->View = new \StoreCore\View();
+            $this->View = new View();
             $this->View->setTemplate(__DIR__ . DIRECTORY_SEPARATOR . 'SettingsDatabaseAccount.phtml');
 
             // Only select PDO drivers that are available in PHP as well as

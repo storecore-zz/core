@@ -1,6 +1,8 @@
 <?php
 namespace StoreCore;
 
+use StoreCore\Types\CacheKey;
+
 /**
  * Full-Page Cache
  *
@@ -53,7 +55,7 @@ class FullPageCache
         }
 
         // Generate a cache key.
-        $cache_key = new \StoreCore\Types\CacheKey(
+        $cache_key = new CacheKey(
             $registry->get('Location')->get()
         );
 

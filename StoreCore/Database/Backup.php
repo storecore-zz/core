@@ -1,11 +1,18 @@
 <?php
 namespace StoreCore\Database;
 
+use StoreCore\Database\Connection;
+
+use StoreCore\Registry;
+
+use Psr\Log\NullLogger;
+use StoreCore\FileSystem\Logger;
+
 /**
  * StoreCore Database Backup
  *
  * @author    Ward van der Put <Ward.van.der.Put@storecore.org>
- * @copyright Copyright © 2015-2017 StoreCore
+ * @copyright Copyright © 2015–2019 StoreCore™
  * @license   https://www.gnu.org/licenses/gpl.html GNU General Public License
  * @package   StoreCore\Core
  * @version   0.1.0
@@ -19,7 +26,10 @@ namespace StoreCore\Database;
  */
 class Backup
 {
-    /** @var string VERSION Semantic Version (SemVer) */
+    /**
+     * @var string VERSION
+     *   Semantic Version (SemVer).
+     */
     const VERSION = '0.1.0';
 
     /**
@@ -42,18 +52,18 @@ class Backup
     public static function save($tables = '*', $drop_tables = false)
     {
         // Get or create a logger.
-        $registry = \StoreCore\Registry::getInstance();
+        $registry = Registry::getInstance();
         if ($registry->has('Logger')) {
             $logger = $registry->get('Logger');
         } elseif (STORECORE_NULL_LOGGER) {
-            $logger = new \Psr\Log\NullLogger();
+            $logger = new NullLogger();
         } else {
-            $logger = new \StoreCore\FileSystem\Logger();
+            $logger = new Logger();
         }
 
         // Connect to the database with a new client.
         try {
-            $dbh = new \StoreCore\Database\Connection();
+            $dbh = new Connection();
         } catch (\PDOException $e) {
             $logger->error('Database connection error ' . $e->getCode() . ': ' . $e->getMessage());
             return false;

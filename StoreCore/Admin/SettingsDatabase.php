@@ -10,6 +10,8 @@ use StoreCore\Registry;
 use StoreCore\ResponseFactory;
 use StoreCore\View;
 
+use StoreCore\FileSystem\Logger;
+
 /**
  * Database Settings Controller
  *
@@ -93,7 +95,7 @@ class SettingsDatabase extends AbstractController
             // Save configuration changes
             if ($save_config) {
                 $config->save();
-                $logger = new \StoreCore\FileSystem\Logger();
+                $logger = new Logger();
                 $logger->notice('Database configuration saved.');
             }
 
