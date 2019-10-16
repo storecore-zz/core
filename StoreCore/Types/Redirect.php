@@ -65,23 +65,37 @@ class Redirect extends AbstractCacheItem implements CacheItemInterface
      */
     public function get()
     {
-        return array($RedirectFromURL => $RedirectToURL);
+        return array($this->RedirectFromURL => $this->RedirectToURL);
     }
 
     /**
-     * Execute a permanent redirect.
+     * Execute the redirect.
      *
-     * @param void
+     * @param int $status_code
+     *   Optional HTTP response status code.  Defaults to 301 for a permanent
+     *   redirect.
+     * 
      * @return void
+     *
+     * @see https://developer.mozilla.org/nl/docs/Web/HTTP/Status
+     *      HTTP response status codes
      */
-    public function redirect()
+    public function redirect($status_code = 301)
     {
+        if (!\is_int($status_code)) {
+            throw new \InvalidArgumentException();
+        } elseif ($status_code < 300 || $status_code > 308) {
+            throw new \DomainException();
+        }
+
         // Cache publicly for 1 year (the HTTP maximum).
         if ($this->ExpiresAt === null && $this->ExpiresAfter === null) {
             header('Cache-Control: public, max-age=31536000', true);
+        } elseif ($this->ExpiresAt !== null) {
+            header('Expires: ' . $this->ExpiresAt->format('D, d M Y H:i:s \G\M\T'), true);
         }
 
-        header('Location: ' . $this->RedirectToURL, true, 301);
+        header('Location: ' . $this->RedirectToURL, true, $status_code);
         header('X-Powered-By: StoreCore', true);
         exit(0);
     }
