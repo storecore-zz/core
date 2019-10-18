@@ -88,8 +88,12 @@ class Redirect extends AbstractCacheItem implements CacheItemInterface
             throw new \DomainException();
         }
 
-        // Cache publicly for 1 year (the HTTP maximum).
-        if ($this->ExpiresAt === null && $this->ExpiresAfter === null) {
+        // Cache permanent redirects (301 or 308) publicly for 1 year (the HTTP maximum).
+        if (
+            $this->ExpiresAt === null 
+            && $this->ExpiresAfter === null
+            && ($status_code === 301 || $status_code === 308)
+        ) {
             header('Cache-Control: public, max-age=31536000', true);
         } elseif ($this->ExpiresAt !== null) {
             header('Expires: ' . $this->ExpiresAt->format('D, d M Y H:i:s \G\M\T'), true);
