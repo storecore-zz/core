@@ -1,12 +1,12 @@
 <?php
 namespace StoreCore\Database;
 
-use StoreCore\Response;
 use StoreCore\Store;
 
 use StoreCore\Database\Currencies;
 use StoreCore\Database\Languages;
 
+use StoreCore\Types\Redirect;
 use StoreCore\Types\StoreID;
 
 /**
@@ -65,13 +65,14 @@ class StoreMapper extends AbstractDataAccessObject
             $host_name = mb_strtolower($host_name, 'UTF-8');
         }
 
-        $stmt = $this->Database->prepare('
+        /*
                SELECT h.store_id, h.redirect_flag, h.redirect_to,
                       s.enabled_flag, s.store_name
                  FROM sc_store_hosts h
             LEFT JOIN sc_stores s ON h.store_id = s.store_id
                 WHERE h.host_name = :host_name
-        ');
+         */
+        $stmt = $this->Database->prepare('SELECT h.store_id, h.redirect_flag, h.redirect_to, s.enabled_flag, s.store_name FROM sc_store_hosts h LEFT JOIN sc_stores s ON h.store_id = s.store_id WHERE h.host_name = :host_name');
         $stmt->bindValue(':host_name', $host_name, \PDO::PARAM_STR);
         $stmt->execute();
         $host = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -79,13 +80,14 @@ class StoreMapper extends AbstractDataAccessObject
 
         // Find possible redirect candidates if no matching host is found.
         if ($host === false || empty($host)) {
-            $stmt = $this->Database->prepare('
+            /*
                    SELECT h.host_name, s.https_flag
                      FROM sc_store_hosts h
                 LEFT JOIN sc_stores s ON h.store_id = s.store_id
                     WHERE h.redirect_flag = 0
                  ORDER BY s.enabled_flag DESC
-            ');
+             */
+            $stmt = $this->Database->prepare('SELECT h.host_name, s.https_flag FROM sc_store_hosts h LEFT JOIN sc_stores s ON h.store_id = s.store_id WHERE h.redirect_flag = 0 ORDER BY s.enabled_flag DESC');
             $stmt->execute();
             $hosts = $stmt->fetchAll(\PDO::FETCH_ASSOC);
             $stmt->closeCursor();
@@ -99,8 +101,8 @@ class StoreMapper extends AbstractDataAccessObject
                 } else {
                     $location .= 'https://' . $hosts['host_name'] . '/';
                 }
-                $response = new Response($this->Registry);
-                $response->redirect($location, 301);
+                $redirect = new Redirect('/', $location);
+                $redirect->redirect(301);
             }
 
             // Find a similar host name.
@@ -113,8 +115,8 @@ class StoreMapper extends AbstractDataAccessObject
                     $smallest_levenshtein_distance = $levenshtein_distance;
                 }
             }
-            $response = new Response($this->Registry);
-            $response->redirect($location, 301);
+            $redirect = new Redirect('/', $location);
+            $redirect->redirect(301);
         }
 
         // Return the store for a known host name.
@@ -127,13 +129,14 @@ class StoreMapper extends AbstractDataAccessObject
         if ($host['redirect_to'] !== null) {
             $location = $host['redirect_to'];
         } else {
-            $stmt = $this->Database->prepare('
+            /*
                    SELECT h.host_ip, h.host_name, s.https_flag
                      FROM sc_store_hosts h
                 LEFT JOIN sc_stores s ON h.store_id = s.store_id
                     WHERE h.store_id = :store_id
                       AND redirect_flag = 0
-            ');
+             */
+            $stmt = $this->Database->prepare('SELECT h.host_ip, h.host_name, s.https_flag FROM sc_store_hosts h LEFT JOIN sc_stores s ON h.store_id = s.store_id WHERE h.store_id = :store_id AND redirect_flag = 0');
             $stmt->bindValue(':store_id', $host['store_id'], \PDO::PARAM_INT);
             $stmt->execute();
             $host = $stmt->fetch();
@@ -157,8 +160,8 @@ class StoreMapper extends AbstractDataAccessObject
             }
         }
 
-        $response = new Response($this->Registry);
-        $response->redirect($location, 301);
+        $redirect = new Redirect('/', $location);
+        $redirect->redirect(301);
     }
 
     /**
